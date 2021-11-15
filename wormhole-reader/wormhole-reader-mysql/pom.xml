@@ -23,6 +23,7 @@
     <parent>
         <groupId>com.zergclan</groupId>
         <artifactId>wormhole-reader</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
     <artifactId>wormhole-reader-mysql</artifactId>
     <name>${project.artifactId}</name>

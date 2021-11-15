@@ -15,19 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.event;
+package com.zergclan.wormhole.bus.api.event;
 
 /**
- * Simple factory for creating bus event.
- *
- * @param <E> class type of bus event
+ * Base interface for bus event.
  */
-public interface EventFactory<E extends Event> {
-    
-    /**
-     * Create event.
-     *
-     * @return event
-     */
-    E createEvent();
+public interface Event {
 }
