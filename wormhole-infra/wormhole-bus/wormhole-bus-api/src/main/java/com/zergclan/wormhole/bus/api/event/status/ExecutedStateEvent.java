@@ -15,19 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event;
+package com.zergclan.wormhole.bus.api.event.status;
+
+import com.zergclan.wormhole.bus.api.event.Event;
+
+import java.io.Serializable;
 
 /**
- * Simple factory for creating bus event.
- *
- * @param <E> class type of bus event
+ * Event for executed state.
  */
-public interface EventFactory<E extends Event> {
+public final class ExecutedStateEvent implements Event, Serializable {
     
-    /**
-     * Create event.
-     *
-     * @return event
-     */
-    E createEvent();
+    private static final long serialVersionUID = 2263745384258957956L;
+    
+    private Long eventId;
+    
+    private ExecutedType businessType;
+    
+    private ExecutedStateType executedStateType;
+    
+    private Long timestamp;
 }

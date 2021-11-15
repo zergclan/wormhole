@@ -15,21 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api;
-
-import com.zergclan.wormhole.bus.api.event.Event;
+package com.zergclan.wormhole.bus.api.event.status;
 
 /**
- * Event consumer.
- *
- * @param <E> class type of event
+ * Business type enum.
  */
-public interface EventConsumer<E extends Event> {
+public enum ExecutedType {
     
     /**
-     * Accept event.
-     *
-     * @param event event
+     * Executed type of plan.
      */
-    void accept(E event);
+    PLAN,
+    
+    /**
+     * Executed type of job.
+     */
+    JOB,
+    
+    /**
+     * Executed type of task.
+     */
+    TASK
 }
