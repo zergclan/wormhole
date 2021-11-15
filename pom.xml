@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.10</version>
+    </parent>
+    <groupId>com.zerg</groupId>
+    <artifactId>wormhole</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <disruptor.version>3.4.4</disruptor.version>
+        <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
+
+        <!-- test -->
+        <junit5.version>5.7.2</junit5.version>
+        <!-- maven-plugin -->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
+        <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
+    </properties>
+
+    <modules>
+        <module>wormhole-infra</module>
+        <module>wormhole-reader</module>
+        <module>wormhole-writer</module>
+        <module>wormhole-features</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit5.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <testSource>${java.version}</testSource>
+                    <testTarget>${java.version}</testTarget>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${findbugs-maven-plugin.version}</version>
+                <configuration>
+                    <xmlOutput>true</xmlOutput>
+                    <effort>Max</effort>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>src/resources/checkstyle_ci.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <excludes>**/autogen/**/*</excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${cobertura-maven-plugin.version}</version>
+                <configuration>
+                    <check>
+                        <branchRate>70</branchRate>
+                        <lineRate>70</lineRate>
+                        <haltOnFailure>true</haltOnFailure>
+                        <totalBranchRate>70</totalBranchRate>
+                        <totalLineRate>70</totalLineRate>
+                        <packageLineRate>70</packageLineRate>
+                        <packageBranchRate>70</packageBranchRate>
+                    </check>
+                    <aggregate>true</aggregate>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <quiet>true</quiet>
+                    <format>xml</format>
+                    <instrumentation>
+                        <ignoreTrivial>true</ignoreTrivial>
+                        <ignoreMethodAnnotations>
+                            <ignoreMethodAnnotation>lombok.Generated</ignoreMethodAnnotation>
+                        </ignoreMethodAnnotations>
+                        <excludes>
+                            <exclude>com/zerg/wormhole/etl/*.class</exclude>
+                        </excludes>
+                    </instrumentation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
