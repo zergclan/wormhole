@@ -15,21 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus;
+package com.zergclan.wormhole.bus.api;
 
-import com.zergclan.wormhole.bus.event.Event;
+import com.zergclan.wormhole.bus.api.event.Event;
 
 /**
- * Event consumer.
+ * Event producer.
  *
  * @param <E> class type of event
  */
-public interface EventConsumer<E extends Event> {
+public interface EventProducer<E extends Event> {
     
     /**
-     * Accept event.
+     * Send event.
      *
      * @param event event
      */
-    void accept(E event);
+    void send(E event);
 }
