@@ -21,9 +21,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <groupId>com.zergclan</groupId>
         <artifactId>wormhole-writer</artifactId>
-        <groupId>com.zerg</groupId>
-        <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>wormhole-writer-mysql</artifactId>
     <name>${project.artifactId}</name>
