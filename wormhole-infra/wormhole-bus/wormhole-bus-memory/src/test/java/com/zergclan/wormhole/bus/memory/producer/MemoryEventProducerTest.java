@@ -15,21 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api;
+package com.zergclan.wormhole.bus.memory.producer;
 
-import com.zergclan.wormhole.bus.api.event.Event;
+import com.zergclan.wormhole.bus.api.event.status.ExecutedStateEvent;
+import com.zergclan.wormhole.bus.api.producer.EventProducer;
+import com.zergclan.wormhole.bus.memory.event.ExecutedStateEventFactory;
+import org.junit.jupiter.api.Test;
 
-/**
- * Event producer.
- *
- * @param <E> class type of event
- */
-public interface EventProducer<E extends Event> {
+public final class MemoryEventProducerTest {
     
-    /**
-     * Send event.
-     *
-     * @param event event
-     */
-    void send(E event);
+    private static final EventProducer<ExecutedStateEvent> EVENT_PRODUCER = new MemoryEventProducer();
+    
+    @Test
+    public void assertSend() {
+        EVENT_PRODUCER.send(new ExecutedStateEventFactory().newInstance());
+    }
 }
