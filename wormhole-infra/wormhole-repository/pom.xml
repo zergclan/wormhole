@@ -26,11 +26,5 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <artifactId>wormhole-repository</artifactId>
-    <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-
-    <modules>
-        <module>wormhole-repository-api</module>
-        <module>wormhole-repository-core</module>
-    </modules>
 </project>
