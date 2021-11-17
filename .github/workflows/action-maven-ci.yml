@@ -29,15 +29,16 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        java: [8, 11, 17]
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Set up JDK 8
+    - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v2
       with:
-        java-version: '8'
+        java-version: ${{ matrix.java }}
         distribution: 'adopt'
         cache: maven
 
@@ -47,5 +48,4 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2.1.0
       with:
-        token: b856a81c-2a86-4d24-a99b-73df6b3627ba
         file: ./wormhole-features/wormhole-web/target/site/jacoco/jacoco.xml
