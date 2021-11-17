@@ -48,4 +48,4 @@ jobs:
       uses: codecov/codecov-action@v2.1.0
       with:
         token: b856a81c-2a86-4d24-a99b-73df6b3627ba
-        file: ./wormhole/wormhole-features/wormhole-web/target/site/jacoco/jacoco.xml
+        file: ./wormhole-features/wormhole-web/target/site/jacoco/jacoco.xml
