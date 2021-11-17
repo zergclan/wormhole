@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-name: Simple maven CI for java
+name: Continuous Integration
 
 on:
   push:
