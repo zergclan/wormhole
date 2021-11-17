@@ -15,10 +15,23 @@
 # limitations under the License.
 #
 
-coverage:
-  status:
-    patch:
-      default:
-        threshold: 0.1%
+codecov:
+  require_ci_to_pass: yes
 
-  token: b856a81c-2a86-4d24-a99b-73df6b3627ba
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: no
