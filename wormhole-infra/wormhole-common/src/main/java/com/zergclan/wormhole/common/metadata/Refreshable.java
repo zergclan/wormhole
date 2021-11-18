@@ -15,20 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.common.metadata;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
+/**
+ * Refresh ability.
+ *
+ * @param <T> class type of refreshable implemented.
+ */
+public interface Refreshable<T> {
     
     /**
-     * Get current time millis.
+     * Refresh.
      *
-     * @return current time millis
+     * @param t refreshable implemented
      */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
-    }
+    void refresh(T t);
 }

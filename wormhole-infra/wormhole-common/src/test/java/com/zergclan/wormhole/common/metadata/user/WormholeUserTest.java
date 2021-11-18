@@ -15,20 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.common.metadata.user;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class WormholeUserTest {
     
-    /**
-     * Get current time millis.
-     *
-     * @return current time millis
-     */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
+    @Test
+    public void assertWormholeUser() {
+        WormholeUser user = WormholeUser.ADMINISTRATOR;
+        assertEquals("admin", user.getLoginName());
+        assertEquals("admin", user.getSecretKey());
+        user.setLoginName("root");
+        user.setSecretKey("root");
+        assertEquals("root", user.getLoginName());
+        assertEquals("root", user.getSecretKey());
     }
 }

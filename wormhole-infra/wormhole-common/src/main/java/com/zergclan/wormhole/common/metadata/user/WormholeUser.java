@@ -15,20 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.common.metadata.user;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.zergclan.wormhole.common.metadata.WormholeMetadata;
+import lombok.Getter;
+import lombok.Setter;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
+/**
+ * Unique type of Wormhole user.
+ */
+@Getter
+public enum WormholeUser implements WormholeMetadata {
     
     /**
-     * Get current time millis.
-     *
-     * @return current time millis
+     * Administrator of Wormhole.
      */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
+    ADMINISTRATOR("admin", "admin");
+    
+    @Setter
+    private String loginName;
+    
+    @Setter
+    private String secretKey;
+    
+    WormholeUser(final String loginName, final String secretKey) {
+        this.loginName = loginName;
+        this.secretKey = secretKey;
     }
 }
