@@ -15,20 +15,11 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.context;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+/**
+ * Context identification interface of Wormhole.
+ */
+public interface WormholeContext {
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
-    
-    /**
-     * Get current time millis.
-     *
-     * @return current time millis
-     */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
-    }
 }

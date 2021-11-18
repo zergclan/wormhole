@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SystemConstant {
     
-    public static final String ADMIN_NAME = "admin";
+    public static final int TRUE = 1;
     
-    public static final String ADMIN_PWD = "admin";
+    public static final int FALSE = 0;
 }
