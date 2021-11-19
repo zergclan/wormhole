@@ -30,8 +30,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

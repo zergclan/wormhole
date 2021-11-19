@@ -15,12 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.common.concurrent;
 
-import com.zergclan.wormhole.common.writer.WormholeWriter;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
- * Base wormhole writer class for MySQL.
+ * Handler for tasks that cannot be executed by a {@link WormholeExecutorService}.
  */
-public abstract class WormholeMySQLWriter implements WormholeWriter {
+public interface WormholeRejectedHandler {
+    
+    /**
+     * Handle task.
+     *
+     * @param task task
+     * @param <V> the class type of result
+     * @return handled result
+     */
+    <V> Future<V> handle(Callable<V> task);
 }

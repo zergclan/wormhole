@@ -60,7 +60,6 @@
     </developers>
 
     <properties>
-        <wormhole.sersion>0.1.0-SNAPSHOT</wormhole.sersion>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- tools -->
@@ -102,7 +101,6 @@
                 <groupId>com.lmax</groupId>
                 <artifactId>disruptor</artifactId>
                 <version>${disruptor.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>

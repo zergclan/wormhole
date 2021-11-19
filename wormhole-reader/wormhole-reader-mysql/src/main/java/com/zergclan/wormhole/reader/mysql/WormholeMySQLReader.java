@@ -15,7 +15,12 @@
  * limitations under the License.
  */
 
-package zergclan.wormhole.reader.mysql;
+package com.zergclan.wormhole.reader.mysql;
 
-public interface WormholeMySQLReader {
+import com.zergclan.wormhole.common.reader.WormholeReader;
+
+/**
+ * Base wormhole reader class for MySQL.
+ */
+public abstract class WormholeMySQLReader implements WormholeReader {
 }
