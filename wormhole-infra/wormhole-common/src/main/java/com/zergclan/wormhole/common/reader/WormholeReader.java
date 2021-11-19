@@ -15,12 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
-
-import com.zergclan.wormhole.common.writer.WormholeWriter;
+package com.zergclan.wormhole.common.reader;
 
 /**
- * Base wormhole writer class for MySQL.
+ * Reader identification interface of Wormhole.
  */
-public abstract class WormholeMySQLWriter implements WormholeWriter {
+public interface WormholeReader {
 }
