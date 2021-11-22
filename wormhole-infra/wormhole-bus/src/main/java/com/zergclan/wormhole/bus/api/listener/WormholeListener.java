@@ -15,20 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.event;
+package com.zergclan.wormhole.bus.api.listener;
 
-import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.bus.api.event.WormholeEvent;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public final class ExecutedStateEventFactoryTest {
+/**
+ * The root interface from which all event listener objects shall be derived in Wormhole.
+ *
+ * @param <E> class type of event
+ */
+public interface WormholeListener<E extends WormholeEvent> {
     
-    @Test
-    public void assertNewInstance() {
-        ExecutedStateEvent executedStateEvent = new ExecutedStateEventFactory().newInstance();
-        assertNotNull(executedStateEvent);
-        assertTrue(executedStateEvent.getSource() instanceof ExecutedStateEvent);
-    }
+    /**
+     * On Event.
+     *
+     * @param event event
+     */
+    void onEvent(E event);
 }

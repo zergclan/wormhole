@@ -15,10 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event;
+package com.zergclan.wormhole.bus.memory.publisher;
 
-/**
- * Base interface for bus event.
- */
-public interface Event {
+import com.zergclan.wormhole.bus.memory.event.ExecutedStateEventFactory;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+public final class ExecutedStateEventPublisherTest {
+    
+    private static ExecutedStateEventPublisher eventPublisher;
+    
+    @BeforeAll
+    public static void init() {
+        eventPublisher = new ExecutedStateEventPublisher();
+    }
+    
+    @Test
+    public void assertPublishEvent() {
+        eventPublisher.publishEvent(new ExecutedStateEventFactory().newInstance());
+    }
 }

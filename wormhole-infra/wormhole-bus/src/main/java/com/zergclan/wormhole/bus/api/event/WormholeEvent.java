@@ -15,25 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event.status;
+package com.zergclan.wormhole.bus.api.event;
 
 /**
- * Business type enum.
+ * The root interface from which all event state objects shall be derived in Wormhole.
  */
-public enum ExecutedType {
+public interface WormholeEvent {
     
     /**
-     * Executed type of plan.
+     * The object on which the Event initially occurred.
+     *
+     * @return The object on which the Event initially occurred.
      */
-    PLAN,
-    
-    /**
-     * Executed type of job.
-     */
-    JOB,
-    
-    /**
-     * Executed type of task.
-     */
-    TASK
+    Object getSource();
 }

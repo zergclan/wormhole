@@ -15,20 +15,15 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.event;
+package com.zergclan.wormhole.bus.memory.publisher;
 
+import com.zergclan.wormhole.bus.api.publisher.WormholePublisher;
 import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public final class ExecutedStateEventFactoryTest {
+public class ExecutedStateEventPublisher implements WormholePublisher<ExecutedStateEvent> {
     
-    @Test
-    public void assertNewInstance() {
-        ExecutedStateEvent executedStateEvent = new ExecutedStateEventFactory().newInstance();
-        assertNotNull(executedStateEvent);
-        assertTrue(executedStateEvent.getSource() instanceof ExecutedStateEvent);
+    @Override
+    public void publishEvent(final ExecutedStateEvent event) {
+        // TODO publish executed state event.
     }
 }

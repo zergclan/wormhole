@@ -15,19 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.consumer;
+package com.zergclan.wormhole.bus.memory.listener;
 
-import com.zergclan.wormhole.bus.api.consumer.EventConsumer;
-import com.zergclan.wormhole.bus.api.event.status.ExecutedStateEvent;
 import com.zergclan.wormhole.bus.memory.event.ExecutedStateEventFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public final class MemoryEventConsumerTest {
+public final class ExecutedStateEventListenerTest {
+
+    private static ExecutedStateEventListener eventListener;
     
-    private static final EventConsumer<ExecutedStateEvent> EVENT_CONSUMER = new MemoryEventConsumer();
+    @BeforeAll
+    public static void init() {
+        eventListener = new ExecutedStateEventListener();
+    }
     
     @Test
-    public void assertOnEvent() {
-        EVENT_CONSUMER.accept(new ExecutedStateEventFactory().newInstance());
+    public void assertOnEvent() throws Exception {
+        eventListener.onEvent(new ExecutedStateEventFactory().newInstance(), 0L, true);
     }
 }

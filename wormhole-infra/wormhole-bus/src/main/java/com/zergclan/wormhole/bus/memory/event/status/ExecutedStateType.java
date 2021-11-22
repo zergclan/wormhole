@@ -15,18 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.producer;
-
-import com.zergclan.wormhole.bus.api.event.status.ExecutedStateEvent;
-import com.zergclan.wormhole.bus.api.producer.EventProducer;
+package com.zergclan.wormhole.bus.memory.event.status;
 
 /**
- * Event producer of memory.
+ * State type enum.
  */
-public final class MemoryEventProducer implements EventProducer<ExecutedStateEvent> {
+public enum ExecutedStateType {
     
-    @Override
-    public void send(final ExecutedStateEvent event) {
-        // TODO send executed state event.
-    }
+    /**
+     * Executed state type of native.
+     */
+    NATIVE,
+    
+    /**
+     * Executed state type of process.
+     */
+    PROCESS,
+    
+    /**
+     * Executed state type of success.
+     */
+    SUCCESS,
+    
+    /**
+     * Executed state type of failure.
+     */
+    FAILURE
 }

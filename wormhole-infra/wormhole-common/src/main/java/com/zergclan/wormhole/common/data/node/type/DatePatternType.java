@@ -15,24 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event.status;
+package com.zergclan.wormhole.common.data.node.type;
 
-import com.zergclan.wormhole.bus.api.event.Event;
-
-import java.io.Serializable;
+import lombok.Getter;
 
 /**
- * Event for executed state.
+ * Date pattern type.
  */
-public final class ExecutedStateEvent implements Event, Serializable {
+@Getter
+public enum DatePatternType {
     
-    private static final long serialVersionUID = 2263745384258957956L;
+    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
     
-    private Long eventId;
+    private final int code;
     
-    private ExecutedType businessType;
+    private final String pattern;
     
-    private ExecutedStateType executedStateType;
-    
-    private Long timestamp;
+    DatePatternType(final int code, final String pattern) {
+        this.code = code;
+        this.pattern = pattern;
+    }
 }
