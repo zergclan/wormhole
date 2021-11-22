@@ -15,10 +15,40 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata;
+package com.zergclan.wormhole.common.metadata.database;
+
+import com.zergclan.wormhole.common.metadata.WormholeMetadata;
 
 /**
- * The root interface from which all meta data objects shall be derived in Wormhole.
+ * Meta data of DataSource.
  */
-public interface WormholeMetadata {
+public interface DataSourceMetaData extends WormholeMetadata {
+    
+    /**
+     * Get host name.
+     *
+     * @return host name
+     */
+    String getHostName();
+    
+    /**
+     * Get port.
+     *
+     * @return port
+     */
+    int getPort();
+    
+    /**
+     * Get catalog.
+     *
+     * @return catalog
+     */
+    String getCatalog();
+    
+    /**
+     * Get schema.
+     *
+     * @return schema
+     */
+    String getSchema();
 }

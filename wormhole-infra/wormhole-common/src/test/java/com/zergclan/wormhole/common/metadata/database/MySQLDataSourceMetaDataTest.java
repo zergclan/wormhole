@@ -15,10 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata;
+package com.zergclan.wormhole.common.metadata.database;
 
-/**
- * The root interface from which all meta data objects shall be derived in Wormhole.
- */
-public interface WormholeMetadata {
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+public final class MySQLDataSourceMetaDataTest {
+    
+    @Test
+    public void assertNewInstance() {
+        DataSourceMetaData dataSourceMetaData = new MySQLDataSourceMetaData(null, null, "mysql_db", null);
+        assertEquals("127.0.0.1", dataSourceMetaData.getHostName());
+        assertEquals(3306, dataSourceMetaData.getPort());
+        assertEquals("mysql_db", dataSourceMetaData.getCatalog());
+        assertNull(dataSourceMetaData.getSchema());
+    }
 }
