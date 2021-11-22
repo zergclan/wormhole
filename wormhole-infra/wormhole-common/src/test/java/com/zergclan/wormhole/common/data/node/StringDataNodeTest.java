@@ -15,12 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.common.data.node;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import org.junit.jupiter.api.Test;
 
-/**
- * The root interface from which all transform data objects shall be derived in Wormhole.
- */
-public interface WormholeData extends Serializable {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public final class StringDataNodeTest {
+    
+    @Test
+    public void assertNewInstance() {
+        WormholeDataNode wormholeDataNode = new StringDataNode("column", "value", DataNodeType.NATIVE, "");
+        assertNotNull(wormholeDataNode);
+    }
 }

@@ -15,12 +15,47 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.common.data.node.type;
 
-import java.io.Serializable;
+import lombok.Getter;
 
 /**
- * The root interface from which all transform data objects shall be derived in Wormhole.
+ * Data node type.
  */
-public interface WormholeData extends Serializable {
+@Getter
+public enum DataNodeType {
+    
+    /**
+     * Native type of data node.
+     */
+    NATIVE(0, "native"),
+    
+    /**
+     * Not null type of data node.
+     */
+    NOT_NULL(1, "not null"),
+    
+    /**
+     * Have default value type of data node.
+     */
+    HAVE_DEFAULT_VALUE(2, "have default value"),
+    
+    /**
+     * Unique index type of data node.
+     */
+    UNIQUE_INDEX(4, "unique index"),
+    
+    /**
+     * Primary key type of data node.
+     */
+    PRIMARY_KEY(5, "primary key");
+    
+    private final int code;
+    
+    private final String name;
+    
+    DataNodeType(final int code, final String name) {
+        this.code = code;
+        this.name = name;
+    }
 }
