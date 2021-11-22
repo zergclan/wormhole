@@ -15,19 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.consumer;
+package com.zergclan.wormhole.common.data.node;
 
-import com.zergclan.wormhole.bus.api.consumer.EventConsumer;
-import com.zergclan.wormhole.bus.api.event.status.ExecutedStateEvent;
-import com.zergclan.wormhole.bus.memory.event.ExecutedStateEventFactory;
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import lombok.RequiredArgsConstructor;
 
-public final class MemoryEventConsumerTest {
+/**
+ * Data node type of string.
+ */
+@RequiredArgsConstructor
+public final class StringDataNode implements WormholeDataNode {
     
-    private static final EventConsumer<ExecutedStateEvent> EVENT_CONSUMER = new MemoryEventConsumer();
+    private static final long serialVersionUID = -3728136866624602967L;
     
-    @Test
-    public void assertOnEvent() {
-        EVENT_CONSUMER.accept(new ExecutedStateEventFactory().newInstance());
-    }
+    private final String column;
+    
+    private final String value;
+    
+    private final DataNodeType dataNodeType;
+    
+    private final String comment;
 }

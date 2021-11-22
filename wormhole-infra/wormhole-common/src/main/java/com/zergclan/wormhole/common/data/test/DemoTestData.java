@@ -15,12 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.common.data.test;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.common.data.WormholeData;
+import com.zergclan.wormhole.common.data.node.WormholeDataNode;
+import lombok.Getter;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * The root interface from which all transform data objects shall be derived in Wormhole.
+ * Demo test data for WormholeData.
  */
-public interface WormholeData extends Serializable {
+@Getter
+public final class DemoTestData implements WormholeData {
+    
+    private static final long serialVersionUID = 3292661075578447515L;
+    
+    private Map<String, WormholeDataNode> dataNodes = new LinkedHashMap<>();
 }

@@ -15,19 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.producer;
+package com.zergclan.wormhole.common.metadata.database;
 
-import com.zergclan.wormhole.bus.api.event.status.ExecutedStateEvent;
-import com.zergclan.wormhole.bus.api.producer.EventProducer;
-import com.zergclan.wormhole.bus.memory.event.ExecutedStateEventFactory;
 import org.junit.jupiter.api.Test;
 
-public final class MemoryEventProducerTest {
-    
-    private static final EventProducer<ExecutedStateEvent> EVENT_PRODUCER = new MemoryEventProducer();
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+public final class MySQLDataSourceMetaDataTest {
     
     @Test
-    public void assertSend() {
-        EVENT_PRODUCER.send(new ExecutedStateEventFactory().newInstance());
+    public void assertNewInstance() {
+        DataSourceMetaData dataSourceMetaData = new MySQLDataSourceMetaData(null, null, "mysql_db", null);
+        assertEquals("127.0.0.1", dataSourceMetaData.getHostName());
+        assertEquals(3306, dataSourceMetaData.getPort());
+        assertEquals("mysql_db", dataSourceMetaData.getCatalog());
+        assertNull(dataSourceMetaData.getSchema());
     }
 }

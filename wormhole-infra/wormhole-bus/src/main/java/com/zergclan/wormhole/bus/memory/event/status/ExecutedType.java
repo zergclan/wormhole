@@ -15,12 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
-
-import java.io.Serializable;
+package com.zergclan.wormhole.bus.memory.event.status;
 
 /**
- * The root interface from which all transform data objects shall be derived in Wormhole.
+ * Business type enum.
  */
-public interface WormholeData extends Serializable {
+public enum ExecutedType {
+    
+    /**
+     * Executed type of plan.
+     */
+    PLAN,
+    
+    /**
+     * Executed type of job.
+     */
+    JOB,
+    
+    /**
+     * Executed type of task.
+     */
+    TASK
 }

@@ -15,21 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.consumer;
+package com.zergclan.wormhole.bus.memory.publisher;
 
-import com.zergclan.wormhole.bus.api.event.Event;
+import com.zergclan.wormhole.bus.memory.event.ExecutedStateEventFactory;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-/**
- * Base consumer interface for bus Event.
- *
- * @param <E> class type of event
- */
-public interface EventConsumer<E extends Event> {
+public final class ExecutedStateEventPublisherTest {
     
-    /**
-     * Accept event.
-     *
-     * @param event event
-     */
-    void accept(E event);
+    private static ExecutedStateEventPublisher eventPublisher;
+    
+    @BeforeAll
+    public static void init() {
+        eventPublisher = new ExecutedStateEventPublisher();
+    }
+    
+    @Test
+    public void assertPublishEvent() {
+        eventPublisher.publishEvent(new ExecutedStateEventFactory().newInstance());
+    }
 }

@@ -15,24 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event.status;
-
-import com.zergclan.wormhole.bus.api.event.Event;
-
-import java.io.Serializable;
+package com.zergclan.wormhole.bus.api.event;
 
 /**
- * Event for executed state.
+ * The root interface from which all event state objects shall be derived in Wormhole.
  */
-public final class ExecutedStateEvent implements Event, Serializable {
+public interface WormholeEvent {
     
-    private static final long serialVersionUID = 2263745384258957956L;
-    
-    private Long eventId;
-    
-    private ExecutedType businessType;
-    
-    private ExecutedStateType executedStateType;
-    
-    private Long timestamp;
+    /**
+     * The object on which the Event initially occurred.
+     *
+     * @return The object on which the Event initially occurred.
+     */
+    Object getSource();
 }

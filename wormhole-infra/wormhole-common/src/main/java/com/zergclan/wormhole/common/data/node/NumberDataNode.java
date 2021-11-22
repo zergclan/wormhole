@@ -15,30 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event.status;
+package com.zergclan.wormhole.common.data.node;
+
+import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import lombok.RequiredArgsConstructor;
 
 /**
- * State type enum.
+ * Data node type of number.
  */
-public enum ExecutedStateType {
+@RequiredArgsConstructor
+public final class NumberDataNode implements WormholeDataNode {
     
-    /**
-     * Executed state type of native.
-     */
-    NATIVE,
+    private static final long serialVersionUID = -9014925670849646255L;
     
-    /**
-     * Executed state type of process.
-     */
-    PROCESS,
+    private final String column;
     
-    /**
-     * Executed state type of success.
-     */
-    SUCCESS,
+    private final Number value;
     
-    /**
-     * Executed state type of failure.
-     */
-    FAILURE
+    private final DataNodeType dataNodeType;
+    
+    private final String comment;
 }

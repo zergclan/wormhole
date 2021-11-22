@@ -15,12 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.bus.memory.listener;
 
-import java.io.Serializable;
+import com.lmax.disruptor.EventHandler;
+import com.zergclan.wormhole.bus.api.listener.WormholeListener;
+import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
 
-/**
- * The root interface from which all transform data objects shall be derived in Wormhole.
- */
-public interface WormholeData extends Serializable {
+public final class ExecutedStateEventListener implements WormholeListener<ExecutedStateEvent>, EventHandler<ExecutedStateEvent> {
+    
+    @Override
+    public void onEvent(final ExecutedStateEvent event) {
+        // TODO on executed state event.
+    }
+    
+    @Override
+    public void onEvent(final ExecutedStateEvent executedStateEvent, final long sequence, final boolean endOfBatch) throws Exception {
+        onEvent(executedStateEvent);
+    }
 }

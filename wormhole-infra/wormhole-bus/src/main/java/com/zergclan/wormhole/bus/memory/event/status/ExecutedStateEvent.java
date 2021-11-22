@@ -15,12 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.bus.memory.event.status;
+
+import com.zergclan.wormhole.bus.api.event.WormholeEvent;
 
 import java.io.Serializable;
 
 /**
- * The root interface from which all transform data objects shall be derived in Wormhole.
+ * Event for executed state.
  */
-public interface WormholeData extends Serializable {
+public final class ExecutedStateEvent implements WormholeEvent, Serializable {
+    
+    private static final long serialVersionUID = 2263745384258957956L;
+    
+    private Long eventId;
+    
+    private ExecutedType businessType;
+    
+    private ExecutedStateType executedStateType;
+    
+    private Long timestamp;
+    
+    @Override
+    public Object getSource() {
+        return this;
+    }
 }

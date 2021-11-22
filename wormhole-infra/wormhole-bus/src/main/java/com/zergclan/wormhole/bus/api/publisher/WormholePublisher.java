@@ -15,24 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.consumer;
+package com.zergclan.wormhole.bus.api.publisher;
 
-import com.lmax.disruptor.EventHandler;
-import com.zergclan.wormhole.bus.api.consumer.EventConsumer;
-import com.zergclan.wormhole.bus.api.event.status.ExecutedStateEvent;
+import com.zergclan.wormhole.bus.api.event.WormholeEvent;
 
 /**
- * Event consumer of memory.
+ * The root interface from which all event publisher objects shall be derived in Wormhole.
+ *
+ * @param <E> class type of event
  */
-public final class MemoryEventConsumer implements EventConsumer<ExecutedStateEvent>, EventHandler<ExecutedStateEvent> {
+public interface WormholePublisher<E extends WormholeEvent> {
     
-    @Override
-    public void accept(final ExecutedStateEvent event) {
-        // TODO accept executed state event.
-    }
-    
-    @Override
-    public void onEvent(final ExecutedStateEvent executedStateEvent, final long sequence, final boolean endOfBatch) throws Exception {
-        accept(executedStateEvent);
-    }
+    /**
+     * Publish event.
+     *
+     * @param event event
+     */
+    void publishEvent(E event);
 }

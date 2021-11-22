@@ -15,12 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.bus.memory.listener;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.bus.memory.event.ExecutedStateEventFactory;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-/**
- * The root interface from which all transform data objects shall be derived in Wormhole.
- */
-public interface WormholeData extends Serializable {
+public final class ExecutedStateEventListenerTest {
+
+    private static ExecutedStateEventListener eventListener;
+    
+    @BeforeAll
+    public static void init() {
+        eventListener = new ExecutedStateEventListener();
+    }
+    
+    @Test
+    public void assertOnEvent() throws Exception {
+        eventListener.onEvent(new ExecutedStateEventFactory().newInstance(), 0L, true);
+    }
 }

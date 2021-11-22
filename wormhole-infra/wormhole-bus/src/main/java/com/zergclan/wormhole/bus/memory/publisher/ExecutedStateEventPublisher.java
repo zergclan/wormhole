@@ -15,12 +15,15 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.bus.memory.publisher;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.bus.api.publisher.WormholePublisher;
+import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
 
-/**
- * The root interface from which all transform data objects shall be derived in Wormhole.
- */
-public interface WormholeData extends Serializable {
+public class ExecutedStateEventPublisher implements WormholePublisher<ExecutedStateEvent> {
+    
+    @Override
+    public void publishEvent(final ExecutedStateEvent event) {
+        // TODO publish executed state event.
+    }
 }

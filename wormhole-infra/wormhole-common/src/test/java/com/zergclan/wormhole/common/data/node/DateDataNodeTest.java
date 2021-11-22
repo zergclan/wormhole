@@ -15,25 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event.status;
+package com.zergclan.wormhole.common.data.node;
 
-/**
- * Business type enum.
- */
-public enum ExecutedType {
+import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import com.zergclan.wormhole.common.data.node.type.DatePatternType;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public final class DateDataNodeTest {
     
-    /**
-     * Executed type of plan.
-     */
-    PLAN,
-    
-    /**
-     * Executed type of job.
-     */
-    JOB,
-    
-    /**
-     * Executed type of task.
-     */
-    TASK
+    @Test
+    public void assertNewInstance() {
+        WormholeDataNode wormholeDataNode = new DateDataNode("column", "date", DataNodeType.NATIVE, DatePatternType.NATIVE, "");
+        assertNotNull(wormholeDataNode);
+    }
 }

@@ -15,12 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.bus.api.listener;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.bus.api.event.WormholeEvent;
 
 /**
- * The root interface from which all transform data objects shall be derived in Wormhole.
+ * The root interface from which all event listener objects shall be derived in Wormhole.
+ *
+ * @param <E> class type of event
  */
-public interface WormholeData extends Serializable {
+public interface WormholeListener<E extends WormholeEvent> {
+    
+    /**
+     * On Event.
+     *
+     * @param event event
+     */
+    void onEvent(E event);
 }

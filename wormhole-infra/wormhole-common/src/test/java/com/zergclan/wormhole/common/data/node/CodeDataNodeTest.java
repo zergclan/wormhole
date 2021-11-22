@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.producer;
+package com.zergclan.wormhole.common.data.node;
 
-import com.zergclan.wormhole.bus.api.event.status.ExecutedStateEvent;
-import com.zergclan.wormhole.bus.api.producer.EventProducer;
+import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import org.junit.jupiter.api.Test;
 
-/**
- * Event producer of memory.
- */
-public final class MemoryEventProducer implements EventProducer<ExecutedStateEvent> {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public final class CodeDataNodeTest {
     
-    @Override
-    public void send(final ExecutedStateEvent event) {
-        // TODO send executed state event.
+    @Test
+    public void assertNewInstance() {
+        WormholeDataNode wormholeDataNode = new CodeDataNode("column", "value", DataNodeType.NATIVE, "test column");
+        assertNotNull(wormholeDataNode);
     }
 }

@@ -15,10 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event;
+package com.zergclan.wormhole.common.data.node.type;
+
+import lombok.Getter;
 
 /**
- * Base interface for bus event.
+ * Date pattern type.
  */
-public interface Event {
+@Getter
+public enum DatePatternType {
+    
+    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
+    
+    private final int code;
+    
+    private final String pattern;
+    
+    DatePatternType(final int code, final String pattern) {
+        this.code = code;
+        this.pattern = pattern;
+    }
 }

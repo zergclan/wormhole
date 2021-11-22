@@ -15,21 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.producer;
+package com.zergclan.wormhole.common.data.node;
 
-import com.zergclan.wormhole.bus.api.event.Event;
+import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import org.junit.jupiter.api.Test;
 
-/**
- * Base producer interface for bus Event.
- *
- * @param <E> class type of event
- */
-public interface EventProducer<E extends Event> {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public final class StringDataNodeTest {
     
-    /**
-     * Send event.
-     *
-     * @param event event
-     */
-    void send(E event);
+    @Test
+    public void assertNewInstance() {
+        WormholeDataNode wormholeDataNode = new StringDataNode("column", "value", DataNodeType.NATIVE, "");
+        assertNotNull(wormholeDataNode);
+    }
 }
