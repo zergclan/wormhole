@@ -31,5 +31,4 @@ public final class DateUtil {
     public static long currentTimeMillis() {
         return System.currentTimeMillis();
     }
-    
 }

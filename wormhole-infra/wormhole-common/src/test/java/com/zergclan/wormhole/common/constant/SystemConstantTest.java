@@ -23,13 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class SystemConstantTest {
     
-    private static final String EXPECTED_ADMIN_NAME = "admin";
-    
-    private static final String EXPECTED_ADMIN_PWD = "admin";
-    
     @Test
-    public void assertSystemConstants() {
-        assertEquals(EXPECTED_ADMIN_NAME, SystemConstant.ADMIN_NAME);
-        assertEquals(EXPECTED_ADMIN_PWD, SystemConstant.ADMIN_PWD);
+    public void assertValues() {
+        assertEquals(1, SystemConstant.TRUE);
+        assertEquals(0, SystemConstant.FALSE);
     }
 }
