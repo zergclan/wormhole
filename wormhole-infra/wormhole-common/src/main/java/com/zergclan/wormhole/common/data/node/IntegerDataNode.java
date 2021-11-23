@@ -18,15 +18,31 @@
 package com.zergclan.wormhole.common.data.node;
 
 import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import org.junit.jupiter.api.Test;
+import lombok.RequiredArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-public final class NumberDataNodeTest {
+/**
+ * Data node type of number.
+ */
+@RequiredArgsConstructor
+public final class IntegerDataNode extends AbstractNumberDataNode<Integer> {
     
-    @Test
-    public void assertNewInstance() {
-        WormholeDataNode wormholeDataNode = new NumberDataNode("column", 1, DataNodeType.NATIVE, "");
-        assertNotNull(wormholeDataNode);
+    private static final long serialVersionUID = -9112425094443804066L;
+    
+    private final String column;
+    
+    private final String comment;
+    
+    private final DataNodeType dataNodeType;
+    
+    private Integer value;
+    
+    @Override
+    public Integer getValue() {
+        return value;
+    }
+    
+    @Override
+    public void setValue(final Integer value) {
+        this.value = value;
     }
 }

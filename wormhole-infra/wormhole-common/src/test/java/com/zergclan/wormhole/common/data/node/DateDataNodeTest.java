@@ -27,7 +27,7 @@ public final class DateDataNodeTest {
     
     @Test
     public void assertNewInstance() {
-        WormholeDataNode wormholeDataNode = new DateDataNode("column", "date", DataNodeType.NATIVE, DatePatternType.NATIVE, "");
+        WormholeDataNode<String> wormholeDataNode = new DateDataNode("column", "column comment", DataNodeType.NATIVE, DatePatternType.NATIVE);
         assertNotNull(wormholeDataNode);
     }
 }
