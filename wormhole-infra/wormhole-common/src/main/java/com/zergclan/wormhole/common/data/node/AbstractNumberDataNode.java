@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.common.data.node;
 
 /**
- * The root interface from which all data node pipeline objects shall be derived in Wormhole.
+ * The abstract class from which all number type data node objects shall be derived in Wormhole.
  */
-public interface WormholePipeline {
+public abstract class AbstractNumberDataNode<V extends Number> implements WormholeDataNode<V> {
 }

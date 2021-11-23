@@ -24,15 +24,13 @@ import lombok.RequiredArgsConstructor;
  * Data node type of code.
  */
 @RequiredArgsConstructor
-public final class CodeDataNode implements WormholeDataNode {
+public final class CodeDataNode extends AbstractTextDataNode {
     
     private static final long serialVersionUID = -1848191603428951L;
     
     private final String column;
     
-    private final String value;
+    private final String comment;
     
     private final DataNodeType dataNodeType;
-    
-    private final String comment;
 }

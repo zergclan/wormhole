@@ -15,10 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.common.data.node;
 
-/**
- * The root interface from which all data node pipeline objects shall be derived in Wormhole.
- */
-public interface WormholePipeline {
+import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public final class IntegerDataNodeTest {
+    
+    @Test
+    public void assertNewInstance() {
+        WormholeDataNode<Integer> wormholeDataNode = new IntegerDataNode("column", "column comment", DataNodeType.NATIVE);
+        assertNotNull(wormholeDataNode);
+    }
 }

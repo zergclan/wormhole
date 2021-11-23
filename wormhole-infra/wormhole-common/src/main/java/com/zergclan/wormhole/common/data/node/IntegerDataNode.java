@@ -15,10 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.common.data.node;
+
+import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all data node pipeline objects shall be derived in Wormhole.
+ * Data node type of number.
  */
-public interface WormholePipeline {
+@RequiredArgsConstructor
+public final class IntegerDataNode extends AbstractNumberDataNode<Integer> {
+    
+    private static final long serialVersionUID = -9112425094443804066L;
+    
+    private final String column;
+    
+    private final String comment;
+    
+    private final DataNodeType dataNodeType;
+    
+    private Integer value;
+    
+    @Override
+    public Integer getValue() {
+        return value;
+    }
+    
+    @Override
+    public void setValue(final Integer value) {
+        this.value = value;
+    }
 }

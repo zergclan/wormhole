@@ -15,19 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.pipeline.converter;
 
+import com.zergclan.wormhole.common.data.node.IntegerDataNode;
+import com.zergclan.wormhole.common.data.node.StringDataNode;
 import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import com.zergclan.wormhole.common.data.node.type.DatePatternType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class DateDataNodeTest {
+public final class StringToIntegerConverterTest {
+
+    private static WormholeConverter<StringDataNode, IntegerDataNode> wormholeConverter;
+    
+    @BeforeAll
+    public static void init() {
+        wormholeConverter = new StringToIntegerConverter();
+    }
     
     @Test
-    public void assertNewInstance() {
-        WormholeDataNode<String> wormholeDataNode = new DateDataNode("column", "column comment", DataNodeType.NATIVE, DatePatternType.NATIVE);
-        assertNotNull(wormholeDataNode);
+    public void assertConvert() {
+        StringDataNode stringDataNode = new StringDataNode("column", "column comment", DataNodeType.NATIVE);
+        stringDataNode.setValue("1");
+        IntegerDataNode target = wormholeConverter.convert(stringDataNode);
+        assertEquals(1, target.getValue());
     }
 }

@@ -15,24 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
-
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import lombok.RequiredArgsConstructor;
+package com.zergclan.wormhole.scheduling;
 
 /**
- * Data node type of number.
+ * The root interface from which all scheduling manager objects shall be derived in Wormhole.
  */
-@RequiredArgsConstructor
-public final class NumberDataNode implements WormholeDataNode {
-    
-    private static final long serialVersionUID = -9014925670849646255L;
-    
-    private final String column;
-    
-    private final Number value;
-    
-    private final DataNodeType dataNodeType;
-    
-    private final String comment;
+public interface WormholeManager {
 }

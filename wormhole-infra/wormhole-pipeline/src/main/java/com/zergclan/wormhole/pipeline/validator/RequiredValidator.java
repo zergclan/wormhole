@@ -15,10 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.pipeline.validator;
+
+import com.zergclan.wormhole.common.data.node.WormholeDataNode;
+import com.zergclan.wormhole.common.exception.WormholeException;
 
 /**
- * The root interface from which all data node pipeline objects shall be derived in Wormhole.
+ * Required data node validator.
  */
-public interface WormholePipeline {
+public final class RequiredValidator implements WormholeValidator<WormholeDataNode<?>> {
+    
+    @Override
+    public void validate(final WormholeDataNode<?> dataNode) {
+        Object value = dataNode.getValue();
+        if (null == value) {
+            throw new WormholeException("Required value can not be null");
+        }
+    }
 }

@@ -26,7 +26,7 @@ public final class StringDataNodeTest {
     
     @Test
     public void assertNewInstance() {
-        WormholeDataNode wormholeDataNode = new StringDataNode("column", "value", DataNodeType.NATIVE, "");
+        WormholeDataNode<String> wormholeDataNode = new StringDataNode("column", "column comment", DataNodeType.NATIVE);
         assertNotNull(wormholeDataNode);
     }
 }

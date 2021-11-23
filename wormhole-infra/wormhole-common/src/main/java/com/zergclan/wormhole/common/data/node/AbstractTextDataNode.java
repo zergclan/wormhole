@@ -15,10 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.common.data.node;
 
 /**
- * The root interface from which all data node pipeline objects shall be derived in Wormhole.
+ * The abstract class from which all text type data node objects shall be derived in Wormhole.
  */
-public interface WormholePipeline {
+public abstract class AbstractTextDataNode implements WormholeDataNode<String> {
+    
+    private String value;
+    
+    @Override
+    public String getValue() {
+        return value;
+    }
+    
+    @Override
+    public void setValue(final String value) {
+        this.value = value;
+    }
 }

@@ -18,21 +18,21 @@
 package com.zergclan.wormhole.common.data.node;
 
 import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
  * Data node type of string.
  */
+@Getter
 @RequiredArgsConstructor
-public final class StringDataNode implements WormholeDataNode {
+public final class StringDataNode extends AbstractTextDataNode {
     
     private static final long serialVersionUID = -3728136866624602967L;
     
     private final String column;
     
-    private final String value;
+    private final String comment;
     
     private final DataNodeType dataNodeType;
-    
-    private final String comment;
 }
