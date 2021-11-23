@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.schedule;
+package com.zergclan.wormhole.scheduling;
 
 /**
- * Schedule identification interface of Wormhole.
+ * The root interface from which all scheduling manager objects shall be derived in Wormhole.
  */
-public interface WormholeSchedule {
+public interface WormholeManager {
 }
