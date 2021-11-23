@@ -15,10 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.pipeline.handler;
+
+import com.zergclan.wormhole.common.data.node.AbstractTextDataNode;
 
 /**
- * The root interface from which all data node pipeline objects shall be derived in Wormhole.
+ * Null handler to empty handler of data node value.
  */
-public interface WormholePipeline {
+public final class NullToEmptyHandler implements WormholeHandler<AbstractTextDataNode> {
+    
+    @Override
+    public AbstractTextDataNode handler(final AbstractTextDataNode dataNode) {
+        String value = dataNode.getValue();
+        if (null == value) {
+            dataNode.setValue("");
+        }
+        return dataNode;
+    }
 }

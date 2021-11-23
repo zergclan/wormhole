@@ -15,10 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.pipeline.validator;
+
+import com.zergclan.wormhole.common.data.node.WormholeDataNode;
+import com.zergclan.wormhole.pipeline.WormholeFilter;
 
 /**
- * The root interface from which all data node pipeline objects shall be derived in Wormhole.
+ * The root interface from which all data node validator objects shall be derived in Wormhole.
+ *
+ * @param <V> class type of data node
  */
-public interface WormholePipeline {
+public interface WormholeValidator<V extends WormholeDataNode<?>> extends WormholeFilter {
+    
+    /**
+     * Validate data node.
+     *
+     * @param dataNode data node
+     */
+    void validate(V dataNode);
 }
