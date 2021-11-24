@@ -20,6 +20,9 @@ package com.zergclan.wormhole.common.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test string tools.
+ */
 public final class StringUtilsTest {
 
     @Test
