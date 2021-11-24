@@ -49,8 +49,4 @@ public final class StringUtil {
         return !isBlank(cs);
     }
 
-    public static void main(String[] args) {
-        System.out.println(isBlank(null));
-    }
-
 }
