@@ -12,5 +12,9 @@ public class ResultCodeTest {
         assertEquals(500000, ResultCode.FAILED.getCode());
         assertEquals(400000, ResultCode.BAD_REQUEST.getCode());
         assertEquals(999999, ResultCode.ERROR.getCode());
+        assertEquals("SUCCESS", ResultCode.SUCCESS.getMessage());
+        assertEquals("FAILED", ResultCode.FAILED.getMessage());
+        assertEquals("BAD_REQUEST", ResultCode.BAD_REQUEST.getMessage());
+        assertEquals("ERROR", ResultCode.ERROR.getMessage());
     }
 }

@@ -37,11 +37,7 @@ public final class WormholeWebException extends RuntimeException {
     
     public WormholeWebException(final Integer code, final String message, final Throwable cause) {
         super(message, cause);
-        String causeMessage = "";
-        if (null != cause) {
-            causeMessage = cause.getMessage();
-        }
         this.code = code;
-        this.message = message + causeMessage;
+        this.message = message;
     }
 }
