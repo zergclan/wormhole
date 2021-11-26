@@ -15,15 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.web.exception;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
+import lombok.Getter;
 
-public final class StringUtilsTest {
-
-    @Test
-    public void isBlank() {
-        assertTrue(StringUtil.isBlank(null));
+/**
+ * Business exception in wormhole web.
+ */
+public class WormholeWebException extends RuntimeException {
+    
+    @Getter
+    private final int code;
+    
+    private final String message;
+    
+    public WormholeWebException(final Integer code, final String message) {
+        super(message);
+        this.code = code;
+        this.message = message;
+    }
+    
+    public WormholeWebException(final Integer code, final String message, final Throwable cause) {
+        super(message, cause);
+        String causeMessage = "";
+        if (null != cause) {
+            causeMessage = cause.getMessage();
+        }
+        this.code = code;
+        this.message = message + causeMessage;
     }
 }

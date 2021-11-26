@@ -15,15 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.web.vo;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
-public final class StringUtilsTest {
+import java.io.Serializable;
 
-    @Test
-    public void isBlank() {
-        assertTrue(StringUtil.isBlank(null));
+/**
+ * Unified response bean for restful request.
+ *
+ * @param <T> class type of http result data.
+ */
+@NoArgsConstructor
+public final class HttpResult<T> implements Serializable {
+    
+    private int code;
+    
+    private String message;
+    
+    private T data;
+    
+    @Builder(toBuilder = true)
+    public HttpResult(final int code, final String message, final T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 }

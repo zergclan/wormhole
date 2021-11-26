@@ -15,15 +15,48 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.web.vo;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
+import lombok.Getter;
 
-public final class StringUtilsTest {
-
-    @Test
-    public void isBlank() {
-        assertTrue(StringUtil.isBlank(null));
+/**
+ * Code for http result.
+ */
+@Getter
+public enum ResultCode {
+    
+    /**
+     * Result code for success.
+     */
+    SUCCESS(100000, "SUCCESS"),
+    
+    /**
+     * Result code for bad request.
+     */
+    BAD_REQUEST(400000, "BAD_REQUEST"),
+    
+    /**
+     * Result code for failed.
+     */
+    FAILED(500000, "FAILED"),
+    
+    /**
+     * Result code for error.
+     */
+    ERROR(999999, "ERROR");
+    
+    /**
+     * Code.
+     */
+    private final int code;
+    
+    /**
+     * Message.
+     */
+    private final String message;
+    
+    ResultCode(final int code, final String message) {
+        this.code = code;
+        this.message = message;
     }
 }
