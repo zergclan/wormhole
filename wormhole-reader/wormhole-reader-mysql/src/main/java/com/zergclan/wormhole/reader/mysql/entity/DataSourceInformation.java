@@ -15,38 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.reader.mysql.entity;
+
+import lombok.Data;
 
 /**
- * String tools.
+ * Information about connecting to the data source.
  */
-public final class StringUtil {
+@Data
+public final class DataSourceInformation {
+
+    private String ip;
+
+    private String port;
+
+    private String dbName;
+
+    private String dbUser;
+
+    private String dbPassword;
+
+    private final String driverClassname = "com.mysql.cj.jdbc.Driver";
 
     /**
-     * Determine whether the string is empty.
-     * @param cs String.
-     * @return Boolean.
+     * Get jdbc url.
+     * @return JdbcUrl.
      */
-    public static boolean isBlank(final CharSequence cs) {
-        int strLen;
-        if (null != cs && (strLen = cs.length()) != 0) {
-            for (int i = 0; i < strLen; ++i) {
-                if (!Character.isWhitespace(cs.charAt(i))) {
-                    return false;
-                }
-            }
-
-        }
-        return true;
-    }
-
-    /**
-     * Determine whether the string is not empty.
-     * @param cs string.
-     * @return boolean.
-     */
-    public static boolean isNotBlank(final CharSequence cs) {
-        return !isBlank(cs);
+    public String getJdbcUrl() {
+        return "jdbc:mysql://" + ip + ":" + port + "/" + dbName + "?characterEncoding=utf-8&useSSL=false";
     }
 
 }

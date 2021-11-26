@@ -17,19 +17,22 @@
 
 package com.zergclan.wormhole.common.util;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test string tools.
+ */
 public final class StringUtilsTest {
 
     @Test
     public void isBlank() {
-        assertTrue(StringUtil.isBlank(null));
+        Assertions.assertTrue(StringUtil.isBlank(null));
     }
 
     @Test
     public void isNotBlank() {
-        assertTrue(!StringUtil.isNotBlank(null));
+        Assertions.assertTrue(!StringUtil.isNotBlank(null));
     }
 
 }
