@@ -67,7 +67,11 @@
         <gson.sersion>2.8.9</gson.sersion>
         <disruptor.version>3.4.4</disruptor.version>
         <lombok.version>1.18.20</lombok.version>
+        <slf4j.version>1.7.32</slf4j.version>
+        <alibaba.druid.version>1.2.6</alibaba.druid.version>
+        <!-- databases -->
         <h2.version>1.4.200</h2.version>
+        <mysql.version>8.0.23</mysql.version>
         <!-- test -->
         <junit5.version>5.7.2</junit5.version>
         <!-- maven-plugin -->
@@ -109,9 +113,27 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${alibaba.druid.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- databases -->
+            <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
                 <scope>provided</scope>
             </dependency>
             <!-- test -->
@@ -130,9 +152,21 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
     </dependencies>
 

@@ -15,38 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.reader.mysql.domain;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * String tools.
+ * Get mysql metadata interface.
  */
-public final class StringUtil {
+public interface MysqlMetadataDOM {
 
     /**
-     * Determine whether the string is empty.
-     * @param cs String.
-     * @return Boolean.
+     * Query all tables metadata.
+     * @param jt JdbcTemplate.
+     * @param dbName The database to be queried.
+     * @return Meta information for all tables.
      */
-    public static boolean isBlank(final CharSequence cs) {
-        int strLen;
-        if (null != cs && (strLen = cs.length()) != 0) {
-            for (int i = 0; i < strLen; ++i) {
-                if (!Character.isWhitespace(cs.charAt(i))) {
-                    return false;
-                }
-            }
-
-        }
-        return true;
-    }
+    List<Map<String, Object>> queryAllTables(JdbcTemplate jt, String dbName);
 
     /**
-     * Determine whether the string is not empty.
-     * @param cs string.
-     * @return boolean.
+     * Query all columns metadata.
+     * @param jt JdbcTemplate.
+     * @param dbName The database to be queried.
+     * @param tableName The tableName to be queried.
+     * @return Meta information for all columns.
      */
-    public static boolean isNotBlank(final CharSequence cs) {
-        return !isBlank(cs);
-    }
+    List<Map<String, Object>> queryAllColumns(JdbcTemplate jt, String dbName, String tableName);
 
 }
