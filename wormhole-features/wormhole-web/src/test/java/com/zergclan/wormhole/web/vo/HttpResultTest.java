@@ -15,23 +15,16 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.web.vo;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-/**
- * Util tools for Date.
- */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public final class HttpResultTest {
     
-    /**
-     * Get current time millis.
-     *
-     * @return current time millis
-     */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
+    @Test
+    public void assertNew() {
+        assertNotNull(new HttpResult<String>().toBuilder().code(200).message("200").data("200").build());
     }
 }

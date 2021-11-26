@@ -123,7 +123,6 @@
                 <version>${alibaba.druid.version}</version>
                 <scope>provided</scope>
             </dependency>
-            <!-- databases -->
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>

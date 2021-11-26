@@ -15,23 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.web.exception;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 /**
- * Util tools for Date.
+ * Business exception in wormhole web.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
+public final class WormholeWebException extends RuntimeException {
     
-    /**
-     * Get current time millis.
-     *
-     * @return current time millis
-     */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
+    @Getter
+    private final int code;
+    
+    private final String message;
+    
+    public WormholeWebException(final Integer code, final String message) {
+        super(message);
+        this.code = code;
+        this.message = message;
+    }
+    
+    public WormholeWebException(final Integer code, final String message, final Throwable cause) {
+        super(message, cause);
+        this.code = code;
+        this.message = message;
     }
 }

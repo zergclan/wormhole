@@ -24,15 +24,9 @@ import org.junit.jupiter.api.Test;
  * Test string tools.
  */
 public final class StringUtilsTest {
-
+  
     @Test
     public void isBlank() {
         Assertions.assertTrue(StringUtil.isBlank(null));
     }
-
-    @Test
-    public void isNotBlank() {
-        Assertions.assertTrue(!StringUtil.isNotBlank(null));
-    }
-
 }

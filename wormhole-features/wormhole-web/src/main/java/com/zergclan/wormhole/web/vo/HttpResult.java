@@ -15,23 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.web.vo;
 
-import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
- * Util tools for Date.
+ * Unified response bean for restful request.
+ *
+ * @param <T> class type of http result data.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
+@NoArgsConstructor
+public final class HttpResult<T> implements Serializable {
     
-    /**
-     * Get current time millis.
-     *
-     * @return current time millis
-     */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
+    private int code;
+    
+    private String message;
+    
+    private T data;
+    
+    @Builder(toBuilder = true)
+    public HttpResult(final int code, final String message, final T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 }

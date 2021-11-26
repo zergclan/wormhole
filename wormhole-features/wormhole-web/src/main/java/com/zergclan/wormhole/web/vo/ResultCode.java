@@ -15,23 +15,48 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.web.vo;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 /**
- * Util tools for Date.
+ * Code for http result.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
+@Getter
+public enum ResultCode {
     
     /**
-     * Get current time millis.
-     *
-     * @return current time millis
+     * Result code for success.
      */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
+    SUCCESS(100000, "SUCCESS"),
+    
+    /**
+     * Result code for bad request.
+     */
+    BAD_REQUEST(400000, "BAD_REQUEST"),
+    
+    /**
+     * Result code for failed.
+     */
+    FAILED(500000, "FAILED"),
+    
+    /**
+     * Result code for error.
+     */
+    ERROR(999999, "ERROR");
+    
+    /**
+     * Code.
+     */
+    private final int code;
+    
+    /**
+     * Message.
+     */
+    private final String message;
+    
+    ResultCode(final int code, final String message) {
+        this.code = code;
+        this.message = message;
     }
 }
