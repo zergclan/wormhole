@@ -15,6 +15,9 @@
 # limitations under the License.
 #
 
+codecov:
+  require_ci_to_pass: yes
+
 coverage:
   precision: 2
   round: down
