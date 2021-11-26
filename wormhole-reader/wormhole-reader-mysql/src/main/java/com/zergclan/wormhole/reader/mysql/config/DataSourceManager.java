@@ -63,7 +63,7 @@ public final class DataSourceManager {
     }
 
     private static void setPassword(final Map<String, String> conf, final String password) {
-        if (StringUtil.isNotBlank(password)) {
+        if (!StringUtil.isBlank(password)) {
             conf.put(DruidDataSourceFactory.PROP_PASSWORD, password);
         }
     }

@@ -15,33 +15,16 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.vo;
 
-import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
-/**
- * Business exception in wormhole web.
- */
-public final class WormholeWebException extends RuntimeException {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public final class HttpResultTest {
     
-    @Getter
-    private final int code;
-    
-    private final String message;
-    
-    public WormholeWebException(final Integer code, final String message) {
-        super(message);
-        this.code = code;
-        this.message = message;
-    }
-    
-    public WormholeWebException(final Integer code, final String message, final Throwable cause) {
-        super(message, cause);
-        String causeMessage = "";
-        if (null != cause) {
-            causeMessage = cause.getMessage();
-        }
-        this.code = code;
-        this.message = message + causeMessage;
+    @Test
+    public void assertNew() {
+        assertNotNull(new HttpResult<String>().toBuilder().code(200).message("200").data("200").build());
     }
 }

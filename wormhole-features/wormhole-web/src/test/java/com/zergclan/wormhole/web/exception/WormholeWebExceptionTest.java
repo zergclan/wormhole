@@ -17,31 +17,15 @@
 
 package com.zergclan.wormhole.web.exception;
 
-import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
-/**
- * Business exception in wormhole web.
- */
-public final class WormholeWebException extends RuntimeException {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public final class WormholeWebExceptionTest {
     
-    @Getter
-    private final int code;
-    
-    private final String message;
-    
-    public WormholeWebException(final Integer code, final String message) {
-        super(message);
-        this.code = code;
-        this.message = message;
-    }
-    
-    public WormholeWebException(final Integer code, final String message, final Throwable cause) {
-        super(message, cause);
-        String causeMessage = "";
-        if (null != cause) {
-            causeMessage = cause.getMessage();
-        }
-        this.code = code;
-        this.message = message + causeMessage;
+    @Test
+    public void assertNew() {
+        WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
+        assertNotNull(wormholeWebException);
     }
 }
