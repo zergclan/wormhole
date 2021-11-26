@@ -19,13 +19,15 @@ package com.zergclan.wormhole.web.exception;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class WormholeWebExceptionTest {
     
     @Test
     public void assertNew() {
         WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
-        assertNotNull(wormholeWebException);
+        assertEquals(200, wormholeWebException.getCode());
+        WormholeWebException wormholeWebException1 = new WormholeWebException(200, "200", null);
+        assertEquals(200, wormholeWebException1.getCode());
     }
 }
