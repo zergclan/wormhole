@@ -15,18 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.reader.mysql.domain;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * Test string tools.
+ * Get mysql metadata interface.
  */
-public final class StringUtilsTest {
-  
-    @Test
-    public void isBlank() {
-        Assertions.assertTrue(StringUtil.isBlank(null));
-    }
+public interface MysqlMetadataDOM {
+
+    /**
+     * Query all tables metadata.
+     * @param jt JdbcTemplate.
+     * @param dbName The database to be queried.
+     * @return Meta information for all tables.
+     */
+    List<Map<String, Object>> queryAllTables(JdbcTemplate jt, String dbName);
+
+    /**
+     * Query all columns metadata.
+     * @param jt JdbcTemplate.
+     * @param dbName The database to be queried.
+     * @param tableName The tableName to be queried.
+     * @return Meta information for all columns.
+     */
+    List<Map<String, Object>> queryAllColumns(JdbcTemplate jt, String dbName, String tableName);
+
 }

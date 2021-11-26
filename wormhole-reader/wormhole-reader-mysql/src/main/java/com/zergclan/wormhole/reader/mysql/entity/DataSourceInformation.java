@@ -15,18 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.util;
+package com.zergclan.wormhole.reader.mysql.entity;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import lombok.Data;
 
 /**
- * Test string tools.
+ * Information about connecting to the data source.
  */
-public final class StringUtilsTest {
-  
-    @Test
-    public void isBlank() {
-        Assertions.assertTrue(StringUtil.isBlank(null));
+@Data
+public final class DataSourceInformation {
+
+    private String ip;
+
+    private String port;
+
+    private String dbName;
+
+    private String dbUser;
+
+    private String dbPassword;
+
+    private final String driverClassname = "com.mysql.cj.jdbc.Driver";
+
+    /**
+     * Get jdbc url.
+     * @return JdbcUrl.
+     */
+    public String getJdbcUrl() {
+        return "jdbc:mysql://" + ip + ":" + port + "/" + dbName + "?characterEncoding=utf-8&useSSL=false";
     }
+
 }
