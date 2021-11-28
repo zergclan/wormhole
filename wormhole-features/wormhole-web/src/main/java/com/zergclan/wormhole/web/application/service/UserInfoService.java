@@ -15,16 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.vo;
+package com.zergclan.wormhole.web.application.service;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.web.application.pojo.po.UserInfo;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+/**
+ * Service interface of {@link UserInfo}.
+ */
+public interface UserInfoService {
 
-public final class HttpResultTest {
-    
-    @Test
-    public void assertNew() {
-        assertNotNull(new HttpResult<String>().toBuilder().code(200).message("200").data("200").build());
-    }
+    /**
+     * Save {@link UserInfo}.
+     *
+     * @param userInfo {@link UserInfo}
+     */
+    void save(UserInfo userInfo);
+
+    /**
+     * update {@link UserInfo}.
+     *
+     * @param userInfo {@link UserInfo}.
+     * @return is updated or not
+     */
+    boolean update(UserInfo userInfo);
+
+    /**
+     * Get {@link UserInfo} by id.
+     *
+     * @param id user id
+     * @return {@link UserInfo}
+     */
+    UserInfo getById(Integer id);
 }

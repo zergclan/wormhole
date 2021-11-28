@@ -15,20 +15,16 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.api.vo;
 
-import com.zergclan.wormhole.web.infra.exception.WormholeWebException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public final class WormholeWebExceptionTest {
+public final class HttpResultTest {
     
     @Test
     public void assertNew() {
-        WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
-        assertEquals(200, wormholeWebException.getCode());
-        WormholeWebException wormholeWebException1 = new WormholeWebException(200, "200", null);
-        assertEquals(200, wormholeWebException1.getCode());
+        assertNotNull(new HttpResult<String>().toBuilder().code(200).message("200").data("200").build());
     }
 }

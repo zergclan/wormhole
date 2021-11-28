@@ -1,4 +1,4 @@
-package com.zergclan.wormhole.web.vo;
+package com.zergclan.wormhole.web.api.vo;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,13 +8,15 @@ public class ResultCodeTest {
 
     @Test
     public void assertNew() {
-        assertEquals(100000, ResultCode.SUCCESS.getCode());
-        assertEquals(500000, ResultCode.FAILED.getCode());
-        assertEquals(400000, ResultCode.BAD_REQUEST.getCode());
-        assertEquals(999999, ResultCode.ERROR.getCode());
+        assertEquals(200, ResultCode.SUCCESS.getCode());
+        assertEquals(500, ResultCode.FAILED.getCode());
+        assertEquals(400, ResultCode.BAD_REQUEST.getCode());
+        assertEquals(401, ResultCode.UNAUTHORIZED.getCode());
+        assertEquals(999, ResultCode.ERROR.getCode());
         assertEquals("SUCCESS", ResultCode.SUCCESS.getMessage());
         assertEquals("FAILED", ResultCode.FAILED.getMessage());
         assertEquals("BAD_REQUEST", ResultCode.BAD_REQUEST.getMessage());
+        assertEquals("UNAUTHORIZED", ResultCode.UNAUTHORIZED.getMessage());
         assertEquals("ERROR", ResultCode.ERROR.getMessage());
     }
 }

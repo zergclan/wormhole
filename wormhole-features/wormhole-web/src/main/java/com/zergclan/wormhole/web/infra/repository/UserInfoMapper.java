@@ -15,26 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.contorller;
+package com.zergclan.wormhole.web.infra.repository;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.zergclan.wormhole.web.application.pojo.po.UserInfo;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Service discovery controller.
+ * Mapper interface of {@link UserInfo}.
  */
-@RestController
-public final class DiscoveryController {
-    
-    private static final String SERVER_STATUS_UP = "UP";
-    
+@Mapper
+public interface UserInfoMapper {
+
     /**
-     * Get application run status.
+     * Save user info.
      *
-     * @return run status
+     * @param userInfo {@link UserInfo}
      */
-    @GetMapping("/status")
-    public String status() {
-        return SERVER_STATUS_UP;
-    }
+    void save(UserInfo userInfo);
+
+    /**
+     * Update user info.
+     *
+     * @param userInfo {@link UserInfo}
+     * @return update rows.
+     */
+    Integer update(UserInfo userInfo);
+
+    /**
+     * Get {@link UserInfo} by id.
+     *
+     * @param id user id
+     * @return {@link UserInfo}
+     */
+    UserInfo getById(Integer id);
 }

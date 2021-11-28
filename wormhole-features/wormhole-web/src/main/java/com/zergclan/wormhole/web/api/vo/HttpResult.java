@@ -15,29 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.api.vo;
 
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
- * Business exception in wormhole web.
+ * Unified response bean for restful request.
+ *
+ * @param <T> class type of http result data.
  */
-public final class WormholeWebException extends RuntimeException {
+@Data
+@NoArgsConstructor
+public final class HttpResult<T> implements Serializable {
+
+    private int code;
+
+    private String message;
+
+    private T data;
     
-    @Getter
-    private final int code;
-    
-    private final String message;
-    
-    public WormholeWebException(final Integer code, final String message) {
-        super(message);
+    @Builder(toBuilder = true)
+    public HttpResult(final int code, final String message, final T data) {
         this.code = code;
         this.message = message;
-    }
-    
-    public WormholeWebException(final Integer code, final String message, final Throwable cause) {
-        super(message, cause);
-        this.code = code;
-        this.message = message;
+        this.data = data;
     }
 }

@@ -15,48 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.vo;
+package com.zergclan.wormhole.web.application.pojo.po;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
- * Code for http result.
+ * User info bean.
  */
-@Getter
-public enum ResultCode {
-    
-    /**
-     * Result code for success.
-     */
-    SUCCESS(100000, "SUCCESS"),
-    
-    /**
-     * Result code for bad request.
-     */
-    BAD_REQUEST(400000, "BAD_REQUEST"),
-    
-    /**
-     * Result code for failed.
-     */
-    FAILED(500000, "FAILED"),
-    
-    /**
-     * Result code for error.
-     */
-    ERROR(999999, "ERROR");
-    
-    /**
-     * Code.
-     */
-    private final int code;
-    
-    /**
-     * Message.
-     */
-    private final String message;
-    
-    ResultCode(final int code, final String message) {
-        this.code = code;
-        this.message = message;
-    }
+@Data
+public final class UserInfo extends AbstractPO {
+
+    private static final long serialVersionUID = -9088625151070350569L;
+
+    private Integer id;
+
+    private String userName;
+
+    private String password;
+
+    private String email;
+
+    private Integer status;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime createTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime modifyTime;
 }

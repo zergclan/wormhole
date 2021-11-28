@@ -15,20 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.application.pojo.dto;
 
-import com.zergclan.wormhole.web.infra.exception.WormholeWebException;
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.web.application.pojo.value.LoginType;
+import lombok.Data;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.io.Serializable;
 
-public final class WormholeWebExceptionTest {
-    
-    @Test
-    public void assertNew() {
-        WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
-        assertEquals(200, wormholeWebException.getCode());
-        WormholeWebException wormholeWebException1 = new WormholeWebException(200, "200", null);
-        assertEquals(200, wormholeWebException1.getCode());
-    }
+/**
+ * User login DTO.
+ */
+@Data
+public final class UserLoginDTO implements Serializable {
+
+    private String loginName;
+
+    private LoginType loginType;
+
+    private String password;
 }

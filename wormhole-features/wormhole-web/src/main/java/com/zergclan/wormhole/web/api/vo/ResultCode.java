@@ -15,20 +15,47 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.api.vo;
 
-import com.zergclan.wormhole.web.infra.exception.WormholeWebException;
-import org.junit.jupiter.api.Test;
+import lombok.Getter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+/**
+ * Code for http result.
+ */
+@Getter
+public enum ResultCode {
 
-public final class WormholeWebExceptionTest {
+    /**
+     * Result code for success.
+     */
+    SUCCESS(200, "SUCCESS"),
     
-    @Test
-    public void assertNew() {
-        WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
-        assertEquals(200, wormholeWebException.getCode());
-        WormholeWebException wormholeWebException1 = new WormholeWebException(200, "200", null);
-        assertEquals(200, wormholeWebException1.getCode());
+    /**
+     * Result code for bad request.
+     */
+    BAD_REQUEST(400, "BAD_REQUEST"),
+
+    /**
+     * Result code for unauthorized.
+     */
+    UNAUTHORIZED(401, "UNAUTHORIZED"),
+
+    /**
+     * Result code for failed.
+     */
+    FAILED(500, "FAILED"),
+    
+    /**
+     * Result code for error.
+     */
+    ERROR(999, "ERROR");
+
+    private final int code;
+
+    private final String message;
+    
+    ResultCode(final int code, final String message) {
+        this.code = code;
+        this.message = message;
     }
 }

@@ -15,20 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.api.vo;
 
-import com.zergclan.wormhole.web.infra.exception.WormholeWebException;
-import org.junit.jupiter.api.Test;
+import lombok.Data;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
-public final class WormholeWebExceptionTest {
-    
-    @Test
-    public void assertNew() {
-        WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
-        assertEquals(200, wormholeWebException.getCode());
-        WormholeWebException wormholeWebException1 = new WormholeWebException(200, "200", null);
-        assertEquals(200, wormholeWebException1.getCode());
-    }
+/**
+ * Login VO.
+ */
+@Data
+public final class LoginVO implements Serializable {
+
+    @NotBlank(message = "loginName can not be blank")
+    private String loginName;
+
+    @NotBlank(message = "Type of login name can not be blank")
+    private Integer loginType;
+
+    @NotBlank(message = "password can not be blank")
+    private String password;
 }
