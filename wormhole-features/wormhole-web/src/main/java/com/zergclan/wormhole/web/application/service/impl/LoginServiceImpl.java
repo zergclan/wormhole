@@ -28,8 +28,8 @@ public final class LoginServiceImpl implements LoginService {
     @Override
     public String login(final UserInfo userInfo) {
         if (WormholeUser.ADMINISTRATOR.getLoginName().equals(userInfo.getUserName()) && WormholeUser.ADMINISTRATOR.getSecretKey().equals(userInfo.getPassword())) {
-            return "token";
+            return "S";
         }
-        return "";
+        return "F";
     }
 }

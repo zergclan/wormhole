@@ -39,8 +39,11 @@ public final class LoginControllerTest {
     
     @Test
     public void assertLogin() throws Exception {
-        String requestJson = "{\"loginName\":\"admin\",\"password\":\"admin\",\"loginType\":0}";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
-        assertEquals("{\"code\":200,\"message\":\"SUCCESS\",\"data\":\"token\"}", mvcResult.getResponse().getContentAsString());
+        String requestSuccessJson = "{\"loginName\":\"admin\",\"password\":\"admin\",\"loginType\":0}";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestSuccessJson)).andReturn();
+        assertEquals("{\"code\":200,\"message\":\"SUCCESS\",\"data\":\"S\"}", mvcResult.getResponse().getContentAsString());
+        String requestJson = "{\"loginName\":\"admin\",\"password\":\"admin\",\"loginType\":1}";
+        mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
+        assertEquals("{\"code\":401,\"message\":\"UNAUTHORIZED\",\"data\":\"F\"}", mvcResult.getResponse().getContentAsString());
     }
 }

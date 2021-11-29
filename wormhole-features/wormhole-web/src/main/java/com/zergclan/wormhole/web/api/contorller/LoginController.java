@@ -46,6 +46,9 @@ public final class LoginController extends AbstractRestController {
     @PostMapping(value = "/login")
     public HttpResult<String> login(@RequestBody final LoginVO loginVO) {
         String token = loginService.login(AntiCorruptionService.userLoginVOToDTO(loginVO));
+        if ("F".equals(token)) {
+            return success(ResultCode.UNAUTHORIZED, token);
+        }
         return success(ResultCode.SUCCESS, token);
     }
 }
