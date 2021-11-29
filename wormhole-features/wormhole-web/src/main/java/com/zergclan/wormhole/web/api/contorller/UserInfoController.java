@@ -1,7 +1,7 @@
 package com.zergclan.wormhole.web.api.contorller;
 
 import com.zergclan.wormhole.web.api.vo.HttpResult;
-import com.zergclan.wormhole.web.application.pojo.po.UserInfo;
+import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.web.application.service.UserInfoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

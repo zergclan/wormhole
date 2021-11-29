@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.web.infra.repository;
 
-import com.zergclan.wormhole.web.application.pojo.po.UserInfo;
+import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

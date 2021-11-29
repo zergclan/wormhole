@@ -18,7 +18,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zergclan.wormhole.web.infra.repository.UserInfoMapper">
-    <resultMap id="userInfoResultMap" type="com.zergclan.wormhole.web.application.pojo.po.UserInfo">
+    <resultMap id="userInfoResultMap" type="com.zergclan.wormhole.web.application.domain.entity.UserInfo">
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
@@ -32,13 +32,13 @@
         id, user_name, password, email, status, create_time, modify_time
     </sql>
 
-    <insert id="save" parameterType="com.zergclan.wormhole.web.application.pojo.po.UserInfo">
+    <insert id="save" parameterType="com.zergclan.wormhole.web.application.domain.entity.UserInfo">
         INSERT INTO user_info (user_name, password, email, status, create_time, modify_time)
-        VALUE (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+        VALUES (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
             #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <update id="update" parameterType="com.zergclan.wormhole.web.application.pojo.po.UserInfo">
+    <update id="update" parameterType="com.zergclan.wormhole.web.application.domain.entity.UserInfo">
         UPDATE user_info
         <set>
             <if test="null != userName">
@@ -66,7 +66,7 @@
         WHERE id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="getByUserInfo" parameterType="com.zergclan.wormhole.web.application.pojo.po.UserInfo" resultMap="userInfoResultMap">
+    <select id="getByUserInfo" parameterType="com.zergclan.wormhole.web.application.domain.entity.UserInfo" resultMap="userInfoResultMap">
         SELECT <include refid="ALL_COLUMNS"/>
         FROM user_info
         <where>
@@ -85,7 +85,7 @@
         </where>
     </select>
 
-    <select id="list" parameterType="com.zergclan.wormhole.web.application.pojo.po.UserInfo" resultMap="userInfoResultMap">
+    <select id="list" parameterType="com.zergclan.wormhole.web.application.domain.entity.UserInfo" resultMap="userInfoResultMap">
         SELECT <include refid="ALL_COLUMNS"/>
         FROM user_info
         <where>

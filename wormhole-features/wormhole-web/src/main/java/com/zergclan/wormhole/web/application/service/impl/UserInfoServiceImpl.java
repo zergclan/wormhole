@@ -17,10 +17,11 @@
 
 package com.zergclan.wormhole.web.application.service.impl;
 
-import com.zergclan.wormhole.web.application.pojo.po.UserInfo;
+import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.web.application.service.UserInfoService;
 import com.zergclan.wormhole.web.infra.repository.UserInfoMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -35,11 +36,10 @@ public final class UserInfoServiceImpl implements UserInfoService {
     private UserInfoMapper userInfoMapper;
 
     @Override
-    public void save(final UserInfo userInfo) {
+    public void save(@RequestBody final UserInfo userInfo) {
         userInfo.setStatus(0);
         userInfo.setCreateTime(LocalDateTime.now());
         userInfo.setModifyTime(LocalDateTime.now());
-        System.out.println(userInfo);
         userInfoMapper.save(userInfo);
     }
 

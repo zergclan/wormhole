@@ -25,6 +25,6 @@ public final class HttpResultTest {
     
     @Test
     public void assertNew() {
-        assertNotNull(new HttpResult<String>().toBuilder().code(200).message("200").data("200").build());
+        assertNotNull(new HttpResult<String>().toBuilder().code(ResultCode.SUCCESS.getCode()).message(ResultCode.SUCCESS.getMessage()).data("S").build());
     }
 }

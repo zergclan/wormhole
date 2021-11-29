@@ -15,20 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.application.service;
+package com.zergclan.wormhole.web.application.domain.entity;
 
-import com.zergclan.wormhole.web.application.pojo.dto.UserLoginDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
- * Service interface of user action.
+ * User info bean.
  */
-public interface UserActionService {
+@Data
+public final class UserInfo extends AbstractEntity {
 
-    /**
-     * Login.
-     *
-     * @param userLoginDTO {@link UserLoginDTO}
-     * @return token
-     */
-    String login(UserLoginDTO userLoginDTO);
+    private static final long serialVersionUID = -9088625151070350569L;
+
+    private Integer id;
+
+    private String userName;
+
+    private String password;
+
+    private String email;
+
+    private Integer status;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime createTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime modifyTime;
 }

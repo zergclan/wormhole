@@ -15,34 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.application.pojo.po;
+package com.zergclan.wormhole.web.infra.anticorruption;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+import com.zergclan.wormhole.web.api.vo.LoginVO;
+import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
+import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * User info bean.
- */
-@Data
-public final class UserInfo extends AbstractPO {
-
-    private static final long serialVersionUID = -9088625151070350569L;
-
-    private Integer id;
-
-    private String userName;
-
-    private String password;
-
-    private String email;
-
-    private Integer status;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime createTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime modifyTime;
+public final class AntiCorruptionServiceTest {
+    
+    @Test
+    public void assertUserLoginVOToDTO() {
+        LoginVO loginVO = new LoginVO();
+        loginVO.setLoginName("jack");
+        loginVO.setPassword("123456");
+        loginVO.setLoginType(0);
+        UserInfo userInfo = AntiCorruptionService.userLoginVOToDTO(loginVO);
+        assertEquals(loginVO.getLoginName(), userInfo.getUserName());
+        assertEquals(loginVO.getPassword(), userInfo.getPassword());
+    }
 }

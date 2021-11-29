@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.infra.exception;
 
-import com.zergclan.wormhole.web.infra.exception.WormholeWebException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

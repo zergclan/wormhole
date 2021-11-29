@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.web.infra.anticorruption;
 
 import com.zergclan.wormhole.web.api.vo.LoginVO;
-import com.zergclan.wormhole.web.application.pojo.dto.UserLoginDTO;
-import com.zergclan.wormhole.web.application.pojo.value.LoginType;
+import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
+import com.zergclan.wormhole.web.application.domain.value.LoginType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -27,17 +27,17 @@ import lombok.NoArgsConstructor;
 public class AntiCorruptionService {
 
     /**
-     * Convert {@link LoginVO} to {@link UserLoginDTO}.
+     * Convert {@link LoginVO} to {@link UserInfo}.
      *
      * @param loginVO {@link LoginVO}
-     * @return {@link UserLoginDTO}
+     * @return {@link UserInfo}
      */
-    public static UserLoginDTO userLoginVOToDTO(final LoginVO loginVO) {
-        UserLoginDTO userLoginDTO = new UserLoginDTO();
-        userLoginDTO.setLoginType(LoginType.USERNAME);
-        userLoginDTO.setLoginName(loginVO.getLoginName());
-        userLoginDTO.setPassword(loginVO.getPassword());
-        return userLoginDTO;
+    public static UserInfo userLoginVOToDTO(final LoginVO loginVO) {
+        UserInfo userInfo = new UserInfo();
+        if (LoginType.USERNAME.getCode().equals(loginVO.getLoginType())) {
+            userInfo.setUserName(loginVO.getLoginName());
+            userInfo.setPassword(loginVO.getPassword());
+        }
+        return userInfo;
     }
-
 }

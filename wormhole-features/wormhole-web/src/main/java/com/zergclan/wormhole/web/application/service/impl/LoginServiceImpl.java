@@ -15,22 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.application.pojo.dto;
+package com.zergclan.wormhole.web.application.service.impl;
 
-import com.zergclan.wormhole.web.application.pojo.value.LoginType;
-import lombok.Data;
+import com.zergclan.wormhole.common.metadata.user.WormholeUser;
+import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
+import com.zergclan.wormhole.web.application.service.LoginService;
+import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-
-/**
- * User login DTO.
- */
-@Data
-public final class UserLoginDTO implements Serializable {
-
-    private String loginName;
-
-    private LoginType loginType;
-
-    private String password;
+@Service
+public final class LoginServiceImpl implements LoginService {
+    
+    @Override
+    public String login(final UserInfo userInfo) {
+        if (WormholeUser.ADMINISTRATOR.getLoginName().equals(userInfo.getUserName()) && WormholeUser.ADMINISTRATOR.getSecretKey().equals(userInfo.getPassword())) {
+            return "token";
+        }
+        return "";
+    }
 }

@@ -19,31 +19,13 @@ package com.zergclan.wormhole.web.application.service;
 
 import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
 
-/**
- * Service interface of {@link UserInfo}.
- */
-public interface UserInfoService {
-
+public interface LoginService {
+    
     /**
-     * Save {@link UserInfo}.
+     * Login.
      *
      * @param userInfo {@link UserInfo}
+     * @return token
      */
-    void save(UserInfo userInfo);
-
-    /**
-     * update {@link UserInfo}.
-     *
-     * @param userInfo {@link UserInfo}.
-     * @return is updated or not
-     */
-    boolean update(UserInfo userInfo);
-
-    /**
-     * Get {@link UserInfo} by id.
-     *
-     * @param id user id
-     * @return {@link UserInfo}
-     */
-    UserInfo getById(Integer id);
+    String login(UserInfo userInfo);
 }

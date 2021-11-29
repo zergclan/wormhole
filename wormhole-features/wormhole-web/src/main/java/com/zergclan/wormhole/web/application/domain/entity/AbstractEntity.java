@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.application.pojo.po;
+package com.zergclan.wormhole.web.application.domain.entity;
 
 import java.io.Serializable;
 
 /**
- * The base class from which all persistent object (PO) shall be derived in Wormhole.
+ * The base class from which all entity shall be derived in Wormhole.
  */
-public abstract class AbstractPO implements Serializable {
+public abstract class AbstractEntity implements Serializable {
 }
