@@ -30,6 +30,6 @@
     <name>${project.artifactId}</name>
 
     <modules>
-        <module>wormhole-web</module>
+        <module>wormhole-console</module>
     </modules>
 </project>
