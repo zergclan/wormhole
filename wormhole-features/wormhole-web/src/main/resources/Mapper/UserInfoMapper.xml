@@ -53,7 +53,7 @@
             <if test="null != status">
                 status = #{status,jdbcType=INTEGER},
             </if>
-            modifyTime = #{modifyTime,jdbcType=VARCHAR}
+            modify_time = #{modifyTime,jdbcType=VARCHAR}
         </set>
         <where>
             id = #{id,jdbcType=INTEGER}

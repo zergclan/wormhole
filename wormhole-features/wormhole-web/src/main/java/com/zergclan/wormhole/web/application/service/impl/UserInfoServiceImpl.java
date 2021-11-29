@@ -38,16 +38,18 @@ public final class UserInfoServiceImpl implements UserInfoService {
     @Override
     public void save(@RequestBody final UserInfo userInfo) {
         userInfo.setStatus(0);
-        userInfo.setCreateTime(LocalDateTime.now());
-        userInfo.setModifyTime(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        userInfo.setCreateTime(now);
+        userInfo.setModifyTime(now);
         userInfoMapper.save(userInfo);
     }
 
     @Override
     public boolean update(final UserInfo userInfo) {
-        return false;
+        userInfo.setModifyTime(LocalDateTime.now());
+        return userInfoMapper.update(userInfo).equals(1);
     }
-
+    
     @Override
     public UserInfo getById(final Integer id) {
         return userInfoMapper.getById(id);

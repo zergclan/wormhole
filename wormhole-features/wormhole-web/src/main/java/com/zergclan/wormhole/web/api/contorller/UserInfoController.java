@@ -6,6 +6,7 @@ import com.zergclan.wormhole.web.application.service.UserInfoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,20 @@ public final class UserInfoController extends AbstractRestController {
         userInfoService.save(userInfo);
         return success();
     }
+    
+    /**
+     * Add {@link UserInfo}.
+     *
+     * @param userInfo {@link UserInfo}
+     * @return {@link HttpResult}
+     */
+    @PutMapping("/user")
+    public HttpResult<Void> update(@RequestBody final UserInfo userInfo) {
+        userInfoService.update(userInfo);
+        return success();
+    }
+    
+    
 
     /**
      * Get {@link UserInfo} by id.

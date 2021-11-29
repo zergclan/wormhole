@@ -46,6 +46,14 @@ public final class UserInfoControllerTest {
     }
     
     @Test
+    public void assertUpdate() throws Exception {
+        String requestJson = "{\"id\":1,\"userName\":\"admin\"}";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/user").contentType("application/json").content(requestJson)).andReturn();
+        String expectedResponse = "{\"code\":200,\"message\":\"SUCCESS\",\"data\":null}";
+        assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString());
+    }
+    
+    @Test
     public void assertGetById() throws Exception {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/1").contentType("application/json").content("")).andReturn();
         String expectedResponse = "{\"code\":200,\"message\":\"SUCCESS\",\"data\":{\"id\":1,\"userName\":\"jack\",\"password\":\"123456\",\"email\":\"jacky7boy@163.com\",\"status\":0,"

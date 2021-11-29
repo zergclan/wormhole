@@ -19,6 +19,7 @@ package com.zergclan.wormhole.web.api.contorller;
 
 import com.zergclan.wormhole.web.api.vo.HttpResult;
 import com.zergclan.wormhole.web.api.vo.LoginVO;
+import com.zergclan.wormhole.web.api.vo.ResultCode;
 import com.zergclan.wormhole.web.application.service.LoginService;
 import com.zergclan.wormhole.web.infra.anticorruption.AntiCorruptionService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,7 @@ public final class LoginController extends AbstractRestController {
      */
     @PostMapping(value = "/login")
     public HttpResult<String> login(@RequestBody final LoginVO loginVO) {
-        return success(loginService.login(AntiCorruptionService.userLoginVOToDTO(loginVO)));
+        String token = loginService.login(AntiCorruptionService.userLoginVOToDTO(loginVO));
+        return success(ResultCode.SUCCESS, token);
     }
 }
