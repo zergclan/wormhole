@@ -15,21 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.publisher;
-
-import com.zergclan.wormhole.bus.api.event.WormholeEvent;
+package com.zergclan.wormhole.bus.api.event;
 
 /**
- * The root interface from which all event publisher objects shall be derived in Wormhole.
- *
- * @param <E> class type of event
+ * The root interface from which all event state objects shall be derived in Wormhole.
  */
-public interface WormholePublisher<E extends WormholeEvent> {
+public interface Event {
     
     /**
-     * Publish event.
+     * The object on which the Event initially occurred.
      *
-     * @param event event
+     * @return The object on which the Event initially occurred.
      */
-    void publishEvent(E event);
+    Object getSource();
 }

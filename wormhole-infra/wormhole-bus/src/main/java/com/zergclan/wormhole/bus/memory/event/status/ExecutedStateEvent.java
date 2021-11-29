@@ -17,14 +17,14 @@
 
 package com.zergclan.wormhole.bus.memory.event.status;
 
-import com.zergclan.wormhole.bus.api.event.WormholeEvent;
+import com.zergclan.wormhole.bus.api.event.Event;
 
 import java.io.Serializable;
 
 /**
  * Event for executed state.
  */
-public final class ExecutedStateEvent implements WormholeEvent, Serializable {
+public final class ExecutedStateEvent implements Event, Serializable {
     
     private static final long serialVersionUID = 2263745384258957956L;
     

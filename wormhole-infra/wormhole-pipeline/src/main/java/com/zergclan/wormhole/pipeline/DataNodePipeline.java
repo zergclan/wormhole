@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.pipeline;
 
 /**
- * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
+ * The root interface from which all data node pipeline objects shall be derived in Wormhole.
  */
-public interface WormholeTrigger {
+public interface DataNodePipeline {
 }

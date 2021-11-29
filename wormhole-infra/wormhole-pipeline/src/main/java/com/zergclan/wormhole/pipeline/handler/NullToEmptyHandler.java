@@ -22,7 +22,7 @@ import com.zergclan.wormhole.common.data.node.AbstractTextDataNode;
 /**
  * Null handler to empty handler of data node value.
  */
-public final class NullToEmptyHandler implements WormholeHandler<AbstractTextDataNode> {
+public final class NullToEmptyHandler implements DataNodeHandler<AbstractTextDataNode> {
     
     @Override
     public AbstractTextDataNode handler(final AbstractTextDataNode dataNode) {

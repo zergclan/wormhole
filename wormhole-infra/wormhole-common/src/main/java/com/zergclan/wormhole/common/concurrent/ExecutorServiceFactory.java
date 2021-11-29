@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Simple factory for create WormholeExecutorService.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class WormholeExecutorServiceFactory {
+public final class ExecutorServiceFactory {
     
     /**
      * The newly created single-threaded WormholeExecutorService.
@@ -42,7 +42,7 @@ public final class WormholeExecutorServiceFactory {
      * @param handler wormhole rejected handler
      * @return wormhole executor service instance
      */
-    public static WormholeExecutorService newSingleThreadExecutor(final String namePrefix, final int workQueueSize, final int keepAliveTime, final WormholeRejectedHandler handler) {
+    public static ExecutorService newSingleThreadExecutor(final String namePrefix, final int workQueueSize, final int keepAliveTime, final ExecutorRejectedHandler handler) {
         return new ExecutorBuilder().corePoolSize(1).maxPoolSize(1).namePrefix(namePrefix).keepAliveTime(keepAliveTime).workQueueSize(workQueueSize).handler(handler).build();
     }
     
@@ -57,8 +57,8 @@ public final class WormholeExecutorServiceFactory {
      * @param handler wormhole rejected handler
      * @return wormhole executor service instance
      */
-    public static WormholeExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize, final int keepAliveTime,
-                                                                 final WormholeRejectedHandler handler) {
+    public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize, final int keepAliveTime,
+                                                         final ExecutorRejectedHandler handler) {
         return new ExecutorBuilder().corePoolSize(coreSize).maxPoolSize(maxSize).namePrefix(namePrefix).keepAliveTime(keepAliveTime).workQueueSize(workQueueSize).handler(handler).build();
     }
     
@@ -83,7 +83,7 @@ public final class WormholeExecutorServiceFactory {
         
         private ThreadFactory threadFactory;
         
-        private WormholeRejectedHandler handler;
+        private ExecutorRejectedHandler handler;
         
         ExecutorBuilder corePoolSize(final Integer corePoolSize) {
             this.corePoolSize = corePoolSize;
@@ -115,7 +115,7 @@ public final class WormholeExecutorServiceFactory {
             return this;
         }
         
-        ExecutorBuilder handler(final WormholeRejectedHandler handler) {
+        ExecutorBuilder handler(final ExecutorRejectedHandler handler) {
             this.handler = handler;
             return this;
         }
@@ -125,7 +125,7 @@ public final class WormholeExecutorServiceFactory {
          *
          * @return new instance of WormholeExecutorService
          */
-        private WormholeExecutorService build() {
+        private ExecutorService build() {
             if (0L == keepAliveTime) {
                 // FIXME refer to HikariConfig.MAX_LIFETIME adjustment when test completed.
                 keepAliveTime = 30 * 60 * 1000;
@@ -142,7 +142,7 @@ public final class WormholeExecutorServiceFactory {
             if (null == threadFactory) {
                 threadFactory = new DefaultThreadFactory(namePrefix);
             }
-            return new WormholeExecutorService(new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, workQueue, threadFactory), handler);
+            return new ExecutorService(new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, workQueue, threadFactory), handler);
         }
     }
     

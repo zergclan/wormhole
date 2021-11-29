@@ -15,10 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.bus.api.listener;
+
+import com.zergclan.wormhole.bus.api.event.Event;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * The root interface from which all event listener objects shall be derived in Wormhole.
+ *
+ * @param <E> class type of event
  */
-public interface WormholeExecutor {
+public interface EventListener<E extends Event> {
+    
+    /**
+     * On Event.
+     *
+     * @param event event
+     */
+    void onEvent(E event);
 }

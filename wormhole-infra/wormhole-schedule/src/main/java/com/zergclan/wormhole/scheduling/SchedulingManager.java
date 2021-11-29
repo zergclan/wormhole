@@ -15,24 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.converter;
-
-import com.zergclan.wormhole.common.data.node.WormholeDataNode;
-import com.zergclan.wormhole.pipeline.WormholeFilter;
+package com.zergclan.wormhole.scheduling;
 
 /**
- * The root interface from which all data node converter objects shall be derived in Wormhole.
- *
- * @param <S> class type of source data node
- * @param <T> class type of target data node
+ * The root interface from which all scheduling manager objects shall be derived in Wormhole.
  */
-public interface WormholeConverter<S extends WormholeDataNode<?>, T extends WormholeDataNode<?>> extends WormholeFilter {
-    
-    /**
-     * Convert data node.
-     *
-     * @param dataNode source data node
-     * @return target data node
-     */
-    T convert(S dataNode);
+public interface SchedulingManager {
 }

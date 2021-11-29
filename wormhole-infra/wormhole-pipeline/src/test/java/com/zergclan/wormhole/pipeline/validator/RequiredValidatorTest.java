@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class RequiredValidatorTest {
     
-    private static WormholeValidator<WormholeDataNode<?>> wormholeValidator;
+    private static DataNodeValidator<WormholeDataNode<?>> wormholeValidator;
     
     @BeforeAll
     public static void init() {

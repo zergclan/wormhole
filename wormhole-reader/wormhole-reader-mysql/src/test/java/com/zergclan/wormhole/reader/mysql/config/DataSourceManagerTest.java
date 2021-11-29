@@ -18,14 +18,12 @@
 package com.zergclan.wormhole.reader.mysql.config;
 
 import com.zergclan.wormhole.reader.mysql.entity.DataSourceInformation;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * Test datasource manager.
  */
-@Slf4j
 public final class DataSourceManagerTest {
     
     /**

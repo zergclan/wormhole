@@ -15,21 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.listener;
+package com.zergclan.wormhole.bus.api.publisher;
 
-import com.lmax.disruptor.EventHandler;
-import com.zergclan.wormhole.bus.api.listener.EventListener;
-import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
+import com.zergclan.wormhole.bus.api.event.Event;
 
-public final class ExecutedStateEventListener implements EventListener<ExecutedStateEvent>, EventHandler<ExecutedStateEvent> {
+/**
+ * The root interface from which all event publisher objects shall be derived in Wormhole.
+ *
+ * @param <E> class type of event
+ */
+public interface EventPublisher<E extends Event> {
     
-    @Override
-    public void onEvent(final ExecutedStateEvent event) {
-        // TODO on executed state event.
-    }
-    
-    @Override
-    public void onEvent(final ExecutedStateEvent executedStateEvent, final long sequence, final boolean endOfBatch) throws Exception {
-        onEvent(executedStateEvent);
-    }
+    /**
+     * Publish event.
+     *
+     * @param event event
+     */
+    void publishEvent(E event);
 }

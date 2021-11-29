@@ -24,7 +24,7 @@ import com.zergclan.wormhole.common.exception.WormholeException;
 /**
  * String to integer converter of data node value.
  */
-public final class StringToIntegerConverter implements WormholeConverter<StringDataNode, IntegerDataNode> {
+public final class StringToIntegerConverter implements DataNodeConverter<StringDataNode, IntegerDataNode> {
     
     @Override
     public IntegerDataNode convert(final StringDataNode dataNode) {

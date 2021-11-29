@@ -15,22 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.concurrent;
+package com.zergclan.wormhole.pipeline.converter;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
+import com.zergclan.wormhole.common.data.node.WormholeDataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
- * Handler for tasks that cannot be executed by a {@link WormholeExecutorService}.
+ * The root interface from which all data node converter objects shall be derived in Wormhole.
+ *
+ * @param <S> class type of source data node
+ * @param <T> class type of target data node
  */
-public interface WormholeRejectedHandler {
+public interface DataNodeConverter<S extends WormholeDataNode<?>, T extends WormholeDataNode<?>> extends DataNodeFilter {
     
     /**
-     * Handle task.
+     * Convert data node.
      *
-     * @param task task
-     * @param <V> the class type of result
-     * @return handled result
+     * @param dataNode source data node
+     * @return target data node
      */
-    <V> Future<V> handle(Callable<V> task);
+    T convert(S dataNode);
 }

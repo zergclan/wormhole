@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class NullToEmptyHandlerTest {
     
-    private static WormholeHandler<AbstractTextDataNode> wormholeHandler;
+    private static DataNodeHandler<AbstractTextDataNode> wormholeHandler;
     
     @BeforeAll
     public static void init() {
