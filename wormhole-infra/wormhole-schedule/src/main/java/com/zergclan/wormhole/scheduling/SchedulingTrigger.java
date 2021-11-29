@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.scheduling;
 
 /**
- * The root interface from which all scheduling manager objects shall be derived in Wormhole.
+ * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
  */
-public interface WormholeManager {
+public interface SchedulingTrigger {
 }

@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.validator;
+package com.zergclan.wormhole.common.concurrent;
 
-import com.zergclan.wormhole.common.data.node.WormholeDataNode;
-import com.zergclan.wormhole.pipeline.WormholeFilter;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
- * The root interface from which all data node validator objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node
+ * Handler for tasks that cannot be executed by a {@link ExecutorService}.
  */
-public interface WormholeValidator<V extends WormholeDataNode<?>> extends WormholeFilter {
+public interface ExecutorRejectedHandler {
     
     /**
-     * Validate data node.
+     * Handle task.
      *
-     * @param dataNode data node
+     * @param task task
+     * @param <V> the class type of result
+     * @return handled result
      */
-    void validate(V dataNode);
+    <V> Future<V> handle(Callable<V> task);
 }

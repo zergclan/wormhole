@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.repository;
 
 /**
- * The root interface from which all data node filter objects shall be derived in Wormhole.
+ * The root interface from which all data source manager objects shall be derived in Wormhole.
  */
-public interface WormholeFilter {
+public interface DataSourceManager {
 }

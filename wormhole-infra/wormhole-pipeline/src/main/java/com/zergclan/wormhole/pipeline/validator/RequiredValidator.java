@@ -23,7 +23,7 @@ import com.zergclan.wormhole.common.exception.WormholeException;
 /**
  * Required data node validator.
  */
-public final class RequiredValidator implements WormholeValidator<WormholeDataNode<?>> {
+public final class RequiredValidator implements DataNodeValidator<WormholeDataNode<?>> {
     
     @Override
     public void validate(final WormholeDataNode<?> dataNode) {

@@ -15,17 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.event;
+package com.zergclan.wormhole.scheduling;
 
 /**
- * The root interface from which all event state objects shall be derived in Wormhole.
+ * The root interface from which all scheduling executor objects shall be derived in Wormhole.
  */
-public interface WormholeEvent {
-    
-    /**
-     * The object on which the Event initially occurred.
-     *
-     * @return The object on which the Event initially occurred.
-     */
-    Object getSource();
+public interface SchedulingExecutor {
 }

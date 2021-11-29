@@ -31,11 +31,11 @@ import java.util.concurrent.TimeUnit;
  * Executor service of Wormhole.
  */
 @RequiredArgsConstructor
-public final class WormholeExecutorService extends AbstractExecutorService {
+public final class ExecutorService extends AbstractExecutorService {
     
     private final ThreadPoolExecutor threadPoolExecutor;
     
-    private final WormholeRejectedHandler handler;
+    private final ExecutorRejectedHandler handler;
 
     /**
      * Submit task to the thread pool executor.

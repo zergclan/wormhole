@@ -19,12 +19,17 @@ package com.zergclan.wormhole.console.api.vo;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public final class HttpResultTest {
     
     @Test
     public void assertNew() {
-        assertNotNull(new HttpResult<String>().toBuilder().code(ResultCode.SUCCESS.getCode()).message(ResultCode.SUCCESS.getMessage()).data("S").build());
+        HttpResult<String> httpResult = new HttpResult<String>().toBuilder().code(ResultCode.SUCCESS.getCode()).message(ResultCode.SUCCESS.getMessage()).data("S").build();
+        assertNotNull(httpResult);
+        assertEquals(ResultCode.SUCCESS.getCode(), httpResult.getCode());
+        assertEquals(ResultCode.SUCCESS.getMessage(), httpResult.getMessage());
+        assertEquals("S", httpResult.getData());
     }
 }

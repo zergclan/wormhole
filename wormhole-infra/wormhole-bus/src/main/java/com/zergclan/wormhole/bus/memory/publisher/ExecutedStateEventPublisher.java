@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.bus.memory.publisher;
 
-import com.zergclan.wormhole.bus.api.publisher.WormholePublisher;
+import com.zergclan.wormhole.bus.api.publisher.EventPublisher;
 import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
 
-public class ExecutedStateEventPublisher implements WormholePublisher<ExecutedStateEvent> {
+public class ExecutedStateEventPublisher implements EventPublisher<ExecutedStateEvent> {
     
     @Override
     public void publishEvent(final ExecutedStateEvent event) {

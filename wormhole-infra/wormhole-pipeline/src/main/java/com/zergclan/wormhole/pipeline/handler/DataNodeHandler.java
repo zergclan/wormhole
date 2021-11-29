@@ -18,14 +18,14 @@
 package com.zergclan.wormhole.pipeline.handler;
 
 import com.zergclan.wormhole.common.data.node.WormholeDataNode;
-import com.zergclan.wormhole.pipeline.WormholeFilter;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
  * The root interface from which all data node handler objects shall be derived in Wormhole.
  *
  * @param <V> class type of data node
  */
-public interface WormholeHandler<V extends WormholeDataNode<?>> extends WormholeFilter {
+public interface DataNodeHandler<V extends WormholeDataNode<?>> extends DataNodeFilter {
     
     /**
      * Handler data node.

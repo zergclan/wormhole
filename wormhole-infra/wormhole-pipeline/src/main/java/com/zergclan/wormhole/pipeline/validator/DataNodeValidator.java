@@ -15,21 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api.listener;
+package com.zergclan.wormhole.pipeline.validator;
 
-import com.zergclan.wormhole.bus.api.event.WormholeEvent;
+import com.zergclan.wormhole.common.data.node.WormholeDataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
- * The root interface from which all event listener objects shall be derived in Wormhole.
+ * The root interface from which all data node validator objects shall be derived in Wormhole.
  *
- * @param <E> class type of event
+ * @param <V> class type of data node
  */
-public interface WormholeListener<E extends WormholeEvent> {
+public interface DataNodeValidator<V extends WormholeDataNode<?>> extends DataNodeFilter {
     
     /**
-     * On Event.
+     * Validate data node.
      *
-     * @param event event
+     * @param dataNode data node
      */
-    void onEvent(E event);
+    void validate(V dataNode);
 }

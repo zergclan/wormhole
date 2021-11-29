@@ -20,7 +20,6 @@ package com.zergclan.wormhole.reader.mysql.domain.impl;
 import com.google.gson.Gson;
 import com.zergclan.wormhole.reader.mysql.config.DataSourceManagerTest;
 import com.zergclan.wormhole.reader.mysql.domain.MysqlMetadataDOM;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -30,7 +29,6 @@ import java.util.Map;
 /**
  * Test to get mysql metadata.
  */
-@Slf4j
 public final class MysqlMetadataDOMImplTest {
 
     /**

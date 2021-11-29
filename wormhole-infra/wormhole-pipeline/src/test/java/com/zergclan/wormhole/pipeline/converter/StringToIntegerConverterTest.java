@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class StringToIntegerConverterTest {
 
-    private static WormholeConverter<StringDataNode, IntegerDataNode> wormholeConverter;
+    private static DataNodeConverter<StringDataNode, IntegerDataNode> wormholeConverter;
     
     @BeforeAll
     public static void init() {
