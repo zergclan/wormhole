@@ -15,31 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.vo;
-
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+package com.zergclan.wormhole.web.application.domain.entity;
 
 import java.io.Serializable;
 
 /**
- * Unified response bean for restful request.
- *
- * @param <T> class type of http result data.
+ * The base class from which all entity shall be derived in Wormhole.
  */
-@NoArgsConstructor
-public final class HttpResult<T> implements Serializable {
-    
-    private int code;
-    
-    private String message;
-    
-    private T data;
-    
-    @Builder(toBuilder = true)
-    public HttpResult(final int code, final String message, final T data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
-    }
+public abstract class AbstractEntity implements Serializable {
 }

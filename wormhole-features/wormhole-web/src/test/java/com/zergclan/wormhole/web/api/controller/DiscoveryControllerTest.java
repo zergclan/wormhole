@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.contorller;
+package com.zergclan.wormhole.web.api.controller;
 
+import com.zergclan.wormhole.web.api.contorller.DiscoveryController;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,8 +39,7 @@ public final class DiscoveryControllerTest {
     
     @Test
     public void assertStatus() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/status").contentType("application/json").content("")).andExpect(MockMvcResultMatchers.status()
-                .isOk()).andReturn();
-        assertEquals("UP", mvcResult.getResponse().getContentAsString());
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/status").contentType("application/json").content("")).andReturn();
+        assertEquals("{\"code\":200,\"message\":\"SUCCESS\",\"data\":\"UP\"}", mvcResult.getResponse().getContentAsString());
     }
 }

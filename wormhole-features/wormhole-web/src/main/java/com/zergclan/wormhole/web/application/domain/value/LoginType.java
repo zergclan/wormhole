@@ -15,29 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.application.domain.value;
 
 import lombok.Getter;
 
-/**
- * Business exception in wormhole web.
- */
-public final class WormholeWebException extends RuntimeException {
+@Getter
+public enum LoginType {
     
-    @Getter
-    private final int code;
+    USERNAME(0);
     
-    private final String message;
+    private final Integer code;
     
-    public WormholeWebException(final Integer code, final String message) {
-        super(message);
+    LoginType(final Integer code) {
         this.code = code;
-        this.message = message;
-    }
-    
-    public WormholeWebException(final Integer code, final String message, final Throwable cause) {
-        super(message, cause);
-        this.code = code;
-        this.message = message;
     }
 }

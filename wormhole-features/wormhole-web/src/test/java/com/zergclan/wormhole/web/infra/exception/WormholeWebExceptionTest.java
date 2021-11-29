@@ -15,26 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.contorller;
+package com.zergclan.wormhole.web.infra.exception;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.junit.jupiter.api.Test;
 
-/**
- * Service discovery controller.
- */
-@RestController
-public final class DiscoveryController {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class WormholeWebExceptionTest {
     
-    private static final String SERVER_STATUS_UP = "UP";
-    
-    /**
-     * Get application run status.
-     *
-     * @return run status
-     */
-    @GetMapping("/status")
-    public String status() {
-        return SERVER_STATUS_UP;
+    @Test
+    public void assertNew() {
+        WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
+        assertEquals(200, wormholeWebException.getCode());
+        WormholeWebException wormholeWebException1 = new WormholeWebException(200, "200", null);
+        assertEquals(200, wormholeWebException1.getCode());
     }
 }

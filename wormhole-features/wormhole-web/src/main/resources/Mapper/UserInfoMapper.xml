@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zergclan.wormhole.web.infra.repository.UserInfoMapper">
+    <resultMap id="userInfoResultMap" type="com.zergclan.wormhole.web.application.domain.entity.UserInfo">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="ALL_COLUMNS">
+        id, user_name, password, email, status, create_time, modify_time
+    </sql>
+
+    <insert id="save" parameterType="com.zergclan.wormhole.web.application.domain.entity.UserInfo">
+        INSERT INTO user_info (user_name, password, email, status, create_time, modify_time)
+        VALUES (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+            #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="com.zergclan.wormhole.web.application.domain.entity.UserInfo">
+        UPDATE user_info
+        <set>
+            <if test="null != userName">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="null != password">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="null != email">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="null != status">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            modify_time = #{modifyTime,jdbcType=VARCHAR}
+        </set>
+        <where>
+            id = #{id,jdbcType=INTEGER}
+        </where>
+    </update>
+
+    <select id="getById" parameterType="java.lang.Integer" resultMap="userInfoResultMap">
+        SELECT <include refid="ALL_COLUMNS"/>
+        FROM user_info
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getByUserInfo" parameterType="com.zergclan.wormhole.web.application.domain.entity.UserInfo" resultMap="userInfoResultMap">
+        SELECT <include refid="ALL_COLUMNS"/>
+        FROM user_info
+        <where>
+            <if test="null != userName">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="null != password">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="null != email">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="null != status">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </where>
+    </select>
+
+    <select id="list" parameterType="com.zergclan.wormhole.web.application.domain.entity.UserInfo" resultMap="userInfoResultMap">
+        SELECT <include refid="ALL_COLUMNS"/>
+        FROM user_info
+        <where>
+            <if test="null != userName">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="null != password">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="null != email">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="null != status">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </where>
+    </select>
+</mapper>

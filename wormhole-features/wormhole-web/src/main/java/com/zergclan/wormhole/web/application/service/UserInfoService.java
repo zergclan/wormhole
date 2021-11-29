@@ -15,19 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.exception;
+package com.zergclan.wormhole.web.application.service;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+/**
+ * Service interface of {@link UserInfo}.
+ */
+public interface UserInfoService {
 
-public final class WormholeWebExceptionTest {
-    
-    @Test
-    public void assertNew() {
-        WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
-        assertEquals(200, wormholeWebException.getCode());
-        WormholeWebException wormholeWebException1 = new WormholeWebException(200, "200", null);
-        assertEquals(200, wormholeWebException1.getCode());
-    }
+    /**
+     * Save {@link UserInfo}.
+     *
+     * @param userInfo {@link UserInfo}
+     */
+    void save(UserInfo userInfo);
+
+    /**
+     * update {@link UserInfo}.
+     *
+     * @param userInfo {@link UserInfo}.
+     * @return is updated or not
+     */
+    boolean update(UserInfo userInfo);
+
+    /**
+     * Get {@link UserInfo} by id.
+     *
+     * @param id user id
+     * @return {@link UserInfo}
+     */
+    UserInfo getById(Integer id);
 }

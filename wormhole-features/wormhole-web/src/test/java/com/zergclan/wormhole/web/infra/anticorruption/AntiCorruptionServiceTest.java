@@ -15,48 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.web.vo;
+package com.zergclan.wormhole.web.infra.anticorruption;
 
-import lombok.Getter;
+import com.zergclan.wormhole.web.api.vo.LoginVO;
+import com.zergclan.wormhole.web.application.domain.entity.UserInfo;
+import org.junit.jupiter.api.Test;
 
-/**
- * Code for http result.
- */
-@Getter
-public enum ResultCode {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class AntiCorruptionServiceTest {
     
-    /**
-     * Result code for success.
-     */
-    SUCCESS(100000, "SUCCESS"),
-    
-    /**
-     * Result code for bad request.
-     */
-    BAD_REQUEST(400000, "BAD_REQUEST"),
-    
-    /**
-     * Result code for failed.
-     */
-    FAILED(500000, "FAILED"),
-    
-    /**
-     * Result code for error.
-     */
-    ERROR(999999, "ERROR");
-    
-    /**
-     * Code.
-     */
-    private final int code;
-    
-    /**
-     * Message.
-     */
-    private final String message;
-    
-    ResultCode(final int code, final String message) {
-        this.code = code;
-        this.message = message;
+    @Test
+    public void assertUserLoginVOToDTO() {
+        LoginVO loginVO = new LoginVO();
+        loginVO.setLoginName("jack");
+        loginVO.setPassword("123456");
+        loginVO.setLoginType(0);
+        UserInfo userInfo = AntiCorruptionService.userLoginVOToDTO(loginVO);
+        assertEquals(loginVO.getLoginName(), userInfo.getUserName());
+        assertEquals(loginVO.getPassword(), userInfo.getPassword());
     }
 }

@@ -27,9 +27,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 @Slf4j
 public final class DataSourceManagerTest {
-
-
-
+    
     /**
      * Test get jdbcTemplate.
      * @throws Exception Get jdbcTemplate Exception.
