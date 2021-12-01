@@ -19,7 +19,7 @@ package com.zergclan.wormhole.console.application.service.impl;
 
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.application.service.UserInfoService;
-import com.zergclan.wormhole.console.infra.repository.UserInfoMapper;
+import com.zergclan.wormhole.console.infra.repository.impl.UserInfoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -34,24 +34,24 @@ public final class UserInfoServiceImpl implements UserInfoService {
 
     @Resource
     private UserInfoMapper userInfoMapper;
-
+    
     @Override
     public void save(@RequestBody final UserInfo userInfo) {
         userInfo.setStatus(0);
         LocalDateTime now = LocalDateTime.now();
         userInfo.setCreateTime(now);
         userInfo.setModifyTime(now);
-        userInfoMapper.save(userInfo);
+        userInfoMapper.insert(userInfo);
     }
-
+    
     @Override
     public boolean update(final UserInfo userInfo) {
         userInfo.setModifyTime(LocalDateTime.now());
-        return userInfoMapper.update(userInfo).equals(1);
+        return userInfoMapper.updateById(userInfo) == 1;
     }
     
     @Override
     public UserInfo getById(final Integer id) {
-        return userInfoMapper.getById(id);
+        return userInfoMapper.get(id);
     }
 }

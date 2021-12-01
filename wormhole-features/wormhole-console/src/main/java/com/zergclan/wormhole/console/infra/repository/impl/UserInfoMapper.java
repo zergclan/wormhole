@@ -15,21 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service.impl;
+package com.zergclan.wormhole.console.infra.repository.impl;
 
-import com.zergclan.wormhole.common.metadata.user.WormholeUser;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.service.LoginService;
-import org.springframework.stereotype.Service;
+import com.zergclan.wormhole.console.infra.repository.BaseRepository;
+import org.apache.ibatis.annotations.Mapper;
 
-@Service
-public final class LoginServiceImpl implements LoginService {
-    
-    @Override
-    public String login(final UserInfo userInfo) {
-        if (WormholeUser.ADMINISTRATOR.getLoginName().equals(userInfo.getUsername()) && WormholeUser.ADMINISTRATOR.getSecretKey().equals(userInfo.getPassword())) {
-            return "S";
-        }
-        return "F";
-    }
+@Mapper
+public interface UserInfoMapper extends BaseRepository<UserInfo> {
 }

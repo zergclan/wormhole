@@ -15,21 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service.impl;
+package com.zergclan.wormhole.console.infra.repository;
 
-import com.zergclan.wormhole.common.metadata.user.WormholeUser;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.service.LoginService;
-import org.springframework.stereotype.Service;
+import lombok.Data;
 
-@Service
-public final class LoginServiceImpl implements LoginService {
+/**
+ * Query object of page.
+ *
+ * @param <T> class type of persistent object
+ */
+@Data
+public final class PageQuery<T> {
     
-    @Override
-    public String login(final UserInfo userInfo) {
-        if (WormholeUser.ADMINISTRATOR.getLoginName().equals(userInfo.getUsername()) && WormholeUser.ADMINISTRATOR.getSecretKey().equals(userInfo.getPassword())) {
-            return "S";
-        }
-        return "F";
+    private final Integer start;
+    
+    private final Integer size;
+    
+    private T query;
+    
+    public PageQuery(final Integer page, final Integer size) {
+        this.size = size;
+        this.start = (page - 1) * size;
     }
 }

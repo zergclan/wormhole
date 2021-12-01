@@ -15,37 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository;
+package com.zergclan.wormhole.console.application.domain.entity;
 
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import org.apache.ibatis.annotations.Mapper;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
- * Mapper interface of {@link UserInfo}.
+ * The base class from which all persistent object shall be derived in Wormhole.
  */
-@Mapper
-public interface UserInfoMapper {
-
-    /**
-     * Save user info.
-     *
-     * @param userInfo {@link UserInfo}
-     */
-    void save(UserInfo userInfo);
-
-    /**
-     * Update user info.
-     *
-     * @param userInfo {@link UserInfo}
-     * @return update rows.
-     */
-    Integer update(UserInfo userInfo);
-
-    /**
-     * Get {@link UserInfo} by id.
-     *
-     * @param id user id
-     * @return {@link UserInfo}
-     */
-    UserInfo getById(Integer id);
+@Getter
+@Setter
+public abstract class BasePO implements Serializable {
+    
+    private Integer id;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime createTime;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime modifyTime;
 }

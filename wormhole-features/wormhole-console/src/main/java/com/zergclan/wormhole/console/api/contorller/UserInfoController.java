@@ -34,7 +34,7 @@ import javax.annotation.Resource;
  */
 @RestController
 public final class UserInfoController extends AbstractRestController {
-
+    
     @Resource
     private UserInfoService userInfoService;
 
@@ -62,10 +62,9 @@ public final class UserInfoController extends AbstractRestController {
         return success();
     }
     
-    
-
     /**
      * Get {@link UserInfo} by id.
+     *
      * @param id id
      * @return {@link HttpResult}
      */

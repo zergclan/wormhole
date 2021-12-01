@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.console.api.vo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -27,13 +28,13 @@ import java.io.Serializable;
  */
 @Data
 public final class LoginVO implements Serializable {
-
+    
     @NotBlank(message = "loginName can not be blank")
     private String loginName;
-
-    @NotBlank(message = "Type of login name can not be blank")
-    private Integer loginType;
-
+    
     @NotBlank(message = "password can not be blank")
     private String password;
+    
+    @NotBlank(message = "Type of login name can not be blank")
+    private Integer loginType;
 }

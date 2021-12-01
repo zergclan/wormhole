@@ -18,6 +18,9 @@
 package com.zergclan.wormhole.console.api.controller;
 
 import com.zergclan.wormhole.console.WormholeETLApplication;
+import com.zergclan.wormhole.console.api.vo.HttpResult;
+import com.zergclan.wormhole.console.api.vo.LoginVO;
+import com.zergclan.wormhole.console.infra.util.JsonConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,22 +37,44 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = {WormholeETLApplication.class})
 public final class LoginControllerTest {
     
+    private static final JsonConverter jsonConverter = JsonConverter.defaultInstance();
+    
     @Resource
     private MockMvc mvc;
     
     @Test
     public void assertLoginSuccess() throws Exception {
-        String requestSuccessJson = "{\"loginName\":\"admin\",\"password\":\"admin\",\"loginType\":0}";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestSuccessJson)).andReturn();
-        assertEquals("{\"code\":200,\"message\":\"SUCCESS\",\"data\":\"S\"}", mvcResult.getResponse().getContentAsString());
-        
+        LoginVO loginVO = new LoginVO();
+        loginVO.setLoginName("admin");
+        loginVO.setPassword("admin");
+        loginVO.setLoginType(0);
+        String requestJson = jsonConverter.toJson(loginVO);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data("S").build();
+        assertEquals(jsonConverter.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
     
     @Test
-    public void assertLoginUnauthorized() throws Exception {
-        String requestJson = "{\"loginName\":\"admin\",\"password\":\"admin\",\"loginType\":1}";
+    public void assertLoginUnauthorizedUsername() throws Exception {
+        LoginVO loginVO = new LoginVO();
+        loginVO.setLoginName("root");
+        loginVO.setPassword("admin");
+        loginVO.setLoginType(0);
+        String requestJson = jsonConverter.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
-        assertEquals("{\"code\":401,\"message\":\"UNAUTHORIZED\",\"data\":\"F\"}", mvcResult.getResponse().getContentAsString());
-        
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("F").build();
+        assertEquals(jsonConverter.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+    }
+    
+    @Test
+    public void assertLoginUnauthorizedPassword() throws Exception {
+        LoginVO loginVO = new LoginVO();
+        loginVO.setLoginName("admin");
+        loginVO.setPassword("root");
+        loginVO.setLoginType(0);
+        String requestJson = jsonConverter.toJson(loginVO);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("F").build();
+        assertEquals(jsonConverter.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 }

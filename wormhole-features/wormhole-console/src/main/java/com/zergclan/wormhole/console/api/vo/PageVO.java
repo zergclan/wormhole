@@ -15,12 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.api.vo;
 
+import lombok.Data;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 /**
- * The base class from which all entity shall be derived in Wormhole.
+ * Query VO of page.
+ *
+ * @param <T> class type of query object
  */
-public abstract class AbstractEntity implements Serializable {
+@Data
+public final class PageVO<T> implements Serializable {
+    
+    @Min(value = 1, message = "page number must greater than 0 ")
+    private Integer page;
+    
+    @Range(min = 5, max = 10, message = "page size must greater than 5 Less than 10 ")
+    private Integer size;
+    
+    private T query;
 }
