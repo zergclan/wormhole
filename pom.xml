@@ -55,14 +55,13 @@
         </developer>
         <developer>
             <name>rabbit1225</name>
-            <email></email>
+            <email>shihuatao@gmail.com</email>
         </developer>
     </developers>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <!-- tools -->
         <guava.sersion>30.1.1-jre</guava.sersion>
         <gson.sersion>2.8.9</gson.sersion>
@@ -91,7 +90,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- tools -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -140,7 +138,6 @@
                 <version>${mysql.version}</version>
                 <scope>runtime</scope>
             </dependency>
-            <!-- test -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>

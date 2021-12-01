@@ -32,3 +32,6 @@ spring:
 
 mybatis:
   mapper-locations: classpath:Mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
