@@ -34,7 +34,7 @@ public final class PageVO<T> implements Serializable {
     @Min(value = 1, message = "page number must greater than 0 ")
     private Integer page;
     
-    @Range(min = 5, max = 10, message = "page size must greater than 5 Less than 10 ")
+    @Range(min = 2, max = 10, message = "page size must greater than 2 Less than 10 ")
     private Integer size;
     
     private T query;

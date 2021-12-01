@@ -94,6 +94,10 @@
         </where>
     </update>
 
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM user_info WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+
     <select id="get" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
         SELECT <include refid="all_columns"/> FROM user_info WHERE id = #{id,jdbcType=INTEGER}
     </select>
@@ -110,7 +114,7 @@
         </where>
     </select>
 
-    <select id="countByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultMap="UserInfoResultMap">
+    <select id="countByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultType="java.lang.Integer">
         SELECT COUNT(id) AS total
         FROM user_info
         <where>
@@ -124,5 +128,6 @@
         <where>
             <include refid="page_query_where"/>
         </where>
+        <include refid="limit"/>
     </select>
 </mapper>

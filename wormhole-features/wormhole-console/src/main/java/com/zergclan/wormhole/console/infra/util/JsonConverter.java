@@ -139,7 +139,7 @@ public final class JsonConverter extends ObjectMapper {
      * @param <T> class type of {@link Collection} elements
      * @return {@link JavaType} of {@link Collection}
      */
-    public <T> JavaType buildType(final Class<? extends Collection<T>> collectionClazz, final Class<T> elementClazz) {
+    public <T> JavaType buildType(final Class<? extends Collection> collectionClazz, final Class<T> elementClazz) {
         Assert.notNull(collectionClazz, "error : build java type for collection arg collection clazz is null");
         Assert.notNull(elementClazz, "error : build java type for collection arg element clazz is null");
         return objectMapper.getTypeFactory().constructCollectionType(collectionClazz, elementClazz);
@@ -155,7 +155,7 @@ public final class JsonConverter extends ObjectMapper {
      * @param <V> class type of {@link Map} values
      * @return {@link JavaType} of {@link Map}
      */
-    public <K, V> JavaType buildType(final Class<? extends Map<K, V>> mapClazz, final Class<K> keyClazz, final Class<V> valueClazz) {
+    public <K, V> JavaType buildType(final Class<? extends Map> mapClazz, final Class<K> keyClazz, final Class<V> valueClazz) {
         Assert.notNull(mapClazz, "error : build java type for map arg map clazz is null");
         Assert.notNull(keyClazz, "error : build java type for map arg key clazz is null");
         Assert.notNull(valueClazz, "error : build java type for map arg value clazz is null");

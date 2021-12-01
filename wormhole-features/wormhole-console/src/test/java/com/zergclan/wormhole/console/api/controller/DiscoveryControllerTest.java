@@ -36,15 +36,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = {WormholeETLApplication.class})
 public final class DiscoveryControllerTest {
     
-    private static final JsonConverter jsonConverter = JsonConverter.defaultInstance();
-    
+    private static final JsonConverter JSON_CONVERTER = JsonConverter.defaultInstance();
+
     @Resource
-    private static MockMvc mockMvc;
+    private MockMvc mvc;
     
     @Test
     public void assertStatus() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/status").contentType("application/json").content("")).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/status").contentType("application/json").content("")).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data("UP").build();
-        assertEquals(jsonConverter.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 }

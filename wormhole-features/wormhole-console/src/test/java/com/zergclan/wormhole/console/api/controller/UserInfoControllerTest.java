@@ -19,6 +19,7 @@ package com.zergclan.wormhole.console.api.controller;
 
 import com.zergclan.wormhole.console.WormholeETLApplication;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
+import com.zergclan.wormhole.console.api.vo.PageVO;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.infra.util.JsonConverter;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ import javax.annotation.Resource;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,21 +44,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = {WormholeETLApplication.class})
 public final class UserInfoControllerTest {
     
-    private static final JsonConverter jsonConverter = JsonConverter.defaultInstance();
+    private static final JsonConverter JSON_CONVERTER = JsonConverter.defaultInstance();
     
     @Resource
     private MockMvc mvc;
     
     @Test
     public void assertAdd() throws Exception {
-        UserInfo userInfo = new UserInfo();
+        final UserInfo userInfo = new UserInfo();
         userInfo.setUsername("admin");
         userInfo.setPassword("admin");
         userInfo.setEmail("jacky7boy@163.com");
-        String requestJson = jsonConverter.toJson(userInfo);
+        String requestJson = JSON_CONVERTER.toJson(userInfo);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user").contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
-        assertEquals(jsonConverter.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
     
     @Test
@@ -64,15 +68,25 @@ public final class UserInfoControllerTest {
         userInfo.setUsername("admin");
         userInfo.setPassword("admin");
         userInfo.setEmail("jacky7boy@163.com");
-        String requestJson = jsonConverter.toJson(userInfo);
+        String requestJson = JSON_CONVERTER.toJson(userInfo);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/user").contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
-        assertEquals(jsonConverter.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
-    
+
+    @Test
+    public void assertRemove() throws Exception {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(2);
+        String requestJson = JSON_CONVERTER.toJson(userInfo);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/user").contentType("application/json").content(requestJson)).andReturn();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+    }
+
     @Test
     public void assertGetById() throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/1").contentType("application/json").content("")).andReturn();
+        final MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/1").contentType("application/json").content("")).andReturn();
         UserInfo userInfo = new UserInfo();
         userInfo.setId(1);
         userInfo.setUsername("jack");
@@ -82,6 +96,26 @@ public final class UserInfoControllerTest {
         userInfo.setCreateTime(LocalDateTime.parse("2012-11-19 18:30:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userInfo.setModifyTime(LocalDateTime.parse("2012-11-19 18:30:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         HttpResult<UserInfo> expectedResult = new HttpResult<UserInfo>().toBuilder().code(200).message("SUCCESS").data(userInfo).build();
-        assertEquals(jsonConverter.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void assertList() throws Exception {
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/list").contentType("application/json").content("")).andReturn();
+        HttpResult<List<UserInfo>> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
+        assertEquals(12, httpResult.getData().size());
+    }
+
+    @Test
+    public void assertPage() throws Exception {
+        PageVO<UserInfo> pageVO = new PageVO<>();
+        pageVO.setPage(1);
+        pageVO.setSize(2);
+        pageVO.setQuery(new UserInfo());
+        String requestJson = JSON_CONVERTER.toJson(pageVO);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user/page").contentType("application/json").content(requestJson)).andReturn();
+        HttpResult<Object> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
+        List<UserInfo> items = (ArrayList) ((LinkedHashMap) httpResult.getData()).get("items");
+        assertEquals(2, items.size());
     }
 }
