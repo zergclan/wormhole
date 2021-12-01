@@ -17,14 +17,18 @@
 
 package com.zergclan.wormhole.bus.memory.event;
 
+import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class ExecutedStateEventFactoryTest {
     
     @Test
     public void assertNewInstance() {
-        assertNotNull(new ExecutedStateEventFactory().newInstance());
+        ExecutedStateEvent executedStateEvent = new ExecutedStateEventFactory().newInstance();
+        assertNotNull(executedStateEvent);
+        assertTrue(executedStateEvent.getSource() instanceof ExecutedStateEvent);
     }
 }

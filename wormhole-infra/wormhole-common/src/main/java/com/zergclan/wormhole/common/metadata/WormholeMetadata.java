@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.common.metadata;
 
 /**
- * Metadata identification interface of Wormhole.
+ * The root interface from which all meta data objects shall be derived in Wormhole.
  */
 public interface WormholeMetadata {
 }

@@ -17,8 +17,10 @@
 
 package com.zergclan.wormhole.common.data;
 
+import java.io.Serializable;
+
 /**
- * Data identification interface of Wormhole.
+ * The root interface from which all transform data objects shall be derived in Wormhole.
  */
-public interface WormholeData {
+public interface WormholeData extends Serializable {
 }

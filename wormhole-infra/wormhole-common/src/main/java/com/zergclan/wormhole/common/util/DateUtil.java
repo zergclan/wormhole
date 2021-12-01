@@ -20,6 +20,9 @@ package com.zergclan.wormhole.common.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Util tools for Date.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DateUtil {
     

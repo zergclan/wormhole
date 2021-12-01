@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.bus.memory.event;
 
 import com.lmax.disruptor.EventFactory;
-import com.zergclan.wormhole.bus.api.event.status.ExecutedStateEvent;
+import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
 
 /**
  * Factory of executed state event.

@@ -55,7 +55,7 @@
         </developer>
         <developer>
             <name>rabbit1225</name>
-            <email></email>
+            <email>shihuatao@gmail.com</email>
         </developer>
     </developers>
 
@@ -67,7 +67,11 @@
         <gson.sersion>2.8.9</gson.sersion>
         <disruptor.version>3.4.4</disruptor.version>
         <lombok.version>1.18.20</lombok.version>
+        <hibernate.version>6.1.7.Final</hibernate.version>
+        <alibaba.druid.version>1.2.6</alibaba.druid.version>
+        <!-- databases -->
         <h2.version>1.4.200</h2.version>
+        <mysql.version>8.0.23</mysql.version>
         <!-- test -->
         <junit5.version>5.7.2</junit5.version>
         <!-- maven-plugin -->
@@ -86,21 +90,23 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- tools -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.sersion}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>${gson.sersion}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.lmax</groupId>
                 <artifactId>disruptor</artifactId>
                 <version>${disruptor.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -109,12 +115,29 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${alibaba.druid.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
                 <scope>provided</scope>
             </dependency>
-            <!-- test -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
@@ -123,18 +146,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
