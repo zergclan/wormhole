@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public final class ResultCodeTest {
 
     @Test
-    public void assertNew() {
+    public void assertValue() {
         assertEquals(200, ResultCode.SUCCESS.getCode());
         assertEquals(500, ResultCode.FAILED.getCode());
         assertEquals(400, ResultCode.BAD_REQUEST.getCode());

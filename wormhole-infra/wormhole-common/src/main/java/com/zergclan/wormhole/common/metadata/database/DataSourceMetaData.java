@@ -39,11 +39,11 @@ public interface DataSourceMetaData extends WormholeMetadata {
     int getPort();
     
     /**
-     * Get catalog.
+     * Get catalogue.
      *
      * @return catalog
      */
-    String getCatalog();
+    String getCatalogue();
     
     /**
      * Get schema.

@@ -21,17 +21,33 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * User info persistent object.
+ * Datasource info persistent object.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends BasePO {
+public final class DatasourceInfo extends BasePO {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    private static final long serialVersionUID = -341888032629378110L;
+    
+    private String title;
+    
+    private Integer genre;
+    
+    private String host;
+    
+    private Integer port;
+    
+    private String catalog;
     
     private String username;
     
     private String password;
     
-    private String email;
+    private String extendParameters;
+    
+    private String url;
+    
+    private String description;
+    
+    private Integer operator;
 }

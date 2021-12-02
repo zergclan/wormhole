@@ -30,14 +30,14 @@ public final class MySQLDataSourceMetaData implements DataSourceMetaData {
     
     private final int port;
     
-    private final String catalog;
+    private final String catalogue;
     
     private final String schema;
     
-    public MySQLDataSourceMetaData(final String hostName, final Integer port, final String catalog, final String schema) {
+    public MySQLDataSourceMetaData(final String hostName, final Integer port, final String catalogue, final String schema) {
         this.hostName = null == hostName ? DEFAULT_HOST_NAME : hostName;
         this.port = null == port ? DEFAULT_PORT : port;
-        this.catalog = catalog;
+        this.catalogue = catalogue;
         this.schema = schema;
     }
     
@@ -52,8 +52,8 @@ public final class MySQLDataSourceMetaData implements DataSourceMetaData {
     }
     
     @Override
-    public String getCatalog() {
-        return this.catalog;
+    public String getCatalogue() {
+        return this.catalogue;
     }
     
     @Override

@@ -15,23 +15,9 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.infra.repository.mapper;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
 
-/**
- * User info persistent object.
- */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends BasePO {
-    
-    private static final long serialVersionUID = 6978285474252748202L;
-    
-    private String username;
-    
-    private String password;
-    
-    private String email;
+public interface DatasourceInfoMapper extends BaseMapper<DatasourceInfo> {
 }

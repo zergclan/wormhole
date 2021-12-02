@@ -15,32 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.anticorruption;
+package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.domain.value.LoginType;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 /**
- * Anti-corrosion layer service for bean object converter.
+ * Repository of {@link UserInfo}.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AntiCorruptionService {
-
-    /**
-     * Convert {@link LoginVO} to {@link UserInfo}.
-     *
-     * @param loginVO {@link LoginVO}
-     * @return {@link UserInfo}
-     */
-    public static UserInfo userLoginVOToDTO(final LoginVO loginVO) {
-        UserInfo userInfo = new UserInfo();
-        if (LoginType.USERNAME.getCode().equals(loginVO.getLoginType())) {
-            userInfo.setUsername(loginVO.getLoginName());
-            userInfo.setPassword(loginVO.getPassword());
-        }
-        return userInfo;
-    }
+@Repository(value = "userInfoRepository")
+public class UserInfoRepository extends AbstractTransactionalRepository<UserInfo> {
 }

@@ -15,63 +15,63 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository;
+package com.zergclan.wormhole.console.infra.repository.mapper;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
+import com.zergclan.wormhole.console.application.domain.entity.BasePO;
 
 import java.util.Collection;
 
 /**
- * The root interface from which all repository shall be derived in Wormhole.
+ * The boot interface from which mybatis-mapper shall be derived in Wormhole.
  *
  * @param <T> class type of persistent object
  */
-public interface BaseRepository<T> {
+public interface BaseMapper<T extends BasePO> {
     
     /**
-     * Add.
+     * Insert.
      *
      * @param po persistent object
      */
-    void add(T po);
+    void insert(T po);
     
     /**
-     * Add batch.
+     * Insert batch.
      *
      * @param batch batch persistent object
      */
-    void addBatch(Collection<T> batch);
+    void insertBatch(Collection<T> batch);
     
     /**
-     * Edit by id.
-     *
-     * @param id id
-     * @param po persistent object
-     * @return update rows
-     */
-    boolean edit(Integer id, T po);
-    
-    /**
-     * Edit.
+     * Update by id.
      *
      * @param po persistent object
      * @return update rows
      */
-    boolean edit(T po);
+    int updateById(T po);
+    
+    /**
+     * Update.
+     *
+     * @param po persistent object
+     * @return update rows
+     */
+    int update(T po);
     
     /**
      * Delete by id.
      *
      * @param id id
      */
-    void remove(Integer id);
+    void deleteById(Integer id);
     
     /**
      * Delete by ids.
      *
      * @param ids ids
      */
-    void remove(Collection<Integer> ids);
+    void deleteByIds(Collection<Integer> ids);
     
     /**
      * Get one by id.
@@ -94,7 +94,7 @@ public interface BaseRepository<T> {
      *
      * @return rows
      */
-    int count();
+    int countAll();
     
     /**
      * Count by query.
@@ -102,7 +102,7 @@ public interface BaseRepository<T> {
      * @param po persistent object
      * @return rows
      */
-    int count(T po);
+    int countByQuery(T po);
     
     /**
      * List all.
@@ -112,12 +112,12 @@ public interface BaseRepository<T> {
     Collection<T> listAll();
     
     /**
-     * List by ids.
+     * List in ids.
      *
      * @param ids ids
      * @return persistent objects
      */
-    Collection<T> list(Collection<Integer> ids);
+    Collection<T> listInIds(Collection<Integer> ids);
     
     /**
      * List by query.
@@ -125,13 +125,21 @@ public interface BaseRepository<T> {
      * @param po persistent object
      * @return persistent objects
      */
-    Collection<T> list(T po);
+    Collection<T> listByQuery(T po);
     
     /**
-     * page by page query.
+     * Count by page query.
+     *
+     * @param po persistent object
+     * @return rows
+     */
+    int countByPage(T po);
+    
+    /**
+     * Page by page query.
      *
      * @param pageQuery page query
      * @return persistent objects
      */
-    PageData<T> listByPage(PageQuery<T> pageQuery);
+    Collection<T> page(PageQuery<T> pageQuery);
 }
