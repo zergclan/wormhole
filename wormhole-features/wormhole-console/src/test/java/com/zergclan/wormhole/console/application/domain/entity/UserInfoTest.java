@@ -15,27 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.vo;
+package com.zergclan.wormhole.console.application.domain.entity;
 
-import lombok.Data;
-import org.hibernate.validator.constraints.Range;
+import org.junit.jupiter.api.Test;
 
-import javax.validation.constraints.Min;
-import java.io.Serializable;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Query VO of page.
- *
- * @param <T> class type of query object
- */
-@Data
-public final class PageVO<T> implements Serializable {
+public final class UserInfoTest {
     
-    @Min(value = 1, message = "page number must greater than 0 ")
-    private Integer page;
-    
-    @Range(min = 2, max = 10, message = "page size must greater than 2 Less than 10 ")
-    private Integer size;
-    
-    private T query;
+    @Test
+    public void assertEqualsAndHashCode() {
+        UserInfo expectedUserInfo = new UserInfo();
+        expectedUserInfo.setId(1);
+        UserInfo actualUserInfo = new UserInfo();
+        actualUserInfo.setId(2);
+        assertNotEquals(expectedUserInfo, actualUserInfo);
+    }
 }

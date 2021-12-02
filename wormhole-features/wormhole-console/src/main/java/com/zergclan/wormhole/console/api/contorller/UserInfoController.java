@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
-import com.zergclan.wormhole.console.api.vo.PageVO;
+import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.application.service.UserInfoService;
 import com.zergclan.wormhole.console.infra.repository.PageData;
@@ -104,11 +104,11 @@ public final class UserInfoController extends AbstractRestController {
     /**
      * Get {@link PageData} of {@link UserInfo}.
      *
-     * @param page {@link PageVO}
+     * @param page {@link PageQuery}
      * @return {@link HttpResult}
      */
     @PostMapping("/page")
-    public HttpResult<PageData<UserInfo>> listByPage(@RequestBody final PageVO<UserInfo> page) {
+    public HttpResult<PageData<UserInfo>> listByPage(@RequestBody final PageQuery<UserInfo> page) {
         PageData<UserInfo> result = userInfoService.listByPage(page);
         return success(result);
     }

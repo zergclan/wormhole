@@ -19,19 +19,17 @@ package com.zergclan.wormhole.console.infra.repository;
 
 import com.zergclan.wormhole.console.application.domain.entity.BasePO;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * Data queried by {@link PageQuery}.
+ * Data queried by page.
  *
  * @param <T> class type of persistent object
  */
 @Getter
-@Setter
 public final class PageData<T extends BasePO> implements Serializable {
     
     private static final long serialVersionUID = -8162517704403906697L;

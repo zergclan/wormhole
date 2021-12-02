@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.console.infra.repository;
 
+import com.zergclan.wormhole.console.api.vo.PageQuery;
+
 import java.util.Collection;
 
 /**

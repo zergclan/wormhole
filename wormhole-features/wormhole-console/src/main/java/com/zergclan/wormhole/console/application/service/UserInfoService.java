@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.console.application.service;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
-import com.zergclan.wormhole.console.api.vo.PageVO;
+import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 
@@ -69,8 +69,8 @@ public interface UserInfoService {
     /**
      * Get {@link PageData} of {@link UserInfo}.
      *
-     * @param pageVO {@link PageVO}
+     * @param pageQuery {@link PageQuery}
      * @return {@link HttpResult}
      */
-    PageData<UserInfo> listByPage(PageVO<UserInfo> pageVO);
+    PageData<UserInfo> listByPage(PageQuery<UserInfo> pageQuery);
 }

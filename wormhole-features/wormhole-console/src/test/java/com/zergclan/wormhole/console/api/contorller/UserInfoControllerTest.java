@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.controller;
+package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.WormholeETLApplication;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
-import com.zergclan.wormhole.console.api.vo.PageVO;
+import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.infra.util.JsonConverter;
 import org.junit.jupiter.api.Test;
@@ -108,11 +108,11 @@ public final class UserInfoControllerTest {
 
     @Test
     public void assertPage() throws Exception {
-        PageVO<UserInfo> pageVO = new PageVO<>();
-        pageVO.setPage(1);
-        pageVO.setSize(2);
-        pageVO.setQuery(new UserInfo());
-        String requestJson = JSON_CONVERTER.toJson(pageVO);
+        PageQuery<UserInfo> pageQuery = new PageQuery<>();
+        pageQuery.setPage(1);
+        pageQuery.setSize(2);
+        pageQuery.setQuery(new UserInfo());
+        String requestJson = JSON_CONVERTER.toJson(pageQuery);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user/page").contentType("application/json").content(requestJson)).andReturn();
         HttpResult<Object> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         List<UserInfo> items = (ArrayList) ((LinkedHashMap) httpResult.getData()).get("items");

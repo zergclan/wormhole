@@ -15,26 +15,44 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository;
+package com.zergclan.wormhole.console.api.vo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.Min;
+import java.io.Serializable;
 
 /**
- * Query object of page.
+ * Query Query VO of page.
  *
- * @param <T> class type of persistent object
+ * @param <T> class type of query object
  */
-@Data
-public final class PageQuery<T> {
+public final class PageQuery<T> implements Serializable {
     
-    private final Integer start;
+    private static final long serialVersionUID = 7535045351524894851L;
     
-    private final Integer size;
+    @Min(value = 1, message = "page number must greater than 0 ")
+    @Getter
+    @Setter
+    private Integer page;
     
+    @Range(min = 2, max = 10, message = "page size must greater than 2 Less than 10 ")
+    @Getter
+    @Setter
+    private Integer size;
+    
+    @Getter
+    @Setter
     private T query;
     
-    public PageQuery(final Integer page, final Integer size) {
-        this.size = size;
-        this.start = (page - 1) * size;
+    /**
+     * Get start number for page.
+     *
+     * @return start number
+     */
+    public Integer getStart() {
+        return (page - 1) * size;
     }
 }
