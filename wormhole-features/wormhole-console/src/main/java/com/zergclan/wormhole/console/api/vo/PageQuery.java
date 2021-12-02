@@ -17,23 +17,42 @@
 
 package com.zergclan.wormhole.console.api.vo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 /**
- * Login VO.
+ * Query Query VO of page.
+ *
+ * @param <T> class type of query object
  */
-@Data
-public final class LoginVO implements Serializable {
+public final class PageQuery<T> implements Serializable {
     
-    @NotBlank(message = "loginName can not be blank")
-    private String loginName;
+    private static final long serialVersionUID = 7535045351524894851L;
     
-    @NotBlank(message = "password can not be blank")
-    private String password;
+    @Min(value = 1, message = "page number must greater than 0 ")
+    @Getter
+    @Setter
+    private Integer page;
     
-    @NotBlank(message = "Type of login name can not be blank")
-    private Integer loginType;
+    @Range(min = 2, max = 10, message = "page size must greater than 2 Less than 10 ")
+    @Getter
+    @Setter
+    private Integer size;
+    
+    @Getter
+    @Setter
+    private T query;
+    
+    /**
+     * Get start number for page.
+     *
+     * @return start number
+     */
+    public Integer getStart() {
+        return (page - 1) * size;
+    }
 }

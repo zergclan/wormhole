@@ -33,7 +33,7 @@ public final class AntiCorruptionServiceTest {
         loginVO.setPassword("123456");
         loginVO.setLoginType(0);
         UserInfo userInfo = AntiCorruptionService.userLoginVOToDTO(loginVO);
-        assertEquals(loginVO.getLoginName(), userInfo.getUserName());
+        assertEquals(loginVO.getLoginName(), userInfo.getUsername());
         assertEquals(loginVO.getPassword(), userInfo.getPassword());
     }
     
@@ -44,7 +44,7 @@ public final class AntiCorruptionServiceTest {
         loginVO.setPassword("123456");
         loginVO.setLoginType(1);
         UserInfo userInfo = AntiCorruptionService.userLoginVOToDTO(loginVO);
-        assertNull(userInfo.getUserName());
+        assertNull(userInfo.getUsername());
         assertNull(userInfo.getPassword());
     }
 }

@@ -15,37 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository;
+package com.zergclan.wormhole.console.infra.repository.impl;
 
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
+import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import org.apache.ibatis.annotations.Mapper;
 
-/**
- * Mapper interface of {@link UserInfo}.
- */
 @Mapper
-public interface UserInfoMapper {
-
-    /**
-     * Save user info.
-     *
-     * @param userInfo {@link UserInfo}
-     */
-    void save(UserInfo userInfo);
-
-    /**
-     * Update user info.
-     *
-     * @param userInfo {@link UserInfo}
-     * @return update rows.
-     */
-    Integer update(UserInfo userInfo);
-
-    /**
-     * Get {@link UserInfo} by id.
-     *
-     * @param id user id
-     * @return {@link UserInfo}
-     */
-    UserInfo getById(Integer id);
+public interface UserInfoMapper extends BaseRepository<UserInfo> {
 }

@@ -17,10 +17,10 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zergclan.wormhole.console.infra.repository.UserInfoMapper">
-    <resultMap id="userInfoResultMap" type="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
+<mapper namespace="com.zergclan.wormhole.console.infra.repository.impl.UserInfoMapper">
+    <resultMap id="UserInfoResultMap" type="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
         <result column="id" property="id" jdbcType="INTEGER"/>
-        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
@@ -28,21 +28,55 @@
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="ALL_COLUMNS">
-        id, user_name, password, email, status, create_time, modify_time
+    <sql id="all_columns">
+        id, username, password, email, status, create_time, modify_time
     </sql>
 
-    <insert id="save" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
-        INSERT INTO user_info (user_name, password, email, status, create_time, modify_time)
-        VALUES (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+    <sql id="limit">
+        LIMIT #{start}, #{size}
+    </sql>
+
+    <sql id="list_query_where">
+        <if test="null != username">
+            username = #{username,jdbcType=VARCHAR},
+        </if>
+        <if test="null != password">
+            password = #{password,jdbcType=VARCHAR},
+        </if>
+        <if test="null != email">
+            email = #{email,jdbcType=VARCHAR},
+        </if>
+        <if test="null != status">
+            status = #{status,jdbcType=INTEGER},
+        </if>
+    </sql>
+
+    <sql id="page_query_where">
+        <if test="null != query.username">
+            username = #{query.username,jdbcType=VARCHAR},
+        </if>
+        <if test="null != query.password">
+            password = #{query.password,jdbcType=VARCHAR},
+        </if>
+        <if test="null != query.email">
+            email = #{query.email,jdbcType=VARCHAR},
+        </if>
+        <if test="null != query.status">
+            status = #{query.status,jdbcType=INTEGER},
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
+        INSERT INTO user_info (username, password, email, status, create_time, modify_time)
+        VALUES (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
             #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <update id="update" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
+    <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
         UPDATE user_info
         <set>
-            <if test="null != userName">
-                user_name = #{userName,jdbcType=VARCHAR},
+            <if test="null != username">
+                username = #{username,jdbcType=VARCHAR},
             </if>
             <if test="null != password">
                 password = #{password,jdbcType=VARCHAR},
@@ -60,47 +94,40 @@
         </where>
     </update>
 
-    <select id="getById" parameterType="java.lang.Integer" resultMap="userInfoResultMap">
-        SELECT <include refid="ALL_COLUMNS"/>
-        FROM user_info
-        WHERE id = #{id,jdbcType=INTEGER}
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM user_info WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="get" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
+        SELECT <include refid="all_columns"/> FROM user_info WHERE id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="getByUserInfo" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultMap="userInfoResultMap">
-        SELECT <include refid="ALL_COLUMNS"/>
+    <select id="listAll" resultMap="UserInfoResultMap">
+        SELECT <include refid="all_columns"/> FROM user_info
+    </select>
+
+    <select id="listByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultMap="UserInfoResultMap">
+        SELECT <include refid="all_columns"/>
         FROM user_info
         <where>
-            <if test="null != userName">
-                user_name = #{userName,jdbcType=VARCHAR},
-            </if>
-            <if test="null != password">
-                password = #{password,jdbcType=VARCHAR},
-            </if>
-            <if test="null != email">
-                email = #{email,jdbcType=VARCHAR},
-            </if>
-            <if test="null != status">
-                status = #{status,jdbcType=INTEGER},
-            </if>
+            <include refid="list_query_where"/>
         </where>
     </select>
 
-    <select id="list" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultMap="userInfoResultMap">
-        SELECT <include refid="ALL_COLUMNS"/>
+    <select id="countByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultType="java.lang.Integer">
+        SELECT COUNT(id) AS total
         FROM user_info
         <where>
-            <if test="null != userName">
-                user_name = #{userName,jdbcType=VARCHAR},
-            </if>
-            <if test="null != password">
-                password = #{password,jdbcType=VARCHAR},
-            </if>
-            <if test="null != email">
-                email = #{email,jdbcType=VARCHAR},
-            </if>
-            <if test="null != status">
-                status = #{status,jdbcType=INTEGER},
-            </if>
+            <include refid="list_query_where"/>
         </where>
+    </select>
+
+    <select id="page" parameterType="com.zergclan.wormhole.console.api.vo.PageQuery" resultMap="UserInfoResultMap">
+        SELECT <include refid="all_columns"/>
+        FROM user_info
+        <where>
+            <include refid="page_query_where"/>
+        </where>
+        <include refid="limit"/>
     </select>
 </mapper>

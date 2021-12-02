@@ -33,7 +33,7 @@ import javax.annotation.Resource;
  */
 @RestController
 public final class LoginController extends AbstractRestController {
-
+    
     @Resource
     private LoginService loginService;
     

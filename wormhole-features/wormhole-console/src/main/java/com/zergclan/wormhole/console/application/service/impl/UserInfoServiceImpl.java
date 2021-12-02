@@ -17,14 +17,19 @@
 
 package com.zergclan.wormhole.console.application.service.impl;
 
+import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.application.service.UserInfoService;
-import com.zergclan.wormhole.console.infra.repository.UserInfoMapper;
+import com.zergclan.wormhole.console.infra.repository.PageData;
+import com.zergclan.wormhole.console.infra.repository.impl.UserInfoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Implemented Service of {@link UserInfoService}.
@@ -34,24 +39,42 @@ public final class UserInfoServiceImpl implements UserInfoService {
 
     @Resource
     private UserInfoMapper userInfoMapper;
-
+    
     @Override
-    public void save(@RequestBody final UserInfo userInfo) {
+    public void add(@RequestBody final UserInfo userInfo) {
         userInfo.setStatus(0);
         LocalDateTime now = LocalDateTime.now();
         userInfo.setCreateTime(now);
         userInfo.setModifyTime(now);
-        userInfoMapper.save(userInfo);
-    }
-
-    @Override
-    public boolean update(final UserInfo userInfo) {
-        userInfo.setModifyTime(LocalDateTime.now());
-        return userInfoMapper.update(userInfo).equals(1);
+        userInfoMapper.insert(userInfo);
     }
     
     @Override
+    public boolean edit(final UserInfo userInfo) {
+        userInfo.setModifyTime(LocalDateTime.now());
+        return userInfoMapper.updateById(userInfo) == 1;
+    }
+
+    @Override
+    public void remove(final UserInfo userInfo) {
+        userInfoMapper.delete(userInfo.getId());
+    }
+
+    @Override
     public UserInfo getById(final Integer id) {
-        return userInfoMapper.getById(id);
+        return userInfoMapper.get(id);
+    }
+    
+    @Override
+    public List<UserInfo> listAll() {
+        Collection<UserInfo> userInfos = userInfoMapper.listAll();
+        return null == userInfos ? new ArrayList<>() : new ArrayList<>(userInfos);
+    }
+    
+    @Override
+    public PageData<UserInfo> listByPage(final PageQuery<UserInfo> pageQuery) {
+        PageData<UserInfo> result = new PageData<>(pageQuery.getPage(), pageQuery.getSize());
+        int total = userInfoMapper.countByQuery(pageQuery.getQuery());
+        return 0 == total ? result.initData(total, new ArrayList<>()) : result.initData(total, userInfoMapper.page(pageQuery));
     }
 }

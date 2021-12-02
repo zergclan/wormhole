@@ -15,21 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service.impl;
+package com.zergclan.wormhole.console.application.domain.entity;
 
-import com.zergclan.wormhole.common.metadata.user.WormholeUser;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.service.LoginService;
-import org.springframework.stereotype.Service;
+import org.junit.jupiter.api.Test;
 
-@Service
-public final class LoginServiceImpl implements LoginService {
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+public final class UserInfoTest {
     
-    @Override
-    public String login(final UserInfo userInfo) {
-        if (WormholeUser.ADMINISTRATOR.getLoginName().equals(userInfo.getUsername()) && WormholeUser.ADMINISTRATOR.getSecretKey().equals(userInfo.getPassword())) {
-            return "S";
-        }
-        return "F";
+    @Test
+    public void assertEqualsAndHashCode() {
+        UserInfo expectedUserInfo = new UserInfo();
+        expectedUserInfo.setId(1);
+        UserInfo actualUserInfo = new UserInfo();
+        actualUserInfo.setId(2);
+        assertNotEquals(expectedUserInfo, actualUserInfo);
     }
 }

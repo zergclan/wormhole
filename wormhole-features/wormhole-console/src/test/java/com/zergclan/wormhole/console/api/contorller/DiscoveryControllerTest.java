@@ -15,31 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.controller;
+package com.zergclan.wormhole.console.api.contorller;
 
-import com.zergclan.wormhole.console.api.contorller.DiscoveryController;
-import org.junit.jupiter.api.BeforeAll;
+import com.zergclan.wormhole.console.WormholeETLApplication;
+import com.zergclan.wormhole.console.api.vo.HttpResult;
+import com.zergclan.wormhole.console.infra.util.JsonConverter;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import javax.annotation.Resource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@AutoConfigureMockMvc
+@SpringBootTest(classes = {WormholeETLApplication.class})
 public final class DiscoveryControllerTest {
     
-    private static MockMvc mockMvc;
-    
-    @BeforeAll
-    static void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(DiscoveryController.class).build();
-    }
+    private static final JsonConverter JSON_CONVERTER = JsonConverter.defaultInstance();
+
+    @Resource
+    private MockMvc mvc;
     
     @Test
     public void assertStatus() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/status").contentType("application/json").content("")).andReturn();
-        assertEquals("{\"code\":200,\"message\":\"SUCCESS\",\"data\":\"UP\"}", mvcResult.getResponse().getContentAsString());
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/status").contentType("application/json").content("")).andReturn();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data("UP").build();
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 }

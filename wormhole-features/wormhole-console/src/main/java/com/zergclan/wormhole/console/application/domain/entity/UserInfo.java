@@ -17,32 +17,23 @@
 
 package com.zergclan.wormhole.console.application.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
-import java.time.LocalDateTime;
+import lombok.EqualsAndHashCode;
 
 /**
- * User info bean.
+ * User info persistent object.
  */
 @Data
-public final class UserInfo extends AbstractEntity {
-
-    private static final long serialVersionUID = -9088625151070350569L;
-
-    private Integer id;
-
-    private String userName;
-
+@EqualsAndHashCode(callSuper = true)
+public class UserInfo extends BasePO {
+    
+    private static final long serialVersionUID = 6978285474252748202L;
+    
+    private String username;
+    
     private String password;
-
+    
     private String email;
-
+    
     private Integer status;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime createTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime modifyTime;
 }
