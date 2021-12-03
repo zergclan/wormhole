@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,26 +58,27 @@ public final class UserInfoController extends AbstractRestController {
     }
     
     /**
-     * Edit {@link UserInfo}.
+     * Edit {@link UserInfo} by id.
      *
+     * @param id id
      * @param userInfo {@link UserInfo}
      * @return {@link HttpResult}
      */
-    @PutMapping
-    public HttpResult<Void> edit(@RequestBody final UserInfo userInfo) {
-        userInfoService.edit(userInfo);
+    @PutMapping("/{id}")
+    public HttpResult<Void> editById(@PathVariable(value = "id") final Integer id, @RequestBody final UserInfo userInfo) {
+        userInfoService.editById(id, userInfo);
         return success();
     }
-
+    
     /**
-     * Remove {@link UserInfo}.
+     * Remove {@link UserInfo} by id.
      *
-     * @param userInfo {@link UserInfo}
+     * @param id id
      * @return {@link HttpResult}
      */
-    @DeleteMapping
-    public HttpResult<Void> remove(@RequestBody final UserInfo userInfo) {
-        userInfoService.remove(userInfo);
+    @DeleteMapping("/{id}")
+    public HttpResult<Void> removeById(@PathVariable(value = "id") final Integer id) {
+        userInfoService.removeById(id);
         return success();
     }
 
@@ -98,9 +100,9 @@ public final class UserInfoController extends AbstractRestController {
      */
     @GetMapping("/list")
     public HttpResult<List<UserInfo>> listAll() {
-        return success(userInfoService.listAll());
+        return success(new ArrayList<>(userInfoService.listAll()));
     }
-
+    
     /**
      * Get {@link PageData} of {@link UserInfo}.
      *
@@ -109,7 +111,6 @@ public final class UserInfoController extends AbstractRestController {
      */
     @PostMapping("/page")
     public HttpResult<PageData<UserInfo>> listByPage(@RequestBody final PageQuery<UserInfo> page) {
-        PageData<UserInfo> result = userInfoService.listByPage(page);
-        return success(result);
+        return success(userInfoService.listByPage(page));
     }
 }

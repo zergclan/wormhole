@@ -64,22 +64,18 @@ public final class UserInfoControllerTest {
     @Test
     public void assertUpdate() throws Exception {
         UserInfo userInfo = new UserInfo();
-        userInfo.setId(1);
         userInfo.setUsername("admin");
         userInfo.setPassword("admin");
         userInfo.setEmail("jacky7boy@163.com");
         String requestJson = JSON_CONVERTER.toJson(userInfo);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/user").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/user/1").contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 
     @Test
     public void assertRemove() throws Exception {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(2);
-        String requestJson = JSON_CONVERTER.toJson(userInfo);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/user").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/user/2").contentType("application/json").content("")).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
@@ -105,7 +101,7 @@ public final class UserInfoControllerTest {
         HttpResult<List<UserInfo>> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         assertEquals(12, httpResult.getData().size());
     }
-
+    
     @Test
     public void assertPage() throws Exception {
         PageQuery<UserInfo> pageQuery = new PageQuery<>();

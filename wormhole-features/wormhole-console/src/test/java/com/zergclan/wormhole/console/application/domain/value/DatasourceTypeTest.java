@@ -15,12 +15,16 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository.impl;
+package com.zergclan.wormhole.console.application.domain.value;
 
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.infra.repository.BaseRepository;
-import org.apache.ibatis.annotations.Mapper;
+import org.junit.jupiter.api.Test;
 
-@Mapper
-public interface UserInfoMapper extends BaseRepository<UserInfo> {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class DatasourceTypeTest {
+    
+    @Test
+    public void assertValue() {
+        assertEquals(0, DatasourceType.MYSQL.getCode());
+    }
 }

@@ -17,7 +17,7 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zergclan.wormhole.console.infra.repository.impl.UserInfoMapper">
+<mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.UserInfoMapper">
     <resultMap id="UserInfoResultMap" type="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
@@ -28,15 +28,25 @@
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="all_columns">
-        id, username, password, email, status, create_time, modify_time
+    <sql id="id">
+        id = #{id,jdbcType=INTEGER}
+    </sql>
+
+    <sql id="where_status_query">
+        <if test="null != status">
+            AND status = #{status,jdbcType=INTEGER}
+        </if>
     </sql>
 
     <sql id="limit">
         LIMIT #{start}, #{size}
     </sql>
 
-    <sql id="list_query_where">
+    <sql id="select_columns">
+        id, username, password, email, status, create_time, modify_time
+    </sql>
+
+    <sql id="update_columns">
         <if test="null != username">
             username = #{username,jdbcType=VARCHAR},
         </if>
@@ -51,18 +61,21 @@
         </if>
     </sql>
 
-    <sql id="page_query_where">
-        <if test="null != query.username">
-            username = #{query.username,jdbcType=VARCHAR},
+    <sql id="where_fuzzy_query">
+        <if test="null != username">
+            OR username LIKE CONCAT('%', #{username,jdbcType=VARCHAR}, '%')
         </if>
-        <if test="null != query.password">
-            password = #{query.password,jdbcType=VARCHAR},
+        <if test="null != email">
+            OR email LIKE CONCAT('%', #{email,jdbcType=VARCHAR}, '%')
+        </if>
+    </sql>
+
+    <sql id="where_page_query">
+        <if test="null != query.username">
+            OR username LIKE CONCAT('%', #{query.username,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != query.email">
-            email = #{query.email,jdbcType=VARCHAR},
-        </if>
-        <if test="null != query.status">
-            status = #{query.status,jdbcType=INTEGER},
+            OR email LIKE CONCAT('%', #{query.email,jdbcType=VARCHAR}, '%')
         </if>
     </sql>
 
@@ -75,58 +88,48 @@
     <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
         UPDATE user_info
         <set>
-            <if test="null != username">
-                username = #{username,jdbcType=VARCHAR},
-            </if>
-            <if test="null != password">
-                password = #{password,jdbcType=VARCHAR},
-            </if>
-            <if test="null != email">
-                email = #{email,jdbcType=VARCHAR},
-            </if>
-            <if test="null != status">
-                status = #{status,jdbcType=INTEGER},
-            </if>
-            modify_time = #{modifyTime,jdbcType=VARCHAR}
+            <include refid="update_columns"/>
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP}
         </set>
         <where>
-            id = #{id,jdbcType=INTEGER}
+            <include refid="id"/>
         </where>
     </update>
 
-    <delete id="delete" parameterType="java.lang.Integer">
-        DELETE FROM user_info WHERE id = #{id,jdbcType=INTEGER}
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM user_info WHERE <include refid="id"/>
     </delete>
 
     <select id="get" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
-        SELECT <include refid="all_columns"/> FROM user_info WHERE id = #{id,jdbcType=INTEGER}
+        SELECT <include refid="select_columns"/> FROM user_info WHERE <include refid="id"/>
     </select>
 
     <select id="listAll" resultMap="UserInfoResultMap">
-        SELECT <include refid="all_columns"/> FROM user_info
+        SELECT <include refid="select_columns"/> FROM user_info
     </select>
 
     <select id="listByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultMap="UserInfoResultMap">
-        SELECT <include refid="all_columns"/>
+        SELECT <include refid="select_columns"/>
         FROM user_info
         <where>
-            <include refid="list_query_where"/>
+            <include refid="where_status_query"/>
+            <include refid="where_fuzzy_query"/>
         </where>
     </select>
 
-    <select id="countByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultType="java.lang.Integer">
+    <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultType="java.lang.Integer">
         SELECT COUNT(id) AS total
         FROM user_info
         <where>
-            <include refid="list_query_where"/>
+            <include refid="where_fuzzy_query"/>
         </where>
     </select>
 
     <select id="page" parameterType="com.zergclan.wormhole.console.api.vo.PageQuery" resultMap="UserInfoResultMap">
-        SELECT <include refid="all_columns"/>
+        SELECT <include refid="select_columns"/>
         FROM user_info
         <where>
-            <include refid="page_query_where"/>
+            <include refid="where_page_query"/>
         </where>
         <include refid="limit"/>
     </select>

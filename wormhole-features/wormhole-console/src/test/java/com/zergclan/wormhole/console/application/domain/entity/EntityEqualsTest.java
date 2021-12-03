@@ -17,21 +17,27 @@
 
 package com.zergclan.wormhole.console.application.domain.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.junit.jupiter.api.Test;
 
-/**
- * User info persistent object.
- */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends BasePO {
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+public final class EntityEqualsTest {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    @Test
+    public void assertEqualsUserInfo() {
+        UserInfo expected = new UserInfo();
+        expected.setId(1);
+        UserInfo actual = new UserInfo();
+        actual.setId(2);
+        assertNotEquals(expected, actual);
+    }
     
-    private String username;
-    
-    private String password;
-    
-    private String email;
+    @Test
+    public void assertEqualsDatasourceInfo() {
+        DatasourceInfo expected = new DatasourceInfo();
+        expected.setId(1);
+        DatasourceInfo actual = new DatasourceInfo();
+        actual.setId(2);
+        assertNotEquals(expected, actual);
+    }
 }

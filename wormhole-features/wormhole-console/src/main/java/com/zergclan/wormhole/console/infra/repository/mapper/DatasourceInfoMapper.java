@@ -15,21 +15,15 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.vo;
+package com.zergclan.wormhole.console.infra.repository.mapper;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
+import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
+import org.apache.ibatis.annotations.Mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-public final class HttpResultTest {
-    
-    @Test
-    public void assertNew() {
-        HttpResult<String> httpResult = new HttpResult<String>().toBuilder().code(ResultCode.SUCCESS.getCode()).message(ResultCode.SUCCESS.getMessage()).data("S").build();
-        assertNotNull(httpResult);
-        assertEquals(ResultCode.SUCCESS.getCode(), httpResult.getCode());
-        assertEquals(ResultCode.SUCCESS.getMessage(), httpResult.getMessage());
-        assertEquals("S", httpResult.getData());
-    }
+/**
+ * Mapper of {@link UserInfo}.
+ */
+@Mapper
+public interface DatasourceInfoMapper extends BaseMapper<DatasourceInfo> {
 }

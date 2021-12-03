@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.console.infra.repository;
 
-import com.zergclan.wormhole.console.application.domain.entity.BasePO;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -30,7 +29,7 @@ import java.util.LinkedList;
  * @param <T> class type of persistent object
  */
 @Getter
-public final class PageData<T extends BasePO> implements Serializable {
+public final class PageData<T> implements Serializable {
     
     private static final long serialVersionUID = -8162517704403906697L;
     
@@ -61,8 +60,8 @@ public final class PageData<T extends BasePO> implements Serializable {
      */
     public PageData<T> initData(final int total, final Collection<T> items) {
         this.total = total;
-        this.items = items;
         this.totalPage = (total + size - 1) / size;
+        this.items = items;
         return this;
     }
 }

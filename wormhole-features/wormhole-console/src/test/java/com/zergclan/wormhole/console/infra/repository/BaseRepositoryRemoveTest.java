@@ -15,23 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.infra.repository;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.WormholeETLApplication;
+import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * User info persistent object.
- */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends BasePO {
+import javax.annotation.Resource;
+
+@SpringBootTest(classes = {WormholeETLApplication.class})
+public final class BaseRepositoryRemoveTest {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    @Resource
+    private BaseRepository<DatasourceInfo> datasourceInfoRepository;
     
-    private String username;
-    
-    private String password;
-    
-    private String email;
+    @Test
+    public void assertRemove() {
+        datasourceInfoRepository.remove(8);
+    }
 }
