@@ -20,11 +20,12 @@ package com.zergclan.wormhole.console.api.vo;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public final class ResultCodeTest {
-
+public final class VoTest {
+    
     @Test
-    public void assertValue() {
+    public void assertResultCode() {
         assertEquals(200, ResultCode.SUCCESS.getCode());
         assertEquals(500, ResultCode.FAILED.getCode());
         assertEquals(400, ResultCode.BAD_REQUEST.getCode());
@@ -35,5 +36,14 @@ public final class ResultCodeTest {
         assertEquals("BAD_REQUEST", ResultCode.BAD_REQUEST.getMessage());
         assertEquals("UNAUTHORIZED", ResultCode.UNAUTHORIZED.getMessage());
         assertEquals("ERROR", ResultCode.ERROR.getMessage());
+    }
+    
+    @Test
+    public void assertHttpResult() {
+        HttpResult<String> httpResult = new HttpResult<String>().toBuilder().code(ResultCode.SUCCESS.getCode()).message(ResultCode.SUCCESS.getMessage()).data("S").build();
+        assertNotNull(httpResult);
+        assertEquals(ResultCode.SUCCESS.getCode(), httpResult.getCode());
+        assertEquals(ResultCode.SUCCESS.getMessage(), httpResult.getMessage());
+        assertEquals("S", httpResult.getData());
     }
 }
