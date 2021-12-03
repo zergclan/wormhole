@@ -25,5 +25,11 @@ header:
   paths-ignore:
     - '**/.gitignore'
     - '.mvn'
+    - '**/*.md'
+    - '**/*.json'
+    - '**/*.iml'
+    - '**/*.ini'
+    - 'LICENSE'
+    - 'NOTICE'
 
   comment: on-failure
