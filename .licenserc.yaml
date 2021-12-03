@@ -23,6 +23,7 @@ header:
     copyright-owner: Apache Software Foundation
 
   paths-ignore:
+    - '**/.gitignore'
     - '.mvn'
 
   comment: on-failure
