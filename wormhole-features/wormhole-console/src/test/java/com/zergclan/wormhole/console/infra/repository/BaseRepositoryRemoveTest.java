@@ -15,15 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository.mapper;
+package com.zergclan.wormhole.console.infra.repository;
 
+import com.zergclan.wormhole.console.WormholeETLApplication;
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import org.apache.ibatis.annotations.Mapper;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * Mapper of {@link UserInfo}.
- */
-@Mapper
-public interface DatasourceInfoMapper extends BaseMapper<DatasourceInfo> {
+import javax.annotation.Resource;
+
+@SpringBootTest(classes = {WormholeETLApplication.class})
+public final class BaseRepositoryRemoveTest {
+    
+    @Resource
+    private BaseRepository<DatasourceInfo> datasourceInfoRepository;
+    
+    @Test
+    public void assertRemove() {
+        datasourceInfoRepository.remove(8);
+    }
 }

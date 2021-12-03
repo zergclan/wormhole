@@ -37,7 +37,7 @@ public final class DatasourceInfo extends BasePO {
     
     private Integer port;
     
-    private String catalog;
+    private String catalogue;
     
     private String username;
     

@@ -53,6 +53,13 @@
         #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
     </sql>
 
+    <sql id="insert_batch_values">
+        #{batch.title,jdbcType=VARCHAR}, #{batch.genre,jdbcType=INTEGER}, #{batch.host,jdbcType=VARCHAR}, #{batch.port,jdbcType=INTEGER},
+        #{batch.catalogue,jdbcType=VARCHAR}, #{batch.username,jdbcType=VARCHAR}, #{batch.password,jdbcType=VARCHAR}, #{batch.extendParameters,jdbcType=VARCHAR},
+        #{batch.url,jdbcType=VARCHAR}, #{batch.description,jdbcType=VARCHAR}, #{batch.status,jdbcType=INTEGER}, #{batch.operator,jdbcType=INTEGER},
+        #{batch.createTime,jdbcType=TIMESTAMP}, #{batch.modifyTime,jdbcType=TIMESTAMP}
+    </sql>
+
     <sql id="update_columns">
         <if test="null != title">
             title = #{title,jdbcType=VARCHAR},
@@ -102,8 +109,8 @@
 
     <sql id="where_unique_query">
         host = #{host,jdbcType=VARCHAR}
-        AND port = #{status,jdbcType=INTEGER}
-        AND catalogue = #{status,jdbcType=VARCHAR}
+        AND port = #{port,jdbcType=INTEGER}
+        AND catalogue = #{catalogue,jdbcType=VARCHAR}
         AND username = #{username,jdbcType=VARCHAR}
         AND password = #{password,jdbcType=VARCHAR}
     </sql>
@@ -146,8 +153,8 @@
     <insert id="insertBatch" parameterType="java.util.Collection">
         INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>)
         VALUES
-        <foreach collection="list" item="datasourceInfo" open="(" close=")" separator=",">
-            <include refid="insert_values"/>
+        <foreach collection="list" item="batch" separator=",">
+            (<include refid="insert_batch_values"/>)
         </foreach>
     </insert>
 
@@ -188,10 +195,6 @@
         </foreach>
     </select>
 
-    <select id="listByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo" resultMap="DatasourceInfoResultMap">
-
-    </select>
-
     <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo" resultType="java.lang.Integer">
         SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
         <where>
@@ -206,29 +209,4 @@
         </where>
         <include refid="limit"/>
     </select>
-
-    <!--  TODO
-    /**
-    * Delete by ids.
-    *
-    * @param ids ids
-    */
-    void deleteByIds(Collection<Integer> ids);
-
-    /**
-    * Update.
-    *
-    * @param po persistent object
-    * @return update rows
-    */
-    int update(T po);
-
-    /**
-    * Count by query.
-    *
-    * @param po persistent object
-    * @return rows
-    */
-    int countByQuery(T po);
-    -->
 </mapper>

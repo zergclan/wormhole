@@ -15,11 +15,11 @@ DROP TABLE IF EXISTS `datasource_info`;
 
 CREATE TABLE datasource_info(
     `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `name` VARCHAR(64) NOT NULL COMMENT '数据源名字',
-    `type` INT(11) NOT NULL COMMENT '数据源类型',
-    `ip` VARCHAR(64) NOT NULL COMMENT '数据源IP',
+    `title` VARCHAR(64) NOT NULL COMMENT '数据源名字',
+    `genre` INT(11) NOT NULL COMMENT '数据源类型',
+    `host` VARCHAR(16) NOT NULL COMMENT '数据源IP',
     `port` INT(11) NOT NULL COMMENT '数据源端口',
-    `schema_name` VARCHAR(64) NOT NULL COMMENT '数据库名称',
+    `catalogue` VARCHAR(64) NOT NULL COMMENT '数据库名称',
     `username` VARCHAR(64) NOT NULL COMMENT '链接用户名',
     `password` VARCHAR(64) NOT NULL COMMENT '链接用户密码',
     `extend_parameters` VARCHAR(1024) NOT NULL COMMENT '连接扩展参数.json格式存储',

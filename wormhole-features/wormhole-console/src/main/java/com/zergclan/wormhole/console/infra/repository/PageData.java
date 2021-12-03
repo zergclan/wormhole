@@ -61,9 +61,6 @@ public final class PageData<T> implements Serializable {
     public PageData<T> initData(final int total, final Collection<T> items) {
         this.total = total;
         this.totalPage = (total + size - 1) / size;
-        if (null == items || items.isEmpty()) {
-            return this;
-        }
         this.items = items;
         return this;
     }

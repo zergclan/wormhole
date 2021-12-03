@@ -47,6 +47,7 @@ public class AbstractTransactionalRepository<T extends BasePO> implements BaseRe
         this.initClazz();
     }
     
+    @SuppressWarnings("all")
     private void initClazz() {
         Class<? extends BaseRepository> clazz = this.getClass();
         Type type = clazz.getGenericSuperclass();
@@ -87,20 +88,8 @@ public class AbstractTransactionalRepository<T extends BasePO> implements BaseRe
     
     @Transactional(rollbackFor = Throwable.class)
     @Override
-    public boolean edit(final T po) {
-        return baseMapper.update(po) == 1;
-    }
-    
-    @Transactional(rollbackFor = Throwable.class)
-    @Override
     public void remove(final Integer id) {
         baseMapper.deleteById(id);
-    }
-    
-    @Transactional(rollbackFor = Throwable.class)
-    @Override
-    public void remove(final Collection<Integer> ids) {
-        baseMapper.deleteByIds(ids);
     }
     
     @Transactional(readOnly = true)
@@ -123,12 +112,6 @@ public class AbstractTransactionalRepository<T extends BasePO> implements BaseRe
     
     @Transactional(readOnly = true)
     @Override
-    public int count(final T po) {
-        return baseMapper.countByQuery(po);
-    }
-    
-    @Transactional(readOnly = true)
-    @Override
     public Collection<T> listAll() {
         return baseMapper.listAll();
     }
@@ -137,12 +120,6 @@ public class AbstractTransactionalRepository<T extends BasePO> implements BaseRe
     @Override
     public Collection<T> list(final Collection<Integer> ids) {
         return baseMapper.listInIds(ids);
-    }
-    
-    @Transactional(readOnly = true)
-    @Override
-    public Collection<T> list(final T po) {
-        return baseMapper.listByQuery(po);
     }
     
     @Transactional(readOnly = true)

@@ -21,7 +21,7 @@ import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repository of {@link UserInfo}.
+ * Transactional repository of {@link UserInfo}.
  */
 @Repository(value = "userInfoRepository")
 public class UserInfoRepository extends AbstractTransactionalRepository<UserInfo> {

@@ -15,15 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository.mapper;
+package com.zergclan.wormhole.console.application.domain.entity;
 
-import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import org.apache.ibatis.annotations.Mapper;
+import org.junit.jupiter.api.Test;
 
-/**
- * Mapper of {@link UserInfo}.
- */
-@Mapper
-public interface DatasourceInfoMapper extends BaseMapper<DatasourceInfo> {
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+public final class EntityEqualsTest {
+    
+    @Test
+    public void assertEqualsUserInfo() {
+        UserInfo expected = new UserInfo();
+        expected.setId(1);
+        UserInfo actual = new UserInfo();
+        actual.setId(2);
+        assertNotEquals(expected, actual);
+    }
+    
+    @Test
+    public void assertEqualsDatasourceInfo() {
+        DatasourceInfo expected = new DatasourceInfo();
+        expected.setId(1);
+        DatasourceInfo actual = new DatasourceInfo();
+        actual.setId(2);
+        assertNotEquals(expected, actual);
+    }
 }

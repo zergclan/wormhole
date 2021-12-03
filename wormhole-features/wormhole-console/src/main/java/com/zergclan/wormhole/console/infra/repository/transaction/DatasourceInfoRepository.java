@@ -15,20 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
+import org.springframework.stereotype.Repository;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
-public final class UserInfoTest {
-    
-    @Test
-    public void assertEqualsAndHashCode() {
-        UserInfo expectedUserInfo = new UserInfo();
-        expectedUserInfo.setId(1);
-        UserInfo actualUserInfo = new UserInfo();
-        actualUserInfo.setId(2);
-        assertNotEquals(expectedUserInfo, actualUserInfo);
-    }
+/**
+ * Transactional repository of {@link DatasourceInfo}.
+ */
+@Repository(value = "datasourceInfoRepository")
+public class DatasourceInfoRepository extends AbstractTransactionalRepository<DatasourceInfo> {
 }

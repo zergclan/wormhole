@@ -52,26 +52,11 @@ public interface BaseMapper<T extends BasePO> {
     int updateById(T po);
     
     /**
-     * Update.
-     *
-     * @param po persistent object
-     * @return update rows
-     */
-    int update(T po);
-    
-    /**
      * Delete by id.
      *
      * @param id id
      */
     void deleteById(Integer id);
-    
-    /**
-     * Delete by ids.
-     *
-     * @param ids ids
-     */
-    void deleteByIds(Collection<Integer> ids);
     
     /**
      * Get one by id.
@@ -97,14 +82,6 @@ public interface BaseMapper<T extends BasePO> {
     int countAll();
     
     /**
-     * Count by query.
-     *
-     * @param po persistent object
-     * @return rows
-     */
-    int countByQuery(T po);
-    
-    /**
      * List all.
      *
      * @return persistent objects
@@ -118,14 +95,6 @@ public interface BaseMapper<T extends BasePO> {
      * @return persistent objects
      */
     Collection<T> listInIds(Collection<Integer> ids);
-    
-    /**
-     * List by query.
-     *
-     * @param po persistent object
-     * @return persistent objects
-     */
-    Collection<T> listByQuery(T po);
     
     /**
      * Count by page query.

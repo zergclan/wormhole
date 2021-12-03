@@ -52,26 +52,11 @@ public interface BaseRepository<T> {
     boolean edit(Integer id, T po);
     
     /**
-     * Edit.
-     *
-     * @param po persistent object
-     * @return update rows
-     */
-    boolean edit(T po);
-    
-    /**
      * Delete by id.
      *
      * @param id id
      */
     void remove(Integer id);
-    
-    /**
-     * Delete by ids.
-     *
-     * @param ids ids
-     */
-    void remove(Collection<Integer> ids);
     
     /**
      * Get one by id.
@@ -97,14 +82,6 @@ public interface BaseRepository<T> {
     int count();
     
     /**
-     * Count by query.
-     *
-     * @param po persistent object
-     * @return rows
-     */
-    int count(T po);
-    
-    /**
      * List all.
      *
      * @return persistent objects
@@ -118,14 +95,6 @@ public interface BaseRepository<T> {
      * @return persistent objects
      */
     Collection<T> list(Collection<Integer> ids);
-    
-    /**
-     * List by query.
-     *
-     * @param po persistent object
-     * @return persistent objects
-     */
-    Collection<T> list(T po);
     
     /**
      * page by page query.
