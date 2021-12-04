@@ -88,7 +88,7 @@ public final class UserInfoControllerTest {
         userInfo.setUsername("jack");
         userInfo.setPassword("123456");
         userInfo.setEmail("jacky7boy@163.com");
-        userInfo.setStatus(0);
+        userInfo.setEnable(0);
         userInfo.setCreateTime(LocalDateTime.parse("2012-11-19 18:30:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userInfo.setModifyTime(LocalDateTime.parse("2012-11-19 18:30:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         HttpResult<UserInfo> expectedResult = new HttpResult<UserInfo>().toBuilder().code(200).message("SUCCESS").data(userInfo).build();

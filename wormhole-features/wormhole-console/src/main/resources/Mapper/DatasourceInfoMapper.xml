@@ -30,7 +30,7 @@
         <result column="extend_parameters" property="extendParameters" jdbcType="VARCHAR"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="description" property="description" jdbcType="VARCHAR"/>
-        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="enable" property="enable" jdbcType="INTEGER"/>
         <result column="operator" property="operator" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
@@ -43,20 +43,20 @@
     <sql id="limit">LIMIT #{start}, #{size}</sql>
 
     <sql id="insert_columns">
-        title, genre, host, port, catalogue, username, password, extend_parameters, url, description, status, operator, create_time, modify_time
+        title, genre, host, port, catalogue, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time
     </sql>
 
     <sql id="insert_values">
         #{title,jdbcType=VARCHAR}, #{genre,jdbcType=INTEGER}, #{host,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER},
         #{catalogue,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{extendParameters,jdbcType=VARCHAR},
-        #{url,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER},
+        #{url,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{enable,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER},
         #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
     </sql>
 
     <sql id="insert_batch_values">
         #{batch.title,jdbcType=VARCHAR}, #{batch.genre,jdbcType=INTEGER}, #{batch.host,jdbcType=VARCHAR}, #{batch.port,jdbcType=INTEGER},
         #{batch.catalogue,jdbcType=VARCHAR}, #{batch.username,jdbcType=VARCHAR}, #{batch.password,jdbcType=VARCHAR}, #{batch.extendParameters,jdbcType=VARCHAR},
-        #{batch.url,jdbcType=VARCHAR}, #{batch.description,jdbcType=VARCHAR}, #{batch.status,jdbcType=INTEGER}, #{batch.operator,jdbcType=INTEGER},
+        #{batch.url,jdbcType=VARCHAR}, #{batch.description,jdbcType=VARCHAR}, #{batch.enable,jdbcType=INTEGER}, #{batch.operator,jdbcType=INTEGER},
         #{batch.createTime,jdbcType=TIMESTAMP}, #{batch.modifyTime,jdbcType=TIMESTAMP}
     </sql>
 
@@ -88,22 +88,25 @@
         <if test="null != description">
             description = #{description,jdbcType=VARCHAR},
         </if>
+        <if test="null != enable">
+            enable = #{enable,jdbcType=INTEGER},
+        </if>
         <if test="null != operator">
             operator = #{operator,jdbcType=VARCHAR},
         </if>
     </sql>
 
     <sql id="select_columns">
-        id, title, genre, host, port, catalogue, username, password, extend_parameters, url, description, status, operator, create_time, modify_time
+        id, title, genre, host, port, catalogue, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time
     </sql>
 
     <sql id="select_count">
         COUNT(id) AS total
     </sql>
 
-    <sql id="where_status_query">
-        <if test="null != status">
-            AND status = #{status,jdbcType=INTEGER}
+    <sql id="where_enable">
+        <if test="null != enable">
+            AND enable = #{enable,jdbcType=INTEGER}
         </if>
     </sql>
 
@@ -146,8 +149,7 @@
     </sql>
 
     <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo">
-        INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>)
-        VALUES (<include refid="insert_values"/>)
+        INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
     </insert>
 
     <insert id="insertBatch" parameterType="java.util.Collection">

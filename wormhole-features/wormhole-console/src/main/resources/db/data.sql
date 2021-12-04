@@ -17,7 +17,7 @@
 
 DELETE FROM `user_info`;
 
-INSERT INTO `user_info` (id, `username`, `password`, `email`, `status`, `create_time`, `modify_time`) VALUES
+INSERT INTO `user_info` (id, `username`, `password`, `email`, `enable`, `create_time`, `modify_time`) VALUES
 (1, 'jack', '123456', 'jacky7boy@163.com', 0, {ts '2012-11-19 18:30:30.00'}, {ts '2012-11-19 18:30:30.00'}),
 (2, 'rose', '123456', 'jacky7boy@163.com', 0, {ts '2012-11-19 18:30:30.00'}, {ts '2012-11-19 18:30:30.00'}),
 (3, 'root', '123456', 'jacky7boy@163.com', 0, {ts '2012-11-19 18:30:30.00'}, {ts '2012-11-19 18:30:30.00'}),
@@ -33,7 +33,7 @@ INSERT INTO `user_info` (id, `username`, `password`, `email`, `status`, `create_
 
 DELETE FROM `datasource_info`;
 
-INSERT INTO datasource_info (id, title, genre, host, port, catalogue, username, password, extend_parameters, url, description, status, operator, create_time, modify_time )
+INSERT INTO datasource_info (id, title, genre, host, port, catalogue, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time )
 VALUES ( 1, 'local_extracted_data_source', 0, '127.0.0.1', 3306, 'extracted_ds', 'root', '123456',
         '{"useSSL":"false","useUnicode":"true","characterEncoding":"UTF-8","serverTimezone":"UTC"}',
         'jdbc:mysql://127.0.0.1:3306/extracted_ds?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC',

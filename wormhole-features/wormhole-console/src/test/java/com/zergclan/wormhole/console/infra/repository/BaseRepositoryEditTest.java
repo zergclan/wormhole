@@ -53,7 +53,7 @@ public final class BaseRepositoryEditTest {
         result.setUrl(URL);
         result.setDescription("test ds description");
         result.setOperator(0);
-        result.setStatus(0);
+        result.setEnable(0);
         return result;
     }
 }

@@ -22,7 +22,7 @@ CREATE TABLE `user_info` (
     `username` VARCHAR(64) NOT NULL COMMENT '用户名',
     `password` VARCHAR(64) NOT NULL COMMENT '用户密码',
     `email` VARCHAR(64) NOT NULL COMMENT '用户邮箱',
-    `status` tinyint(4) NOT NULL COMMENT '状态 0未启用，1已启用',
+    `enable` tinyint(4) NOT NULL COMMENT '状态 0未启用，1已启用',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
@@ -42,7 +42,7 @@ CREATE TABLE datasource_info(
     `extend_parameters` VARCHAR(1024) NOT NULL COMMENT '连接扩展参数.json格式存储',
     `url` VARCHAR(2048) NULL COMMENT '资源链接URL',
     `description` VARCHAR(1024) NOT NULL COMMENT '资源描述信息',
-    `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '状态 0未启用，1已启用',
+    `enable` tinyint(4) NOT NULL COMMENT '状态 0未启用，1已启用',
     `operator` INT(11) NOT NULL COMMENT '操作员ID',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',

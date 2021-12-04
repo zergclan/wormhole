@@ -43,7 +43,7 @@ public final class JsonConverterTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId(1);
         userInfo.setUsername("");
-        assertEquals("{\"id\":1,\"status\":null,\"createTime\":null,\"modifyTime\":null,\"username\":\"\",\"password\":null,\"email\":null}", DEFAULT.toJson(userInfo));
+        assertEquals("{\"id\":1,\"enable\":null,\"createTime\":null,\"modifyTime\":null,\"username\":\"\",\"password\":null,\"email\":null}", DEFAULT.toJson(userInfo));
         assertEquals("{\"id\":1,\"username\":\"\"}", IGNORE_NULL.toJson(userInfo));
         assertEquals("{\"id\":1}", IGNORE_EMPTY.toJson(userInfo));
     }
