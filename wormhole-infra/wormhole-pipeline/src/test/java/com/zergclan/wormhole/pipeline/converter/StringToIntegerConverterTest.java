@@ -17,9 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.converter;
 
-import com.zergclan.wormhole.common.data.node.IntegerDataNode;
-import com.zergclan.wormhole.common.data.node.StringDataNode;
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import com.zergclan.wormhole.common.data.IntegerDataNode;
+import com.zergclan.wormhole.common.data.StringDataNode;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +35,7 @@ public final class StringToIntegerConverterTest {
     
     @Test
     public void assertConvert() {
-        StringDataNode stringDataNode = new StringDataNode("column", "column comment", DataNodeType.NATIVE);
+        StringDataNode stringDataNode = new StringDataNode("column");
         stringDataNode.setValue("1");
         IntegerDataNode target = wormholeConverter.convert(stringDataNode);
         assertEquals(1, target.getValue());

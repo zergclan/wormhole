@@ -17,20 +17,47 @@
 
 package com.zergclan.wormhole.common.data.test;
 
-import com.zergclan.wormhole.common.data.WormholeData;
-import com.zergclan.wormhole.common.data.node.WormholeDataNode;
-import lombok.Getter;
+import com.zergclan.wormhole.common.data.DataGroup;
+import com.zergclan.wormhole.common.data.DataNode;
+import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
- * Demo test data for WormholeData.
+ * Demo converted data for WormholeData.
  */
-@Getter
-public final class DemoTestData implements WormholeData {
-    
+@RequiredArgsConstructor
+public final class DemoTestData implements DataGroup {
+
     private static final long serialVersionUID = 3292661075578447515L;
-    
-    private Map<String, WormholeDataNode> dataNodes = new LinkedHashMap<>();
+
+    private final Long planId;
+
+    private final Long jobId;
+
+    private final Long taskId;
+
+    private final Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
+
+    @Override
+    public Long getPlanId() {
+        return planId;
+    }
+
+    @Override
+    public Long getJobId() {
+        return jobId;
+    }
+
+    @Override
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    @Override
+    public Optional<Map<String, DataNode<?>>> getDataNodes() {
+        return dataNodes.isEmpty() ? Optional.empty() : Optional.of(dataNodes);
+    }
 }

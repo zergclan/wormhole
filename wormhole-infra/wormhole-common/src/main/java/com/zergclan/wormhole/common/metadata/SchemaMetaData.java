@@ -17,8 +17,23 @@
 
 package com.zergclan.wormhole.common.metadata;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
- * The root interface from which all meta data objects shall be derived in Wormhole.
+ * Meta data of schema.
  */
-public interface WormholeMetadata {
+@RequiredArgsConstructor
+@Getter
+public final class SchemaMetaData implements MetaData {
+
+    private final String owner;
+
+    private final String name;
+
+    private final Map<String, TableMetaData> tables = new LinkedHashMap<>();
+
 }

@@ -15,18 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.data.type;
 
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.util.DateUtil;
+import lombok.Getter;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Date;
 
-public final class IntegerDataNodeTest {
+/**
+ * Date pattern.
+ */
+@Getter
+public enum DatePattern {
+
+    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
     
-    @Test
-    public void assertNewInstance() {
-        WormholeDataNode<Integer> wormholeDataNode = new IntegerDataNode("column", "column comment", DataNodeType.NATIVE);
-        assertNotNull(wormholeDataNode);
+    private final int code;
+
+    private final String pattern;
+
+    DatePattern(final int code, final String pattern) {
+        this.code = code;
+        this.pattern = pattern;
+    }
+
+    /**
+     * Format {@link Date}.
+     *
+     * @param date {@link Date}
+     * @return format date text
+     */
+    public String format(final Date date) {
+        return DateUtil.format(date, pattern);
     }
 }

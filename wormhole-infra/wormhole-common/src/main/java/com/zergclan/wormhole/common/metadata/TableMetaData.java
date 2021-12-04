@@ -15,18 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.metadata;
 
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import org.junit.jupiter.api.Test;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public final class StringDataNodeTest {
-    
-    @Test
-    public void assertNewInstance() {
-        WormholeDataNode<String> wormholeDataNode = new StringDataNode("column", "column comment", DataNodeType.NATIVE);
-        assertNotNull(wormholeDataNode);
-    }
+/**
+ * Meta data table.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class TableMetaData implements MetaData {
+
+    private final String owner;
+
+    private final String name;
+
+    private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
+
+    private final Map<String, IndexMetaData> indexes = new LinkedHashMap<>();
 }

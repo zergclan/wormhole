@@ -17,11 +17,11 @@
 
 package com.zergclan.wormhole.common.concurrent;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.concurrent.AbstractExecutorService;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -32,19 +32,19 @@ import java.util.concurrent.TimeUnit;
  */
 @RequiredArgsConstructor
 public final class ExecutorService extends AbstractExecutorService {
-    
+
     private final ThreadPoolExecutor threadPoolExecutor;
     
     private final ExecutorRejectedHandler handler;
 
     /**
-     * Submit task to the thread pool executor.
+     * Submit {@link PromisedTask} to {@link ExecutorService}.
      *
-     * @param task task
-     * @param <V> the class type of result
-     * @return handled result
+     * @param task {@link PromisedTask}
+     * @param <V> the class type of result {@link Future}
+     * @return {@link Future}
      */
-    public <V> Future<V> submit(final Callable<V> task) {
+    public <V> Future<V> submit(final PromisedTask<V> task) {
         try {
             return threadPoolExecutor.submit(task);
         } catch (RejectedExecutionException ex) {
@@ -58,6 +58,7 @@ public final class ExecutorService extends AbstractExecutorService {
     }
     
     @Override
+    @NonNull
     public List<Runnable> shutdownNow() {
         return threadPoolExecutor.shutdownNow();
     }
@@ -73,12 +74,12 @@ public final class ExecutorService extends AbstractExecutorService {
     }
     
     @Override
-    public boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
+    public boolean awaitTermination(final long timeout, @NonNull final TimeUnit unit) throws InterruptedException {
         return threadPoolExecutor.awaitTermination(timeout, unit);
     }
     
     @Override
-    public void execute(final Runnable command) {
+    public void execute(@NonNull final Runnable command) {
         threadPoolExecutor.execute(command);
     }
 }

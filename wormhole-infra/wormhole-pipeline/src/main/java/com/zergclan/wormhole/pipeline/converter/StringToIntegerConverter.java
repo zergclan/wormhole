@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.converter;
 
-import com.zergclan.wormhole.common.data.node.IntegerDataNode;
-import com.zergclan.wormhole.common.data.node.StringDataNode;
+import com.zergclan.wormhole.common.data.IntegerDataNode;
+import com.zergclan.wormhole.common.data.StringDataNode;
 import com.zergclan.wormhole.common.exception.WormholeException;
 
 /**
@@ -31,7 +31,7 @@ public final class StringToIntegerConverter implements DataNodeConverter<StringD
         String sourceValue = dataNode.getValue();
         try {
             Integer targetValue = Integer.parseInt(sourceValue);
-            IntegerDataNode integerDataNode = new IntegerDataNode(dataNode.getColumn(), dataNode.getComment(), dataNode.getDataNodeType());
+            IntegerDataNode integerDataNode = new IntegerDataNode(dataNode.getName());
             integerDataNode.setValue(targetValue);
             return integerDataNode;
         } catch (NumberFormatException ex) {

@@ -17,20 +17,19 @@
 
 package com.zergclan.wormhole.common.concurrent;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
- * Handler for tasks that cannot be executed by a {@link ExecutorService}.
+ * Handler for {@link PromisedTask} that cannot be executed by a {@link ExecutorService}.
  */
 public interface ExecutorRejectedHandler {
     
     /**
-     * Handle task.
+     * Handle {@link PromisedTask}.
      *
-     * @param task task
-     * @param <V> the class type of result
-     * @return handled result
+     * @param task {@link PromisedTask}
+     * @param <V> the class type of result {@link Future}
+     * @return {@link Future}
      */
-    <V> Future<V> handle(Callable<V> task);
+    <V> Future<V> handle(PromisedTask<V> task);
 }

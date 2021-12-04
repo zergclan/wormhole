@@ -15,47 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node.type;
+package com.zergclan.wormhole.common.data;
 
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Data node type.
+ * Data node type of {@link Integer}.
  */
-@Getter
-public enum DataNodeType {
+@RequiredArgsConstructor
+public final class IntegerDataNode implements DataNode<Integer> {
     
-    /**
-     * Native type of data node.
-     */
-    NATIVE(0, "native"),
-    
-    /**
-     * Not null type of data node.
-     */
-    NOT_NULL(1, "not null"),
-    
-    /**
-     * Have default value type of data node.
-     */
-    HAVE_DEFAULT_VALUE(2, "have default value"),
-    
-    /**
-     * Unique index type of data node.
-     */
-    UNIQUE_INDEX(4, "unique index"),
-    
-    /**
-     * Primary key type of data node.
-     */
-    PRIMARY_KEY(5, "primary key");
-    
-    private final int code;
+    private static final long serialVersionUID = -9112425094443804066L;
     
     private final String name;
     
-    DataNodeType(final int code, final String name) {
-        this.code = code;
-        this.name = name;
+    private Integer value;
+    
+    @Override
+    public Integer getValue() {
+        return value;
+    }
+    
+    @Override
+    public void setValue(final Integer value) {
+        this.value = value;
     }
 }

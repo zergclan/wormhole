@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service;
+package com.zergclan.wormhole.common.metadata;
 
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
+import org.junit.jupiter.api.Test;
 
-public interface LoginService {
-    
-    /**
-     * Login.
-     *
-     * @param userInfo {@link UserInfo}
-     * @return token
-     */
-    String login(UserInfo userInfo);
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class MetaDataTest {
+
+    @Test
+    public void assertMySQLDataSource() {
+        DataSourceMetaData dataSourceMetaData = new DataSourceMetaData("mysql_db");
+        assertEquals("127.0.0.1", dataSourceMetaData.getHostName());
+        assertEquals(3306, dataSourceMetaData.getPort());
+        assertEquals("mysql_db", dataSourceMetaData.getCatalog());
+    }
 }

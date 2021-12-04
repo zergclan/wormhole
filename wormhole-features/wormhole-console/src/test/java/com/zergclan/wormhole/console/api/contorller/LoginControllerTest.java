@@ -45,12 +45,12 @@ public final class LoginControllerTest {
     @Test
     public void assertLoginSuccess() throws Exception {
         LoginVO loginVO = new LoginVO();
-        loginVO.setLoginName("admin");
-        loginVO.setPassword("admin");
+        loginVO.setLoginName("root");
+        loginVO.setPassword("root");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data("S").build();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data("wormhole-root-token").build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
     
@@ -62,7 +62,7 @@ public final class LoginControllerTest {
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("F").build();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("").build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
     
@@ -74,7 +74,7 @@ public final class LoginControllerTest {
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("F").build();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("").build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 }

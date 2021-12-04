@@ -17,17 +17,16 @@
 
 package com.zergclan.wormhole.pipeline.handler;
 
-import com.zergclan.wormhole.common.data.node.AbstractTextDataNode;
+import com.zergclan.wormhole.common.data.StringDataNode;
 
 /**
  * Null handler to empty handler of data node value.
  */
-public final class NullToEmptyHandler implements DataNodeHandler<AbstractTextDataNode> {
+public final class NullToEmptyHandler implements DataNodeHandler<StringDataNode> {
     
     @Override
-    public AbstractTextDataNode handler(final AbstractTextDataNode dataNode) {
-        String value = dataNode.getValue();
-        if (null == value) {
+    public StringDataNode handler(final StringDataNode dataNode) {
+        if (null == dataNode.getValue()) {
             dataNode.setValue("");
         }
         return dataNode;

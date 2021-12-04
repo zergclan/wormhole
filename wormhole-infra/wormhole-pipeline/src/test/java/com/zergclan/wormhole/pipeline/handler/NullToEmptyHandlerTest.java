@@ -17,9 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.handler;
 
-import com.zergclan.wormhole.common.data.node.AbstractTextDataNode;
-import com.zergclan.wormhole.common.data.node.StringDataNode;
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import com.zergclan.wormhole.common.data.StringDataNode;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -27,17 +25,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class NullToEmptyHandlerTest {
     
-    private static DataNodeHandler<AbstractTextDataNode> wormholeHandler;
+    private static DataNodeHandler<StringDataNode> wormholeHandler;
     
     @BeforeAll
     public static void init() {
         wormholeHandler = new NullToEmptyHandler();
     }
-    
+
     @Test
     public void assertHandler() {
-        AbstractTextDataNode node = new StringDataNode("column", "comment", DataNodeType.NATIVE);
-        node = wormholeHandler.handler(node);
-        assertEquals("", node.getValue());
+        assertEquals("", wormholeHandler.handler(new StringDataNode("column")).getValue());
     }
 }

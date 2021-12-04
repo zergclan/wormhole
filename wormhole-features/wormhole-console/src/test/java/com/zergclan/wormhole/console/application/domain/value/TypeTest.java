@@ -15,34 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.console.application.domain.value;
 
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-/**
- * Data node type of number.
- */
-@RequiredArgsConstructor
-public final class IntegerDataNode extends AbstractNumberDataNode<Integer> {
-    
-    private static final long serialVersionUID = -9112425094443804066L;
-    
-    private final String column;
-    
-    private final String comment;
-    
-    private final DataNodeType dataNodeType;
-    
-    private Integer value;
-    
-    @Override
-    public Integer getValue() {
-        return value;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class TypeTest {
+
+    @Test
+    public void assertDatasource() {
+        assertEquals(0, DatasourceType.MYSQL.getCode());
     }
-    
-    @Override
-    public void setValue(final Integer value) {
-        this.value = value;
+
+    @Test
+    public void assertLogin() {
+        assertEquals(0, LoginType.USERNAME.getCode());
+        assertEquals(1, LoginType.EMAIL.getCode());
+    }
+
+    @Test
+    public void assertRootUser() {
+        RootUser user = RootUser.ROOT;
+        assertEquals("root", user.getLoginName());
+        assertEquals("root", user.getSecretKey());
     }
 }

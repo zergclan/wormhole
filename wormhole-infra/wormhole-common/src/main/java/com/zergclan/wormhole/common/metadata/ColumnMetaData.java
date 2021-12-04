@@ -15,28 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.metadata;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all transform data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
+ * Meta data for column.
  */
-public interface WormholeDataNode<V> extends Serializable {
-    
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
-    
-    /**
-     * Set data node value.
-     *
-     * @param value data node value
-     */
-    void setValue(V value);
+@RequiredArgsConstructor
+@Getter
+public final class ColumnMetaData implements MetaData {
+
+    private final String owner;
+
+    private final String name;
+
+    private final int dataType;
+
+    private final boolean primaryKey;
+
+    private final boolean uniqueIndex;
 }

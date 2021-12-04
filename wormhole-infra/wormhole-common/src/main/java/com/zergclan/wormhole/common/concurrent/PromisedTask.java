@@ -15,12 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data;
+package com.zergclan.wormhole.common.concurrent;
 
-import java.io.Serializable;
+import java.util.concurrent.Callable;
 
 /**
- * The root interface from which all transform data objects shall be derived in Wormhole.
+ * The root interface from which all executed task shall be derived in Wormhole.
+ *
+ * @param <V> the class type of result
  */
-public interface WormholeData extends Serializable {
+public interface PromisedTask<V> extends Callable<V> {
 }

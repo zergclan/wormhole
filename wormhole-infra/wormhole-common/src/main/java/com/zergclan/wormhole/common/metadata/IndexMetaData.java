@@ -15,25 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.metadata;
 
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import com.zergclan.wormhole.common.data.node.type.DatePatternType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Data node type of date.
+ * Meta data of index.
  */
 @RequiredArgsConstructor
-public final class DateDataNode extends AbstractTextDataNode {
-    
-    private static final long serialVersionUID = -8351606898344714382L;
-    
-    private final String column;
-    
-    private final String comment;
-    
-    private final DataNodeType dataNodeType;
-    
-    private final DatePatternType pattern;
+@Getter
+public final class IndexMetaData implements MetaData {
+
+    private final String owner;
+
+    private final String name;
 }

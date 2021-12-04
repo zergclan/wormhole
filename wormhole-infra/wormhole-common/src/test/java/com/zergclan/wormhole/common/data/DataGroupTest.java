@@ -15,21 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.database;
+package com.zergclan.wormhole.common.data;
 
+import com.zergclan.wormhole.common.data.test.DemoTestData;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public final class MySQLDataSourceMetaDataTest {
-    
+public final class DataGroupTest {
+
     @Test
     public void assertNewInstance() {
-        DataSourceMetaData dataSourceMetaData = new MySQLDataSourceMetaData(null, null, "mysql_db", null);
-        assertEquals("127.0.0.1", dataSourceMetaData.getHostName());
-        assertEquals(3306, dataSourceMetaData.getPort());
-        assertEquals("mysql_db", dataSourceMetaData.getCatalog());
-        assertNull(dataSourceMetaData.getSchema());
+        DataGroup dataGroup = new DemoTestData(1L, 2L, 3L);
+        assertNotNull(dataGroup);
     }
 }

@@ -15,19 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata;
+package com.zergclan.wormhole.common.data;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Refresh ability.
- *
- * @param <T> class type of refreshable implemented.
+ * Data node type of string.
  */
-public interface Refreshable<T> {
+@Getter
+@RequiredArgsConstructor
+public final class StringDataNode implements DataNode<String> {
     
-    /**
-     * Refresh.
-     *
-     * @param t refreshable implemented
-     */
-    void refresh(T t);
+    private static final long serialVersionUID = -3728136866624602967L;
+    
+    private final String name;
+
+    private String value;
+
+    @Override
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(final String value) {
+        this.value = value;
+    }
 }

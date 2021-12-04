@@ -15,19 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.data;
 
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import com.zergclan.wormhole.common.data.node.type.DatePatternType;
-import org.junit.jupiter.api.Test;
+/**
+ * The root interface from which all converted data node objects shall be derived in Wormhole.
+ *
+ * @param <V> class type of data node value
+ */
+public interface DataNode<V> {
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+    /**
+     * Get data node value.
+     *
+     * @return data node value
+     */
+    V getValue();
 
-public final class DateDataNodeTest {
-    
-    @Test
-    public void assertNewInstance() {
-        WormholeDataNode<String> wormholeDataNode = new DateDataNode("column", "column comment", DataNodeType.NATIVE, DatePatternType.NATIVE);
-        assertNotNull(wormholeDataNode);
-    }
+    /**
+     * Set data node value.
+     *
+     * @param value data node value
+     */
+    void setValue(V value);
 }
