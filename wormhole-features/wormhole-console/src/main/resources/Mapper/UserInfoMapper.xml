@@ -23,18 +23,22 @@
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
-        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="enable" property="enable" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+    <sql id="table_name">
+        user_info
+    </sql>
 
     <sql id="id">
         id = #{id,jdbcType=INTEGER}
     </sql>
 
-    <sql id="where_status_query">
+    <sql id="where_enable">
         <if test="null != status">
-            AND status = #{status,jdbcType=INTEGER}
+            AND enable = #{enable,jdbcType=INTEGER}
         </if>
     </sql>
 
@@ -42,8 +46,17 @@
         LIMIT #{start}, #{size}
     </sql>
 
+    <sql id="insert_columns">
+        username, password, email, enable, create_time, modify_time
+    </sql>
+
+    <sql id="insert_values">
+        #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+        #{enable,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+    </sql>
+
     <sql id="select_columns">
-        id, username, password, email, status, create_time, modify_time
+        id, username, password, email, enable, create_time, modify_time
     </sql>
 
     <sql id="update_columns">
@@ -56,8 +69,8 @@
         <if test="null != email">
             email = #{email,jdbcType=VARCHAR},
         </if>
-        <if test="null != status">
-            status = #{status,jdbcType=INTEGER},
+        <if test="null != enable">
+            enable = #{enable,jdbcType=INTEGER},
         </if>
     </sql>
 
@@ -80,13 +93,11 @@
     </sql>
 
     <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
-        INSERT INTO user_info (username, password, email, status, create_time, modify_time)
-        VALUES (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
-            #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
+        INSERT INTO user_info (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
     </insert>
 
     <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
-        UPDATE user_info
+        UPDATE <include refid="table_name"/>
         <set>
             <include refid="update_columns"/>
             modify_time = #{modifyTime,jdbcType=TIMESTAMP}
@@ -97,37 +108,33 @@
     </update>
 
     <delete id="deleteById" parameterType="java.lang.Integer">
-        DELETE FROM user_info WHERE <include refid="id"/>
+        DELETE FROM <include refid="table_name"/> WHERE <include refid="id"/>
     </delete>
 
     <select id="get" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
-        SELECT <include refid="select_columns"/> FROM user_info WHERE <include refid="id"/>
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/> WHERE <include refid="id"/>
     </select>
 
     <select id="listAll" resultMap="UserInfoResultMap">
-        SELECT <include refid="select_columns"/> FROM user_info
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
     </select>
 
     <select id="listByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultMap="UserInfoResultMap">
-        SELECT <include refid="select_columns"/>
-        FROM user_info
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
         <where>
-            <include refid="where_status_query"/>
             <include refid="where_fuzzy_query"/>
         </where>
     </select>
 
     <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultType="java.lang.Integer">
-        SELECT COUNT(id) AS total
-        FROM user_info
+        SELECT COUNT(id) AS total FROM <include refid="table_name"/>
         <where>
             <include refid="where_fuzzy_query"/>
         </where>
     </select>
 
     <select id="page" parameterType="com.zergclan.wormhole.console.api.vo.PageQuery" resultMap="UserInfoResultMap">
-        SELECT <include refid="select_columns"/>
-        FROM user_info
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
         <where>
             <include refid="where_page_query"/>
         </where>

@@ -39,7 +39,7 @@ public final class UserInfoServiceImpl implements UserInfoService {
     
     @Override
     public void add(@RequestBody final UserInfo userInfo) {
-        userInfo.setStatus(0);
+        userInfo.setEnable(0);
         userInfoRepository.add(userInfo);
     }
     

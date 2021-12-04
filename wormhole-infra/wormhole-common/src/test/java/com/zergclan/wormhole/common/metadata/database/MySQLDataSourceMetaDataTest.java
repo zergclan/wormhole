@@ -29,7 +29,7 @@ public final class MySQLDataSourceMetaDataTest {
         DataSourceMetaData dataSourceMetaData = new MySQLDataSourceMetaData(null, null, "mysql_db", null);
         assertEquals("127.0.0.1", dataSourceMetaData.getHostName());
         assertEquals(3306, dataSourceMetaData.getPort());
-        assertEquals("mysql_db", dataSourceMetaData.getCatalogue());
+        assertEquals("mysql_db", dataSourceMetaData.getCatalog());
         assertNull(dataSourceMetaData.getSchema());
     }
 }
