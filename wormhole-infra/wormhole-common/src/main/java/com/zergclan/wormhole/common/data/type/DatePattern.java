@@ -15,10 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata;
+package com.zergclan.wormhole.common.data.type;
+
+import com.zergclan.wormhole.common.util.DateUtil;
+import lombok.Getter;
+
+import java.util.Date;
 
 /**
- * The root interface from which all meta data objects shall be derived in Wormhole.
+ * Date pattern.
  */
-public interface WormholeMetadata {
+@Getter
+public enum DatePattern {
+
+    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
+    
+    private final int code;
+
+    private final String pattern;
+
+    DatePattern(final int code, final String pattern) {
+        this.code = code;
+        this.pattern = pattern;
+    }
+
+    /**
+     * Format {@link Date}.
+     *
+     * @param date {@link Date}
+     * @return format date text
+     */
+    public String format(final Date date) {
+        return DateUtil.format(date, pattern);
+    }
 }

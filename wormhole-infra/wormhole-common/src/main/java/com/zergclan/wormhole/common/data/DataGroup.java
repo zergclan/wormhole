@@ -15,24 +15,47 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node.type;
+package com.zergclan.wormhole.common.data;
 
-import lombok.Getter;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Date pattern type.
+ * The root interface from which all converted data objects shall be derived in Wormhole.
  */
-@Getter
-public enum DatePatternType {
-    
-    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
-    
-    private final int code;
-    
-    private final String pattern;
-    
-    DatePatternType(final int code, final String pattern) {
-        this.code = code;
-        this.pattern = pattern;
-    }
+public interface DataGroup extends Serializable {
+
+    /**
+     * Get plan id.
+     *
+     * @return plan id
+     */
+    Long getPlanId();
+
+    /**
+     * Get job id.
+     *
+     * @return job id
+     */
+    Long getJobId();
+
+    /**
+     * Get task id.
+     *
+     * @return task id
+     */
+    Long getTaskId();
+
+    /**
+     * get data nodes.
+     *
+     * @return plan id
+     */
+    /**
+     * get data nodes.
+     *
+     * @return {@link Optional}
+     */
+    Optional<Map<String, DataNode<?>>> getDataNodes();
 }

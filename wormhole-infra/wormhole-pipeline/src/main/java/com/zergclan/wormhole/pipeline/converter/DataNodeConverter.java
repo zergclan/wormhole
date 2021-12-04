@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.pipeline.converter;
 
-import com.zergclan.wormhole.common.data.node.WormholeDataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
@@ -26,7 +25,7 @@ import com.zergclan.wormhole.pipeline.DataNodeFilter;
  * @param <S> class type of source data node
  * @param <T> class type of target data node
  */
-public interface DataNodeConverter<S extends WormholeDataNode<?>, T extends WormholeDataNode<?>> extends DataNodeFilter {
+public interface DataNodeConverter<S, T> extends DataNodeFilter {
     
     /**
      * Convert data node.

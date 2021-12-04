@@ -20,23 +20,19 @@ package com.zergclan.wormhole.console.api.contorller;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
-import com.zergclan.wormhole.console.application.service.LoginService;
+import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
+import com.zergclan.wormhole.console.application.domain.value.RootUser;
 import com.zergclan.wormhole.console.infra.anticorruption.AntiCorruptionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * Controller of Login.
  */
 @RestController
 public final class LoginController extends AbstractRestController {
-    
-    @Resource
-    private LoginService loginService;
-    
+
     /**
      * Login.
      *
@@ -45,10 +41,7 @@ public final class LoginController extends AbstractRestController {
      */
     @PostMapping(value = "/login")
     public HttpResult<String> login(@RequestBody final LoginVO loginVO) {
-        String token = loginService.login(AntiCorruptionService.userLoginVOToDTO(loginVO));
-        if ("F".equals(token)) {
-            return success(ResultCode.UNAUTHORIZED, token);
-        }
-        return success(ResultCode.SUCCESS, token);
+        UserInfo userInfo = AntiCorruptionService.userLoginVOToDTO(loginVO);
+        return RootUser.ROOT.isRoot(userInfo.getUsername(), userInfo.getPassword()) ? success(ResultCode.SUCCESS, "wormhole-root-token") : failed(ResultCode.UNAUTHORIZED, "");
     }
 }

@@ -15,28 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.data;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all transform data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
+ * Data node type of string.
  */
-public interface WormholeDataNode<V> extends Serializable {
+@Getter
+@RequiredArgsConstructor
+public final class StringDataNode implements DataNode<String> {
     
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
+    private static final long serialVersionUID = -3728136866624602967L;
     
-    /**
-     * Set data node value.
-     *
-     * @param value data node value
-     */
-    void setValue(V value);
+    private final String name;
+
+    private String value;
+
+    @Override
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(final String value) {
+        this.value = value;
+    }
 }

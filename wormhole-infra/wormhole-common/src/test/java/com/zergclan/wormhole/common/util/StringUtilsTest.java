@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 public final class StringUtilsTest {
   
     @Test
-    public void isBlank() {
+    public void assertIsBlank() {
         Assertions.assertTrue(StringUtil.isBlank(null));
     }
 }

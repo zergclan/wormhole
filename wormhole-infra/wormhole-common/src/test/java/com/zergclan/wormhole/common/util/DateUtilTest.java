@@ -19,12 +19,24 @@ package com.zergclan.wormhole.common.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class DateUtilTest {
     
     @Test
-    public void currentTimeMillis() {
+    public void assertCurrentTimeMillis() {
         assertTrue(System.currentTimeMillis() <= DateUtil.currentTimeMillis());
+    }
+
+    @Test
+    public void assertDateFormat() {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        String expectedText = "2021-11-11 11:11:11";
+        Date date = DateUtil.parse(expectedText, pattern);
+        String actualText = DateUtil.format(date, pattern);
+        assertEquals(expectedText, actualText);
     }
 }

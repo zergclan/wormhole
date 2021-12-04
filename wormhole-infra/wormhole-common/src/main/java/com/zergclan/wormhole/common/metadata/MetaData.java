@@ -15,18 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.metadata;
 
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-public final class StringDataNodeTest {
-    
-    @Test
-    public void assertNewInstance() {
-        WormholeDataNode<String> wormholeDataNode = new StringDataNode("column", "column comment", DataNodeType.NATIVE);
-        assertNotNull(wormholeDataNode);
-    }
+/**
+ * The root interface from which all meta data objects shall be derived in Wormhole.
+ */
+public interface MetaData {
 }

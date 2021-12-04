@@ -17,18 +17,17 @@
 
 package com.zergclan.wormhole.pipeline.validator;
 
-import com.zergclan.wormhole.common.data.node.WormholeDataNode;
+import com.zergclan.wormhole.common.data.DataNode;
 import com.zergclan.wormhole.common.exception.WormholeException;
 
 /**
  * Required data node validator.
  */
-public final class RequiredValidator implements DataNodeValidator<WormholeDataNode<?>> {
+public final class RequiredValidator implements DataNodeValidator<DataNode<?>> {
     
     @Override
-    public void validate(final WormholeDataNode<?> dataNode) {
-        Object value = dataNode.getValue();
-        if (null == value) {
+    public void validate(final DataNode<?> dataNode) {
+        if (null == dataNode.getValue()) {
             throw new WormholeException("Required value can not be null");
         }
     }

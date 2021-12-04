@@ -15,21 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.database;
+package com.zergclan.wormhole.console.application.domain.value;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.metadata.MetaData;
+import lombok.Getter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+/**
+ * Root user of Wormhole.
+ */
+@Getter
+public enum RootUser implements MetaData {
 
-public final class MySQLDataSourceMetaDataTest {
+    ROOT("root", "root");
+
+    private final String loginName;
     
-    @Test
-    public void assertNewInstance() {
-        DataSourceMetaData dataSourceMetaData = new MySQLDataSourceMetaData(null, null, "mysql_db", null);
-        assertEquals("127.0.0.1", dataSourceMetaData.getHostName());
-        assertEquals(3306, dataSourceMetaData.getPort());
-        assertEquals("mysql_db", dataSourceMetaData.getCatalog());
-        assertNull(dataSourceMetaData.getSchema());
+
+    private final String secretKey;
+    
+    RootUser(final String loginName, final String secretKey) {
+        this.loginName = loginName;
+        this.secretKey = secretKey;
+    }
+
+    /**
+     * Is root user of Wormhole.
+     *
+     * @param loginName login name
+     * @param secretKey secret key
+     * @return is root user or not
+     */
+    public boolean isRoot(final String loginName, final String secretKey) {
+        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
     }
 }

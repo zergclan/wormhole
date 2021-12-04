@@ -15,16 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.common.concurrent;
 
-import org.junit.jupiter.api.Test;
+import java.util.concurrent.Callable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public final class DatasourceTypeTest {
-    
-    @Test
-    public void assertValue() {
-        assertEquals(0, DatasourceType.MYSQL.getCode());
-    }
+/**
+ * The root interface from which all executed task shall be derived in Wormhole.
+ *
+ * @param <V> the class type of result
+ */
+public interface PromisedTask<V> extends Callable<V> {
 }

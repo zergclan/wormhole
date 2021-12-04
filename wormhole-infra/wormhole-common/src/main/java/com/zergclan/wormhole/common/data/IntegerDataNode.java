@@ -15,25 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.data;
 
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import com.zergclan.wormhole.common.data.node.type.DatePatternType;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Data node type of date.
+ * Data node type of {@link Integer}.
  */
 @RequiredArgsConstructor
-public final class DateDataNode extends AbstractTextDataNode {
+public final class IntegerDataNode implements DataNode<Integer> {
     
-    private static final long serialVersionUID = -8351606898344714382L;
+    private static final long serialVersionUID = -9112425094443804066L;
     
-    private final String column;
+    private final String name;
     
-    private final String comment;
+    private Integer value;
     
-    private final DataNodeType dataNodeType;
+    @Override
+    public Integer getValue() {
+        return value;
+    }
     
-    private final DatePatternType pattern;
+    @Override
+    public void setValue(final Integer value) {
+        this.value = value;
+    }
 }

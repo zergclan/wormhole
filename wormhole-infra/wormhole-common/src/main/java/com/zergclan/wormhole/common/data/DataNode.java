@@ -17,10 +17,24 @@
 
 package com.zergclan.wormhole.common.data;
 
-import java.io.Serializable;
-
 /**
- * The root interface from which all transform data objects shall be derived in Wormhole.
+ * The root interface from which all converted data node objects shall be derived in Wormhole.
+ *
+ * @param <V> class type of data node value
  */
-public interface WormholeData extends Serializable {
+public interface DataNode<V> {
+
+    /**
+     * Get data node value.
+     *
+     * @return data node value
+     */
+    V getValue();
+
+    /**
+     * Set data node value.
+     *
+     * @param value data node value
+     */
+    void setValue(V value);
 }

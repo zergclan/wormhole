@@ -15,19 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.data;
 
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
-import com.zergclan.wormhole.common.data.node.type.DatePatternType;
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.data.type.DatePattern;
+import lombok.RequiredArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Date;
 
-public final class DateDataNodeTest {
+/**
+ * Data node type of date.
+ */
+@RequiredArgsConstructor
+public final class DateDataNode implements DataNode<Date> {
     
-    @Test
-    public void assertNewInstance() {
-        WormholeDataNode<String> wormholeDataNode = new DateDataNode("column", "column comment", DataNodeType.NATIVE, DatePatternType.NATIVE);
-        assertNotNull(wormholeDataNode);
+    private static final long serialVersionUID = -8351606898344714382L;
+    
+    private final String name;
+
+    private final DatePattern pattern;
+    
+    private Date value;
+
+    @Override
+    public Date getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(final Date value) {
+        this.value = value;
     }
 }

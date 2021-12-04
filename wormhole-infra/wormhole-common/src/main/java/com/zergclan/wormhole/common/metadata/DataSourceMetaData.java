@@ -15,17 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service;
+package com.zergclan.wormhole.common.metadata;
 
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public interface LoginService {
+/**
+ * Meta data for MySQL data source.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class DataSourceMetaData implements MetaData {
+
+    private final String hostName;
     
-    /**
-     * Login.
-     *
-     * @param userInfo {@link UserInfo}
-     * @return token
-     */
-    String login(UserInfo userInfo);
+    private final int port;
+    
+    private final String catalog;
+
+    public DataSourceMetaData(final String catalog) {
+        this("127.0.0.1", 3306, catalog);
+    }
 }

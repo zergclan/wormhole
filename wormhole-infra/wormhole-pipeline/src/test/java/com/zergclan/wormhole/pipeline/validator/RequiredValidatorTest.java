@@ -17,9 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.validator;
 
-import com.zergclan.wormhole.common.data.node.StringDataNode;
-import com.zergclan.wormhole.common.data.node.WormholeDataNode;
-import com.zergclan.wormhole.common.data.node.type.DataNodeType;
+import com.zergclan.wormhole.common.data.DataNode;
+import com.zergclan.wormhole.common.data.StringDataNode;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class RequiredValidatorTest {
     
-    private static DataNodeValidator<WormholeDataNode<?>> wormholeValidator;
+    private static DataNodeValidator<DataNode<?>> wormholeValidator;
     
     @BeforeAll
     public static void init() {
@@ -38,8 +37,7 @@ public final class RequiredValidatorTest {
     
     @Test
     public void assertValidate() {
-        StringDataNode stringDataNode = new StringDataNode("column", "column comment", DataNodeType.NATIVE);
-        WormholeException exception = assertThrows(WormholeException.class, () -> wormholeValidator.validate(stringDataNode));
+        WormholeException exception = assertThrows(WormholeException.class, () -> wormholeValidator.validate(new StringDataNode("column")));
         assertEquals("Required value can not be null", exception.getMessage());
     }
 }
