@@ -36,7 +36,7 @@ CREATE TABLE datasource_info(
     `genre` INT(11) NOT NULL COMMENT '数据源类型',
     `host` VARCHAR(16) NOT NULL COMMENT '数据源IP',
     `port` INT(11) NOT NULL COMMENT '数据源端口',
-    `catalogue` VARCHAR(64) NOT NULL COMMENT '数据库名称',
+    `catalog` VARCHAR(64) NOT NULL COMMENT '数据库名称',
     `username` VARCHAR(64) NOT NULL COMMENT '链接用户名',
     `password` VARCHAR(64) NOT NULL COMMENT '链接用户密码',
     `extend_parameters` VARCHAR(1024) NOT NULL COMMENT '连接扩展参数.json格式存储',

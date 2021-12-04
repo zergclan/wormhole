@@ -56,7 +56,7 @@ public final class BaseRepositorySelectTest {
         DatasourceInfo uniqueQuery = new DatasourceInfo();
         uniqueQuery.setHost("127.0.0.1");
         uniqueQuery.setPort(3307);
-        uniqueQuery.setCatalogue("ds_ut");
+        uniqueQuery.setCatalog("ds_ut");
         uniqueQuery.setUsername("root");
         uniqueQuery.setPassword("123456");
         assertEquals("datasource info for ut test", datasourceInfoRepository.getOne(uniqueQuery).getDescription());

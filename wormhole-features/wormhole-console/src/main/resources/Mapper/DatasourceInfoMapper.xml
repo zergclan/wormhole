@@ -24,7 +24,7 @@
         <result column="genre" property="genre" jdbcType="INTEGER"/>
         <result column="host" property="host" jdbcType="VARCHAR"/>
         <result column="port" property="port" jdbcType="INTEGER"/>
-        <result column="catalogue" property="catalogue" jdbcType="VARCHAR"/>
+        <result column="catalog" property="catalog" jdbcType="VARCHAR"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="extend_parameters" property="extendParameters" jdbcType="VARCHAR"/>
@@ -43,19 +43,19 @@
     <sql id="limit">LIMIT #{start}, #{size}</sql>
 
     <sql id="insert_columns">
-        title, genre, host, port, catalogue, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time
+        title, genre, host, port, catalog, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time
     </sql>
 
     <sql id="insert_values">
         #{title,jdbcType=VARCHAR}, #{genre,jdbcType=INTEGER}, #{host,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER},
-        #{catalogue,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{extendParameters,jdbcType=VARCHAR},
+        #{catalog,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{extendParameters,jdbcType=VARCHAR},
         #{url,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{enable,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER},
         #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
     </sql>
 
     <sql id="insert_batch_values">
         #{batch.title,jdbcType=VARCHAR}, #{batch.genre,jdbcType=INTEGER}, #{batch.host,jdbcType=VARCHAR}, #{batch.port,jdbcType=INTEGER},
-        #{batch.catalogue,jdbcType=VARCHAR}, #{batch.username,jdbcType=VARCHAR}, #{batch.password,jdbcType=VARCHAR}, #{batch.extendParameters,jdbcType=VARCHAR},
+        #{batch.catalog,jdbcType=VARCHAR}, #{batch.username,jdbcType=VARCHAR}, #{batch.password,jdbcType=VARCHAR}, #{batch.extendParameters,jdbcType=VARCHAR},
         #{batch.url,jdbcType=VARCHAR}, #{batch.description,jdbcType=VARCHAR}, #{batch.enable,jdbcType=INTEGER}, #{batch.operator,jdbcType=INTEGER},
         #{batch.createTime,jdbcType=TIMESTAMP}, #{batch.modifyTime,jdbcType=TIMESTAMP}
     </sql>
@@ -73,8 +73,8 @@
         <if test="null != port">
             port = #{port,jdbcType=INTEGER},
         </if>
-        <if test="null != catalogue">
-            catalogue = #{catalogue,jdbcType=VARCHAR},
+        <if test="null != catalog">
+            catalog = #{catalog,jdbcType=VARCHAR},
         </if>
         <if test="null != username">
             username = #{username,jdbcType=VARCHAR},
@@ -97,7 +97,7 @@
     </sql>
 
     <sql id="select_columns">
-        id, title, genre, host, port, catalogue, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time
+        id, title, genre, host, port, catalog, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time
     </sql>
 
     <sql id="select_count">
@@ -113,7 +113,7 @@
     <sql id="where_unique_query">
         host = #{host,jdbcType=VARCHAR}
         AND port = #{port,jdbcType=INTEGER}
-        AND catalogue = #{catalogue,jdbcType=VARCHAR}
+        AND catalog = #{catalog,jdbcType=VARCHAR}
         AND username = #{username,jdbcType=VARCHAR}
         AND password = #{password,jdbcType=VARCHAR}
     </sql>
@@ -125,8 +125,8 @@
         <if test="null != host">
             OR host LIKE CONCAT('%', #{host,jdbcType=VARCHAR}, '%')
         </if>
-        <if test="null != catalogue">
-            OR catalogue LIKE CONCAT('%', #{catalogue,jdbcType=VARCHAR}, '%')
+        <if test="null != catalog">
+            OR catalog LIKE CONCAT('%', #{catalog,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != description">
             OR description LIKE CONCAT('%', #{description,jdbcType=VARCHAR}, '%')
@@ -140,8 +140,8 @@
         <if test="null != query.host">
             OR host LIKE CONCAT('%', #{query.host,jdbcType=VARCHAR}, '%')
         </if>
-        <if test="null != query.catalogue">
-            OR catalogue LIKE CONCAT('%', #{query.catalogue,jdbcType=VARCHAR}, '%')
+        <if test="null != query.catalog">
+            OR catalog LIKE CONCAT('%', #{query.catalog,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != query.description">
             OR description LIKE CONCAT('%', #{query.description,jdbcType=VARCHAR}, '%')

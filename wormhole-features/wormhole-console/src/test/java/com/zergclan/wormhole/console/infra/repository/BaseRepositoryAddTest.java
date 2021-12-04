@@ -47,7 +47,7 @@ public final class BaseRepositoryAddTest {
         result.setGenre(0);
         result.setHost("127.0.0.1");
         result.setPort(3306);
-        result.setCatalogue("test_ds" + index);
+        result.setCatalog("test_ds" + index);
         result.setUsername("root");
         result.setPassword("123456");
         result.setExtendParameters(EXTEND_PARAMETERS);
