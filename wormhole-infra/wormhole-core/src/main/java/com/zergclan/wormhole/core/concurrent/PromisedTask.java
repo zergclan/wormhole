@@ -15,37 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.concurrent;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
+import java.util.concurrent.Callable;
 
 /**
- * Root user of Wormhole.
+ * The root interface from which all executed task shall be derived in Wormhole.
+ *
+ * @param <V> the class type of result
  */
-@Getter
-public enum RootUser implements MetaData {
-
-    ROOT("root", "root");
-
-    private final String loginName;
-    
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+public interface PromisedTask<V> extends Callable<V> {
 }

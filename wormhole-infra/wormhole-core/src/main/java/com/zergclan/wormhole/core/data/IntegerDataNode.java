@@ -15,37 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Root user of Wormhole.
+ * Data node type of {@link Integer}.
  */
-@Getter
-public enum RootUser implements MetaData {
-
-    ROOT("root", "root");
-
-    private final String loginName;
+@RequiredArgsConstructor
+public final class IntegerDataNode implements DataNode<Integer> {
     
-
-    private final String secretKey;
+    private static final long serialVersionUID = -9112425094443804066L;
     
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
+    private final String name;
+    
+    private Integer value;
+    
+    @Override
+    public Integer getValue() {
+        return value;
     }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    
+    @Override
+    public void setValue(final Integer value) {
+        this.value = value;
     }
 }

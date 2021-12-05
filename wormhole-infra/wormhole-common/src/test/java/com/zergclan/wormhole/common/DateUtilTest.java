@@ -15,37 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.common;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
-/**
- * Root user of Wormhole.
- */
-@Getter
-public enum RootUser implements MetaData {
+import java.util.Date;
 
-    ROOT("root", "root");
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    private final String loginName;
+public final class DateUtilTest {
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
+    @Test
+    public void assertCurrentTimeMillis() {
+        assertTrue(System.currentTimeMillis() <= DateUtil.currentTimeMillis());
     }
 
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    @Test
+    public void assertDateFormat() {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        String expectedText = "2021-11-11 11:11:11";
+        Date date = DateUtil.parse(expectedText, pattern);
+        String actualText = DateUtil.format(date, pattern);
+        assertEquals(expectedText, actualText);
     }
 }

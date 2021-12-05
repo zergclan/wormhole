@@ -15,37 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.pipeline.handler;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
+import com.zergclan.wormhole.core.data.StringDataNode;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-/**
- * Root user of Wormhole.
- */
-@Getter
-public enum RootUser implements MetaData {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    ROOT("root", "root");
-
-    private final String loginName;
+public final class NullToEmptyHandlerTest {
     
-
-    private final String secretKey;
+    private static DataNodeHandler<StringDataNode> wormholeHandler;
     
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
+    @BeforeAll
+    public static void init() {
+        wormholeHandler = new NullToEmptyHandler();
     }
 
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    @Test
+    public void assertHandler() {
+        assertEquals("", wormholeHandler.handler(new StringDataNode("column")).getValue());
     }
 }

@@ -31,10 +31,7 @@
 
     <modules>
         <module>wormhole-common</module>
-        <module>wormhole-bus</module>
-        <module>wormhole-context</module>
-        <module>wormhole-schedule</module>
-        <module>wormhole-pipeline</module>
+        <module>wormhole-core</module>
         <module>wormhole-repository</module>
     </modules>
 </project>

@@ -15,37 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Root user of Wormhole.
+ * Meta data for column.
  */
+@RequiredArgsConstructor
 @Getter
-public enum RootUser implements MetaData {
+public final class ColumnMetaData implements MetaData {
 
-    ROOT("root", "root");
+    private final String owner;
 
-    private final String loginName;
-    
+    private final String name;
 
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
+    private final int dataType;
 
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+    private final boolean primaryKey;
+
+    private final boolean uniqueIndex;
 }

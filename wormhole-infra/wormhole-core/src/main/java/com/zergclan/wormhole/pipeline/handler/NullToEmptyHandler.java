@@ -15,37 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.pipeline.handler;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
+import com.zergclan.wormhole.core.data.StringDataNode;
 
 /**
- * Root user of Wormhole.
+ * Null handler to empty handler of data node value.
  */
-@Getter
-public enum RootUser implements MetaData {
-
-    ROOT("root", "root");
-
-    private final String loginName;
+public final class NullToEmptyHandler implements DataNodeHandler<StringDataNode> {
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    @Override
+    public StringDataNode handler(final StringDataNode dataNode) {
+        if (null == dataNode.getValue()) {
+            dataNode.setValue("");
+        }
+        return dataNode;
     }
 }

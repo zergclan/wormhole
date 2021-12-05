@@ -21,4 +21,10 @@ package com.zergclan.wormhole.common.reader;
  * Reader identification interface of Wormhole.
  */
 public interface WormholeReader {
+
+    // 根据数据源信息获得全部表信息
+    
+    // 根据表信息获得全部字段信息
+
+    // 根据获得信息得到数据
 }

@@ -15,37 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.pipeline.converter;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
+import com.zergclan.wormhole.core.data.IntegerDataNode;
+import com.zergclan.wormhole.core.data.StringDataNode;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-/**
- * Root user of Wormhole.
- */
-@Getter
-public enum RootUser implements MetaData {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    ROOT("root", "root");
+public final class StringToIntegerConverterTest {
 
-    private final String loginName;
+    private static DataNodeConverter<StringDataNode, IntegerDataNode> wormholeConverter;
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
+    @BeforeAll
+    public static void init() {
+        wormholeConverter = new StringToIntegerConverter();
     }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    
+    @Test
+    public void assertConvert() {
+        StringDataNode stringDataNode = new StringDataNode("column");
+        stringDataNode.setValue("1");
+        IntegerDataNode target = wormholeConverter.convert(stringDataNode);
+        assertEquals(1, target.getValue());
     }
 }

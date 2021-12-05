@@ -15,37 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * Root user of Wormhole.
+ * Meta data table.
  */
+@RequiredArgsConstructor
 @Getter
-public enum RootUser implements MetaData {
+public final class TableMetaData implements MetaData {
 
-    ROOT("root", "root");
+    private final String owner;
 
-    private final String loginName;
-    
+    private final String name;
 
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
+    private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
 
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+    private final Map<String, IndexMetaData> indexes = new LinkedHashMap<>();
 }

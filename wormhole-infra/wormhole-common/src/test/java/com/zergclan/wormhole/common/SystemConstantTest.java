@@ -15,37 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.common;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
-/**
- * Root user of Wormhole.
- */
-@Getter
-public enum RootUser implements MetaData {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    ROOT("root", "root");
-
-    private final String loginName;
+public final class SystemConstantTest {
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    @Test
+    public void assertValues() {
+        assertEquals(1, SystemConstant.TRUE);
+        assertEquals(0, SystemConstant.FALSE);
     }
 }
