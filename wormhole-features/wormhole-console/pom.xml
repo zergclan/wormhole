@@ -28,6 +28,10 @@
     <artifactId>wormhole-console</artifactId>
     <name>${project.artifactId}</name>
 
+    <properties>
+        <mybatis-spring-boot-starter.version>2.2.0</mybatis-spring-boot-starter.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,7 +64,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.4</version>
+            <version>${mybatis-spring-boot-starter.version}</version>
         </dependency>
     </dependencies>
 
