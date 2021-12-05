@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.metadata;
 
+import com.zergclan.wormhole.common.SystemConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -37,4 +38,9 @@ public final class TableMetaData implements MetaData {
     private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
 
     private final Map<String, IndexMetaData> indexes = new LinkedHashMap<>();
+
+    @Override
+    public String getIdentifier() {
+        return owner + SystemConstant.IDENTIFIER_SPACE + name;
+    }
 }

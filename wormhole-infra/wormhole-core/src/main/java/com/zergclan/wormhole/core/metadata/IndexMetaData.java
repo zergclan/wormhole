@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.metadata;
 
+import com.zergclan.wormhole.common.SystemConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -30,4 +31,9 @@ public final class IndexMetaData implements MetaData {
     private final String owner;
 
     private final String name;
+
+    @Override
+    public String getIdentifier() {
+        return owner + SystemConstant.IDENTIFIER_SPACE + name;
+    }
 }

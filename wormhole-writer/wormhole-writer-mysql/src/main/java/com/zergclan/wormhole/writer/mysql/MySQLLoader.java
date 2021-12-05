@@ -15,16 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.reader;
+package com.zergclan.wormhole.writer.mysql;
+
+import com.zergclan.wormhole.loader.Loader;
 
 /**
- * Reader identification interface of Wormhole.
+ * Loader for MySQL.
  */
-public interface WormholeReader {
-
-    // 根据数据源信息获得全部表信息
-    
-    // 根据表信息获得全部字段信息
-
-    // 根据获得信息得到数据
+public class MySQLLoader implements Loader {
 }

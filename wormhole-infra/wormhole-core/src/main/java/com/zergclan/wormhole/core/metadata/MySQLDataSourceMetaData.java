@@ -17,23 +17,32 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.common.SystemConstant;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Properties;
 
 /**
- * Meta data of schema.
+ * Meta data for MySQL data source.
  */
-@RequiredArgsConstructor
-@Getter
-public final class SchemaMetaData implements MetaData {
+public final class MySQLDataSourceMetaData extends DataSourceMetaData {
 
-    private final String owner;
+    private final Properties extendParameters;
 
-    private final String name;
+    private final String url;
 
-    private final Map<String, TableMetaData> tables = new LinkedHashMap<>();
+    public MySQLDataSourceMetaData(final String hostName, final Integer port, final String catalog, final Properties extendParameters) {
+        super(hostName, port, catalog);
+        this.extendParameters = extendParameters;
+        this.url = hostName + ":" + port + "/" + catalog;
+    }
 
+    @Override
+    protected String getUrl() {
+        return url;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return getHostName() + SystemConstant.IDENTIFIER_SPACE + getPort() + SystemConstant.IDENTIFIER_SPACE + getCatalog();
+    }
 }

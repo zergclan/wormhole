@@ -17,14 +17,13 @@
 
 package com.zergclan.wormhole.console.application.domain.value;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
 import lombok.Getter;
 
 /**
  * Root user of Wormhole.
  */
 @Getter
-public enum RootUser implements MetaData {
+public enum RootUser {
 
     ROOT("root", "root");
 

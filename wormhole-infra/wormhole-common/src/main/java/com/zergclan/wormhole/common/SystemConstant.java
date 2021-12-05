@@ -25,7 +25,9 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SystemConstant {
-    
+
+    public static final String IDENTIFIER_SPACE = "#";
+
     public static final int TRUE = 1;
     
     public static final int FALSE = 0;

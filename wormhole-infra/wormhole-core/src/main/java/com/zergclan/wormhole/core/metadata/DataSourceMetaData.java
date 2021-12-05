@@ -23,17 +23,15 @@ import lombok.RequiredArgsConstructor;
 /**
  * Meta data for MySQL data source.
  */
-@RequiredArgsConstructor
 @Getter
-public final class DataSourceMetaData implements MetaData {
+@RequiredArgsConstructor
+public abstract class DataSourceMetaData implements MetaData {
 
     private final String hostName;
-    
+
     private final int port;
-    
+
     private final String catalog;
 
-    public DataSourceMetaData(final String catalog) {
-        this("127.0.0.1", 3306, catalog);
-    }
+    protected abstract String getUrl();
 }

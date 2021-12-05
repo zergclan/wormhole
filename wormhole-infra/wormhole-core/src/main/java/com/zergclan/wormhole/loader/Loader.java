@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.writer;
+package com.zergclan.wormhole.loader;
 
 /**
- * Writer identification interface of Wormhole.
+ * The root interface from which all loader shall be derived in Wormhole.
  */
-public interface WormholeWriter {
+public interface Loader {
 }
