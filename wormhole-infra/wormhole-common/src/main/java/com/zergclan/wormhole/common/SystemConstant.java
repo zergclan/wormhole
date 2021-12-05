@@ -15,36 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.common;
 
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * Root user of Wormhole.
+ * System constant.
  */
-@Getter
-public enum RootUser {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SystemConstant {
 
-    ROOT("root", "root");
+    public static final String IDENTIFIER_SPACE = "#";
 
-    private final String loginName;
+    public static final int TRUE = 1;
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+    public static final int FALSE = 0;
 }

@@ -15,36 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
-
-import lombok.Getter;
+package com.zergclan.wormhole.core.expression;
 
 /**
- * Root user of Wormhole.
+ * Expression for Extractor.
  */
-@Getter
-public enum RootUser {
-
-    ROOT("root", "root");
-
-    private final String loginName;
-    
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+public final class ExtractExpression {
 }

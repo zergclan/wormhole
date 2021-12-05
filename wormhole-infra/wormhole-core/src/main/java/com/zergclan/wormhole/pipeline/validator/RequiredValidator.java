@@ -15,36 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.pipeline.validator;
 
-import lombok.Getter;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.common.WormholeException;
 
 /**
- * Root user of Wormhole.
+ * Required data node validator.
  */
-@Getter
-public enum RootUser {
-
-    ROOT("root", "root");
-
-    private final String loginName;
+public final class RequiredValidator implements DataNodeValidator<DataNode<?>> {
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    @Override
+    public void validate(final DataNode<?> dataNode) {
+        if (null == dataNode.getValue()) {
+            throw new WormholeException("Required value can not be null");
+        }
     }
 }

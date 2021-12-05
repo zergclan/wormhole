@@ -15,36 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.metadata;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Root user of Wormhole.
+ * Meta data for MySQL data source.
  */
 @Getter
-public enum RootUser {
+@RequiredArgsConstructor
+public abstract class DataSourceMetaData implements MetaData {
 
-    ROOT("root", "root");
+    private final String hostName;
 
-    private final String loginName;
-    
+    private final int port;
 
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
+    private final String catalog;
 
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+    protected abstract String getUrl();
 }

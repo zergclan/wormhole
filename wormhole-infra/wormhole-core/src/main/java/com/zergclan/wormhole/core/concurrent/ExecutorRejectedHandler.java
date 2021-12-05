@@ -15,36 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.concurrent;
 
-import lombok.Getter;
+import java.util.concurrent.Future;
 
 /**
- * Root user of Wormhole.
+ * Handler for {@link PromisedTask} that cannot be executed by a {@link ExecutorService}.
  */
-@Getter
-public enum RootUser {
-
-    ROOT("root", "root");
-
-    private final String loginName;
+public interface ExecutorRejectedHandler {
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
     /**
-     * Is root user of Wormhole.
+     * Handle {@link PromisedTask}.
      *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
+     * @param task {@link PromisedTask}
+     * @param <V> the class type of result {@link Future}
+     * @return {@link Future}
      */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+    <V> Future<V> handle(PromisedTask<V> task);
 }

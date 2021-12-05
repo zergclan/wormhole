@@ -15,36 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.writer.mysql;
 
-import lombok.Getter;
+import com.zergclan.wormhole.loader.Loader;
 
 /**
- * Root user of Wormhole.
+ * Loader for MySQL.
  */
-@Getter
-public enum RootUser {
-
-    ROOT("root", "root");
-
-    private final String loginName;
-    
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+public class MySQLLoader implements Loader {
 }

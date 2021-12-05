@@ -15,36 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.data;
 
-import lombok.Getter;
+import com.zergclan.wormhole.core.data.test.DemoTestData;
+import org.junit.jupiter.api.Test;
 
-/**
- * Root user of Wormhole.
- */
-@Getter
-public enum RootUser {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-    ROOT("root", "root");
+public final class DataGroupTest {
 
-    private final String loginName;
-    
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * Is root user of Wormhole.
-     *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
-     */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    @Test
+    public void assertNewInstance() {
+        DataGroup dataGroup = new DemoTestData(1L, 2L, 3L);
+        assertNotNull(dataGroup);
     }
 }

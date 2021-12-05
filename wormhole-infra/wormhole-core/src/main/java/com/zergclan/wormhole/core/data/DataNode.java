@@ -15,36 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
-
-import lombok.Getter;
+package com.zergclan.wormhole.core.data;
 
 /**
- * Root user of Wormhole.
+ * The root interface from which all converted data node objects shall be derived in Wormhole.
+ *
+ * @param <V> class type of data node value
  */
-@Getter
-public enum RootUser {
-
-    ROOT("root", "root");
-
-    private final String loginName;
-    
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
+public interface DataNode<V> {
 
     /**
-     * Is root user of Wormhole.
+     * Get data node value.
      *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
+     * @return data node value
      */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+    V getValue();
+
+    /**
+     * Set data node value.
+     *
+     * @param value data node value
+     */
+    void setValue(V value);
 }

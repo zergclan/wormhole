@@ -15,36 +15,47 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.data;
 
-import lombok.Getter;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Root user of Wormhole.
+ * The root interface from which all converted data objects shall be derived in Wormhole.
  */
-@Getter
-public enum RootUser {
-
-    ROOT("root", "root");
-
-    private final String loginName;
-    
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
+public interface DataGroup extends Serializable {
 
     /**
-     * Is root user of Wormhole.
+     * Get plan id.
      *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
+     * @return plan id
      */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+    Long getPlanId();
+
+    /**
+     * Get job id.
+     *
+     * @return job id
+     */
+    Long getJobId();
+
+    /**
+     * Get task id.
+     *
+     * @return task id
+     */
+    Long getTaskId();
+
+    /**
+     * get data nodes.
+     *
+     * @return plan id
+     */
+    /**
+     * get data nodes.
+     *
+     * @return {@link Optional}
+     */
+    Optional<Map<String, DataNode<?>>> getDataNodes();
 }

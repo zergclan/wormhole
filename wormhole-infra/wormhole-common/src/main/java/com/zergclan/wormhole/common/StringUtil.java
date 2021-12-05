@@ -15,36 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
-
-import lombok.Getter;
+package com.zergclan.wormhole.common;
 
 /**
- * Root user of Wormhole.
+ * Util tools for String.
  */
-@Getter
-public enum RootUser {
-
-    ROOT("root", "root");
-
-    private final String loginName;
+public final class StringUtil {
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
     /**
-     * Is root user of Wormhole.
+     * Is blank validation of char sequence.
      *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
+     * @param charSequence char sequence
+     * @return is blank or not
      */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    public static boolean isBlank(final CharSequence charSequence) {
+        final int strLen = charSequence == null ? 0 : charSequence.length();
+        if (strLen == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; ++i) {
+            if (!Character.isWhitespace(charSequence.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

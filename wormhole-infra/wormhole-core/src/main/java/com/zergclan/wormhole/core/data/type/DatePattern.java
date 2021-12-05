@@ -15,36 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.core.data.type;
 
+import com.zergclan.wormhole.common.DateUtil;
 import lombok.Getter;
 
+import java.util.Date;
+
 /**
- * Root user of Wormhole.
+ * Date pattern.
  */
 @Getter
-public enum RootUser {
+public enum DatePattern {
 
-    ROOT("root", "root");
-
-    private final String loginName;
+    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
     
+    private final int code;
 
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
+    private final String pattern;
+
+    DatePattern(final int code, final String pattern) {
+        this.code = code;
+        this.pattern = pattern;
     }
 
     /**
-     * Is root user of Wormhole.
+     * Format {@link Date}.
      *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
+     * @param date {@link Date}
+     * @return format date text
      */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
+    public String format(final Date date) {
+        return DateUtil.format(date, pattern);
     }
 }
