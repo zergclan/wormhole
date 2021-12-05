@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.util;
+package com.zergclan.wormhole.console.infra.generator;
 
-import com.zergclan.wormhole.console.infra.generator.MapperGenerator;
 import freemarker.template.TemplateException;
 import org.junit.jupiter.api.Test;
 
