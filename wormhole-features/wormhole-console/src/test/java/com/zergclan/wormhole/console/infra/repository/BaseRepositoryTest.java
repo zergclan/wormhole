@@ -49,10 +49,19 @@ public final class BaseRepositoryTest {
         assertAdd();
         assertEdit();
         assertRemove();
+        assertAddBatch();
     }
     
     private void assertAdd() {
         datasourceInfoRepository.add(createDatasourceInfo(0));
+    }
+    
+    private void assertAddBatch() {
+        Collection<DatasourceInfo> datasourceInfos = new LinkedList<>();
+        for (int i = 0; i < 10; i++) {
+            datasourceInfos.add(createDatasourceInfo(i));
+        }
+        datasourceInfoRepository.addBatch(datasourceInfos);
     }
     
     private void assertEdit() {
