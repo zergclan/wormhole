@@ -30,7 +30,7 @@
         <result column="extend_parameters" property="extendParameters" jdbcType="VARCHAR"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="description" property="description" jdbcType="VARCHAR"/>
-        <result column="enable" property="enable" jdbcType="INTEGER"/>
+        <result column="is_enable" property="enable" jdbcType="INTEGER"/>
         <result column="operator" property="operator" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
@@ -43,7 +43,7 @@
     <sql id="limit">LIMIT #{start}, #{size}</sql>
 
     <sql id="insert_columns">
-        title, genre, host, port, catalog, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time
+        title, genre, host, port, catalog, username, password, extend_parameters, url, description, is_enable, operator, create_time, modify_time
     </sql>
 
     <sql id="insert_values">
@@ -89,7 +89,7 @@
             description = #{description,jdbcType=VARCHAR},
         </if>
         <if test="null != enable">
-            enable = #{enable,jdbcType=INTEGER},
+            is_enable = #{enable,jdbcType=INTEGER},
         </if>
         <if test="null != operator">
             operator = #{operator,jdbcType=VARCHAR},
@@ -97,7 +97,7 @@
     </sql>
 
     <sql id="select_columns">
-        id, title, genre, host, port, catalog, username, password, extend_parameters, url, description, enable, operator, create_time, modify_time
+        id, title, genre, host, port, catalog, username, password, extend_parameters, url, description, is_enable, operator, create_time, modify_time
     </sql>
 
     <sql id="select_count">
@@ -106,7 +106,7 @@
 
     <sql id="where_enable">
         <if test="null != enable">
-            AND enable = #{enable,jdbcType=INTEGER}
+            AND is_enable = #{enable,jdbcType=INTEGER}
         </if>
     </sql>
 

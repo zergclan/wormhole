@@ -1,0 +1,51 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.zergclan.wormhole.pipeline;
+
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.core.metadata.DataNode;
+import com.zergclan.wormhole.core.metadata.data.StringDataNode;
+import com.zergclan.wormhole.pipeline.filter.NullToEmptyHandler;
+import com.zergclan.wormhole.pipeline.filter.RequiredValidator;
+import com.zergclan.wormhole.pipeline.filter.StringToIntegerConverter;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public final class FilterTest {
+    
+    @Test
+    public void assertRequiredValidator() {
+        DataNodeFilter<DataNode<?>> dataNodeFilter = new RequiredValidator();
+        WormholeException exception = assertThrows(WormholeException.class, () -> dataNodeFilter.doFilter(new StringDataNode("column")));
+        assertEquals("Required value can not be null", exception.getMessage());
+    }
+    
+    @Test
+    public void assertNullToEmptyHandler() {
+        DataNodeFilter<DataNode<String>> dataNodeFilter = new NullToEmptyHandler();
+        assertEquals("", dataNodeFilter.doFilter(new StringDataNode("name")).getValue());
+    }
+    
+    @Test
+    public void assertStringToIntegerConverter() {
+        DataNodeFilter<DataNode<?>> dataNodeFilter = new StringToIntegerConverter();
+        assertEquals(1, dataNodeFilter.doFilter(new StringDataNode("age").refresh("1")).getValue());
+    }
+}

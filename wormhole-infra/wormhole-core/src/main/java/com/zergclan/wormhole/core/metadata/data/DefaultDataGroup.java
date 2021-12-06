@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data.test;
+package com.zergclan.wormhole.core.metadata.data;
 
-import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.metadata.DataGroup;
+import com.zergclan.wormhole.core.metadata.DataNode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
@@ -26,36 +26,36 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Demo converted data for WormholeData.
+ * Defaulted data group.
  */
 @RequiredArgsConstructor
-public final class DemoTestData implements DataGroup {
-
-    private static final long serialVersionUID = 3292661075578447515L;
-
+public final class DefaultDataGroup implements DataGroup {
+    
+    private static final long serialVersionUID = -5547416880869227229L;
+    
     private final Long planId;
-
+    
     private final Long jobId;
-
+    
     private final Long taskId;
-
+    
     private final Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
-
+    
     @Override
     public Long getPlanId() {
         return planId;
     }
-
+    
     @Override
     public Long getJobId() {
         return jobId;
     }
-
+    
     @Override
     public Long getTaskId() {
         return taskId;
     }
-
+    
     @Override
     public Optional<Map<String, DataNode<?>>> getDataNodes() {
         return dataNodes.isEmpty() ? Optional.empty() : Optional.of(dataNodes);

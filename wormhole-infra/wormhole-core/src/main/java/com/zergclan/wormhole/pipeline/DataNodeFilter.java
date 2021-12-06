@@ -17,8 +17,18 @@
 
 package com.zergclan.wormhole.pipeline;
 
+import com.zergclan.wormhole.core.metadata.DataNode;
+
 /**
  * The root interface from which all data node filter objects shall be derived in Wormhole.
  */
-public interface DataNodeFilter {
+public interface DataNodeFilter<V extends DataNode<?>> {
+    
+    /**
+     * Do filter.
+     *
+     * @param node {@link DataNode}
+     * @return {@link DataNode}
+     */
+    V doFilter(V node);
 }

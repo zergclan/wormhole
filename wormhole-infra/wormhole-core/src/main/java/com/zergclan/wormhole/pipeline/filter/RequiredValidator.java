@@ -15,31 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.filter;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.core.metadata.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
- * Data node type of string.
+ * Required validator for data node.
  */
-@Getter
-@RequiredArgsConstructor
-public final class StringDataNode implements DataNode<String> {
+public final class RequiredValidator implements DataNodeFilter<DataNode<?>> {
     
-    private static final long serialVersionUID = -3728136866624602967L;
-    
-    private final String name;
-
-    private String value;
-
     @Override
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public void setValue(final String value) {
-        this.value = value;
+    public DataNode<?> doFilter(final DataNode<?> node) {
+        if (null == node.getValue()) {
+            throw new WormholeException("Required value can not be null");
+        }
+        return node;
     }
 }

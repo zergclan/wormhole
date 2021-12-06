@@ -17,23 +17,45 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.common.SystemConstant;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Meta data of index.
+ * The root interface from which all converted data objects shall be derived in Wormhole.
  */
-@RequiredArgsConstructor
-@Getter
-public final class IndexMetaData implements MetaData {
+public interface DataGroup extends Serializable {
+    
+    /**
+     * Get plan id.
+     *
+     * @return plan id
+     */
+    Long getPlanId();
 
-    private final String owner;
+    /**
+     * Get job id.
+     *
+     * @return job id
+     */
+    Long getJobId();
 
-    private final String name;
+    /**
+     * Get task id.
+     *
+     * @return task id
+     */
+    Long getTaskId();
 
-    @Override
-    public String getIdentifier() {
-        return owner + SystemConstant.IDENTIFIER_SPACE + name;
-    }
+    /**
+     * get data nodes.
+     *
+     * @return plan id
+     */
+    /**
+     * get data nodes.
+     *
+     * @return {@link Optional}
+     */
+    Optional<Map<String, DataNode<?>>> getDataNodes();
 }

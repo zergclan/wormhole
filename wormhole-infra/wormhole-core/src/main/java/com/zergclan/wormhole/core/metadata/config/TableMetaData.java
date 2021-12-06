@@ -15,37 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data.type;
+package com.zergclan.wormhole.core.metadata.config;
 
-import com.zergclan.wormhole.common.DateUtil;
+import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.core.metadata.MetaData;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * Date pattern.
+ * Meta data table.
  */
+@RequiredArgsConstructor
 @Getter
-public enum DatePattern {
+public final class TableMetaData implements MetaData {
 
-    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
-    
-    private final int code;
+    private final String owner;
 
-    private final String pattern;
+    private final String name;
 
-    DatePattern(final int code, final String pattern) {
-        this.code = code;
-        this.pattern = pattern;
-    }
+    private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
 
-    /**
-     * Format {@link Date}.
-     *
-     * @param date {@link Date}
-     * @return format date text
-     */
-    public String format(final Date date) {
-        return DateUtil.format(date, pattern);
+    private final Map<String, IndexMetaData> indexes = new LinkedHashMap<>();
+
+    @Override
+    public String getIdentifier() {
+        return owner + SystemConstant.IDENTIFIER_SPACE + name;
     }
 }

@@ -15,20 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.handler;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.core.data.StringDataNode;
+import com.zergclan.wormhole.core.metadata.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
- * Null handler to empty handler of data node value.
+ * Null to empty handler for data node.
  */
-public final class NullToEmptyHandler implements DataNodeHandler<StringDataNode> {
+public final class NullToEmptyHandler implements DataNodeFilter<DataNode<String>> {
     
     @Override
-    public StringDataNode handler(final StringDataNode dataNode) {
-        if (null == dataNode.getValue()) {
-            dataNode.setValue("");
+    public DataNode<String> doFilter(final DataNode<String> node) {
+        if (null == node.getValue()) {
+            return node.refresh("");
         }
-        return dataNode;
+        return node;
     }
 }

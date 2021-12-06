@@ -15,34 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.core.metadata.config;
 
-import com.zergclan.wormhole.core.data.type.DatePattern;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.common.SystemConstant;
 
-import java.util.Date;
+import java.util.Properties;
 
 /**
- * Data node type of date.
+ * Meta data for MySQL data source.
  */
-@RequiredArgsConstructor
-public final class DateDataNode implements DataNode<Date> {
-    
-    private static final long serialVersionUID = -8351606898344714382L;
-    
-    private final String name;
+public final class MySQLDataSourceMetaData extends DataSourceMetaData {
 
-    private final DatePattern pattern;
-    
-    private Date value;
+    private final Properties extendParameters;
 
-    @Override
-    public Date getValue() {
-        return value;
+    private final String url;
+
+    public MySQLDataSourceMetaData(final String hostName, final Integer port, final String catalog, final Properties extendParameters) {
+        super(hostName, port, catalog);
+        this.extendParameters = extendParameters;
+        this.url = hostName + ":" + port + "/" + catalog;
     }
 
     @Override
-    public void setValue(final Date value) {
-        this.value = value;
+    protected String getUrl() {
+        return url;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return getHostName() + SystemConstant.IDENTIFIER_SPACE + getPort() + SystemConstant.IDENTIFIER_SPACE + getCatalog();
     }
 }

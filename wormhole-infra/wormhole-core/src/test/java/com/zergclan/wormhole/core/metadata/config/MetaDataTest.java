@@ -15,21 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.validator;
+package com.zergclan.wormhole.core.metadata.config;
 
-import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import org.junit.jupiter.api.Test;
 
-/**
- * The root interface from which all data node validator objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node
- */
-public interface DataNodeValidator<V> extends DataNodeFilter {
-    
-    /**
-     * Validate data node.
-     *
-     * @param dataNode data node
-     */
-    void validate(V dataNode);
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class MetaDataTest {
+
+    @Test
+    public void assertMySQLDataSourceMetaData() {
+        DataSourceMetaData dataSourceMetaData = new MySQLDataSourceMetaData("127.0.0.1", 3306, "mysql_db", new Properties());
+        assertEquals("127.0.0.1", dataSourceMetaData.getHostName());
+        assertEquals(3306, dataSourceMetaData.getPort());
+        assertEquals("mysql_db", dataSourceMetaData.getCatalog());
+        assertEquals("127.0.0.1:3306/mysql_db", dataSourceMetaData.getUrl());
+    }
 }

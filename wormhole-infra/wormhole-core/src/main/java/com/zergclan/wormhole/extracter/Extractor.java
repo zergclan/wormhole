@@ -17,11 +17,10 @@
 
 package com.zergclan.wormhole.extracter;
 
-import com.zergclan.wormhole.core.expression.ExtractExpression;
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.DataSourceMetaData;
-import com.zergclan.wormhole.core.metadata.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.TableMetaData;
+import com.zergclan.wormhole.core.metadata.config.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.config.DataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.config.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.config.TableMetaData;
 
 import java.util.Collection;
 import java.util.Map;
@@ -34,10 +33,10 @@ public interface Extractor {
     /**
      * Extract {@link TableMetaData} of {@link DataSourceMetaData}.
      *
-     * @param dataSourceMetaData {@link DataSourceMetaData}
+     * @param dataSource {@link DataSourceMetaData}
      * @return {@link TableMetaData}
      */
-    Collection<TableMetaData> extractTables(DataSourceMetaData dataSourceMetaData);
+    Collection<TableMetaData> extractTables(DataSourceMetaData dataSource);
 
     /**
      * Extract {@link ColumnMetaData} of {@link TableMetaData}.
@@ -50,16 +49,16 @@ public interface Extractor {
     /**
      * Extract {@link IndexMetaData} of {@link TableMetaData}.
      *
-     * @param tableMetaData {@link TableMetaData}
+     * @param table {@link TableMetaData}
      * @return {@link IndexMetaData}
      */
-    Collection<IndexMetaData> extractIndexes(TableMetaData tableMetaData);
+    Collection<IndexMetaData> extractIndexes(TableMetaData table);
 
     /**
      * Extract datum.
      *
-     * @param extractExpression {@link ExtractExpression}
+     * @param columns {@link ColumnMetaData}
      * @return datum
      */
-    Collection<Map<String, Object>> extractDatum(ExtractExpression extractExpression);
+    Collection<Map<String, Object>> extractDatum(Collection<ColumnMetaData> columns);
 }

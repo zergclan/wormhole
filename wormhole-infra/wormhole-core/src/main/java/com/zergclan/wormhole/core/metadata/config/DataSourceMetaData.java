@@ -15,10 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.expression;
+package com.zergclan.wormhole.core.metadata.config;
+
+import com.zergclan.wormhole.core.metadata.MetaData;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Expression for Extractor.
+ * Meta data for MySQL data source.
  */
-public final class ExtractExpression {
+@Getter
+@RequiredArgsConstructor
+public abstract class DataSourceMetaData implements MetaData {
+
+    private final String hostName;
+
+    private final int port;
+
+    private final String catalog;
+
+    protected abstract String getUrl();
 }
