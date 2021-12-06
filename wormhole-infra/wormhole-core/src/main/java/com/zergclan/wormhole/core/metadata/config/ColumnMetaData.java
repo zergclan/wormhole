@@ -15,18 +15,32 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.core.metadata.config;
 
-import com.zergclan.wormhole.core.data.test.DemoTestData;
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.core.metadata.MetaData;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+/**
+ * Meta data for column.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class ColumnMetaData implements MetaData {
 
-public final class DataGroupTest {
+    private final String owner;
 
-    @Test
-    public void assertNewInstance() {
-        DataGroup dataGroup = new DemoTestData(1L, 2L, 3L);
-        assertNotNull(dataGroup);
+    private final String name;
+
+    private final int dataType;
+
+    private final boolean primaryKey;
+
+    private final boolean uniqueIndex;
+    
+    @Override
+    public String getIdentifier() {
+        return owner + SystemConstant.IDENTIFIER_SPACE + name;
     }
 }

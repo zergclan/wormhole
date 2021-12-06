@@ -15,29 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.converter;
+package com.zergclan.wormhole.core.metadata.data.type;
 
-import com.zergclan.wormhole.core.data.IntegerDataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.DateUtil;
+import lombok.Getter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Date;
 
-public final class StringToIntegerConverterTest {
+/**
+ * Date pattern.
+ */
+@Getter
+public enum DatePattern {
 
-    private static DataNodeConverter<StringDataNode, IntegerDataNode> wormholeConverter;
+    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
     
-    @BeforeAll
-    public static void init() {
-        wormholeConverter = new StringToIntegerConverter();
+    private final int code;
+
+    private final String pattern;
+
+    DatePattern(final int code, final String pattern) {
+        this.code = code;
+        this.pattern = pattern;
     }
-    
-    @Test
-    public void assertConvert() {
-        StringDataNode stringDataNode = new StringDataNode("column");
-        stringDataNode.setValue("1");
-        IntegerDataNode target = wormholeConverter.convert(stringDataNode);
-        assertEquals(1, target.getValue());
+
+    /**
+     * Format {@link Date}.
+     *
+     * @param date {@link Date}
+     * @return format date text
+     */
+    public String format(final Date date) {
+        return DateUtil.format(date, pattern);
     }
 }

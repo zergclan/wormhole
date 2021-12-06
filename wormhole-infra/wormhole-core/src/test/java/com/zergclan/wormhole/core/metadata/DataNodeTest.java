@@ -15,9 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.core.data.type.DatePattern;
+import com.zergclan.wormhole.core.metadata.data.DateDataNode;
+import com.zergclan.wormhole.core.metadata.data.IntegerDataNode;
+import com.zergclan.wormhole.core.metadata.data.StringDataNode;
+import com.zergclan.wormhole.core.metadata.data.type.DatePattern;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -29,26 +32,23 @@ public final class DataNodeTest {
 
     @Test
     public void assertStringDataNode() {
-        DataNode<String> stringDataNode = new StringDataNode("column");
-        assertNotNull(stringDataNode);
-        stringDataNode.setValue("value");
-        assertEquals("value", stringDataNode.getValue());
+        DataNode<String> dataNode = new StringDataNode("column");
+        assertNotNull(dataNode);
+        assertEquals("value", dataNode.refresh("value").getValue());
     }
 
     @Test
     public void assertIntegerDataNode() {
         DataNode<Integer> integerDataNode = new IntegerDataNode("column");
         assertNotNull(integerDataNode);
-        integerDataNode.setValue(1);
-        assertEquals(1, integerDataNode.getValue());
+        assertEquals(1, integerDataNode.refresh(1).getValue());
     }
 
     @Test
     public void assertDateDataNode() {
         DataNode<Date> dateDataNode = new DateDataNode("column", DatePattern.NATIVE);
         assertNotNull(dateDataNode);
-        final Date date = new Date();
-        dateDataNode.setValue(date);
-        assertEquals(date, dateDataNode.getValue());
+        Date date = new Date();
+        assertEquals(date, dateDataNode.refresh(date).getValue());
     }
 }

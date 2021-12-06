@@ -17,11 +17,10 @@
 
 package com.zergclan.wormhole.reader.mysql;
 
-import com.zergclan.wormhole.core.expression.ExtractExpression;
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.DataSourceMetaData;
-import com.zergclan.wormhole.core.metadata.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.TableMetaData;
+import com.zergclan.wormhole.core.metadata.config.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.config.DataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.config.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.config.TableMetaData;
 import com.zergclan.wormhole.extracter.Extractor;
 
 import java.util.Collection;
@@ -31,27 +30,27 @@ import java.util.Map;
  * Extractor for MySQL.
  */
 public final class MySQLExtractor implements Extractor {
-
+    
     @Override
-    public Collection<TableMetaData> extractTables(final DataSourceMetaData dataSourceMetaData) {
+    public Collection<TableMetaData> extractTables(final DataSourceMetaData dataSource) {
         // TODO
         return null;
     }
-
+    
     @Override
-    public Collection<ColumnMetaData> extractColumns(final TableMetaData tableMetaData) {
+    public Collection<ColumnMetaData> extractColumns(final TableMetaData table) {
         // TODO
         return null;
     }
-
+    
     @Override
-    public Collection<IndexMetaData> extractIndexes(final TableMetaData tableMetaData) {
+    public Collection<IndexMetaData> extractIndexes(final TableMetaData table) {
         // TODO
         return null;
     }
-
+    
     @Override
-    public Collection<Map<String, Object>> extractDatum(final ExtractExpression extractExpression) {
+    public Collection<Map<String, Object>> extractDatum(final Collection<ColumnMetaData> columns) {
         // TODO
         return null;
     }

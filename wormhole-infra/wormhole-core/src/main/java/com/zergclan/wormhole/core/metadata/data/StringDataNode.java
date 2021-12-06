@@ -15,23 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.core.metadata.data;
 
+import com.zergclan.wormhole.core.metadata.DataNode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Meta data for MySQL data source.
+ * Data node type of string.
  */
 @Getter
 @RequiredArgsConstructor
-public abstract class DataSourceMetaData implements MetaData {
+public final class StringDataNode implements DataNode<String> {
+    
+    private static final long serialVersionUID = -3728136866624602967L;
+    
+    private final String name;
 
-    private final String hostName;
+    private String value;
 
-    private final int port;
+    @Override
+    public String getValue() {
+        return value;
+    }
 
-    private final String catalog;
-
-    protected abstract String getUrl();
+    @Override
+    public DataNode<String> refresh(final String value) {
+        this.value = value;
+        return this;
+    }
 }

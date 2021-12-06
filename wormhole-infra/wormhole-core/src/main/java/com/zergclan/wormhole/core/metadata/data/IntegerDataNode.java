@@ -15,47 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.core.metadata.data;
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Optional;
+import com.zergclan.wormhole.core.metadata.DataNode;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * Data node type of {@link Integer}.
  */
-public interface DataGroup extends Serializable {
-
-    /**
-     * Get plan id.
-     *
-     * @return plan id
-     */
-    Long getPlanId();
-
-    /**
-     * Get job id.
-     *
-     * @return job id
-     */
-    Long getJobId();
-
-    /**
-     * Get task id.
-     *
-     * @return task id
-     */
-    Long getTaskId();
-
-    /**
-     * get data nodes.
-     *
-     * @return plan id
-     */
-    /**
-     * get data nodes.
-     *
-     * @return {@link Optional}
-     */
-    Optional<Map<String, DataNode<?>>> getDataNodes();
+@RequiredArgsConstructor
+public final class IntegerDataNode implements DataNode<Integer> {
+    
+    private static final long serialVersionUID = -9112425094443804066L;
+    
+    private final String name;
+    
+    private Integer value;
+    
+    @Override
+    public Integer getValue() {
+        return value;
+    }
+    
+    @Override
+    public DataNode<Integer> refresh(final Integer value) {
+        this.value = value;
+        return this;
+    }
 }

@@ -17,20 +17,25 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.Properties;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public final class MetaDataTest {
-
-    @Test
-    public void assertMySQLDataSourceMetaData() {
-        MySQLDataSourceMetaData mySQLDataSourceMetaData = new MySQLDataSourceMetaData("127.0.0.1", 3306, "mysql_db", new Properties());
-        assertEquals("127.0.0.1", mySQLDataSourceMetaData.getHostName());
-        assertEquals(3306, mySQLDataSourceMetaData.getPort());
-        assertEquals("mysql_db", mySQLDataSourceMetaData.getCatalog());
-        assertEquals("127.0.0.1:3306/mysql_db", mySQLDataSourceMetaData.getUrl());
-    }
+/**
+ * The root interface from which all converted data node objects shall be derived in Wormhole.
+ *
+ * @param <V> class type of data node value
+ */
+public interface DataNode<V> {
+    
+    /**
+     * Get data node value.
+     *
+     * @return data node value
+     */
+    V getValue();
+    
+    /**
+     * Refresh {@link DataNode}.
+     *
+     * @param value data node value
+     * @return {@link DataNode}
+     */
+    DataNode<V> refresh(V value);
 }

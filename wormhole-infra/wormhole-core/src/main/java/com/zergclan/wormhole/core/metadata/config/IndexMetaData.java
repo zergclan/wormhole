@@ -15,22 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.handler;
+package com.zergclan.wormhole.core.metadata.config;
 
-import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.core.metadata.MetaData;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all data node handler objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node
+ * Meta data of index.
  */
-public interface DataNodeHandler<V> extends DataNodeFilter {
-    
-    /**
-     * Handler data node.
-     *
-     * @param dataNode data node
-     * @return data node
-     */
-    V handler(V dataNode);
+@RequiredArgsConstructor
+@Getter
+public final class IndexMetaData implements MetaData {
+
+    private final String owner;
+
+    private final String name;
+
+    @Override
+    public String getIdentifier() {
+        return owner + SystemConstant.IDENTIFIER_SPACE + name;
+    }
 }
