@@ -42,7 +42,7 @@ public abstract class AbstractRestController {
      * @return http result {@link HttpResult}
      */
     protected <T> HttpResult<T> success(final T data) {
-        return new HttpResult<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
+        return new HttpResult<T>().toBuilder().code(ResultCode.SUCCESS.getCode()).message(ResultCode.SUCCESS.getMessage()).data(data).build();
     }
 
     /**
@@ -54,6 +54,16 @@ public abstract class AbstractRestController {
      * @return http result {@link HttpResult}
      */
     protected <T> HttpResult<T> success(final ResultCode resultCode, final T data) {
-        return new HttpResult<>(resultCode.getCode(), resultCode.getMessage(), data);
+        return new HttpResult<T>().toBuilder().code(resultCode.getCode()).message(resultCode.getMessage()).data(data).build();
+    }
+
+    /**
+     * Failed with code.
+     *
+     * @param resultCode {@link ResultCode}
+     * @return http result {@link HttpResult}
+     */
+    protected <T> HttpResult<T> failed(final ResultCode resultCode, final T data) {
+        return new HttpResult<T>().toBuilder().code(resultCode.getCode()).message(resultCode.getMessage()).data(data).build();
     }
 }

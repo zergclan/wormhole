@@ -17,7 +17,11 @@
 
 package com.zergclan.wormhole.console.application.service;
 
+import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
+import com.zergclan.wormhole.console.infra.repository.PageData;
+
+import java.util.Collection;
 
 /**
  * Service interface of {@link UserInfo}.
@@ -25,25 +29,48 @@ import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 public interface UserInfoService {
 
     /**
-     * Save {@link UserInfo}.
+     * Add {@link UserInfo}.
      *
      * @param userInfo {@link UserInfo}
      */
-    void save(UserInfo userInfo);
+    void add(UserInfo userInfo);
 
     /**
-     * update {@link UserInfo}.
+     * Edit {@link UserInfo} by id.
      *
-     * @param userInfo {@link UserInfo}.
+     * @param id id
+     * @param userInfo {@link UserInfo}
      * @return is updated or not
      */
-    boolean update(UserInfo userInfo);
+    boolean editById(Integer id, UserInfo userInfo);
+    
+    /**
+     * Remove {@link UserInfo} by id.
+     *
+     * @param id id
+     */
+    void removeById(Integer id);
 
     /**
      * Get {@link UserInfo} by id.
      *
-     * @param id user id
+     * @param id id
      * @return {@link UserInfo}
      */
     UserInfo getById(Integer id);
+
+    /**
+     * Get list of {@link UserInfo}.
+     *
+     * @return {@link UserInfo}
+     */
+    Collection<UserInfo> listAll();
+
+    /**
+     * Get {@link PageData} by {@link PageQuery}.
+     *
+     * @param pageQuery {@link PageQuery}
+     * @return {@link PageData}
+     */
+    PageData<UserInfo> listByPage(PageQuery<UserInfo> pageQuery);
 }

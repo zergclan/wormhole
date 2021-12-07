@@ -25,9 +25,7 @@ public final class WormholeWebExceptionTest {
     
     @Test
     public void assertNew() {
-        WormholeWebException wormholeWebException = new WormholeWebException(200, "200");
-        assertEquals(200, wormholeWebException.getCode());
-        WormholeWebException wormholeWebException1 = new WormholeWebException(200, "200", null);
-        assertEquals(200, wormholeWebException1.getCode());
+        assertEquals(200, new WormholeWebException(200, "200").getCode());
+        assertEquals(200, new WormholeWebException(200, "200", null).getCode());
     }
 }

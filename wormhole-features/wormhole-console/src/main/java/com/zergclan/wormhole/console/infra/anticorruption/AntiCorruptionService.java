@@ -23,6 +23,9 @@ import com.zergclan.wormhole.console.application.domain.value.LoginType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Anti-corrosion layer service for bean object converter.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AntiCorruptionService {
 
@@ -35,7 +38,7 @@ public class AntiCorruptionService {
     public static UserInfo userLoginVOToDTO(final LoginVO loginVO) {
         UserInfo userInfo = new UserInfo();
         if (LoginType.USERNAME.getCode().equals(loginVO.getLoginType())) {
-            userInfo.setUserName(loginVO.getLoginName());
+            userInfo.setUsername(loginVO.getLoginName());
             userInfo.setPassword(loginVO.getPassword());
         }
         return userInfo;

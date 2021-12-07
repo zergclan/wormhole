@@ -22,7 +22,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
-import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.common.StringUtil;
 import com.zergclan.wormhole.reader.mysql.entity.DataSourceInformation;
 import org.springframework.jdbc.core.JdbcTemplate;
 

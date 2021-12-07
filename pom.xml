@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.10</version>
+        <version>2.6.1</version>
     </parent>
 
     <groupId>com.zergclan</groupId>
@@ -42,7 +42,8 @@
 
     <developers>
         <developer>
-            <name>soulasuna</name>
+            <id>soulasuna</id>
+            <name>gin</name>
             <email>jacky7boy@163.com</email>
         </developer>
         <developer>
@@ -66,14 +67,18 @@
         <guava.sersion>30.1.1-jre</guava.sersion>
         <gson.sersion>2.8.9</gson.sersion>
         <disruptor.version>3.4.4</disruptor.version>
-        <lombok.version>1.18.20</lombok.version>
-        <hibernate.version>6.1.7.Final</hibernate.version>
-        <alibaba.druid.version>1.2.6</alibaba.druid.version>
+        <freemarker.version>2.3.31</freemarker.version>
+        <lombok.version>1.18.22</lombok.version>
+        <hibernate.version>6.2.0.Final</hibernate.version>
+
+        <spring-framework.version>5.3.13</spring-framework.version>
+        <spring-boot.version>2.6.1</spring-boot.version>
         <!-- databases -->
+        <HikariCP.version>4.0.3</HikariCP.version>
         <h2.version>1.4.200</h2.version>
-        <mysql.version>8.0.23</mysql.version>
+        <mysql.version>8.0.27</mysql.version>
         <!-- test -->
-        <junit5.version>5.7.2</junit5.version>
+        <junit5.version>5.8.1</junit5.version>
         <!-- maven-plugin -->
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
@@ -118,12 +123,6 @@
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>${alibaba.druid.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
