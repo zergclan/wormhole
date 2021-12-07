@@ -81,3 +81,61 @@ CREATE TABLE plan_info(
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '方案信息表';
+
+DROP TABLE IF EXISTS `task_info`;
+CREATE TABLE task_info(
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `task_code` VARCHAR(64) NOT NULL COMMENT '任务编码',
+    `title` VARCHAR(64) NOT NULL COMMENT '任务名字',
+    `order` INT(11) NOT NULL COMMENT '执行顺序',
+    `description` VARCHAR(255) NOT NULL COMMENT '资源描述信息',
+    `is_enable` tinyint(4) NOT NULL COMMENT '0关闭，1开启',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '任务信息表';
+
+DROP TABLE IF EXISTS `data_node_mapping`;
+CREATE TABLE data_node_mapping (
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `task_code` INT(11) NOT NULL COMMENT '任务编码',
+    `source_owner` VARCHAR(255) NOT NULL COMMENT '源数据持有者',
+    `source_type` tinyint(4) NOT NULL COMMENT '0字符串，1数字， 2日期',
+    `target_owner` VARCHAR(255) NOT NULL COMMENT '资源描述信息',
+    `target_type` tinyint(4) NOT NULL COMMENT '0字符串，1数字， 2日期',
+    `conversion_strategy` INT(11) NOT NULL COMMENT '0默认流程，1自定义流程',
+    `description` VARCHAR(255) NOT NULL COMMENT '资源描述信息',
+    `is_enable` tinyint(4) NOT NULL COMMENT '0关闭，1开启',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '数据节点映射表';
+
+DROP TABLE IF EXISTS `plan_execution_log`;
+CREATE TABLE plan_execution_log (
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `plan_code` INT(11) NOT NULL COMMENT '方案编码',
+    `plan_batch_id` bigint(20) NOT NULL COMMENT '方案批次号',
+    `execution_status` INT(11) NOT NULL COMMENT '执行状态',
+    `execution_description` VARCHAR(255) NOT NULL COMMENT '状态描述',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '方案执行日志表';
+
+CREATE TABLE error_date_log (
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `task_code` VARCHAR(64) NOT NULL COMMENT '任务编码',
+    `task_batch_id` bigint(20) NOT NULL COMMENT '任务批次号',
+    `source_owner` VARCHAR(255) NOT NULL COMMENT '源数据持有者',
+    `error_date` VARCHAR(1024) NOT NULL COMMENT '数据异常编码',
+    `error_code` INT(11) NOT NULL COMMENT '异常编码',
+    `error_description` VARCHAR(1024) NOT NULL COMMENT '异常描述',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '异常数据日志表';
