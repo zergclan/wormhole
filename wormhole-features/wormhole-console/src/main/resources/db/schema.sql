@@ -16,24 +16,23 @@
  */
 
 DROP TABLE IF EXISTS `user_info`;
-
 CREATE TABLE `user_info` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
     `username` VARCHAR(64) NOT NULL COMMENT '用户名',
     `password` VARCHAR(64) NOT NULL COMMENT '用户密码',
     `email` VARCHAR(64) NOT NULL COMMENT '用户邮箱',
-    `is_enable` tinyint(4) NOT NULL COMMENT '状态 0未启用，1已启用',
+    `is_enable` tinyint(4) NOT NULL COMMENT '0未激活，1激活',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
-);
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '用户信息表';
+
 
 DROP TABLE IF EXISTS `datasource_info`;
-
 CREATE TABLE datasource_info(
-    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `title` VARCHAR(64) NOT NULL COMMENT '数据源名字',
-    `genre` INT(11) NOT NULL COMMENT '数据源类型',
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `title` VARCHAR(64) NOT NULL COMMENT '数据源名称',
+    `datasource_type` tinyint(4) NOT NULL COMMENT '数据源类型',
     `host` VARCHAR(16) NOT NULL COMMENT '数据源IP',
     `port` INT(11) NOT NULL COMMENT '数据源端口',
     `catalog` VARCHAR(64) NOT NULL COMMENT '数据库名称',
@@ -41,10 +40,44 @@ CREATE TABLE datasource_info(
     `password` VARCHAR(64) NOT NULL COMMENT '链接用户密码',
     `extend_parameters` VARCHAR(1024) NOT NULL COMMENT '连接扩展参数.json格式存储',
     `url` VARCHAR(2048) NULL COMMENT '资源链接URL',
-    `description` VARCHAR(1024) NOT NULL COMMENT '资源描述信息',
-    `is_enable` tinyint(4) NOT NULL COMMENT '状态 0未启用，1已启用',
+    `description` VARCHAR(255) NOT NULL COMMENT '资源描述信息',
+    `is_enable` tinyint(4) NOT NULL COMMENT '0关闭，1开启',
     `operator` INT(11) NOT NULL COMMENT '操作员ID',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '数据源信息表';
+
+-- TODO Implement basic CURD.
+DROP TABLE IF EXISTS `conversion_strategy`;
+CREATE TABLE conversion_strategy(
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `strategy_code` VARCHAR(16) NOT NULL COMMENT '策略编码',
+    `title` VARCHAR(64) NOT NULL COMMENT '策略名称',
+    `step_code` VARCHAR(64) NOT NULL COMMENT '步骤编码',
+    `step_order` VARCHAR(64) NOT NULL COMMENT '步骤顺序',
+    `description` VARCHAR(255) NOT NULL COMMENT '描述信息',
+    `is_enable` tinyint(4) NOT NULL COMMENT '0关闭，1开启',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '转换策略信息表';
+
+DROP TABLE IF EXISTS `plan_info`;
+CREATE TABLE plan_info(
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `plan_code` VARCHAR(64) NOT NULL COMMENT '方案编码',
+    `title` VARCHAR(64) NOT NULL COMMENT '名称',
+    `execution_mode` INT(11) NOT NULL COMMENT '单次，循环',
+    `started_timestamp` bigint(20) NOT NULL COMMENT '启动时间戳',
+    `execution_corn` VARCHAR(64) NOT NULL COMMENT '执行corn表达式',
+    `execution_count` INT(11) NOT NULL COMMENT '执行次数',
+    `is_executable` tinyint(4) NOT NULL COMMENT '0可执行，1执行中',
+    `description` VARCHAR(255) NOT NULL COMMENT '资源描述信息',
+    `is_enable` tinyint(4) NOT NULL COMMENT '0关闭，1开启',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '方案信息表';
