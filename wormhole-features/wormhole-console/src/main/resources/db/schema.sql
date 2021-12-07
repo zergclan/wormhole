@@ -126,6 +126,7 @@ CREATE TABLE plan_execution_log (
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '方案执行日志表';
 
+DROP TABLE IF EXISTS `error_date_log`;
 CREATE TABLE error_date_log (
     `id` INT(11) AUTO_INCREMENT COMMENT '主键',
     `task_code` VARCHAR(64) NOT NULL COMMENT '任务编码',
