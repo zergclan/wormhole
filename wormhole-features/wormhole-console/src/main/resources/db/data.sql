@@ -33,7 +33,7 @@ INSERT INTO `user_info` (id, `username`, `password`, `email`, `is_enable`, `crea
 
 DELETE FROM `datasource_info`;
 
-INSERT INTO `datasource_info` (`id`, `title`, `genre`, `host`, `port`, `catalog`, `username`, `password`, `extend_parameters`, `url`, `description`, `is_enable`, `operator`, `create_time`, `modify_time`)
+INSERT INTO `datasource_info` (`id`, `title`, `datasource_type`, `host`, `port`, `catalog`, `username`, `password`, `extend_parameters`, `url`, `description`, `is_enable`, `operator`, `create_time`, `modify_time`)
 VALUES ( 1, 'local_extracted_data_source', 0, '127.0.0.1', 3306, 'extracted_ds', 'root', '123456',
         '{"useSSL":"false","useUnicode":"true","characterEncoding":"UTF-8","serverTimezone":"UTC"}',
         'jdbc:mysql://127.0.0.1:3306/extracted_ds?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC',

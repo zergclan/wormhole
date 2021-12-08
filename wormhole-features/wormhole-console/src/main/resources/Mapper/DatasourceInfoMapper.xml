@@ -21,7 +21,7 @@
     <resultMap id="DatasourceInfoResultMap" type="com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo">
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
-        <result column="genre" property="genre" jdbcType="INTEGER"/>
+        <result column="datasource_type" property="datasourceType" jdbcType="INTEGER"/>
         <result column="host" property="host" jdbcType="VARCHAR"/>
         <result column="port" property="port" jdbcType="INTEGER"/>
         <result column="catalog" property="catalog" jdbcType="VARCHAR"/>
@@ -43,18 +43,18 @@
     <sql id="limit">LIMIT #{start}, #{size}</sql>
 
     <sql id="insert_columns">
-        title, genre, host, port, catalog, username, password, extend_parameters, url, description, is_enable, operator, create_time, modify_time
+        title, datasource_type, host, port, catalog, username, password, extend_parameters, url, description, is_enable, operator, create_time, modify_time
     </sql>
 
     <sql id="insert_values">
-        #{title,jdbcType=VARCHAR}, #{genre,jdbcType=INTEGER}, #{host,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER},
+        #{title,jdbcType=VARCHAR}, #{datasourceType,jdbcType=INTEGER}, #{host,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER},
         #{catalog,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{extendParameters,jdbcType=VARCHAR},
         #{url,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{enable,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER},
         #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
     </sql>
 
     <sql id="insert_batch_values">
-        #{batch.title,jdbcType=VARCHAR}, #{batch.genre,jdbcType=INTEGER}, #{batch.host,jdbcType=VARCHAR}, #{batch.port,jdbcType=INTEGER},
+        #{batch.title,jdbcType=VARCHAR}, #{batch.datasourceType,jdbcType=INTEGER}, #{batch.host,jdbcType=VARCHAR}, #{batch.port,jdbcType=INTEGER},
         #{batch.catalog,jdbcType=VARCHAR}, #{batch.username,jdbcType=VARCHAR}, #{batch.password,jdbcType=VARCHAR}, #{batch.extendParameters,jdbcType=VARCHAR},
         #{batch.url,jdbcType=VARCHAR}, #{batch.description,jdbcType=VARCHAR}, #{batch.enable,jdbcType=INTEGER}, #{batch.operator,jdbcType=INTEGER},
         #{batch.createTime,jdbcType=TIMESTAMP}, #{batch.modifyTime,jdbcType=TIMESTAMP}
@@ -64,8 +64,8 @@
         <if test="null != title">
             title = #{title,jdbcType=VARCHAR},
         </if>
-        <if test="null != genre">
-            genre = #{genre,jdbcType=INTEGER},
+        <if test="null != datasourceType">
+            datasource_type = #{datasourceType,jdbcType=INTEGER},
         </if>
         <if test="null != host">
             host = #{host,jdbcType=VARCHAR},
@@ -97,7 +97,7 @@
     </sql>
 
     <sql id="select_columns">
-        id, title, genre, host, port, catalog, username, password, extend_parameters, url, description, is_enable, operator, create_time, modify_time
+        id, title, datasource_type, host, port, catalog, username, password, extend_parameters, url, description, is_enable, operator, create_time, modify_time
     </sql>
 
     <sql id="select_count">

@@ -31,7 +31,7 @@ public final class DatasourceInfo extends BasePO {
     
     private String title;
     
-    private Integer genre;
+    private Integer datasourceType;
     
     private String host;
     

@@ -71,7 +71,7 @@ public final class BaseRepositoryTest {
     private DatasourceInfo createDatasourceInfo(final int index) {
         DatasourceInfo result = new DatasourceInfo();
         result.setTitle("title as name");
-        result.setGenre(0);
+        result.setDatasourceType(0);
         result.setHost("127.0.0.1");
         result.setPort(3306);
         result.setCatalog("test_ds" + index);
