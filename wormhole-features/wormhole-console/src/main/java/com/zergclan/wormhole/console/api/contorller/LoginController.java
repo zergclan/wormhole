@@ -17,22 +17,32 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
+import com.zergclan.wormhole.console.api.security.UserSessionManager;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.domain.value.RootUser;
+
+import com.zergclan.wormhole.console.application.service.LoginService;
 import com.zergclan.wormhole.console.infra.anticorruption.AntiCorruptionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * Controller of Login.
  */
 @RestController
+@RequestMapping("/security")
 public final class LoginController extends AbstractRestController {
-
+    
+    @Resource
+    private LoginService loginService;
+    
     /**
      * Login.
      *
@@ -41,7 +51,19 @@ public final class LoginController extends AbstractRestController {
      */
     @PostMapping(value = "/login")
     public HttpResult<String> login(@RequestBody final LoginVO loginVO) {
-        UserInfo userInfo = AntiCorruptionService.userLoginVOToDTO(loginVO);
-        return RootUser.ROOT.isRoot(userInfo.getUsername(), userInfo.getPassword()) ? success(ResultCode.SUCCESS, "wormhole-root-token") : failed(ResultCode.UNAUTHORIZED, "");
+        Optional<String> token = loginService.login(AntiCorruptionService.userLoginVOToDTO(loginVO));
+        return token.isPresent() ? success(ResultCode.SUCCESS, token.get()) : failed(ResultCode.UNAUTHORIZED, "");
+    }
+    
+    /**
+     * Logout.
+     *
+     * @param request {@link HttpServletRequest}
+     * @return {@link HttpResult}
+     */
+    @PostMapping(value = "/logout")
+    public HttpResult<Void> logout(final HttpServletRequest request) {
+        UserSessionManager.clearUserSession(getToken(request));
+        return success();
     }
 }

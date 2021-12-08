@@ -15,36 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.console.application.service;
 
-import lombok.Getter;
+import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 
-/**
- * Root user of Wormhole.
- */
-@Getter
-public enum RootUser {
+import java.util.Optional;
 
-    ROOT("root", "root");
-
-    private final String loginName;
+public interface LoginService {
     
-
-    private final String secretKey;
-    
-    RootUser(final String loginName, final String secretKey) {
-        this.loginName = loginName;
-        this.secretKey = secretKey;
-    }
-
     /**
-     * Is root user of Wormhole.
+     * Login by {@link UserInfo}.
      *
-     * @param loginName login name
-     * @param secretKey secret key
-     * @return is root user or not
+     * @param userInfo {@link UserInfo}
+     * @return token
      */
-    public boolean isRoot(final String loginName, final String secretKey) {
-        return this.loginName.equals(loginName) && this.secretKey.equals(secretKey);
-    }
+    Optional<String> login(UserInfo userInfo);
 }

@@ -45,11 +45,16 @@ public final class BaseRepositoryTest {
     public void assertCURD() {
         assertGetOne();
         assertListInIds();
+        assertCountAll();
         assertListByPage();
         assertAdd();
         assertEdit();
         assertRemove();
         assertAddBatch();
+    }
+    
+    private void assertCountAll() {
+        assertEquals(7, datasourceInfoRepository.count());
     }
     
     private void assertAdd() {

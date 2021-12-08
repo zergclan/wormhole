@@ -45,13 +45,19 @@ public final class LoginControllerTest {
     @Test
     public void assertLoginSuccess() throws Exception {
         LoginVO loginVO = new LoginVO();
-        loginVO.setLoginName("root");
-        loginVO.setPassword("root");
+        loginVO.setLoginName("jack");
+        loginVO.setPassword("123456");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data("wormhole-root-token").build();
-        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
+        HttpResult<String> actualLogin = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
+        assertEquals(200, actualLogin.getCode());
+        assertEquals("SUCCESS", actualLogin.getMessage());
+        String token = actualLogin.getData();
+        mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/logout").header("token", token).contentType("application/json").content(requestJson)).andReturn();
+        HttpResult<String> actualLogout = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
+        assertEquals(200, actualLogout.getCode());
+        assertEquals("SUCCESS", actualLogout.getMessage());
     }
     
     @Test
@@ -61,7 +67,7 @@ public final class LoginControllerTest {
         loginVO.setPassword("admin");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("").build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
@@ -73,7 +79,7 @@ public final class LoginControllerTest {
         loginVO.setPassword("root");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/login").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("").build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }

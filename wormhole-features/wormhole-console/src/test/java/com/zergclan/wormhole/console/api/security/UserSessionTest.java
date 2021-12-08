@@ -15,22 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.console.api.security;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public final class TypeTest {
-
+public final class UserSessionTest {
+    
     @Test
-    public void assertDatasource() {
-        assertEquals(0, DatasourceType.MYSQL.getCode());
-    }
-
-    @Test
-    public void assertLogin() {
-        assertEquals(0, LoginType.USERNAME.getCode());
-        assertEquals(1, LoginType.EMAIL.getCode());
+    public void assertUserSession() {
+        UserSession userSession = new UserSession("root", "root");
+        assertTrue(userSession.isAccountNonExpired());
+        assertTrue(userSession.isAccountNonLocked());
+        assertTrue(userSession.isCredentialsNonExpired());
+        assertTrue(userSession.isEnabled());
     }
 }
