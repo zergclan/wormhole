@@ -43,7 +43,8 @@ public final class DiscoveryControllerTest {
     
     @Test
     public void assertStatus() throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/status").contentType("application/json").content("")).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/status").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content("")).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data("UP").build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }

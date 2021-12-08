@@ -56,7 +56,8 @@ public final class UserInfoControllerTest {
         userInfo.setPassword("admin");
         userInfo.setEmail("jacky7boy@163.com");
         String requestJson = JSON_CONVERTER.toJson(userInfo);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
@@ -68,23 +69,26 @@ public final class UserInfoControllerTest {
         userInfo.setPassword("admin");
         userInfo.setEmail("jacky7boy@163.com");
         String requestJson = JSON_CONVERTER.toJson(userInfo);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/user/1").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/user/5").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 
     @Test
     public void assertRemove() throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/user/2").contentType("application/json").content("")).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/user/5").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content("")).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 
     @Test
     public void assertGetById() throws Exception {
-        final MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/1").contentType("application/json").content("")).andReturn();
+        final MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/2").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content("")).andReturn();
         UserInfo userInfo = new UserInfo();
-        userInfo.setId(1);
+        userInfo.setId(2);
         userInfo.setUsername("jack");
         userInfo.setPassword("123456");
         userInfo.setEmail("jacky7boy@163.com");
@@ -97,7 +101,8 @@ public final class UserInfoControllerTest {
 
     @Test
     public void assertList() throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/list").contentType("application/json").content("")).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/list").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content("")).andReturn();
         HttpResult<List<UserInfo>> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         assertEquals(12, httpResult.getData().size());
     }
@@ -109,7 +114,8 @@ public final class UserInfoControllerTest {
         pageQuery.setSize(2);
         pageQuery.setQuery(new UserInfo());
         String requestJson = JSON_CONVERTER.toJson(pageQuery);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user/page").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user/page").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<Object> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         List<UserInfo> items = (ArrayList) ((LinkedHashMap) httpResult.getData()).get("items");
         assertEquals(2, items.size());

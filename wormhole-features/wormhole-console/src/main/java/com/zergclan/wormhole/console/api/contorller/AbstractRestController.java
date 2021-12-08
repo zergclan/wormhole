@@ -20,11 +20,23 @@ package com.zergclan.wormhole.console.api.contorller;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * The base class from which all rest controller shall be derived in Wormhole.
  */
 public abstract class AbstractRestController {
-
+    
+    /**
+     * Get token from {@link HttpServletRequest} header.
+     *
+     * @param request {@link HttpServletRequest}
+     * @return token
+     */
+    protected String getToken(final HttpServletRequest request) {
+        return request.getHeader("token");
+    }
+    
     /**
      * Success only.
      *
