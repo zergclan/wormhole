@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.console.infra.repository;
 
-import com.zergclan.wormhole.console.WormholeETLApplication;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,7 @@ import java.util.LinkedList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = {WormholeETLApplication.class})
+@SpringBootTest
 public final class BaseRepositoryTest {
     
     private static final String EXTEND_PARAMETERS = "{\"useSSL\":\"false\",\"useUnicode\":\"true\",\"characterEncoding\":\"UTF-8\",\"serverTimezone\":\"UTC\"}";
@@ -53,29 +52,47 @@ public final class BaseRepositoryTest {
         assertAddBatch();
     }
     
+    private void assertGetOne() {
+        DatasourceInfo uniqueQuery = new DatasourceInfo();
+        uniqueQuery.setHost("127.0.0.1");
+        uniqueQuery.setPort(3306);
+        uniqueQuery.setCatalog("ds_test1");
+        uniqueQuery.setUsername("root_test");
+        uniqueQuery.setPassword("123456");
+        assertEquals("datasource info for ut test", datasourceInfoRepository.getOne(uniqueQuery).getDescription());
+    }
+    
+    private void assertListInIds() {
+        Collection<Integer> ids = new LinkedList<>();
+        ids.add(1);
+        ids.add(2);
+        assertEquals(2, datasourceInfoRepository.list(ids).size());
+    }
+    
     private void assertCountAll() {
-        assertEquals(7, datasourceInfoRepository.count());
+        assertEquals(2, datasourceInfoRepository.count());
+    }
+    
+    private void assertListByPage() {
+        PageQuery<DatasourceInfo> pageQuery = new PageQuery<>();
+        pageQuery.setPage(1);
+        pageQuery.setSize(2);
+        DatasourceInfo queryBean = new DatasourceInfo();
+        queryBean.setTitle("datasource_info_test");
+        pageQuery.setQuery(queryBean);
+        PageData<DatasourceInfo> pageData = datasourceInfoRepository.listByPage(pageQuery);
+        assertEquals(2, pageData.getTotal());
+        assertEquals(1, pageData.getTotalPage());
+        assertEquals(2, pageData.getItems().size());
     }
     
     private void assertAdd() {
         datasourceInfoRepository.add(createDatasourceInfo(0));
     }
     
-    private void assertAddBatch() {
-        Collection<DatasourceInfo> datasourceInfos = new LinkedList<>();
-        for (int i = 0; i < 10; i++) {
-            datasourceInfos.add(createDatasourceInfo(i));
-        }
-        datasourceInfoRepository.addBatch(datasourceInfos);
-    }
-    
-    private void assertEdit() {
-        assertTrue(datasourceInfoRepository.edit(1, createDatasourceInfo(1)));
-    }
-    
     private DatasourceInfo createDatasourceInfo(final int index) {
         DatasourceInfo result = new DatasourceInfo();
-        result.setTitle("title as name");
+        result.setTitle("title");
         result.setDatasourceType(0);
         result.setHost("127.0.0.1");
         result.setPort(3306);
@@ -90,39 +107,19 @@ public final class BaseRepositoryTest {
         return result;
     }
     
-    private void assertGetOne() {
-        DatasourceInfo uniqueQuery = new DatasourceInfo();
-        uniqueQuery.setHost("127.0.0.1");
-        uniqueQuery.setPort(3307);
-        uniqueQuery.setCatalog("ds_ut");
-        uniqueQuery.setUsername("root");
-        uniqueQuery.setPassword("123456");
-        assertEquals("datasource info for ut test", datasourceInfoRepository.getOne(uniqueQuery).getDescription());
-    }
-    
-    private void assertListInIds() {
-        Collection<Integer> ids = new LinkedList<>();
-        ids.add(3);
-        ids.add(4);
-        ids.add(5);
-        ids.add(6);
-        assertEquals(4, datasourceInfoRepository.list(ids).size());
-    }
-    
-    private void assertListByPage() {
-        PageQuery<DatasourceInfo> pageQuery = new PageQuery<>();
-        pageQuery.setPage(2);
-        pageQuery.setSize(2);
-        DatasourceInfo queryBean = new DatasourceInfo();
-        queryBean.setTitle("local_test_data_source");
-        pageQuery.setQuery(queryBean);
-        PageData<DatasourceInfo> pageData = datasourceInfoRepository.listByPage(pageQuery);
-        assertEquals(5, pageData.getTotal());
-        assertEquals(3, pageData.getTotalPage());
-        assertEquals(2, pageData.getItems().size());
+    private void assertEdit() {
+        assertTrue(datasourceInfoRepository.edit(3, createDatasourceInfo(1)));
     }
     
     private void assertRemove() {
-        datasourceInfoRepository.remove(8);
+        datasourceInfoRepository.remove(3);
+    }
+    
+    private void assertAddBatch() {
+        Collection<DatasourceInfo> datasourceInfos = new LinkedList<>();
+        for (int i = 0; i < 2; i++) {
+            datasourceInfos.add(createDatasourceInfo(i));
+        }
+        datasourceInfoRepository.addBatch(datasourceInfos);
     }
 }

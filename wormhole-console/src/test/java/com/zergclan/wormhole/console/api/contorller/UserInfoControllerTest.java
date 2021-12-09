@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
-import com.zergclan.wormhole.console.WormholeETLApplication;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
@@ -41,7 +40,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {WormholeETLApplication.class})
+@SpringBootTest
 public final class UserInfoControllerTest {
     
     private static final JsonConverter JSON_CONVERTER = JsonConverter.defaultInstance();
@@ -50,65 +49,23 @@ public final class UserInfoControllerTest {
     private MockMvc mvc;
     
     @Test
-    public void assertAdd() throws Exception {
-        final UserInfo userInfo = new UserInfo();
-        userInfo.setUsername("admin");
-        userInfo.setPassword("admin");
-        userInfo.setEmail("jacky7boy@163.com");
-        String requestJson = JSON_CONVERTER.toJson(userInfo);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user").header("token", "wormhole-console-test-token")
-                .contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
-        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+    public void assertUserInfoController() throws Exception {
+        assertGetById();
+        assertList();
+        assertPage();
+        assertAdd();
+        assertUpdate();
+        assertRemove();
     }
     
-    @Test
-    public void assertUpdate() throws Exception {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUsername("admin");
-        userInfo.setPassword("admin");
-        userInfo.setEmail("jacky7boy@163.com");
-        String requestJson = JSON_CONVERTER.toJson(userInfo);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/user/5").header("token", "wormhole-console-test-token")
-                .contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
-        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
-    }
-
-    @Test
-    public void assertRemove() throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/user/5").header("token", "wormhole-console-test-token")
-                .contentType("application/json").content("")).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
-        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
-    }
-
-    @Test
-    public void assertGetById() throws Exception {
-        final MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/2").header("token", "wormhole-console-test-token")
-                .contentType("application/json").content("")).andReturn();
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(2);
-        userInfo.setUsername("jack");
-        userInfo.setPassword("123456");
-        userInfo.setEmail("jacky7boy@163.com");
-        userInfo.setEnable(0);
-        userInfo.setCreateTime(LocalDateTime.parse("2012-11-19 18:30:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        userInfo.setModifyTime(LocalDateTime.parse("2012-11-19 18:30:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        HttpResult<UserInfo> expectedResult = new HttpResult<UserInfo>().toBuilder().code(200).message("SUCCESS").data(userInfo).build();
-        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
-    }
-
-    @Test
-    public void assertList() throws Exception {
+    private void assertList() throws Exception {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/list").header("token", "wormhole-console-test-token")
                 .contentType("application/json").content("")).andReturn();
         HttpResult<List<UserInfo>> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
-        assertEquals(12, httpResult.getData().size());
+        assertEquals(1, httpResult.getData().size());
     }
     
-    @Test
-    public void assertPage() throws Exception {
+    private void assertPage() throws Exception {
         PageQuery<UserInfo> pageQuery = new PageQuery<>();
         pageQuery.setPage(1);
         pageQuery.setSize(2);
@@ -118,6 +75,52 @@ public final class UserInfoControllerTest {
                 .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<Object> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         List<UserInfo> items = (ArrayList) ((LinkedHashMap) httpResult.getData()).get("items");
-        assertEquals(2, items.size());
+        assertEquals(1, items.size());
+    }
+    
+    private void assertGetById() throws Exception {
+        final MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/1").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content("")).andReturn();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(1);
+        userInfo.setUsername("root_test");
+        userInfo.setPassword("123456");
+        userInfo.setEmail("example@163.com");
+        userInfo.setEnable(0);
+        userInfo.setCreateTime(LocalDateTime.parse("2012-11-19 18:30:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        userInfo.setModifyTime(LocalDateTime.parse("2012-11-19 18:30:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        HttpResult<UserInfo> expectedResult = new HttpResult<UserInfo>().toBuilder().code(200).message("SUCCESS").data(userInfo).build();
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+    }
+    
+    private void assertAdd() throws Exception {
+        final UserInfo userInfo = new UserInfo();
+        userInfo.setUsername("root_test2");
+        userInfo.setPassword("root_test2");
+        userInfo.setEmail("example@163.com");
+        String requestJson = JSON_CONVERTER.toJson(userInfo);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/user").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content(requestJson)).andReturn();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+    }
+    
+    private void assertUpdate() throws Exception {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername("admin_test2");
+        userInfo.setPassword("admin_test2");
+        userInfo.setEmail("example@163.com");
+        String requestJson = JSON_CONVERTER.toJson(userInfo);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/user/2").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content(requestJson)).andReturn();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
+    }
+    
+    private void assertRemove() throws Exception {
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/user/2").header("token", "wormhole-console-test-token")
+                .contentType("application/json").content("")).andReturn();
+        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
+        assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 }

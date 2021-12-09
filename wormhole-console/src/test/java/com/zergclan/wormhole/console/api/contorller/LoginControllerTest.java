@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
-import com.zergclan.wormhole.console.WormholeETLApplication;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.infra.util.JsonConverter;
@@ -34,7 +33,7 @@ import javax.annotation.Resource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {WormholeETLApplication.class})
+@SpringBootTest
 public final class LoginControllerTest {
     
     private static final JsonConverter JSON_CONVERTER = JsonConverter.defaultInstance();
@@ -45,7 +44,7 @@ public final class LoginControllerTest {
     @Test
     public void assertLoginSuccess() throws Exception {
         LoginVO loginVO = new LoginVO();
-        loginVO.setLoginName("jack");
+        loginVO.setLoginName("root_test");
         loginVO.setPassword("123456");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
@@ -63,8 +62,8 @@ public final class LoginControllerTest {
     @Test
     public void assertLoginUnauthorizedUsername() throws Exception {
         LoginVO loginVO = new LoginVO();
-        loginVO.setLoginName("root");
-        loginVO.setPassword("admin");
+        loginVO.setLoginName("root_test");
+        loginVO.setPassword("pwd_error");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
@@ -75,8 +74,8 @@ public final class LoginControllerTest {
     @Test
     public void assertLoginUnauthorizedPassword() throws Exception {
         LoginVO loginVO = new LoginVO();
-        loginVO.setLoginName("admin");
-        loginVO.setPassword("root");
+        loginVO.setLoginName("root_error");
+        loginVO.setPassword("123456");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
