@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
-import com.zergclan.wormhole.console.WormholeETLApplication;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.infra.util.JsonConverter;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ import javax.annotation.Resource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {WormholeETLApplication.class})
+@SpringBootTest
 public final class DiscoveryControllerTest {
     
     private static final JsonConverter JSON_CONVERTER = JsonConverter.defaultInstance();
