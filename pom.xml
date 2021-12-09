@@ -90,7 +90,7 @@
         <module>wormhole-infra</module>
         <module>wormhole-reader</module>
         <module>wormhole-writer</module>
-        <module>wormhole-features</module>
+        <module>wormhole-console</module>
     </modules>
 
     <dependencyManagement>
