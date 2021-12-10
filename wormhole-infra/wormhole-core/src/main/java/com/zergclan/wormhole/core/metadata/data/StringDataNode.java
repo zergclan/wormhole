@@ -18,27 +18,28 @@
 package com.zergclan.wormhole.core.metadata.data;
 
 import com.zergclan.wormhole.core.metadata.DataNode;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
  * Data node type of string.
  */
-@Getter
 @RequiredArgsConstructor
 public final class StringDataNode implements DataNode<String> {
-    
-    private static final long serialVersionUID = -3728136866624602967L;
     
     private final String name;
 
     private String value;
-
+    
     @Override
     public String getValue() {
         return value;
     }
-
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
     @Override
     public DataNode<String> refresh(final String value) {
         this.value = value;

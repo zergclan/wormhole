@@ -58,6 +58,7 @@ public final class UserInfoControllerTest {
         assertRemove();
     }
     
+    @SuppressWarnings("all")
     private void assertList() throws Exception {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/user/list").header("token", "wormhole-console-test-token")
                 .contentType("application/json").content("")).andReturn();
@@ -65,6 +66,7 @@ public final class UserInfoControllerTest {
         assertEquals(1, httpResult.getData().size());
     }
     
+    @SuppressWarnings("all")
     private void assertPage() throws Exception {
         PageQuery<UserInfo> pageQuery = new PageQuery<>();
         pageQuery.setPage(1);
