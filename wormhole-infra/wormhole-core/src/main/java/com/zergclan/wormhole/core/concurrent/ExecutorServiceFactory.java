@@ -71,7 +71,7 @@ public final class ExecutorServiceFactory {
 
         private int maxPoolSize;
 
-        private long keepAliveTime;
+        private Long keepAliveTime;
 
         private TimeUnit timeUnit;
 
@@ -126,15 +126,12 @@ public final class ExecutorServiceFactory {
          * @return new instance of WormholeExecutorService
          */
         private ExecutorService build() {
-            if (0L == keepAliveTime) {
+            if (null == keepAliveTime) {
                 // FIXME refer to HikariConfig.MAX_LIFETIME adjustment when test completed.
-                keepAliveTime = 30 * 60 * 1000;
+                keepAliveTime = 30 * 60 * 1000L;
             }
             if (null == timeUnit) {
                 timeUnit = TimeUnit.MILLISECONDS;
-            }
-            if (0 == workQueueSize) {
-                workQueue = new ArrayBlockingQueue<>(workQueueSize);
             }
             if (null == namePrefix) {
                 namePrefix = "default";
@@ -142,7 +139,7 @@ public final class ExecutorServiceFactory {
             if (null == threadFactory) {
                 threadFactory = new DefaultThreadFactory(namePrefix);
             }
-            return new ExecutorService(new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, workQueue, threadFactory), handler);
+            return new ExecutorService(new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, new ArrayBlockingQueue<>(workQueueSize), threadFactory), handler);
         }
     }
     

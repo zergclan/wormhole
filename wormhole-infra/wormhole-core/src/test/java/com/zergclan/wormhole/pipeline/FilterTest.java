@@ -18,11 +18,9 @@
 package com.zergclan.wormhole.pipeline;
 
 import com.zergclan.wormhole.common.WormholeException;
-import com.zergclan.wormhole.core.metadata.DataNode;
 import com.zergclan.wormhole.core.metadata.data.StringDataNode;
 import com.zergclan.wormhole.pipeline.filter.NullToEmptyHandler;
 import com.zergclan.wormhole.pipeline.filter.RequiredValidator;
-import com.zergclan.wormhole.pipeline.filter.StringToIntegerConverter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,20 +30,14 @@ public final class FilterTest {
     
     @Test
     public void assertRequiredValidator() {
-        DataNodeFilter<DataNode<?>> dataNodeFilter = new RequiredValidator();
+        DataNodeFilter<String> dataNodeFilter = new RequiredValidator();
         WormholeException exception = assertThrows(WormholeException.class, () -> dataNodeFilter.doFilter(new StringDataNode("column")));
         assertEquals("Required value can not be null", exception.getMessage());
     }
     
     @Test
     public void assertNullToEmptyHandler() {
-        DataNodeFilter<DataNode<String>> dataNodeFilter = new NullToEmptyHandler();
+        DataNodeFilter<String> dataNodeFilter = new NullToEmptyHandler();
         assertEquals("", dataNodeFilter.doFilter(new StringDataNode("name")).getValue());
-    }
-    
-    @Test
-    public void assertStringToIntegerConverter() {
-        DataNodeFilter<DataNode<?>> dataNodeFilter = new StringToIntegerConverter();
-        assertEquals(1, dataNodeFilter.doFilter(new StringDataNode("age").refresh("1")).getValue());
     }
 }

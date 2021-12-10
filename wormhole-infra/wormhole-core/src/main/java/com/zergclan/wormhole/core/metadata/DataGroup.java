@@ -32,14 +32,7 @@ public interface DataGroup extends Serializable {
      * @return plan id
      */
     Long getPlanId();
-
-    /**
-     * Get job id.
-     *
-     * @return job id
-     */
-    Long getJobId();
-
+    
     /**
      * Get task id.
      *
@@ -58,4 +51,11 @@ public interface DataGroup extends Serializable {
      * @return {@link Optional}
      */
     Optional<Map<String, DataNode<?>>> getDataNodes();
+    
+    /**
+     * Init {@link DataGroup}.
+     *
+     * @param dataNodes {@link DataNode}
+     */
+    void init(Map<String, DataNode<?>> dataNodes);
 }

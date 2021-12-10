@@ -35,8 +35,6 @@ public final class DefaultDataGroup implements DataGroup {
     
     private final Long planId;
     
-    private final Long jobId;
-    
     private final Long taskId;
     
     private final Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
@@ -47,11 +45,6 @@ public final class DefaultDataGroup implements DataGroup {
     }
     
     @Override
-    public Long getJobId() {
-        return jobId;
-    }
-    
-    @Override
     public Long getTaskId() {
         return taskId;
     }
@@ -59,5 +52,10 @@ public final class DefaultDataGroup implements DataGroup {
     @Override
     public Optional<Map<String, DataNode<?>>> getDataNodes() {
         return dataNodes.isEmpty() ? Optional.empty() : Optional.of(dataNodes);
+    }
+    
+    @Override
+    public void init(final Map<String, DataNode<?>> dataNodes) {
+        this.dataNodes.putAll(dataNodes);
     }
 }

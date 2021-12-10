@@ -24,10 +24,10 @@ import com.zergclan.wormhole.pipeline.DataNodeFilter;
 /**
  * Required validator for data node.
  */
-public final class RequiredValidator implements DataNodeFilter<DataNode<?>> {
+public final class RequiredValidator implements DataNodeFilter<String> {
     
     @Override
-    public DataNode<?> doFilter(final DataNode<?> node) {
+    public DataNode<String> doFilter(final DataNode<String> node) {
         if (null == node.getValue()) {
             throw new WormholeException("Required value can not be null");
         }

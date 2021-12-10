@@ -23,7 +23,7 @@ import com.zergclan.wormhole.pipeline.DataNodeFilter;
 /**
  * Null to empty handler for data node.
  */
-public final class NullToEmptyHandler implements DataNodeFilter<DataNode<String>> {
+public final class NullToEmptyHandler implements DataNodeFilter<String> {
     
     @Override
     public DataNode<String> doFilter(final DataNode<String> node) {

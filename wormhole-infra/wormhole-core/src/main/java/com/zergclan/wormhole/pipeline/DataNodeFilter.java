@@ -22,7 +22,7 @@ import com.zergclan.wormhole.core.metadata.DataNode;
 /**
  * The root interface from which all data node filter objects shall be derived in Wormhole.
  */
-public interface DataNodeFilter<V extends DataNode<?>> {
+public interface DataNodeFilter<V> {
     
     /**
      * Do filter.
@@ -30,5 +30,5 @@ public interface DataNodeFilter<V extends DataNode<?>> {
      * @param node {@link DataNode}
      * @return {@link DataNode}
      */
-    V doFilter(V node);
+    DataNode<V> doFilter(DataNode<V> node);
 }
