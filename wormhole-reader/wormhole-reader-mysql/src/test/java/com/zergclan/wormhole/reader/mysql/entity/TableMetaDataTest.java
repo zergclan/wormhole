@@ -15,33 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.reader.mysql.domain;
+package com.zergclan.wormhole.reader.mysql.entity;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Get mysql metadata interface.
+ * Test tableMetaData class constant values.
  */
-public interface MysqlMetadataDOM {
+public final class TableMetaDataTest {
 
-    /**
-     * Query all tables metadata.
-     * @param jt JdbcTemplate.
-     * @param dbName The database to be queried.
-     * @return Meta information for all tables.
-     */
-    List<Map<String, Object>> queryAllTables(JdbcTemplate jt, String dbName);
-
-    /**
-     * Query all columns metadata.
-     * @param jt JdbcTemplate.
-     * @param dbName The database to be queried.
-     * @param tableName The tableName to be queried.
-     * @return Meta information for all columns.
-     */
-    List<Map<String, Object>> queryAllColumns(JdbcTemplate jt, String dbName, String tableName);
+    @Test
+    public void assertValues() {
+        assertEquals("tableName", TableMetaData.TABLE_NAME);
+        assertEquals("tableSchema", TableMetaData.TABLE_SCHEMA);
+        assertEquals("tableComment", TableMetaData.TABLE_COMMENT);
+        assertEquals("columns", TableMetaData.COLUMNS);
+        assertEquals("indexes", TableMetaData.INDEXES);
+    }
 
 }

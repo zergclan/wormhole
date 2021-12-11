@@ -70,6 +70,7 @@
         <freemarker.version>2.3.31</freemarker.version>
         <lombok.version>1.18.22</lombok.version>
         <hibernate.version>6.2.0.Final</hibernate.version>
+        <slf4j-nop.version>1.7.32</slf4j-nop.version>
 
         <spring-framework.version>5.3.13</spring-framework.version>
         <spring-boot.version>2.6.1</spring-boot.version>
@@ -117,6 +118,12 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-nop</artifactId>
+                <version>${slf4j-nop.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>

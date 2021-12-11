@@ -15,10 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.repository;
+package com.zergclan.wormhole.repository.entity;
+
+import com.zergclan.wormhole.repository.DbTypeEnum;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * The root interface from which all data source manager objects shall be derived in Wormhole.
+ * Test dbTypeEnum values.
  */
-public interface DataSourceManager {
+public final class DbTypeEnumTest {
+
+    @Test
+    public void assertValues() {
+        assertEquals("mysql", DbTypeEnum.MYSQL.getDb());
+        assertEquals("com.mysql.cj.jdbc.Driver", DbTypeEnum.MYSQL.getDriverClassName());
+        assertEquals("select 1", DbTypeEnum.MYSQL.getTestSql());
+    }
+
 }
