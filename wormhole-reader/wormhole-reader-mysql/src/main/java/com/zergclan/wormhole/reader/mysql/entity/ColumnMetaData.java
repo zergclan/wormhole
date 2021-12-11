@@ -17,32 +17,43 @@
 
 package com.zergclan.wormhole.reader.mysql.entity;
 
+import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.core.metadata.MetaData;
 import lombok.Data;
 
 /**
- * Information about connecting to the data source.
+ * Meta data column.
  */
 @Data
-public final class DataSourceInformation {
+public final class ColumnMetaData implements MetaData {
 
-    private String ip;
+    public static final String TABLE_SCHEMA = "tableSchema";
 
-    private String port;
+    public static final String TABLE_NAME = "tableName";
 
-    private String dbName;
+    public static final String COLUMN_NAME = "columnName";
 
-    private String dbUser;
+    public static final String DATA_TYPE = "dataType";
 
-    private String dbPassword;
+    public static final String COLUMN_COMMENT = "columnComment";
 
-    private final String driverClassname = "com.mysql.cj.jdbc.Driver";
+    public static final String COLUMN_TYPE = "columnType";
 
-    /**
-     * Get jdbc url.
-     * @return JdbcUrl.
-     */
-    public String getJdbcUrl() {
-        return "jdbc:mysql://" + ip + ":" + port + "/" + dbName + "?characterEncoding=utf-8&useSSL=false";
+    private String tableSchema;
+
+    private String tableName;
+
+    private String columnName;
+
+    private String dataType;
+
+    private String columnComment;
+
+    private String columnType;
+
+    @Override
+    public String getIdentifier() {
+        return tableSchema + SystemConstant.IDENTIFIER_SPACE + tableName + SystemConstant.IDENTIFIER_SPACE + columnName;
     }
 
 }
