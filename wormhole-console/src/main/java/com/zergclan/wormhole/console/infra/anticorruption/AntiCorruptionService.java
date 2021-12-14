@@ -17,11 +17,17 @@
 
 package com.zergclan.wormhole.console.infra.anticorruption;
 
+import com.zergclan.wormhole.console.api.vo.DatabaseInfoVO;
 import com.zergclan.wormhole.console.api.vo.LoginVO;
+import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
+import com.zergclan.wormhole.console.application.domain.value.DatasourceType;
 import com.zergclan.wormhole.console.application.domain.value.LoginType;
+import com.zergclan.wormhole.console.infra.util.BeanMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.Optional;
 
 /**
  * Anti-corrosion layer service for bean object converter.
@@ -35,12 +41,29 @@ public class AntiCorruptionService {
      * @param loginVO {@link LoginVO}
      * @return {@link UserInfo}
      */
-    public static UserInfo userLoginVOToDTO(final LoginVO loginVO) {
-        UserInfo userInfo = new UserInfo();
+    public static Optional<UserInfo> userLoginVOToPO(final LoginVO loginVO) {
         if (LoginType.USERNAME.getCode().equals(loginVO.getLoginType())) {
+            UserInfo userInfo = new UserInfo();
             userInfo.setUsername(loginVO.getLoginName());
             userInfo.setPassword(loginVO.getPassword());
+            return Optional.of(userInfo);
         }
-        return userInfo;
+        return Optional.empty();
+    }
+    
+    /**
+     * Convert {@link DatabaseInfoVO} to {@link DatabaseInfo}.
+     *
+     * @param databaseInfoVO {@link DatabaseInfoVO}
+     * @return {@link DatabaseInfo}
+     */
+    public static Optional<DatabaseInfo> databaseInfoVOToPO(final DatabaseInfoVO databaseInfoVO) {
+        Optional<DatasourceType> datasourceTypeOptional = DatasourceType.contains(databaseInfoVO.getDatabaseType());
+        if (datasourceTypeOptional.isPresent()) {
+            DatabaseInfo databaseInfo = new DatabaseInfo();
+            BeanMapper.shallowCopy(databaseInfoVO, databaseInfo);
+            return Optional.of(databaseInfo);
+        }
+        return Optional.empty();
     }
 }

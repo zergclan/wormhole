@@ -15,29 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.api.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
- * The base class from which all persistent object shall be derived in Wormhole.
+ * Query VO of database info.
  */
-@Getter
-@Setter
-public abstract class BasePO implements Serializable {
+@Data
+public final class DatabaseInfoVO implements Serializable {
     
-    private Integer id;
+    private String title;
     
-    private Integer enable;
+    private String host;
     
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime createTime;
+    private Integer post;
     
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime modifyTime;
+    private Integer databaseType;
+    
+    private String username;
+    
+    private String password;
+    
+    private String description;
 }

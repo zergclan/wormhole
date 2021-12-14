@@ -18,11 +18,10 @@
 package com.zergclan.wormhole.console.infra.repository.mapper;
 
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Mapper of {@link UserInfo}.
+ * Mapper of {@link DatasourceInfo}.
  */
 @Mapper
 public interface DatasourceInfoMapper extends BaseMapper<DatasourceInfo> {

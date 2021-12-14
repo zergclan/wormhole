@@ -15,33 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.console.application.domain.entity;
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.Optional;
-
-@Getter
-public enum DatasourceType {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public final class DatabaseInfo extends AbstractPO {
     
-    MYSQL(0);
+    private static final long serialVersionUID = -2497678602227442782L;
     
-    private final Integer code;
+    private String title;
     
-    DatasourceType(final Integer code) {
-        this.code = code;
-    }
+    private String host;
     
-    /**
-     * Contains code.
-     *
-     * @param code code of {@link DatasourceType}
-     * @return {@link DatasourceType}
-     */
-    public static Optional<DatasourceType> contains(final Integer code) {
-        if (DatasourceType.MYSQL.code.equals(code)) {
-            return Optional.of(DatasourceType.MYSQL);
-        }
-        return Optional.empty();
-    }
+    private Integer post;
+    
+    private Integer type;
+    
+    private String username;
+    
+    private String password;
+    
+    private String description;
+    
+    private Integer operator;
 }

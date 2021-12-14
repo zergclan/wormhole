@@ -32,7 +32,7 @@ import java.util.Collection;
  * Implemented Service of {@link UserInfoService}.
  */
 @Service(value = "userInfoService")
-public final class UserInfoServiceImpl implements UserInfoService {
+public class UserInfoServiceImpl implements UserInfoService {
     
     @Resource
     private BaseRepository<UserInfo> userInfoRepository;

@@ -40,7 +40,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user")
-public final class UserInfoController extends AbstractRestController {
+public class UserInfoController extends AbstractRestController {
     
     @Resource
     private UserInfoService userInfoService;

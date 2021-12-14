@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends BasePO {
+public final class UserInfo extends AbstractPO {
     
     private static final long serialVersionUID = 6978285474252748202L;
     
@@ -34,4 +34,6 @@ public final class UserInfo extends BasePO {
     private String password;
     
     private String email;
+    
+    private Integer enable;
 }

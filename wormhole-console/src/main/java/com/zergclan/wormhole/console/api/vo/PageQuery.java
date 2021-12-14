@@ -25,7 +25,7 @@ import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 /**
- * Query Query VO of page.
+ * Query VO of page.
  *
  * @param <T> class type of query object
  */

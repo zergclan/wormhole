@@ -19,15 +19,3 @@ DELETE FROM `user_info`;
 
 INSERT INTO `user_info` (id, `username`, `password`, `email`, `is_enable`, `create_time`, `modify_time`)
 VALUES (1, 'root_test', '123456', 'example@163.com', 0, {ts '2012-11-19 18:30:30.00'}, {ts '2012-11-19 18:30:30.00'});
-
-DELETE FROM `datasource_info`;
-
-INSERT INTO `datasource_info` (`id`, `title`, `datasource_type`, `host`, `port`, `catalog`, `username`, `password`, `extend_parameters`, `url`, `description`, `is_enable`, `operator`, `create_time`, `modify_time`)
-VALUES ( 1, 'datasource_info_test1', 0, '127.0.0.1', 3306, 'ds_test1', 'root_test', '123456',
-        '{"useSSL":"false","useUnicode":"true","characterEncoding":"UTF-8","serverTimezone":"UTC"}',
-        'jdbc:mysql://127.0.0.1:3306/ds_test1?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC',
-        'datasource info for ut test', 0, 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'}),
-        ( 2, 'datasource_info_test2', 0, '127.0.0.1', 3306, 'ds_test2', 'root_test', '123456',
-        '{"useSSL":"false","useUnicode":"true","characterEncoding":"UTF-8","serverTimezone":"UTC"}',
-        'jdbc:mysql://127.0.0.1:3306/ds_test2?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC',
-        'datasource info for ut test', 0, 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});

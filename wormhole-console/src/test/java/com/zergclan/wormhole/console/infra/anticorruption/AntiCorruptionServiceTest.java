@@ -21,8 +21,11 @@ import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class AntiCorruptionServiceTest {
     
@@ -32,7 +35,9 @@ public final class AntiCorruptionServiceTest {
         loginVO.setLoginName("jack");
         loginVO.setPassword("123456");
         loginVO.setLoginType(0);
-        UserInfo userInfo = AntiCorruptionService.userLoginVOToDTO(loginVO);
+        Optional<UserInfo> userInfoOptional = AntiCorruptionService.userLoginVOToPO(loginVO);
+        assertTrue(userInfoOptional.isPresent());
+        UserInfo userInfo = userInfoOptional.get();
         assertEquals(loginVO.getLoginName(), userInfo.getUsername());
         assertEquals(loginVO.getPassword(), userInfo.getPassword());
     }
@@ -43,8 +48,7 @@ public final class AntiCorruptionServiceTest {
         loginVO.setLoginName("jack");
         loginVO.setPassword("123456");
         loginVO.setLoginType(1);
-        UserInfo userInfo = AntiCorruptionService.userLoginVOToDTO(loginVO);
-        assertNull(userInfo.getUsername());
-        assertNull(userInfo.getPassword());
+        Optional<UserInfo> userInfoOptional = AntiCorruptionService.userLoginVOToPO(loginVO);
+        assertFalse(userInfoOptional.isPresent());
     }
 }

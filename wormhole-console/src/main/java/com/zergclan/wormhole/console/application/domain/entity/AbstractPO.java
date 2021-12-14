@@ -15,33 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.console.application.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Optional;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
+/**
+ * The base class from which all persistent object shall be derived in Wormhole.
+ */
 @Getter
-public enum DatasourceType {
+@Setter
+public abstract class AbstractPO implements Serializable {
     
-    MYSQL(0);
+    private Integer id;
     
-    private final Integer code;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime createTime;
     
-    DatasourceType(final Integer code) {
-        this.code = code;
-    }
-    
-    /**
-     * Contains code.
-     *
-     * @param code code of {@link DatasourceType}
-     * @return {@link DatasourceType}
-     */
-    public static Optional<DatasourceType> contains(final Integer code) {
-        if (DatasourceType.MYSQL.code.equals(code)) {
-            return Optional.of(DatasourceType.MYSQL);
-        }
-        return Optional.empty();
-    }
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime modifyTime;
 }

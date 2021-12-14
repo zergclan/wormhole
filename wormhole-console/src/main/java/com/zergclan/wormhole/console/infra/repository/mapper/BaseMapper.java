@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.console.infra.repository.mapper;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.BasePO;
+import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
 
 import java.util.Collection;
 
@@ -27,7 +27,7 @@ import java.util.Collection;
  *
  * @param <T> class type of persistent object
  */
-public interface BaseMapper<T extends BasePO> {
+public interface BaseMapper<T extends AbstractPO> {
     
     /**
      * Insert.

@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.console.api.security;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,9 @@ import java.util.LinkedList;
  */
 @RequiredArgsConstructor
 public final class UserSession implements UserDetails {
+    
+    @Getter
+    private final Integer id;
     
     private final String username;
     

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Service discovery controller.
  */
 @RestController
-public final class DiscoveryController extends AbstractRestController {
+public class DiscoveryController extends AbstractRestController {
 
     /**
      * Get application run status.

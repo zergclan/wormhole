@@ -17,13 +17,11 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
-import com.zergclan.wormhole.console.api.security.UserSessionManager;
+import com.zergclan.wormhole.console.api.vo.DatabaseInfoVO;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
-import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
-
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.service.LoginService;
+import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
+import com.zergclan.wormhole.console.application.service.DatabaseInfoService;
 import com.zergclan.wormhole.console.infra.anticorruption.AntiCorruptionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,41 +32,30 @@ import javax.annotation.Resource;
 import java.util.Optional;
 
 /**
- * Controller of {@link UserInfo} Login.
+ * Controller of {@link DatabaseInfo}.
  */
 @RestController
-@RequestMapping("/security")
-public class LoginController extends AbstractRestController {
+@RequestMapping("/instance/")
+public class DatabaseInfoController extends AbstractRestController {
     
     @Resource
-    private LoginService loginService;
+    private DatabaseInfoService databaseInfoService;
     
     /**
-     * Login.
+     * Add {@link DatabaseInfo}.
      *
-     * @param loginVO {@link LoginVO}
+     * @param databaseInfoVO {@link DatabaseInfoVO}
      * @return {@link HttpResult}
      */
-    @PostMapping(value = "/login")
-    public HttpResult<String> login(@RequestBody final LoginVO loginVO) {
-        Optional<UserInfo> userInfo = AntiCorruptionService.userLoginVOToPO(loginVO);
-        if (userInfo.isPresent()) {
-            Optional<String> token = loginService.login(userInfo.get());
-            if (token.isPresent()) {
-                return success(ResultCode.SUCCESS, token.get());
-            }
+    @PostMapping
+    public HttpResult<Void> add(@RequestBody final DatabaseInfoVO databaseInfoVO) {
+        Optional<DatabaseInfo> databaseInfoOptional = AntiCorruptionService.databaseInfoVOToPO(databaseInfoVO);
+        if (databaseInfoOptional.isPresent()) {
+            DatabaseInfo databaseInfo = databaseInfoOptional.get();
+            databaseInfo.setOperator(getUserSession().getId());
+            databaseInfoService.add(databaseInfo);
+            return success();
         }
-        return failed(ResultCode.UNAUTHORIZED, "");
-    }
-    
-    /**
-     * Logout.
-     *
-     * @return {@link HttpResult}
-     */
-    @PostMapping(value = "/logout")
-    public HttpResult<Void> logout() {
-        UserSessionManager.clearUserSession(getToken());
-        return success();
+        return failed(ResultCode.BAD_REQUEST);
     }
 }

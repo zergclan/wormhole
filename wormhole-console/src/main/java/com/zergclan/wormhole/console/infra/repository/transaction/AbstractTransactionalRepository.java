@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.console.infra.repository.transaction;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.BasePO;
+import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import com.zergclan.wormhole.console.infra.repository.mapper.BaseMapper;
@@ -35,7 +35,7 @@ import java.util.Collection;
  *
  * @param <T> class type of persistent object
  */
-public class AbstractTransactionalRepository<T extends BasePO> implements BaseRepository<T> {
+public class AbstractTransactionalRepository<T extends AbstractPO> implements BaseRepository<T> {
     
     @Autowired
     private BaseMapper<T> baseMapper;

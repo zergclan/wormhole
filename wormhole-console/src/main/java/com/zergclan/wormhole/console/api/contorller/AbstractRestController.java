@@ -17,25 +17,46 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.console.api.security.UserSession;
+import com.zergclan.wormhole.console.api.security.UserSessionManager;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * The base class from which all rest controller shall be derived in Wormhole.
  */
 public abstract class AbstractRestController {
     
+    @Resource
+    private HttpServletRequest httpServletRequest;
+    
     /**
      * Get token from {@link HttpServletRequest} header.
      *
-     * @param request {@link HttpServletRequest}
      * @return token
      */
-    protected String getToken(final HttpServletRequest request) {
-        return request.getHeader("token");
+    protected String getToken() {
+        return httpServletRequest.getHeader("token");
     }
+    
+    /**
+     * Get {@link UserSession} by token.
+     *
+     * @return {@link UserSession}
+     */
+    protected UserSession getUserSession() {
+        Optional<UserSession> userSession = UserSessionManager.getUserSession(getToken());
+        if (userSession.isPresent()) {
+            return userSession.get();
+        }
+        throw new WormholeException("error : token invalidation");
+    }
+    
     
     /**
      * Success only.
@@ -68,11 +89,23 @@ public abstract class AbstractRestController {
     protected <T> HttpResult<T> success(final ResultCode resultCode, final T data) {
         return new HttpResult<T>().toBuilder().code(resultCode.getCode()).message(resultCode.getMessage()).data(data).build();
     }
-
+    
     /**
-     * Failed with code.
+     * Failed with.
      *
      * @param resultCode {@link ResultCode}
+     * @return http result {@link HttpResult}
+     */
+    protected HttpResult<Void> failed(final ResultCode resultCode) {
+        return new HttpResult<Void>().toBuilder().code(resultCode.getCode()).message(resultCode.getMessage()).build();
+    }
+    
+    /**
+     * Failed with code and data.
+     *
+     * @param resultCode {@link ResultCode}
+     * @param data result data
+     * @param <T> class type of data
      * @return http result {@link HttpResult}
      */
     protected <T> HttpResult<T> failed(final ResultCode resultCode, final T data) {
