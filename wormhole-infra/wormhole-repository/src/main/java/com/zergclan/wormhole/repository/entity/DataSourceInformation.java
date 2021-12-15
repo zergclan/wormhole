@@ -15,34 +15,42 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.data;
+package com.zergclan.wormhole.repository.entity;
 
-import com.zergclan.wormhole.core.metadata.DataNode;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.repository.DbTypeEnum;
+import lombok.Data;
 
 /**
- * Data node type of {@link Integer}.
+ * Information about connecting to the data source.
  */
-@RequiredArgsConstructor
-public final class IntegerDataNode implements DataNode<Integer> {
-    
-    private final String name;
-    
-    private Integer value;
-    
-    @Override
-    public Integer getValue() {
-        return value;
+@Data
+public final class DataSourceInformation {
+
+    private String id;
+
+    private String dbName;
+
+    private String dbUser;
+
+    private String dbPassword;
+
+    private String dbType;
+
+    private String jdbcUrl;
+
+    /**
+     * Get database driver className.
+     * @return Driver className.
+     */
+    public String getDriverClassname() {
+        return DbTypeEnum.getDbType(this.dbType).getDriverClassName();
     }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public DataNode<Integer> refresh(final Integer value) {
-        this.value = value;
-        return this;
+
+    /**
+     * Get database testSql.
+     * @return TestSql.
+     */
+    public String getTestSql() {
+        return DbTypeEnum.getDbType(this.dbType).getTestSql();
     }
 }

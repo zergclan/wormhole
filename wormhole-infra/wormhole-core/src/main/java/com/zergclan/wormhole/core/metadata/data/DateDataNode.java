@@ -29,8 +29,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public final class DateDataNode implements DataNode<Date> {
     
-    private static final long serialVersionUID = -8351606898344714382L;
-    
     private final String name;
 
     private final DatePattern pattern;
@@ -41,7 +39,12 @@ public final class DateDataNode implements DataNode<Date> {
     public Date getValue() {
         return value;
     }
-
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
     @Override
     public DataNode<Date> refresh(final Date value) {
         this.value = value;

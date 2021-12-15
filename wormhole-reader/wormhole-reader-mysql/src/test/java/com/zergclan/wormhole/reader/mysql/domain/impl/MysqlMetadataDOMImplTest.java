@@ -18,43 +18,66 @@
 package com.zergclan.wormhole.reader.mysql.domain.impl;
 
 import com.google.gson.Gson;
-import com.zergclan.wormhole.reader.mysql.config.DataSourceManagerTest;
-import com.zergclan.wormhole.reader.mysql.domain.MysqlMetadataDOM;
+import com.zergclan.wormhole.reader.mysql.domain.MetadataDOM;
+import com.zergclan.wormhole.reader.mysql.entity.ColumnMetaData;
+import com.zergclan.wormhole.reader.mysql.entity.IndexMetaData;
+import com.zergclan.wormhole.reader.mysql.entity.TableMetaData;
+import com.zergclan.wormhole.repository.config.DataSourceManager;
+import com.zergclan.wormhole.repository.entity.DataSourceInformation;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import java.util.List;
-import java.util.Map;
 
 /**
  * Test to get mysql metadata.
  */
 public final class MysqlMetadataDOMImplTest {
 
+    private final String dataSourceId = "test";
+
     /**
      * Test query all tables metadata.
-     * @throws Exception Get jdbcTemplate Exception.
      */
 //    @Test
-    public void queryAllTables() throws Exception {
-        MysqlMetadataDOM mysqlMetadataDOM = new MysqlMetadataDOMImpl();
-        JdbcTemplate jdbcTemplate = DataSourceManagerTest.getTestJdbcTemplate();
-        List<Map<String, Object>> allTables = mysqlMetadataDOM.queryAllTables(jdbcTemplate, "mysql");
+    public void queryAllTables() {
+        registerDataSource();
+        MetadataDOM h2MetadataDOM = new MysqlMetadataDOMImpl();
+        List<TableMetaData> allTables = h2MetadataDOM.queryAllTables(dataSourceId, "mysql");
         System.out.println(new Gson().toJson(allTables));
         Assertions.assertTrue(allTables.size() > 1);
     }
 
     /**
      * Test query all columns metadata.
-     * @throws Exception Get jdbcTemplate Exception.
      */
 //    @Test
-    public void queryAllColumns() throws Exception {
-        MysqlMetadataDOM mysqlMetadataDOM = new MysqlMetadataDOMImpl();
-        JdbcTemplate jdbcTemplate = DataSourceManagerTest.getTestJdbcTemplate();
-        List<Map<String, Object>> allColumns = mysqlMetadataDOM.queryAllColumns(jdbcTemplate, "mysql", "user");
+    public void queryAllColumns() {
+        registerDataSource();
+        MetadataDOM h2MetadataDOM = new MysqlMetadataDOMImpl();
+        List<ColumnMetaData> allColumns = h2MetadataDOM.queryAllColumns(dataSourceId, "mysql", "user");
         System.out.println(new Gson().toJson(allColumns));
         Assertions.assertTrue(allColumns.size() > 1);
+    }
+
+    /**
+     * Test query unique index.
+     */
+//    @Test
+    public void queryUniqueIndexByTable() {
+        registerDataSource();
+        MetadataDOM h2MetadataDOM = new MysqlMetadataDOMImpl();
+        List<IndexMetaData> uniqueIndexByTable = h2MetadataDOM.queryUniqueIndexByTable(dataSourceId, "mysql", "user");
+        System.out.println(new Gson().toJson(uniqueIndexByTable));
+        Assertions.assertTrue(uniqueIndexByTable.size() > 1);
+    }
+
+    private void registerDataSource() {
+        DataSourceInformation dataSourceInformation = new DataSourceInformation();
+        dataSourceInformation.setId(dataSourceId);
+        dataSourceInformation.setDbUser("root");
+        dataSourceInformation.setDbPassword("koma1993");
+        dataSourceInformation.setDbType("mysql");
+        dataSourceInformation.setJdbcUrl("jdbc:mysql://192.168.112.132:3306/test01?characterEncoding=utf-8&useSSL=false");
+        DataSourceManager.registerDataSource(dataSourceInformation);
     }
 
 }

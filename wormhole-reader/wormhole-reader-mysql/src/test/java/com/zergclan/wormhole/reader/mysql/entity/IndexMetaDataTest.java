@@ -15,34 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.data;
+package com.zergclan.wormhole.reader.mysql.entity;
 
-import com.zergclan.wormhole.core.metadata.DataNode;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Data node type of {@link Integer}.
+ * Test indexMetaData class constant values.
  */
-@RequiredArgsConstructor
-public final class IntegerDataNode implements DataNode<Integer> {
-    
-    private final String name;
-    
-    private Integer value;
-    
-    @Override
-    public Integer getValue() {
-        return value;
+public final class IndexMetaDataTest {
+
+    @Test
+    public void assertValues() {
+        assertEquals("tableSchema", IndexMetaData.TABLE_SCHEMA);
+        assertEquals("Table", IndexMetaData.TABLE_NAME);
+        assertEquals("Non_unique", IndexMetaData.NON_UNIQUE);
+        assertEquals("Key_name", IndexMetaData.KEY_NAME);
+        assertEquals("Column_name", IndexMetaData.COLUMN_NAME);
+        assertEquals("Seq_in_index", IndexMetaData.SEQ_IN_INDEX);
     }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public DataNode<Integer> refresh(final Integer value) {
-        this.value = value;
-        return this;
-    }
+
 }

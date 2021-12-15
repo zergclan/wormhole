@@ -23,10 +23,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public final class DataGroupTest {
-
+    
     @Test
     public void assertNewInstance() {
-        DataGroup dataGroup = new DefaultDataGroup(1L, 2L, 3L);
+        DataGroup dataGroup = new DefaultDataGroup(1L, 2L);
         assertNotNull(dataGroup);
     }
 }

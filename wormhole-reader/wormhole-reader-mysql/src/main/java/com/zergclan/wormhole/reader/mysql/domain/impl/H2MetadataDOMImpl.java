@@ -21,9 +21,9 @@ import com.zergclan.wormhole.reader.mysql.entity.ColumnMetaData;
 import com.zergclan.wormhole.reader.mysql.entity.TableMetaData;
 
 /**
- * Get mysql metadata implementation.
+ * Get h2 metadata implementation.
  */
-public final class MysqlMetadataDOMImpl extends AbstractJdbcMetadataDOM {
+public final class H2MetadataDOMImpl extends AbstractJdbcMetadataDOM {
 
     @Override
     protected String getQueryAllTablesSql(final String dbName) {
@@ -47,5 +47,4 @@ public final class MysqlMetadataDOMImpl extends AbstractJdbcMetadataDOM {
     protected String getQueryTableIndexSql(final String tableSchema, final String tableName) {
         return "show index from " + tableSchema + "." + tableName + " where Non_unique = 0";
     }
-
 }

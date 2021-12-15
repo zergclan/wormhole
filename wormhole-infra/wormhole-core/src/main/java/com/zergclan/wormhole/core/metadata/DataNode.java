@@ -32,6 +32,13 @@ public interface DataNode<V> {
     V getValue();
     
     /**
+     * Get data node name.
+     *
+     * @return data node name
+     */
+    String getName();
+    
+    /**
      * Refresh {@link DataNode}.
      *
      * @param value data node value

@@ -15,34 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.data;
+package com.zergclan.wormhole.reader.mysql.rowmapper;
 
-import com.zergclan.wormhole.core.metadata.DataNode;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.reader.mysql.entity.TableMetaData;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
- * Data node type of {@link Integer}.
+ * ResultSet to entity conversion.
  */
-@RequiredArgsConstructor
-public final class IntegerDataNode implements DataNode<Integer> {
-    
-    private final String name;
-    
-    private Integer value;
-    
+public final class TableMetaDataRowMapper implements RowMapper {
     @Override
-    public Integer getValue() {
-        return value;
-    }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public DataNode<Integer> refresh(final Integer value) {
-        this.value = value;
-        return this;
+    public TableMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+        TableMetaData tableMetaData = new TableMetaData();
+        tableMetaData.setTableName(rs.getString(TableMetaData.TABLE_NAME));
+        tableMetaData.setTableSchema(rs.getString(TableMetaData.TABLE_SCHEMA));
+        tableMetaData.setTableSchema(rs.getString(TableMetaData.TABLE_COMMENT));
+        return tableMetaData;
     }
 }
