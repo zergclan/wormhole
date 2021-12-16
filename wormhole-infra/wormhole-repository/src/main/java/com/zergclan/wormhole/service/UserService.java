@@ -35,7 +35,23 @@ public class UserService {
     public User queryUser(final DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         BeanPropertyRowMapper<User> beanPropertyRowMapper = new BeanPropertyRowMapper(User.class);
-        User user = jdbcTemplate.queryForObject("select * from INFORMATION_SCHEMA.USERS limit 1", beanPropertyRowMapper);
+        User user = jdbcTemplate.queryForObject("select * from user_info limit 1", beanPropertyRowMapper);
         return user;
+    }
+
+    /**
+     * insert user by data source.
+     * @param  dataSource notnull
+     * @param user notnull
+     * @return boolean
+     */
+    public boolean insertUser(final DataSource dataSource, final User user) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        String insertSqlStr = "insert into user_info(username,password,email,is_enable,create_time,modify_time) values ('"
+                + user.getUsername() + "','" + user.getPassword() + "','" + user.getEmail() + "','" + user.getIsEnable() + "','"
+                + user.getCreateTime() + "','" + user.getModifyTime() + "')";
+
+        jdbcTemplate.execute(insertSqlStr);
+        return true;
     }
 }

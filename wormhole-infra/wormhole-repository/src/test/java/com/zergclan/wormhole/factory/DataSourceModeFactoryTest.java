@@ -17,20 +17,30 @@
 
 package com.zergclan.wormhole.factory;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import javax.sql.DataSource;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * test get data source in DataSourceFactory.
+ * test get data source in DataSourceModeFactory.
  */
-public final class DataSourceFactoryTest {
+@FixMethodOrder(MethodSorters.DEFAULT)
+public final class DataSourceModeFactoryTest {
     @Test
-    public void assertGetDataSource() {
-        DataSourceFactory dataSourceFactory = new DataSourceFactory();
-        DataSource dataSource = dataSourceFactory.getDataSource("mysql");
+    public void assertGetOriginDataSource() {
+        DataSourceModeFactory dataSourceModeFactory = new DataSourceModeFactory();
+        DataSource dataSource = dataSourceModeFactory.getOriginDataSource();
+        assertNotNull(dataSource);
+    }
+
+    @Test
+    public void assertGetTargetDataSource() {
+        DataSourceModeFactory dataSourceModeFactory = new DataSourceModeFactory();
+        DataSource dataSource = dataSourceModeFactory.getTargetDataSource();
         assertNotNull(dataSource);
     }
 }
