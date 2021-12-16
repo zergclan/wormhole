@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.console.application.service.impl;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
-import com.zergclan.wormhole.console.application.service.DatabaseInfoService;
+import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
+import com.zergclan.wormhole.console.application.service.DatasourceInfoService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.stereotype.Service;
@@ -28,41 +28,41 @@ import javax.annotation.Resource;
 import java.util.Collection;
 
 /**
- * Implemented Service of {@link DatabaseInfoService}.
+ * Implemented Service of {@link DatasourceInfoService}.
  */
-@Service(value = "databaseInfoService")
-public class DatabaseInfoServiceImpl implements DatabaseInfoService {
-    
+@Service(value = "datasourceInfoService")
+public class DatasourceInfoServiceImpl implements DatasourceInfoService {
+
     @Resource
-    private BaseRepository<DatabaseInfo> databaseInfoRepository;
-    
+    private BaseRepository<DatasourceInfo> datasourceInfoRepository;
+
     @Override
-    public void add(final DatabaseInfo databaseInfo) {
-        databaseInfoRepository.add(databaseInfo);
+    public void add(final DatasourceInfo datasourceInfo) {
+        datasourceInfoRepository.add(datasourceInfo);
     }
 
     @Override
-    public void editById(final DatabaseInfo databaseInfo) {
-        databaseInfoRepository.edit(databaseInfo.getId(), databaseInfo);
+    public void editById(final DatasourceInfo datasourceInfo) {
+        datasourceInfoRepository.edit(datasourceInfo.getId(), datasourceInfo);
     }
 
     @Override
     public void removeById(final Integer id) {
-        databaseInfoRepository.remove(id);
+        datasourceInfoRepository.remove(id);
     }
 
     @Override
-    public DatabaseInfo getById(final Integer id) {
-        return databaseInfoRepository.get(id);
+    public DatasourceInfo getById(final Integer id) {
+        return datasourceInfoRepository.get(id);
     }
 
     @Override
-    public Collection<DatabaseInfo> listAll() {
-        return databaseInfoRepository.listAll();
+    public Collection<DatasourceInfo> listAll() {
+        return datasourceInfoRepository.listAll();
     }
 
     @Override
-    public PageData<DatabaseInfo> listByPage(final PageQuery<DatabaseInfo> pageQuery) {
-        return databaseInfoRepository.listByPage(pageQuery);
+    public PageData<DatasourceInfo> listByPage(final PageQuery<DatasourceInfo> pageQuery) {
+        return datasourceInfoRepository.listByPage(pageQuery);
     }
 }

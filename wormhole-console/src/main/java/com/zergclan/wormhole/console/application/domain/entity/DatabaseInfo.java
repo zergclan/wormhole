@@ -30,7 +30,7 @@ public final class DatabaseInfo extends AbstractPO {
     
     private String host;
     
-    private Integer post;
+    private Integer port;
     
     private Integer type;
     
