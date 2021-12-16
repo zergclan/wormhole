@@ -17,25 +17,46 @@
 
 package com.zergclan.wormhole.service;
 
-import com.zergclan.wormhole.factory.DataSourceFactory;
+import com.zergclan.wormhole.factory.DataSourceModeFactory;
 import com.zergclan.wormhole.po.User;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * test user service.
  */
 public class UserServiceTest {
-    @Test
-    public void assertQueryUser() {
-        DataSourceFactory dataSourceFactory = new DataSourceFactory();
-        DataSource dataSource = dataSourceFactory.getDataSource("mysql");
 
+    @Test
+    public void assertUserSync() {
+        //new object
+        DataSourceModeFactory dataSourceModeFactory = new DataSourceModeFactory();
         UserService userService = new UserService();
-        User user = userService.queryUser(dataSource);
-        assertNotNull(user);
+
+        //get origin database
+        DataSource originDataSource = dataSourceModeFactory.getOriginDataSource();
+
+        //get user from origin database
+        User originUser = userService.queryUser(originDataSource);
+        assertNotNull(originUser);
+
+        //get target database
+        DataSource targetDataSource = dataSourceModeFactory.getTargetDataSource();
+
+        //insert user to target database
+        boolean flag = userService.insertUser(targetDataSource, originUser);
+        assertTrue(flag);
+
+        //get user from target database
+        User targetUser = userService.queryUser(targetDataSource);
+        assertNotNull(targetUser);
+
+        //validate
+        boolean isOne = originUser.getUsername().equals(targetUser.getUsername());
+        assertTrue(isOne);
     }
 }
