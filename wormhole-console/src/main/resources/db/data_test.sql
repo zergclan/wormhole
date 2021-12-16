@@ -16,6 +16,9 @@
  */
 
 DELETE FROM `user_info`;
-
 INSERT INTO `user_info` (id, `username`, `password`, `email`, `is_enable`, `create_time`, `modify_time`)
 VALUES (1, 'root_test', '123456', 'example@163.com', 0, {ts '2012-11-19 18:30:30.00'}, {ts '2012-11-19 18:30:30.00'});
+
+DELETE FROM database_info;
+INSERT INTO database_info (id, title, host, port, type, username, password, description, operator, create_time, modify_time)
+VALUES ( 1, 'database_info_test_title1', '127.0.0.1', 3306, 0, 'root', '123456', 'database_info_test_description1', {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
