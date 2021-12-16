@@ -15,23 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service.impl;
+package com.zergclan.wormhole.console.infra.repository.mapper;
 
 import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
-import com.zergclan.wormhole.console.application.service.DatabaseInfoService;
-import com.zergclan.wormhole.console.infra.repository.BaseRepository;
-import org.springframework.stereotype.Service;
+import org.apache.ibatis.annotations.Mapper;
 
-import javax.annotation.Resource;
-
-@Service(value = "databaseInfoService")
-public class DatabaseInfoServiceImpl implements DatabaseInfoService {
-    
-    @Resource
-    private BaseRepository<DatabaseInfo> databaseInfoRepository;
-    
-    @Override
-    public void add(final DatabaseInfo databaseInfo) {
-        databaseInfoRepository.add(databaseInfo);
-    }
+/**
+ * Mapper of {@link DatabaseInfo}.
+ */
+@Mapper
+public interface DatabaseInfoMapper extends BaseMapper<DatabaseInfo> {
 }

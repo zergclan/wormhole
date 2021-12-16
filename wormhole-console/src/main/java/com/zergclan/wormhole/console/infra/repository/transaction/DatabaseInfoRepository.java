@@ -15,29 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.vo;
+package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import lombok.Data;
-
-import java.io.Serializable;
+import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
+import org.springframework.stereotype.Repository;
 
 /**
- * Query VO of database info.
+ * Transactional repository of {@link DatabaseInfo}.
  */
-@Data
-public final class DatabaseInfoVO implements Serializable {
-    
-    private String title;
-    
-    private String host;
-    
-    private Integer post;
-    
-    private Integer databaseType;
-    
-    private String username;
-    
-    private String password;
-    
-    private String description;
+@Repository(value = "databaseInfoRepository")
+public class DatabaseInfoRepository extends AbstractTransactionalRepository<DatabaseInfo> {
 }

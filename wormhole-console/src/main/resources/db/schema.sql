@@ -43,8 +43,8 @@ CREATE TABLE database_info (
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `uk_title`(`host`, `port`, `type`),
-    UNIQUE INDEX `uk_host_port_type`(`host`, `port`, `type`)
+    UNIQUE INDEX `uk_title`(`title`),
+    UNIQUE INDEX `uk_host_port`(`host`, `port`)
 ) ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '数据库信息';
 
 DROP TABLE IF EXISTS `datasource_info`;
@@ -60,24 +60,8 @@ CREATE TABLE datasource_info(
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `uk_database_id_schema`(`database_id`, `schema`)
+    UNIQUE INDEX `uk_database_id_schema_username_password`(`database_id`, `schema`, `username`, `password`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '数据源信息';
-
-DROP TABLE IF EXISTS `conversion_strategy`;
-CREATE TABLE conversion_strategy(
-    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
-    `code` VARCHAR(32) NOT NULL COMMENT '策略编码',
-    `action_code` VARCHAR(32) NOT NULL COMMENT '步骤编码',
-    `action_order` INT(11) NOT NULL COMMENT '步骤顺序',
-    `is_enable` tinyint(4) NOT NULL COMMENT '0关闭，1开启',
-    `description` VARCHAR(255) NOT NULL COMMENT '描述信息',
-    `operator` INT(11) NOT NULL COMMENT '操作员ID',
-    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
-    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `uk_code`(`code`),
-    UNIQUE INDEX `uk_code_action_code`(`code`, `action_code`)
-)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '转换策略信息表';
 
 DROP TABLE IF EXISTS `plan_info`;
 CREATE TABLE plan_info(
@@ -113,6 +97,18 @@ CREATE TABLE task_info(
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '任务信息表';
 
+DROP TABLE IF EXISTS `plan_task_linking`;
+CREATE TABLE plan_task_linking(
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `plan_id` INT(11) NOT NULL COMMENT '方案id',
+    `task_id` INT(11) NOT NULL COMMENT '任务id',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `uk_plan_id_task_id` (`plan_id`, `task_id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '节点映射表';
+
 DROP TABLE IF EXISTS `data_node_mapping`;
 CREATE TABLE data_node_mapping (
     `id` INT(11) AUTO_INCREMENT COMMENT '主键',
@@ -129,6 +125,22 @@ CREATE TABLE data_node_mapping (
     PRIMARY KEY (`id`),
     UNIQUE INDEX `uk_task_id_source_data_owner_target_data_owner`(`task_id`, `source_data_owner`, `target_data_owner`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '节点映射表';
+
+DROP TABLE IF EXISTS `conversion_strategy`;
+CREATE TABLE conversion_strategy(
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `code` VARCHAR(32) NOT NULL COMMENT '策略编码',
+    `action_code` VARCHAR(32) NOT NULL COMMENT '步骤编码',
+    `action_order` INT(11) NOT NULL COMMENT '步骤顺序',
+    `is_enable` tinyint(4) NOT NULL COMMENT '0关闭，1开启',
+    `description` VARCHAR(255) NOT NULL COMMENT '描述信息',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `uk_code`(`code`),
+    UNIQUE INDEX `uk_code_action_code`(`code`, `action_code`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '转换策略信息表';
 
 DROP TABLE IF EXISTS `plan_execution_log`;
 CREATE TABLE plan_execution_log (

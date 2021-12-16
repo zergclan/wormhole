@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
-import com.zergclan.wormhole.console.api.vo.DatabaseInfoVO;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 /**
  * Controller of {@link DatabaseInfo}.
@@ -44,18 +42,13 @@ public class DatabaseInfoController extends AbstractRestController {
     /**
      * Add {@link DatabaseInfo}.
      *
-     * @param databaseInfoVO {@link DatabaseInfoVO}
+     * @param databaseInfo {@link DatabaseInfo}
      * @return {@link HttpResult}
      */
     @PostMapping
-    public HttpResult<Void> add(@RequestBody final DatabaseInfoVO databaseInfoVO) {
-        Optional<DatabaseInfo> databaseInfoOptional = AntiCorruptionService.databaseInfoVOToPO(databaseInfoVO);
-        if (databaseInfoOptional.isPresent()) {
-            DatabaseInfo databaseInfo = databaseInfoOptional.get();
-            databaseInfo.setOperator(getUserSession().getId());
-            databaseInfoService.add(databaseInfo);
-            return success();
-        }
-        return failed(ResultCode.BAD_REQUEST);
+    public HttpResult<Void> add(@RequestBody final DatabaseInfo databaseInfo) {
+        databaseInfo.setOperator(getUserSession().getId());
+        databaseInfoService.add(databaseInfo);
+        return success();
     }
 }
