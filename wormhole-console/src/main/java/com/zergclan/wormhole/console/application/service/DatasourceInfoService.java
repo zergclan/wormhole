@@ -18,51 +18,51 @@
 package com.zergclan.wormhole.console.application.service;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
+import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 
 import java.util.Collection;
 
 /**
- * Service interface of {@link DatabaseInfo}.
+ * Service interface of {@link DatasourceInfo}.
  */
-public interface DatabaseInfoService {
-    
-    /**
-     * Add {@link DatabaseInfo}.
-     *
-     * @param databaseInfo {@link DatabaseInfo}
-     */
-    void add(DatabaseInfo databaseInfo);
+public interface DatasourceInfoService {
 
     /**
-     * Edit {@link DatabaseInfo} by id.
+     * Add {@link DatasourceInfo}.
      *
-     * @param databaseInfo {@link DatabaseInfo}
+     * @param datasourceInfo {@link DatasourceInfo}
      */
-    void editById(DatabaseInfo databaseInfo);
+    void add(DatasourceInfo datasourceInfo);
 
     /**
-     * Remove {@link DatabaseInfo} by id.
+     * Edit {@link DatasourceInfo} by id.
+     *
+     * @param datasourceInfo {@link DatasourceInfo}
+     */
+    void editById(DatasourceInfo datasourceInfo);
+
+    /**
+     * Remove {@link DatasourceInfo} by id.
      *
      * @param id id
      */
     void removeById(Integer id);
 
     /**
-     * Get {@link DatabaseInfo} by id.
+     * Get {@link DatasourceInfo} by id.
      *
      * @param id id
-     * @return {@link DatabaseInfo}
+     * @return {@link DatasourceInfo}
      */
-    DatabaseInfo getById(Integer id);
+    DatasourceInfo getById(Integer id);
 
     /**
-     * List {@link DatabaseInfo}.
+     * List {@link DatasourceInfo}.
      *
-     * @return {@link DatabaseInfo}
+     * @return {@link DatasourceInfo}
      */
-    Collection<DatabaseInfo> listAll();
+    Collection<DatasourceInfo> listAll();
 
     /**
      * Get {@link PageData} by {@link PageQuery}.
@@ -70,5 +70,5 @@ public interface DatabaseInfoService {
      * @param pageQuery {@link PageQuery}
      * @return {@link PageData}
      */
-    PageData<DatabaseInfo> listByPage(PageQuery<DatabaseInfo> pageQuery);
+    PageData<DatasourceInfo> listByPage(PageQuery<DatasourceInfo> pageQuery);
 }
