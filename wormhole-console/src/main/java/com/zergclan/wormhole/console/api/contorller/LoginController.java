@@ -22,6 +22,7 @@ import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 
+import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.application.service.LoginService;
 import com.zergclan.wormhole.console.infra.anticorruption.AntiCorruptionService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,15 +31,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 /**
- * Controller of Login.
+ * Controller of {@link UserInfo} Login.
  */
 @RestController
 @RequestMapping("/security")
-public final class LoginController extends AbstractRestController {
+public class LoginController extends AbstractRestController {
     
     @Resource
     private LoginService loginService;
@@ -51,19 +51,24 @@ public final class LoginController extends AbstractRestController {
      */
     @PostMapping(value = "/login")
     public HttpResult<String> login(@RequestBody final LoginVO loginVO) {
-        Optional<String> token = loginService.login(AntiCorruptionService.userLoginVOToDTO(loginVO));
-        return token.isPresent() ? success(ResultCode.SUCCESS, token.get()) : failed(ResultCode.UNAUTHORIZED, "");
+        Optional<UserInfo> userInfo = AntiCorruptionService.userLoginVOToPO(loginVO);
+        if (userInfo.isPresent()) {
+            Optional<String> token = loginService.login(userInfo.get());
+            if (token.isPresent()) {
+                return success(ResultCode.SUCCESS, token.get());
+            }
+        }
+        return failed(ResultCode.UNAUTHORIZED, "");
     }
     
     /**
      * Logout.
      *
-     * @param request {@link HttpServletRequest}
      * @return {@link HttpResult}
      */
     @PostMapping(value = "/logout")
-    public HttpResult<Void> logout(final HttpServletRequest request) {
-        UserSessionManager.clearUserSession(getToken(request));
+    public HttpResult<Void> logout() {
+        UserSessionManager.clearUserSession(getToken());
         return success();
     }
 }

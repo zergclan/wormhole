@@ -15,29 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.application.service.impl;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.Setter;
+import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
+import com.zergclan.wormhole.console.application.service.DatabaseInfoService;
+import com.zergclan.wormhole.console.infra.repository.BaseRepository;
+import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import javax.annotation.Resource;
 
-/**
- * The base class from which all persistent object shall be derived in Wormhole.
- */
-@Getter
-@Setter
-public abstract class BasePO implements Serializable {
+@Service(value = "databaseInfoService")
+public class DatabaseInfoServiceImpl implements DatabaseInfoService {
     
-    private Integer id;
+    @Resource
+    private BaseRepository<DatabaseInfo> databaseInfoRepository;
     
-    private Integer enable;
-    
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime createTime;
-    
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime modifyTime;
+    @Override
+    public void add(final DatabaseInfo databaseInfo) {
+        databaseInfoRepository.add(databaseInfo);
+    }
 }

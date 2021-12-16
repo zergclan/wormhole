@@ -15,33 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.value;
+package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import lombok.Getter;
+import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-@Getter
-public enum DatasourceType {
-    
-    MYSQL(0);
-    
-    private final Integer code;
-    
-    DatasourceType(final Integer code) {
-        this.code = code;
-    }
-    
-    /**
-     * Contains code.
-     *
-     * @param code code of {@link DatasourceType}
-     * @return {@link DatasourceType}
-     */
-    public static Optional<DatasourceType> contains(final Integer code) {
-        if (DatasourceType.MYSQL.code.equals(code)) {
-            return Optional.of(DatasourceType.MYSQL);
-        }
-        return Optional.empty();
-    }
+/**
+ * Transactional repository of {@link DatabaseInfo}.
+ */
+@Repository(value = "databaseInfoRepository")
+public class DatabaseInfoRepository extends AbstractTransactionalRepository<DatabaseInfo> {
 }

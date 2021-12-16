@@ -30,6 +30,7 @@
 
     <properties>
         <mybatis-spring-boot-starter.version>2.2.0</mybatis-spring-boot-starter.version>
+        <orika-core.version>1.5.4</orika-core.version>
     </properties>
 
     <dependencies>
@@ -68,6 +69,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ma.glasnost.orika</groupId>
+            <artifactId>orika-core</artifactId>
+            <version>${orika-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

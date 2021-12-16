@@ -25,7 +25,7 @@ public final class UserSessionTest {
     
     @Test
     public void assertUserSession() {
-        UserSession userSession = new UserSession("root", "root");
+        UserSession userSession = new UserSession(0, "root", "root");
         assertTrue(userSession.isAccountNonExpired());
         assertTrue(userSession.isAccountNonLocked());
         assertTrue(userSession.isCredentialsNonExpired());

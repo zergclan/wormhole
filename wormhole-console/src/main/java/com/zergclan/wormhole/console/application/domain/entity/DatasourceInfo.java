@@ -20,32 +20,19 @@ package com.zergclan.wormhole.console.application.domain.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * Datasource info persistent object.
- */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends BasePO {
+public final class DatasourceInfo extends AbstractPO {
     
-    private static final long serialVersionUID = -341888032629378110L;
+    private Integer databaseId;
     
-    private String title;
-    
-    private Integer datasourceType;
-    
-    private String host;
-    
-    private Integer port;
-    
-    private String catalog;
+    private String schema;
     
     private String username;
     
     private String password;
     
     private String extendParameters;
-    
-    private String url;
     
     private String description;
     

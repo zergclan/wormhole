@@ -55,4 +55,4 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2.1.0
       with:
-        file: ./wormhole-features/wormhole-console/target/site/jacoco/jacoco.xml
+        file: ./wormhole-console/target/site/jacoco/jacoco.xml

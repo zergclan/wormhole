@@ -18,22 +18,35 @@
 package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
+import com.zergclan.wormhole.console.application.service.DatabaseInfoService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 /**
- * Service discovery controller.
+ * Controller of {@link DatabaseInfo}.
  */
 @RestController
-public class DiscoveryController extends AbstractRestController {
-
+@RequestMapping("/instance/")
+public class DatabaseInfoController extends AbstractRestController {
+    
+    @Resource
+    private DatabaseInfoService databaseInfoService;
+    
     /**
-     * Get application run status.
+     * Add {@link DatabaseInfo}.
      *
-     * @return run status
+     * @param databaseInfo {@link DatabaseInfo}
+     * @return {@link HttpResult}
      */
-    @GetMapping("/status")
-    public HttpResult<String> status() {
-        return success("UP");
+    @PostMapping
+    public HttpResult<Void> add(@RequestBody final DatabaseInfo databaseInfo) {
+        databaseInfo.setOperator(getUserSession().getId());
+        databaseInfoService.add(databaseInfo);
+        return success();
     }
 }
