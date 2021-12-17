@@ -21,23 +21,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link DatasourceInfo}.
+ * {@link TaskInfo}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends AbstractPO {
+public class TaskInfo extends AbstractPO {
     
-    private Integer databaseId;
+    private static final long serialVersionUID = 3553295866589815888L;
     
-    private String owner;
+    private String title;
     
-    private String schema;
+    private String code;
     
-    private String username;
+    private Integer order;
     
-    private String password;
+    private Integer enable;
     
-    private String extendParameters;
+    private Integer execute;
     
     private String description;
     

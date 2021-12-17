@@ -21,23 +21,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link DatasourceInfo}.
+ * {@link PlanExecutionLog}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends AbstractPO {
+public final class PlanExecutionLog extends AbstractPO {
     
-    private Integer databaseId;
+    private Long planBatch;
     
-    private String owner;
+    private Integer planId;
     
-    private String schema;
-    
-    private String username;
-    
-    private String password;
-    
-    private String extendParameters;
+    private Integer status;
     
     private String description;
     

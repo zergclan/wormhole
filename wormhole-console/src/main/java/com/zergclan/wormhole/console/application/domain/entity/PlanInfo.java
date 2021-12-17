@@ -20,24 +20,32 @@ package com.zergclan.wormhole.console.application.domain.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 /**
- * {@link DatasourceInfo}.
+ * {@link PlanInfo}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends AbstractPO {
+public final class PlanInfo extends AbstractPO {
     
-    private Integer databaseId;
+    private static final long serialVersionUID = 7199515290545924206L;
     
-    private String owner;
+    private String title;
     
-    private String schema;
+    private String code;
     
-    private String username;
+    private Integer executionMode;
     
-    private String password;
+    private String executionCorn;
     
-    private String extendParameters;
+    private Integer executionCount;
+    
+    private LocalDateTime effectiveDate;
+    
+    private Integer execute;
+    
+    private Integer enable;
     
     private String description;
     

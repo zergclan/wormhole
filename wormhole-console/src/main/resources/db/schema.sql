@@ -84,7 +84,6 @@ CREATE TABLE plan_info(
 DROP TABLE IF EXISTS `task_info`;
 CREATE TABLE task_info(
     `id` INT(11) AUTO_INCREMENT COMMENT '主键',
-    `plan_id` INT(11) NOT NULL COMMENT '所属方案id',
     `title` VARCHAR(32) NOT NULL COMMENT '任务名字',
     `code` VARCHAR(32) NOT NULL COMMENT '任务编码',
     `order` INT(11) NOT NULL COMMENT '步骤顺序',

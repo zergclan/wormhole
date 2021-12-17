@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * User info persistent object.
+ * {@link UserInfo}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
