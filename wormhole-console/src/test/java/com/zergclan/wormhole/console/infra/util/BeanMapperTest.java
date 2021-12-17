@@ -58,20 +58,26 @@ public final class BeanMapperTest {
     
     @Data
     @RequiredArgsConstructor
-    class SourceBean {
+    static class SourceBean {
+        
         private final Integer id;
+        
         private final String name;
     }
     
     @Data
-    class TargetBean {
+    static class TargetBean {
+        
         private Integer id;
+        
         private String name;
     }
     
     @Data
-    class TargetBeanSpecial {
+    static class TargetBeanSpecial {
+        
         private Integer id;
+        
         private String username;
     }
 }

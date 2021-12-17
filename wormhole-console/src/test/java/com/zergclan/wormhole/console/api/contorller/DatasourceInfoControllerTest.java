@@ -16,11 +16,13 @@
  */
 
 package com.zergclan.wormhole.console.api.contorller;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
@@ -84,6 +86,7 @@ public final class DatasourceInfoControllerTest {
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
     
+    @SuppressWarnings("all")
     private void assertPage() throws Exception {
         PageQuery<DatasourceInfo> pageQuery = new PageQuery<>();
         pageQuery.setPage(1);
@@ -93,11 +96,12 @@ public final class DatasourceInfoControllerTest {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/datasource/page").header("token", "wormhole-console-test-token")
                 .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<Object> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
-        List<LinkedHashMap<String, Object>> items = (ArrayList) ((LinkedHashMap) httpResult.getData()).get("items");
+        List<Map<String, Object>> items = (ArrayList) ((LinkedHashMap) httpResult.getData()).get("items");
         assertEquals(1, items.size());
         assertEquals("MySQL#127.0.0.1:3306", items.get(0).get("owner"));
     }
     
+    @SuppressWarnings("all")
     private void assertList() throws Exception {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/datasource/list").header("token", "wormhole-console-test-token")
                 .contentType("application/json").content("")).andReturn();

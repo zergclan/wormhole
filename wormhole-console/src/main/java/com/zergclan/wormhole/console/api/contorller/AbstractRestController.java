@@ -49,12 +49,10 @@ public abstract class AbstractRestController {
      *
      * @return {@link UserSession}
      */
+    @SuppressWarnings("all")
     protected UserSession getUserSession() {
         Optional<UserSession> userSession = UserSessionManager.getUserSession(getToken());
-        if (userSession.isPresent()) {
-            return userSession.get();
-        }
-        throw new WormholeException("error : token invalidation");
+        return userSession.get();
     }
     
     
