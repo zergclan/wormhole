@@ -78,9 +78,7 @@ CREATE TABLE plan_info(
     `operator` INT(11) NOT NULL COMMENT '操作员ID',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `uk_title` (`title`),
-    UNIQUE INDEX `uk_code` (`code`)
+    PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '方案信息表';
 
 DROP TABLE IF EXISTS `task_info`;
@@ -95,9 +93,7 @@ CREATE TABLE task_info(
     `operator` INT(11) NOT NULL COMMENT '操作员ID',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `uk_title` (`title`),
-    UNIQUE INDEX `uk_code` (`code`)
+    PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '任务信息表';
 
 DROP TABLE IF EXISTS `plan_task_linking`;
