@@ -20,20 +20,34 @@ package com.zergclan.wormhole.console.application.domain.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 /**
- * {@link UserInfo}.
+ * {@link PlanInfo}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends AbstractPO {
+public final class PlanInfo extends AbstractPO {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    private static final long serialVersionUID = 7199515290545924206L;
     
-    private String username;
+    private String title;
     
-    private String password;
+    private String code;
     
-    private String email;
+    private Integer executionMode;
+    
+    private String executionCorn;
+    
+    private Integer executionCount;
+    
+    private LocalDateTime effectiveDate;
+    
+    private Integer execute;
     
     private Integer enable;
+    
+    private String description;
+    
+    private Integer operator;
 }

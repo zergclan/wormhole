@@ -15,25 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.application.domain.entity.ConversionStrategy;
+import org.springframework.stereotype.Repository;
 
 /**
- * {@link UserInfo}.
+ * Transactional repository of {@link ConversionStrategy}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends AbstractPO {
-    
-    private static final long serialVersionUID = 6978285474252748202L;
-    
-    private String username;
-    
-    private String password;
-    
-    private String email;
-    
-    private Integer enable;
+@Repository(value = "conversionStrategyRepository")
+public class ConversionStrategyRepository extends AbstractTransactionalRepository<ConversionStrategy> {
 }

@@ -15,25 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.infra.repository.mapper;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.application.domain.entity.ErrorDateLog;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * {@link UserInfo}.
+ * Mapper of {@link ErrorDateLog}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends AbstractPO {
-    
-    private static final long serialVersionUID = 6978285474252748202L;
-    
-    private String username;
-    
-    private String password;
-    
-    private String email;
-    
-    private Integer enable;
+@Mapper
+public interface ErrorDateLogMapper extends BaseMapper<ErrorDateLog> {
 }

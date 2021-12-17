@@ -21,19 +21,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link UserInfo}.
+ * {@link PlanExecutionLog}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends AbstractPO {
+public final class PlanExecutionLog extends AbstractPO {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    private Long planBatch;
     
-    private String username;
+    private Integer planId;
     
-    private String password;
+    private Integer status;
     
-    private String email;
+    private String description;
     
-    private Integer enable;
+    private Integer operator;
 }

@@ -21,19 +21,25 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link UserInfo}.
+ * {@link ErrorDateLog}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends AbstractPO {
+public class ErrorDateLog extends AbstractPO {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    private Long planBatch;
     
-    private String username;
+    private Long taskBatch;
     
-    private String password;
+    private Integer taskId;
     
-    private String email;
+    private String sourceDateOwner;
     
-    private Integer enable;
+    private String errorCode;
+    
+    private String errorDate;
+    
+    private String description;
+    
+    private Integer operator;
 }

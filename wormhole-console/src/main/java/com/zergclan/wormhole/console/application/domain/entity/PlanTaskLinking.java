@@ -17,23 +17,16 @@
 
 package com.zergclan.wormhole.console.application.domain.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
- * {@link UserInfo}.
+ *  Linking bean for {@link PlanInfo} to {@link TaskInfo}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends AbstractPO {
+public final class PlanTaskLinking extends AbstractPO {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    private static final long serialVersionUID = -7323908944176547867L;
     
-    private String username;
+    private Integer planId;
     
-    private String password;
+    private Integer taskId;
     
-    private String email;
-    
-    private Integer enable;
+    private Integer operator;
 }

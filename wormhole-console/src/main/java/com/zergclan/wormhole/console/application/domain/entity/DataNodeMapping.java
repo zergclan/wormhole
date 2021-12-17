@@ -21,19 +21,25 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link UserInfo}.
+ * {@link DataNodeMapping}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends AbstractPO {
+public final class DataNodeMapping extends AbstractPO {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    private Integer taskId;
     
-    private String username;
+    private String sourceDataOwner;
     
-    private String password;
+    private String sourceDataType;
     
-    private String email;
+    private String targetDataOwner;
     
-    private Integer enable;
+    private String targetDataType;
+    
+    private Integer conversionStrategyId;
+    
+    private String description;
+    
+    private Integer operator;
 }

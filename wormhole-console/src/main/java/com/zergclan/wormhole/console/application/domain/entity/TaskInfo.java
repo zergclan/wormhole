@@ -21,19 +21,25 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link UserInfo}.
+ * {@link TaskInfo}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UserInfo extends AbstractPO {
+public class TaskInfo extends AbstractPO {
     
-    private static final long serialVersionUID = 6978285474252748202L;
+    private static final long serialVersionUID = 3553295866589815888L;
     
-    private String username;
+    private String title;
     
-    private String password;
+    private String code;
     
-    private String email;
+    private Integer order;
     
     private Integer enable;
+    
+    private Integer execute;
+    
+    private String description;
+    
+    private Integer operator;
 }

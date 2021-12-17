@@ -20,6 +20,9 @@ package com.zergclan.wormhole.console.application.domain.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * {@link DatasourceInfo}.
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public final class DatasourceInfo extends AbstractPO {
