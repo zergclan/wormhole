@@ -21,8 +21,8 @@ INSERT INTO user_info (id, username, password, email, is_enable, create_time, mo
 
 DELETE FROM database_info;
 INSERT INTO database_info (id, title, host, port, type, username, password, description, operator, create_time, modify_time)
-VALUES ( 1, 'database_info_title1', '127.0.0.1', 3306, 0, 'root', '123456', 'database_info_description1', {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
+VALUES ( 1, 'database_info_title1', '127.0.0.1', 3306, 0, 'root', '123456', 'database_info_description1', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
 
 DELETE FROM datasource_info;
 INSERT INTO datasource_info (id, database_id, schema, username, password, extend_parameters, description, operator, create_time, modify_time)
-VALUES ( 1, 1, 'test_ds1', 'root', '123456', 'characterEncoding=UTF-8,serverTimezone=UTC', 'datasource_info_description1', {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
+VALUES ( 1, 1, 'test_source_ds', 'root', '123456', 'characterEncoding=UTF-8,serverTimezone=UTC', 'datasource_info_description1', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});

@@ -94,6 +94,9 @@
     </sql>
 
     <sql id="where_fuzzy_query">
+        <if test="null != operator">
+            AND operator = #{operator,jdbcType=VARCHAR}
+        </if>
         <if test="null != title">
             OR title LIKE CONCAT('%', #{title,jdbcType=VARCHAR}, '%')
         </if>
@@ -106,6 +109,9 @@
     </sql>
 
     <sql id="where_fuzzy_query_page">
+        <if test="null != query.operator">
+            AND operator = #{query.operator,jdbcType=VARCHAR}
+        </if>
         <if test="null != query.title">
             OR title LIKE CONCAT('%', #{query.title,jdbcType=VARCHAR}, '%')
         </if>

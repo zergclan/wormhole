@@ -17,11 +17,16 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
+import com.zergclan.wormhole.common.SystemConstant;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
+import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
+import com.zergclan.wormhole.console.application.domain.value.DatasourceType;
+import com.zergclan.wormhole.console.application.service.DatabaseInfoService;
 import com.zergclan.wormhole.console.application.service.DatasourceInfoService;
+import com.zergclan.wormhole.console.infra.exception.WormholeWebException;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,6 +52,9 @@ public class DatasourceInfoController extends AbstractRestController {
 
     @Resource
     private DatasourceInfoService datasourceInfoService;
+    
+    @Resource
+    private DatabaseInfoService databaseInfoService;
 
     /**
      * Add {@link DatasourceInfo}.
@@ -116,7 +125,31 @@ public class DatasourceInfoController extends AbstractRestController {
      */
     @PostMapping("/page")
     public HttpResult<PageData<DatasourceInfo>> listByPage(@RequestBody final PageQuery<DatasourceInfo> pageQuery) {
-        return success(datasourceInfoService.listByPage(pageQuery));
+        PageData<DatasourceInfo> datasourceInfos = datasourceInfoService.listByPage(pageQuery);
+        Collection<DatasourceInfo> items = datasourceInfos.getItems();
+        if (items.isEmpty()) {
+            return success(datasourceInfos);
+        }
+        DatabaseInfo databaseInfo;
+        for (DatasourceInfo each : items) {
+            databaseInfo = databaseInfoService.getById(each.getDatabaseId());
+            each.setOwner(createDatasourceOwner(databaseInfo));
+        }
+        return success(datasourceInfos);
     }
-
+    
+    private String createDatasourceOwner(final DatabaseInfo databaseInfo) {
+        return getDatabaseName(databaseInfo) + SystemConstant.IDENTIFIER_SPACE + databaseInfo.getHost() + ":" + databaseInfo.getPort();
+    }
+    
+    private String getDatabaseName(final DatabaseInfo databaseInfo) {
+        Integer type = databaseInfo.getType();
+        DatasourceType[] values = DatasourceType.values();
+        for (DatasourceType each : values) {
+            if (each.getCode().equals(type)) {
+                return each.getName();
+            }
+        }
+        throw new WormholeWebException(500, "databaseInfo");
+    }
 }

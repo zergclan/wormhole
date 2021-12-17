@@ -80,14 +80,16 @@ public final class DatabaseInfoControllerTest {
         HttpResult<DatabaseInfo> expectedResult = new HttpResult<DatabaseInfo>().toBuilder().code(200).message("SUCCESS").data(databaseInfo).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
-
+    
+    @SuppressWarnings("all")
     private void assertList() throws Exception {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/database/list").header("token", "wormhole-console-test-token")
                 .contentType("application/json").content("")).andReturn();
         HttpResult<List<DatabaseInfo>> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         assertEquals(1, httpResult.getData().size());
     }
-
+    
+    @SuppressWarnings("all")
     private void assertPage() throws Exception {
         PageQuery<DatabaseInfo> pageQuery = new PageQuery<>();
         pageQuery.setPage(1);

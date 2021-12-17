@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
-import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.console.api.security.UserSession;
 import com.zergclan.wormhole.console.api.security.UserSessionManager;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
@@ -49,12 +48,10 @@ public abstract class AbstractRestController {
      *
      * @return {@link UserSession}
      */
+    @SuppressWarnings("all")
     protected UserSession getUserSession() {
         Optional<UserSession> userSession = UserSessionManager.getUserSession(getToken());
-        if (userSession.isPresent()) {
-            return userSession.get();
-        }
-        throw new WormholeException("error : token invalidation");
+        return userSession.get();
     }
     
     

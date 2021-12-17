@@ -26,6 +26,8 @@ public final class DatasourceInfo extends AbstractPO {
     
     private Integer databaseId;
     
+    private String owner;
+    
     private String schema;
     
     private String username;
