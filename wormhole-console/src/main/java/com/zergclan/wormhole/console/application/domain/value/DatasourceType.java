@@ -19,29 +19,17 @@ package com.zergclan.wormhole.console.application.domain.value;
 
 import lombok.Getter;
 
-import java.util.Optional;
-
 @Getter
 public enum DatasourceType {
     
-    MYSQL(0);
+    MYSQL(0, "MySQL");
     
     private final Integer code;
     
-    DatasourceType(final Integer code) {
-        this.code = code;
-    }
+    private final String name;
     
-    /**
-     * Contains code.
-     *
-     * @param code code of {@link DatasourceType}
-     * @return {@link DatasourceType}
-     */
-    public static Optional<DatasourceType> contains(final Integer code) {
-        if (DatasourceType.MYSQL.code.equals(code)) {
-            return Optional.of(DatasourceType.MYSQL);
-        }
-        return Optional.empty();
+    DatasourceType(final Integer code, final String name) {
+        this.code = code;
+        this.name = name;
     }
 }

@@ -93,6 +93,9 @@
     </sql>
 
     <sql id="where_fuzzy_query">
+        <if test="null != operator">
+            AND operator = #{operator,jdbcType=VARCHAR}
+        </if>
         <if test="null != schema">
             OR schema LIKE CONCAT('%', #{schema,jdbcType=VARCHAR}, '%')
         </if>
@@ -105,6 +108,9 @@
     </sql>
 
     <sql id="where_fuzzy_query_page">
+        <if test="null != query.operator">
+            AND operator = #{query.operator,jdbcType=VARCHAR}
+        </if>
         <if test="null != query.schema">
             OR schema LIKE CONCAT('%', #{query.schema,jdbcType=VARCHAR}, '%')
         </if>
