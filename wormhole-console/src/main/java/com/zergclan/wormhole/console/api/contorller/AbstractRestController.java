@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.console.api.contorller;
 
-import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.console.api.security.UserSession;
 import com.zergclan.wormhole.console.api.security.UserSessionManager;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
