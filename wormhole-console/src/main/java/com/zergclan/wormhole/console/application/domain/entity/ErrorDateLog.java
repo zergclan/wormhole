@@ -21,23 +21,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link DatasourceInfo}.
+ * {@link ErrorDateLog}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends AbstractPO {
+public class ErrorDateLog extends AbstractPO {
     
-    private Integer databaseId;
+    private Long planBatch;
     
-    private String owner;
+    private Long taskBatch;
     
-    private String schema;
+    private Integer taskId;
     
-    private String username;
+    private String sourceDateOwner;
     
-    private String password;
+    private String errorCode;
     
-    private String extendParameters;
+    private String errorDate;
     
     private String description;
     

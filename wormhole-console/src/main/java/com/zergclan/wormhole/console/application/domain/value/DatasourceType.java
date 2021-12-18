@@ -22,11 +22,14 @@ import lombok.Getter;
 @Getter
 public enum DatasourceType {
     
-    MYSQL(0);
+    MYSQL(0, "MySQL");
     
     private final Integer code;
     
-    DatasourceType(final Integer code) {
+    private final String name;
+    
+    DatasourceType(final Integer code, final String name) {
         this.code = code;
+        this.name = name;
     }
 }

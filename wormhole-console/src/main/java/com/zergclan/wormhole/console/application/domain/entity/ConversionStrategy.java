@@ -21,23 +21,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link DatasourceInfo}.
+ * {@link ConversionStrategy}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends AbstractPO {
+public final class ConversionStrategy extends AbstractPO {
     
-    private Integer databaseId;
+    private String code;
     
-    private String owner;
+    private String actionCode;
     
-    private String schema;
+    private Integer actionOrder;
     
-    private String username;
-    
-    private String password;
-    
-    private String extendParameters;
+    private Integer enable;
     
     private String description;
     

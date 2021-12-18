@@ -15,31 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.infra.repository.mapper;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.application.domain.entity.PlanExecutionLog;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * {@link DatasourceInfo}.
+ * Mapper of {@link PlanExecutionLog}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends AbstractPO {
-    
-    private Integer databaseId;
-    
-    private String owner;
-    
-    private String schema;
-    
-    private String username;
-    
-    private String password;
-    
-    private String extendParameters;
-    
-    private String description;
-    
-    private Integer operator;
+@Mapper
+public interface PlanExecutionLogMapper extends BaseMapper<PlanExecutionLog> {
 }

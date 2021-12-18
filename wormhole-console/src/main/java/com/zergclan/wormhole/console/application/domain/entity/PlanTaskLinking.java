@@ -17,29 +17,16 @@
 
 package com.zergclan.wormhole.console.application.domain.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
- * {@link DatasourceInfo}.
+ *  Linking bean for {@link PlanInfo} to {@link TaskInfo}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends AbstractPO {
+public final class PlanTaskLinking extends AbstractPO {
     
-    private Integer databaseId;
+    private static final long serialVersionUID = -7323908944176547867L;
     
-    private String owner;
+    private Integer planId;
     
-    private String schema;
-    
-    private String username;
-    
-    private String password;
-    
-    private String extendParameters;
-    
-    private String description;
+    private Integer taskId;
     
     private Integer operator;
 }

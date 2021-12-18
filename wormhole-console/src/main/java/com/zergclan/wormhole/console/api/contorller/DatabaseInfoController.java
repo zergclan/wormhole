@@ -19,8 +19,9 @@ package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.service.UserInfoService;
+import com.zergclan.wormhole.console.api.vo.ResultCode;
+import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
+import com.zergclan.wormhole.console.application.service.DatabaseInfoService;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,83 +35,87 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Controller of {@link UserInfo}.
+ * Controller of {@link DatabaseInfo}.
  */
 @RestController
-@RequestMapping("/user")
-public class UserInfoController extends AbstractRestController {
+@RequestMapping("/database")
+public class DatabaseInfoController extends AbstractRestController {
     
     @Resource
-    private UserInfoService userInfoService;
-
+    private DatabaseInfoService databaseInfoService;
+    
     /**
-     * Add {@link UserInfo}.
+     * Add {@link DatabaseInfo}.
      *
-     * @param userInfo {@link UserInfo}
+     * @param databaseInfo {@link DatabaseInfo}
      * @return {@link HttpResult}
      */
     @PostMapping
-    public HttpResult<Void> add(@RequestBody final UserInfo userInfo) {
-        userInfoService.add(userInfo);
+    public HttpResult<Void> add(@RequestBody final DatabaseInfo databaseInfo) {
+        databaseInfo.setOperator(getUserSession().getId());
+        databaseInfoService.add(databaseInfo);
         return success();
     }
-    
+
     /**
-     * Edit {@link UserInfo} by id.
+     * Edit {@link DatabaseInfo}.
      *
-     * @param id id
-     * @param userInfo {@link UserInfo}
+     * @param databaseInfo {@link DatabaseInfo}
      * @return {@link HttpResult}
      */
-    @PutMapping("/{id}")
-    public HttpResult<Void> editById(@PathVariable(value = "id") final Integer id, @RequestBody final UserInfo userInfo) {
-        userInfoService.editById(id, userInfo);
+    @PutMapping
+    public HttpResult<Void> editById(@RequestBody final DatabaseInfo databaseInfo) {
+        if (Objects.isNull(databaseInfo.getId())) {
+            return failed(ResultCode.BAD_REQUEST);
+        }
+        databaseInfoService.editById(databaseInfo);
         return success();
     }
-    
+
     /**
-     * Remove {@link UserInfo} by id.
+     * Remove {@link DatabaseInfo} by id.
      *
      * @param id id
      * @return {@link HttpResult}
      */
     @DeleteMapping("/{id}")
     public HttpResult<Void> removeById(@PathVariable(value = "id") final Integer id) {
-        userInfoService.removeById(id);
+        databaseInfoService.removeById(id);
         return success();
     }
 
     /**
-     * Get {@link UserInfo} by id.
+     * Get {@link DatabaseInfo} by id.
      *
      * @param id id
      * @return {@link HttpResult}
      */
     @GetMapping("/{id}")
-    public HttpResult<UserInfo> getById(@PathVariable(value = "id") final Integer id) {
-        return success(userInfoService.getById(id));
+    public HttpResult<DatabaseInfo> getById(@PathVariable(value = "id") final Integer id) {
+        return success(databaseInfoService.getById(id));
     }
 
     /**
-     * Get list of {@link UserInfo}.
+     * List all {@link DatabaseInfo}.
      *
      * @return {@link HttpResult}
      */
     @GetMapping("/list")
-    public HttpResult<List<UserInfo>> listAll() {
-        return success(new ArrayList<>(userInfoService.listAll()));
+    public HttpResult<List<DatabaseInfo>> listAll() {
+        return success(new ArrayList<>(databaseInfoService.listAll()));
     }
-    
+
     /**
-     * Get {@link PageData} of {@link UserInfo}.
+     * List {@link DatabaseInfo} by {@link PageQuery}.
      *
-     * @param page {@link PageQuery}
-     * @return {@link HttpResult}
+     * @param pageQuery {@link PageQuery}
+     * @return {@link PageData}
      */
     @PostMapping("/page")
-    public HttpResult<PageData<UserInfo>> listByPage(@RequestBody final PageQuery<UserInfo> page) {
-        return success(userInfoService.listByPage(page));
+    public HttpResult<PageData<DatabaseInfo>> listByPage(@RequestBody final PageQuery<DatabaseInfo> pageQuery) {
+        return success(databaseInfoService.listByPage(pageQuery));
     }
 }

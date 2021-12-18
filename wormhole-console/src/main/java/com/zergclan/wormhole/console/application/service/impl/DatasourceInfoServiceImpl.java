@@ -18,53 +18,51 @@
 package com.zergclan.wormhole.console.application.service.impl;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.service.UserInfoService;
+import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
+import com.zergclan.wormhole.console.application.service.DatasourceInfoService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.util.Collection;
 
 /**
- * Implemented Service of {@link UserInfoService}.
+ * Implemented Service of {@link DatasourceInfoService}.
  */
-@Service(value = "userInfoService")
-public class UserInfoServiceImpl implements UserInfoService {
-    
+@Service(value = "datasourceInfoService")
+public class DatasourceInfoServiceImpl implements DatasourceInfoService {
+
     @Resource
-    private BaseRepository<UserInfo> userInfoRepository;
-    
+    private BaseRepository<DatasourceInfo> datasourceInfoRepository;
+
     @Override
-    public void add(@RequestBody final UserInfo userInfo) {
-        userInfo.setEnable(0);
-        userInfoRepository.add(userInfo);
+    public void add(final DatasourceInfo datasourceInfo) {
+        datasourceInfoRepository.add(datasourceInfo);
     }
-    
+
     @Override
-    public boolean editById(final Integer id, final UserInfo userInfo) {
-        return userInfoRepository.edit(id, userInfo);
+    public void editById(final DatasourceInfo datasourceInfo) {
+        datasourceInfoRepository.edit(datasourceInfo.getId(), datasourceInfo);
     }
-    
+
     @Override
     public void removeById(final Integer id) {
-        userInfoRepository.remove(id);
+        datasourceInfoRepository.remove(id);
     }
-    
+
     @Override
-    public UserInfo getById(final Integer id) {
-        return userInfoRepository.get(id);
+    public DatasourceInfo getById(final Integer id) {
+        return datasourceInfoRepository.get(id);
     }
-    
+
     @Override
-    public Collection<UserInfo> listAll() {
-        return userInfoRepository.listAll();
+    public Collection<DatasourceInfo> listAll() {
+        return datasourceInfoRepository.listAll();
     }
-    
+
     @Override
-    public PageData<UserInfo> listByPage(final PageQuery<UserInfo> pageQuery) {
-        return userInfoRepository.listByPage(pageQuery);
+    public PageData<DatasourceInfo> listByPage(final PageQuery<DatasourceInfo> pageQuery) {
+        return datasourceInfoRepository.listByPage(pageQuery);
     }
 }

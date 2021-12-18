@@ -26,8 +26,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Optional;
 
-@Service
-public final class LoginServiceImpl implements LoginService {
+@Service(value = "loginService")
+public class LoginServiceImpl implements LoginService {
     
     @Resource
     private BaseRepository<UserInfo> userInfoRepository;

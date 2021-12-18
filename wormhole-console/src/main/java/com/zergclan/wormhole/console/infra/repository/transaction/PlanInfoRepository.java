@@ -15,31 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
+import org.springframework.stereotype.Repository;
 
 /**
- * {@link DatasourceInfo}.
+ * Transactional repository of {@link PlanInfo}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class DatasourceInfo extends AbstractPO {
-    
-    private Integer databaseId;
-    
-    private String owner;
-    
-    private String schema;
-    
-    private String username;
-    
-    private String password;
-    
-    private String extendParameters;
-    
-    private String description;
-    
-    private Integer operator;
+@Repository(value = "planInfoRepository")
+public class PlanInfoRepository extends AbstractTransactionalRepository<PlanInfo> {
 }

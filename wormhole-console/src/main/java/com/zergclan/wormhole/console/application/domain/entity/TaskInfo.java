@@ -17,27 +17,29 @@
 
 package com.zergclan.wormhole.console.application.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * The base class from which all persistent object shall be derived in Wormhole.
+ * {@link TaskInfo}.
  */
-@Getter
-@Setter
-public abstract class BasePO implements Serializable {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class TaskInfo extends AbstractPO {
     
-    private Integer id;
+    private static final long serialVersionUID = 3553295866589815888L;
+    
+    private String title;
+    
+    private String code;
+    
+    private Integer order;
     
     private Integer enable;
     
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime createTime;
+    private Integer execute;
     
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime modifyTime;
+    private String description;
+    
+    private Integer operator;
 }
