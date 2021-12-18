@@ -27,6 +27,8 @@ public final class PlanTaskLinking extends AbstractPO {
     private Integer planId;
     
     private Integer taskId;
-    
+
+    private Integer order;
+
     private Integer operator;
 }

@@ -86,17 +86,7 @@ public abstract class AbstractRestController {
     protected <T> HttpResult<T> success(final ResultCode resultCode, final T data) {
         return new HttpResult<T>().toBuilder().code(resultCode.getCode()).message(resultCode.getMessage()).data(data).build();
     }
-    
-    /**
-     * Failed with.
-     *
-     * @param resultCode {@link ResultCode}
-     * @return http result {@link HttpResult}
-     */
-    protected HttpResult<Void> failed(final ResultCode resultCode) {
-        return new HttpResult<Void>().toBuilder().code(resultCode.getCode()).message(resultCode.getMessage()).build();
-    }
-    
+
     /**
      * Failed with code and data.
      *

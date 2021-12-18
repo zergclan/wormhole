@@ -49,6 +49,11 @@
         #{enable,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
     </sql>
 
+    <sql id="insert_batch_values">
+        #{batch.username,jdbcType=VARCHAR}, #{batch.password,jdbcType=VARCHAR}, #{batch.email,jdbcType=VARCHAR},
+        #{batch.enable,jdbcType=INTEGER}, #{batch.createTime,jdbcType=TIMESTAMP}, #{batch.modifyTime,jdbcType=TIMESTAMP}
+    </sql>
+
     <sql id="update_columns">
         <if test="null != username">
             username = #{username,jdbcType=VARCHAR},
@@ -100,6 +105,14 @@
         INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
     </insert>
 
+    <insert id="insertBatch" parameterType="java.util.Collection">
+        INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>)
+        VALUES
+        <foreach collection="list" item="batch" separator=",">
+            (<include refid="insert_batch_values"/>)
+        </foreach>
+    </insert>
+
     <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo">
         UPDATE <include refid="table_name"/>
         <set>
@@ -138,11 +151,23 @@
         SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
     </select>
 
+    <select id="countAll" resultType="java.lang.Integer">
+        SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
+    </select>
+
     <select id="listByQuery" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultMap="UserInfoResultMap">
         SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
         <where>
             <include refid="where_fuzzy_query"/>
         </where>
+    </select>
+
+    <select id="listInIds" parameterType="java.util.Collection" resultType="java.lang.Integer">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=INTEGER}
+        </foreach>
     </select>
 
     <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.entity.UserInfo" resultType="java.lang.Integer">

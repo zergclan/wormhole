@@ -20,7 +20,6 @@ package com.zergclan.wormhole.console.api.contorller;
 import com.zergclan.wormhole.common.SystemConstant;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.api.vo.ResultCode;
 import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
 import com.zergclan.wormhole.console.application.domain.value.DatasourceType;
@@ -41,7 +40,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Controller of {@link DatasourceInfo}.
@@ -77,9 +75,6 @@ public class DatasourceInfoController extends AbstractRestController {
      */
     @PutMapping
     public HttpResult<Void> editById(@RequestBody final DatasourceInfo datasourceInfo) {
-        if (Objects.isNull(datasourceInfo.getId())) {
-            return failed(ResultCode.BAD_REQUEST);
-        }
         datasourceInfoService.editById(datasourceInfo);
         return success();
     }
