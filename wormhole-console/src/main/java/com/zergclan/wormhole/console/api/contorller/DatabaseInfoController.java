@@ -19,7 +19,6 @@ package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.api.vo.ResultCode;
 import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
 import com.zergclan.wormhole.console.application.service.DatabaseInfoService;
 import com.zergclan.wormhole.console.infra.repository.PageData;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Controller of {@link DatabaseInfo}.
@@ -68,9 +66,6 @@ public class DatabaseInfoController extends AbstractRestController {
      */
     @PutMapping
     public HttpResult<Void> editById(@RequestBody final DatabaseInfo databaseInfo) {
-        if (Objects.isNull(databaseInfo.getId())) {
-            return failed(ResultCode.BAD_REQUEST);
-        }
         databaseInfoService.editById(databaseInfo);
         return success();
     }
