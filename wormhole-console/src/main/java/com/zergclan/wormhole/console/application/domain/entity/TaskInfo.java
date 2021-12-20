@@ -32,9 +32,7 @@ public class TaskInfo extends AbstractPO {
     private String title;
     
     private String code;
-    
-    private Integer order;
-    
+
     private Integer enable;
     
     private Integer execute;
