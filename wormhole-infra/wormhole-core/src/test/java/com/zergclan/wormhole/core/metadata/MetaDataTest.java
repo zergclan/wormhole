@@ -15,22 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.config;
+package com.zergclan.wormhole.core.metadata;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class MetaDataTest {
 
     @Test
     public void assertMySQLDataSourceMetaData() {
-        DataSourceMetaData dataSourceMetaData = new MySQLDataSourceMetaData("127.0.0.1", 3306, "mysql_db", new Properties());
-        assertEquals("127.0.0.1", dataSourceMetaData.getHostName());
-        assertEquals(3306, dataSourceMetaData.getPort());
-        assertEquals("mysql_db", dataSourceMetaData.getCatalog());
-        assertEquals("127.0.0.1:3306/mysql_db", dataSourceMetaData.getUrl());
+        DatabaseMetaData databaseMetaData = new MySQLDatabaseMetaData("127.0.0.1", 3306, new Properties());
+        assertEquals(DatabaseType.MYSQL, databaseMetaData.getDatabaseType());
+        assertEquals("127.0.0.1", databaseMetaData.getHost());
+        assertEquals(3306, databaseMetaData.getPort());
+        Optional<String> urlOptional = databaseMetaData.getUrl("mysql_db");
+        assertFalse(urlOptional.isPresent());
+        databaseMetaData.addSchema(new SchemaMetaData(databaseMetaData.getIdentifier(), "mysql_db"));
+        Optional<String> jdbcUrlOptional = databaseMetaData.getUrl("mysql_db");
+        assertTrue(jdbcUrlOptional.isPresent());
+        assertEquals("jdbc:mysql//127.0.0.1:3306/mysql_db", jdbcUrlOptional.get());
     }
 }

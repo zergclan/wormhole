@@ -15,34 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.data;
+package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.core.metadata.DataNode;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
 /**
- * Data node type of string.
+ * Type of database.
  */
-@RequiredArgsConstructor
-public final class StringDataNode implements DataNode<String> {
-    
+@Getter
+public enum DatabaseType {
+
+    MYSQL("MySQL", "jdbc:mysql//");
+
     private final String name;
 
-    private String value;
-    
-    @Override
-    public String getValue() {
-        return value;
-    }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public DataNode<String> refresh(final String value) {
-        this.value = value;
-        return this;
+    private final String protocol;
+
+    DatabaseType(final String name, final String protocol) {
+        this.name = name;
+        this.protocol = protocol;
     }
 }

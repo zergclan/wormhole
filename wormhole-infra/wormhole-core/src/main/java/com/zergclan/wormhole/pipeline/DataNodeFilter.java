@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline;
 
-import com.zergclan.wormhole.core.metadata.DataNode;
+import com.zergclan.wormhole.core.data.DataNode;
 
 /**
  * The root interface from which all data node filter objects shall be derived in Wormhole.

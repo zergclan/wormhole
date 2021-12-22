@@ -185,6 +185,6 @@ public final class BeanMapper {
      * @return key of mapper
      */
     private static <S, T> String createKey(final Class<S> sourceClazz, final Class<T> targetClazz) {
-        return sourceClazz.getCanonicalName() + SystemConstant.IDENTIFIER_SPACE + targetClazz.getCanonicalName();
+        return sourceClazz.getCanonicalName() + SystemConstant.SPACE + targetClazz.getCanonicalName();
     }
 }

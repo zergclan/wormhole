@@ -15,32 +15,47 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.config;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.common.SystemConstant;
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Meta data for column.
+ * The root interface from which all converted data objects shall be derived in Wormhole.
  */
-@RequiredArgsConstructor
-@Getter
-public final class ColumnMetaData implements MetaData {
-
-    private final String owner;
-
-    private final String name;
-
-    private final int dataType;
-
-    private final boolean primaryKey;
-
-    private final boolean uniqueIndex;
+public interface DataGroup extends Serializable {
     
-    @Override
-    public String getIdentifier() {
-        return owner + SystemConstant.IDENTIFIER_SPACE + name;
-    }
+    /**
+     * Get plan id.
+     *
+     * @return plan id
+     */
+    Long getPlanId();
+    
+    /**
+     * Get task id.
+     *
+     * @return task id
+     */
+    Long getTaskId();
+
+    /**
+     * get data nodes.
+     *
+     * @return plan id
+     */
+    /**
+     * get data nodes.
+     *
+     * @return {@link Optional}
+     */
+    Optional<Map<String, DataNode<?>>> getDataNodes();
+    
+    /**
+     * Init {@link DataGroup}.
+     *
+     * @param dataNodes {@link DataNode}
+     */
+    void init(Map<String, DataNode<?>> dataNodes);
 }

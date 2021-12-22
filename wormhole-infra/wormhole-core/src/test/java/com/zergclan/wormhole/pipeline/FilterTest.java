@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.pipeline;
 
 import com.zergclan.wormhole.common.WormholeException;
-import com.zergclan.wormhole.core.metadata.data.StringDataNode;
+import com.zergclan.wormhole.core.data.StringDataNode;
 import com.zergclan.wormhole.pipeline.filter.NullToEmptyHandler;
 import com.zergclan.wormhole.pipeline.filter.RequiredValidator;
 import org.junit.jupiter.api.Test;

@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.core.concurrent;
 
-import com.zergclan.wormhole.core.metadata.DataGroup;
-import com.zergclan.wormhole.core.metadata.DataNode;
-import com.zergclan.wormhole.core.metadata.data.DefaultDataGroup;
-import com.zergclan.wormhole.core.metadata.data.StringDataNode;
+import com.zergclan.wormhole.core.data.DataGroup;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.DefaultDataGroup;
+import com.zergclan.wormhole.core.data.StringDataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
 import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;

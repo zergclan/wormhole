@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.pipeline.filter;
 
 import com.zergclan.wormhole.common.WormholeException;
-import com.zergclan.wormhole.core.metadata.DataNode;
+import com.zergclan.wormhole.core.data.DataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**

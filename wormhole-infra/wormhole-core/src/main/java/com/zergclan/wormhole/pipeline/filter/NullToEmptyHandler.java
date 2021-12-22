@@ -17,14 +17,14 @@
 
 package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.core.metadata.DataNode;
+import com.zergclan.wormhole.core.data.DataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
  * Null to empty handler for data node.
  */
 public final class NullToEmptyHandler implements DataNodeFilter<String> {
-    
+
     @Override
     public DataNode<String> doFilter(final DataNode<String> node) {
         if (null == node.getValue()) {
