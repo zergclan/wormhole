@@ -15,33 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.config;
+package com.zergclan.wormhole.core.metadata;
 
 import com.zergclan.wormhole.common.SystemConstant;
-import com.zergclan.wormhole.core.metadata.MetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 /**
- * Meta data table.
+ * Meta data of index.
  */
 @RequiredArgsConstructor
 @Getter
-public final class TableMetaData implements MetaData {
+public final class IndexMetaData implements MetaData {
 
-    private final String owner;
+    private final String databaseIdentifier;
+
+    private final String schema;
+
+    private final String table;
 
     private final String name;
 
-    private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
+    private final boolean isUnique;
 
-    private final Map<String, IndexMetaData> indexes = new LinkedHashMap<>();
+    private final Collection<String> columnNames = new LinkedHashSet<>();
 
     @Override
     public String getIdentifier() {
-        return owner + SystemConstant.IDENTIFIER_SPACE + name;
+        return databaseIdentifier + SystemConstant.SPACE + schema + SystemConstant.SPACE + table + SystemConstant.SPACE + name;
     }
 }

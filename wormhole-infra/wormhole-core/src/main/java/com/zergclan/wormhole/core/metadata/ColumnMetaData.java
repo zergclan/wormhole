@@ -15,28 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.common.SystemConstant;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.LinkedList;
+/**
+ * Meta data for column.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class ColumnMetaData implements MetaData {
 
-public final class StringDataNodePipeline implements DataNodePipeline<String> {
-    
-    private final Collection<DataNodeFilter<String>> filterChains = new LinkedList<>();
-    
+    private final String databaseIdentifier;
+
+    private final String schema;
+
+    private final String table;
+
+    private final String name;
+
+    private final String dataType;
+
+    private final boolean nullable;
+
+    private final String comment;
+
     @Override
-    public void handle(final DataNode<String> dataNode) {
-        DataNode<String> temp = dataNode;
-        for (DataNodeFilter<String> each : filterChains) {
-            temp = each.doFilter(temp);
-        }
-        dataNode.refresh(temp.getValue());
-    }
-    
-    @Override
-    public void append(final DataNodeFilter<String> dataNodeFilter) {
-        filterChains.add(dataNodeFilter);
+    public String getIdentifier() {
+        return databaseIdentifier + SystemConstant.SPACE + schema + SystemConstant.SPACE + table + SystemConstant.SPACE + name;
     }
 }

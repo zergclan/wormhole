@@ -15,47 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.data;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.core.metadata.DataGroup;
-import com.zergclan.wormhole.core.metadata.DataNode;
 import lombok.RequiredArgsConstructor;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
-
 /**
- * Defaulted data group.
+ * Data node type of string.
  */
 @RequiredArgsConstructor
-public final class DefaultDataGroup implements DataGroup {
+public final class StringDataNode implements DataNode<String> {
     
-    private static final long serialVersionUID = -5547416880869227229L;
-    
-    private final Long planId;
-    
-    private final Long taskId;
-    
-    private final Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
+    private final String name;
+
+    private String value;
     
     @Override
-    public Long getPlanId() {
-        return planId;
+    public String getValue() {
+        return value;
     }
     
     @Override
-    public Long getTaskId() {
-        return taskId;
+    public String getName() {
+        return name;
     }
     
     @Override
-    public Optional<Map<String, DataNode<?>>> getDataNodes() {
-        return dataNodes.isEmpty() ? Optional.empty() : Optional.of(dataNodes);
-    }
-    
-    @Override
-    public void init(final Map<String, DataNode<?>> dataNodes) {
-        this.dataNodes.putAll(dataNodes);
+    public DataNode<String> refresh(final String value) {
+        this.value = value;
+        return this;
     }
 }

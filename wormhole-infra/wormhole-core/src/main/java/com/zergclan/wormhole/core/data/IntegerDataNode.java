@@ -15,28 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.core.data.DataNode;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
-public final class StringDataNodePipeline implements DataNodePipeline<String> {
+/**
+ * Data node type of {@link Integer}.
+ */
+@RequiredArgsConstructor
+public final class IntegerDataNode implements DataNode<Integer> {
     
-    private final Collection<DataNodeFilter<String>> filterChains = new LinkedList<>();
+    private final String name;
+    
+    private Integer value;
     
     @Override
-    public void handle(final DataNode<String> dataNode) {
-        DataNode<String> temp = dataNode;
-        for (DataNodeFilter<String> each : filterChains) {
-            temp = each.doFilter(temp);
-        }
-        dataNode.refresh(temp.getValue());
+    public Integer getValue() {
+        return value;
     }
     
     @Override
-    public void append(final DataNodeFilter<String> dataNodeFilter) {
-        filterChains.add(dataNodeFilter);
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public DataNode<Integer> refresh(final Integer value) {
+        this.value = value;
+        return this;
     }
 }

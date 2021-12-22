@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.data.type;
+package com.zergclan.wormhole.core.data;
 
 import com.zergclan.wormhole.common.DateUtil;
 import lombok.Getter;

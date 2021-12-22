@@ -15,24 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.config;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-/**
- * Meta data for MySQL data source.
- */
-@Getter
-@RequiredArgsConstructor
-public abstract class DataSourceMetaData implements MetaData {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-    private final String hostName;
-
-    private final int port;
-
-    private final String catalog;
-
-    protected abstract String getUrl();
+public final class DataGroupTest {
+    
+    @Test
+    public void assertNewInstance() {
+        DataGroup dataGroup = new DefaultDataGroup(1L, 2L);
+        assertNotNull(dataGroup);
+    }
 }
