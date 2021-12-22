@@ -33,12 +33,12 @@ public final class DataSourceModeFactory {
      * @param  mode notnull
      * @return DataSource
      */
-    public DataSource getDataSource(final DataSourceModeEnum mode) {
+    public DataSource getDataSource(final DataBaseType mode) {
 
         String uuid = UUID.randomUUID().toString().replace("-", "");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-        String url = "jdbc:h2:file:~/.h2/" + uuid + ";AUTO_SERVER=TRUE;MODE=" + mode.getValue();
+        String url = "jdbc:h2:file:~/.h2/" + uuid + ";AUTO_SERVER=TRUE;MODE=" + mode.getName();
         System.out.println(url);
         dataSource.setUrl(url);
         dataSource.setUsername("root");
@@ -52,7 +52,7 @@ public final class DataSourceModeFactory {
      * @return DataSource
      */
     public DataSource getOriginDataSource() {
-        DataSource dataSource = getDataSource(DataSourceModeEnum.MYSQL);
+        DataSource dataSource = getDataSource(DataBaseType.MYSQL);
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String createUserTableSqlStr = "CREATE TABLE `user_info` (\n"
@@ -78,7 +78,7 @@ public final class DataSourceModeFactory {
      * @return DataSource
      */
     public DataSource getTargetDataSource() {
-        DataSource dataSource = getDataSource(DataSourceModeEnum.MYSQL);
+        DataSource dataSource = getDataSource(DataBaseType.MYSQL);
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String createUserTableSqlStr = "CREATE TABLE `user_info` (\n"

@@ -18,62 +18,60 @@
 package com.zergclan.wormhole.factory;
 
 /**
- * the enum of h2 mode.
+ * the enum of database type.
  * @author wgz
  */
-public enum DataSourceModeEnum {
-    /**
-     * Compatibility modes for IBM DB2.
-     */
-    DB2("DB2"),
-    /**
-     * Compatibility modes for Apache Derby.
-     */
-    DERBY("Derby"),
-    /**
-     * Compatibility modes for HSQLDB.
-     */
-    HSQLDB("HSQLDB"),
-    /**
-     * Compatibility modes for MS SQL Server.
-     */
-    SQL_SERVER("SQL_Server"),
+public enum DataBaseType {
+
     /**
      * Compatibility modes for MySQL.
      */
-    MYSQL("MySQL"),
+    MYSQL("MySQL", "jdbc:mysql"),
     /**
      * Compatibility modes for Oracle.
      */
-    ORACLE("Oracle"),
+    ORACLE("Oracle", "jdbc:oracle:thin"),
+    /**
+     * Compatibility modes for MS SQL Server.
+     */
+    SQL_SERVER("SQL_Server", "jdbc:microsoft:sqlserver"),
     /**
      * Compatibility modes for PostgreSQL.
      */
-    POSTGRESQL("PostgreSQL");
+    POSTGRESQL("PostgreSQL", "jdbc:postgresql"),
+    /**
+     * Compatibility modes for IBM DB2.
+     */
+    DB2("DB2", "jdbc:db2");
 
     /**
-     * modes value.
+     * db name.
      */
-    private String value;
+    private String name;
+    /**
+     * db protocol.
+     */
+    private String protocol;
 
-    DataSourceModeEnum(final String value) {
-        this.value = value;
+    DataBaseType(final String name, final String protocol) {
+        this.name = name;
+        this.protocol = protocol;
     }
 
     /**
-     * set value.
-     * @param value notnull
-     */
-    public void setValue(final String value) {
-        this.value = value;
-    }
-
-    /**
-     * get vulue.
+     * get name.
      * @return string
      */
-    public String getValue() {
-        return this.value;
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * get protocol.
+     * @return string
+     */
+    public String getProtocol() {
+        return this.protocol;
     }
 
 }
