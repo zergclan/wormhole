@@ -17,10 +17,9 @@
 
 package com.zergclan.wormhole.reader.mysql;
 
-import com.zergclan.wormhole.core.metadata.config.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.config.DataSourceMetaData;
-import com.zergclan.wormhole.core.metadata.config.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.config.TableMetaData;
+import com.zergclan.wormhole.core.metadata.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.TableMetaData;
 import com.zergclan.wormhole.extracter.Extractor;
 
 import java.util.Collection;
@@ -32,7 +31,7 @@ import java.util.Map;
 public final class MySQLExtractor implements Extractor {
     
     @Override
-    public Collection<TableMetaData> extractTables(final DataSourceMetaData dataSource) {
+    public Collection<TableMetaData> extractTables() {
         // TODO
         return null;
     }

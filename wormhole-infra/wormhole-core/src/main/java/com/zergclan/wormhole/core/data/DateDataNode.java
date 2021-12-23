@@ -15,34 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.core.data;
+
+import lombok.RequiredArgsConstructor;
+
+import java.util.Date;
 
 /**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
+ * Data node type of date.
  */
-public interface DataNode<V> {
+@RequiredArgsConstructor
+public final class DateDataNode implements DataNode<Date> {
     
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
+    private final String name;
+
+    private final DatePattern pattern;
     
-    /**
-     * Get data node name.
-     *
-     * @return data node name
-     */
-    String getName();
+    private Date value;
     
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param value data node value
-     * @return {@link DataNode}
-     */
-    DataNode<V> refresh(V value);
+    @Override
+    public Date getValue() {
+        return value;
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public DataNode<Date> refresh(final Date value) {
+        this.value = value;
+        return this;
+    }
 }

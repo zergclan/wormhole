@@ -53,6 +53,6 @@ public final class IndexMetaData implements MetaData {
 
     @Override
     public String getIdentifier() {
-        return tableSchema + SystemConstant.IDENTIFIER_SPACE + tableName + SystemConstant.IDENTIFIER_SPACE + keyName;
+        return tableSchema + SystemConstant.SPACE + tableName + SystemConstant.SPACE + keyName;
     }
 }

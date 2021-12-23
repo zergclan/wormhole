@@ -17,10 +17,9 @@
 
 package com.zergclan.wormhole.extracter;
 
-import com.zergclan.wormhole.core.metadata.config.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.config.DataSourceMetaData;
-import com.zergclan.wormhole.core.metadata.config.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.config.TableMetaData;
+import com.zergclan.wormhole.core.metadata.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.TableMetaData;
 
 import java.util.Collection;
 import java.util.Map;
@@ -31,12 +30,11 @@ import java.util.Map;
 public interface Extractor {
 
     /**
-     * Extract {@link TableMetaData} of {@link DataSourceMetaData}.
+     * Extract {@link TableMetaData}.
      *
-     * @param dataSource {@link DataSourceMetaData}
      * @return {@link TableMetaData}
      */
-    Collection<TableMetaData> extractTables(DataSourceMetaData dataSource);
+    Collection<TableMetaData> extractTables();
 
     /**
      * Extract {@link ColumnMetaData} of {@link TableMetaData}.

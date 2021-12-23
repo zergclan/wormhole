@@ -53,7 +53,7 @@ public final class ColumnMetaData implements MetaData {
 
     @Override
     public String getIdentifier() {
-        return tableSchema + SystemConstant.IDENTIFIER_SPACE + tableName + SystemConstant.IDENTIFIER_SPACE + columnName;
+        return tableSchema + SystemConstant.SPACE + tableName + SystemConstant.SPACE + columnName;
     }
 
 }

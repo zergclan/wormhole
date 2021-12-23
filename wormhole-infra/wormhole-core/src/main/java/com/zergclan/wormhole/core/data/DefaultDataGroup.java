@@ -15,39 +15,45 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.data;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.core.metadata.DataNode;
-import com.zergclan.wormhole.core.metadata.data.type.DatePattern;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Data node type of date.
+ * Defaulted data group.
  */
 @RequiredArgsConstructor
-public final class DateDataNode implements DataNode<Date> {
+public final class DefaultDataGroup implements DataGroup {
     
-    private final String name;
-
-    private final DatePattern pattern;
+    private static final long serialVersionUID = -5547416880869227229L;
     
-    private Date value;
+    private final Long planId;
+    
+    private final Long taskId;
+    
+    private final Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
     
     @Override
-    public Date getValue() {
-        return value;
+    public Long getPlanId() {
+        return planId;
     }
     
     @Override
-    public String getName() {
-        return name;
+    public Long getTaskId() {
+        return taskId;
     }
     
     @Override
-    public DataNode<Date> refresh(final Date value) {
-        this.value = value;
-        return this;
+    public Optional<Map<String, DataNode<?>>> getDataNodes() {
+        return dataNodes.isEmpty() ? Optional.empty() : Optional.of(dataNodes);
+    }
+    
+    @Override
+    public void init(final Map<String, DataNode<?>> dataNodes) {
+        this.dataNodes.putAll(dataNodes);
     }
 }
