@@ -134,7 +134,7 @@ public class DatasourceInfoController extends AbstractRestController {
     }
     
     private String createDatasourceOwner(final DatabaseInfo databaseInfo) {
-        return getDatabaseName(databaseInfo) + SystemConstant.IDENTIFIER_SPACE + databaseInfo.getHost() + ":" + databaseInfo.getPort();
+        return getDatabaseName(databaseInfo) + SystemConstant.SPACE + databaseInfo.getHost() + ":" + databaseInfo.getPort();
     }
     
     private String getDatabaseName(final DatabaseInfo databaseInfo) {

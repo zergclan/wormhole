@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.pipeline;
 
 import com.zergclan.wormhole.core.concurrent.PromisedTask;
-import com.zergclan.wormhole.core.metadata.DataGroup;
-import com.zergclan.wormhole.core.metadata.DataNode;
+import com.zergclan.wormhole.core.data.DataGroup;
+import com.zergclan.wormhole.core.data.DataNode;
 
 import java.util.Map;
 import java.util.Optional;

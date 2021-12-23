@@ -15,18 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.core.metadata.data.DefaultDataGroup;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public final class DataGroupTest {
-    
+public final class DataNodeTest {
+
     @Test
-    public void assertNewInstance() {
-        DataGroup dataGroup = new DefaultDataGroup(1L, 2L);
-        assertNotNull(dataGroup);
+    public void assertStringDataNode() {
+        DataNode<String> dataNode = new StringDataNode("column");
+        assertNotNull(dataNode);
+        assertEquals("value", dataNode.refresh("value").getValue());
+    }
+
+    @Test
+    public void assertIntegerDataNode() {
+        DataNode<Integer> integerDataNode = new IntegerDataNode("column");
+        assertNotNull(integerDataNode);
+        assertEquals(1, integerDataNode.refresh(1).getValue());
+    }
+
+    @Test
+    public void assertDateDataNode() {
+        DataNode<Date> dateDataNode = new DateDataNode("column", DatePattern.NATIVE);
+        assertNotNull(dateDataNode);
+        Date date = new Date();
+        assertEquals(date, dateDataNode.refresh(date).getValue());
     }
 }

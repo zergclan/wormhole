@@ -51,6 +51,6 @@ public final class TableMetaData implements MetaData {
 
     @Override
     public String getIdentifier() {
-        return tableSchema + SystemConstant.IDENTIFIER_SPACE + tableName;
+        return tableSchema + SystemConstant.SPACE + tableName;
     }
 }

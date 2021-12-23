@@ -17,45 +17,25 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.common.SystemConstant;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
-/**
- * The root interface from which all converted data objects shall be derived in Wormhole.
- */
-public interface DataGroup extends Serializable {
-    
-    /**
-     * Get plan id.
-     *
-     * @return plan id
-     */
-    Long getPlanId();
-    
-    /**
-     * Get task id.
-     *
-     * @return task id
-     */
-    Long getTaskId();
+@RequiredArgsConstructor
+@Getter
+public final class SchemaMetaData implements MetaData {
 
-    /**
-     * get data nodes.
-     *
-     * @return plan id
-     */
-    /**
-     * get data nodes.
-     *
-     * @return {@link Optional}
-     */
-    Optional<Map<String, DataNode<?>>> getDataNodes();
-    
-    /**
-     * Init {@link DataGroup}.
-     *
-     * @param dataNodes {@link DataNode}
-     */
-    void init(Map<String, DataNode<?>> dataNodes);
+    private final String databaseIdentifier;
+
+    private final String name;
+
+    private final Map<String, TableMetaData> tables = new LinkedHashMap<>();
+
+    @Override
+    public String getIdentifier() {
+        return databaseIdentifier + SystemConstant.SPACE + name;
+    }
 }

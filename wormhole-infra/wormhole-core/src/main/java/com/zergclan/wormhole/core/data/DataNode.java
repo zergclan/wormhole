@@ -15,34 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.data;
-
-import com.zergclan.wormhole.core.metadata.DataNode;
-import lombok.RequiredArgsConstructor;
+package com.zergclan.wormhole.core.data;
 
 /**
- * Data node type of {@link Integer}.
+ * The root interface from which all converted data node objects shall be derived in Wormhole.
+ *
+ * @param <V> class type of data node value
  */
-@RequiredArgsConstructor
-public final class IntegerDataNode implements DataNode<Integer> {
+public interface DataNode<V> {
     
-    private final String name;
+    /**
+     * Get data node value.
+     *
+     * @return data node value
+     */
+    V getValue();
     
-    private Integer value;
+    /**
+     * Get data node name.
+     *
+     * @return data node name
+     */
+    String getName();
     
-    @Override
-    public Integer getValue() {
-        return value;
-    }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public DataNode<Integer> refresh(final Integer value) {
-        this.value = value;
-        return this;
-    }
+    /**
+     * Refresh {@link DataNode}.
+     *
+     * @param value data node value
+     * @return {@link DataNode}
+     */
+    DataNode<V> refresh(V value);
 }

@@ -15,26 +15,50 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.config;
+package com.zergclan.wormhole.core.metadata;
 
 import com.zergclan.wormhole.common.SystemConstant;
-import com.zergclan.wormhole.core.metadata.MetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+
 /**
- * Meta data of index.
+ * Meta data for database.
  */
 @RequiredArgsConstructor
 @Getter
-public final class IndexMetaData implements MetaData {
+public abstract class DatabaseMetaData implements MetaData {
 
-    private final String owner;
+    private final DatabaseType databaseType;
 
-    private final String name;
+    private final String host;
+
+    private final int port;
+
+    private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
 
     @Override
     public String getIdentifier() {
-        return owner + SystemConstant.IDENTIFIER_SPACE + name;
+        return databaseType.getName() + SystemConstant.SPACE + host + SystemConstant.COLON + port;
     }
+
+    /**
+     * Add {@link SchemaMetaData}.
+     *
+     * @param schemaMetaData {@link SchemaMetaData}
+     */
+    public void addSchema(final SchemaMetaData schemaMetaData) {
+        schemas.put(schemaMetaData.getName(), schemaMetaData);
+    }
+
+    /**
+     * Get jdbc url.
+     *
+     * @param schema schema
+     * @return jdbc url
+     */
+    protected abstract Optional<String> getUrl(String schema);
 }
