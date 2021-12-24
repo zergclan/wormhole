@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.factory;
 
+import com.zergclan.wormhole.core.metadata.DatabaseType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -33,7 +34,7 @@ public final class DataSourceModeFactory {
      * @param  mode notnull
      * @return DataSource
      */
-    public DataSource getDataSource(final DataBaseType mode) {
+    public DataSource getDataSource(final DatabaseType mode) {
 
         String uuid = UUID.randomUUID().toString().replace("-", "");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -52,7 +53,7 @@ public final class DataSourceModeFactory {
      * @return DataSource
      */
     public DataSource getOriginDataSource() {
-        DataSource dataSource = getDataSource(DataBaseType.MYSQL);
+        DataSource dataSource = getDataSource(DatabaseType.MYSQL);
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String createUserTableSqlStr = "CREATE TABLE `user_info` (\n"
@@ -78,7 +79,7 @@ public final class DataSourceModeFactory {
      * @return DataSource
      */
     public DataSource getTargetDataSource() {
-        DataSource dataSource = getDataSource(DataBaseType.MYSQL);
+        DataSource dataSource = getDataSource(DatabaseType.MYSQL);
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String createUserTableSqlStr = "CREATE TABLE `user_info` (\n"
