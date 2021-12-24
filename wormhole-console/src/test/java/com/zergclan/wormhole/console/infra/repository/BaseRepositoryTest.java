@@ -39,13 +39,14 @@ public final class BaseRepositoryTest {
     public void assertBaseRepository() {
         Collection<UserInfo> userInfoBatch = createUserInfoBatch();
         userInfoRepository.addBatch(userInfoBatch);
-        int count = userInfoRepository.count();
-        assertEquals(3, count);
+        Collection<UserInfo> userInfos = userInfoRepository.listAll();
+        assertEquals(userInfos.size(), userInfoRepository.count());
         Collection<Integer> ids = new LinkedList<>();
-        ids.add(2);
-        ids.add(3);
+        for (UserInfo each : userInfos) {
+            ids.add(each.getId());
+        }
         Collection<UserInfo> list = userInfoRepository.list(ids);
-        assertEquals(2, list.size());
+        assertEquals(userInfos.size(), list.size());
     }
 
     private Collection<UserInfo> createUserInfoBatch() {
