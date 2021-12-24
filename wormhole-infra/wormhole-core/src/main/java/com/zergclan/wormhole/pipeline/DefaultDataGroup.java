@@ -15,8 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline;
 
+import com.zergclan.wormhole.core.data.DataGroup;
+import com.zergclan.wormhole.core.data.DataNode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
