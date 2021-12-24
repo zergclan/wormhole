@@ -15,13 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline;
 
+import com.zergclan.wormhole.core.data.DataGroup;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public final class DataGroupTest {
+public final class DefaultDataGroupTest {
     
     @Test
     public void assertNewInstance() {
