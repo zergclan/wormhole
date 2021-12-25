@@ -15,19 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.loader.Loader;
+import lombok.Getter;
 
-import java.util.Map;
+import java.util.Date;
 
 /**
- * Loader for MySQL.
+ * Pattern date.
  */
-public class MySQLLoader implements Loader {
-
-    @Override
-    public void loaderData(final Map<String, Object> map) {
-
+@Getter
+public final class PatternDate {
+    
+    private final Date date;
+    
+    private final DatePattern pattern;
+    
+    public PatternDate(final Date date, final DatePattern pattern) {
+        this.pattern = pattern;
+        this.date = date;
+    }
+    
+    /**
+     * Is null.
+     *
+     * @return is null or not.
+     */
+    public boolean isNull() {
+        return null == date || null == pattern;
     }
 }

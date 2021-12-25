@@ -32,23 +32,9 @@ import java.util.Optional;
 public final class DefaultDataGroup implements DataGroup {
     
     private static final long serialVersionUID = -5547416880869227229L;
-    
-    private final Long planId;
-    
-    private final Long taskId;
-    
+
     private final Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
-    
-    @Override
-    public Long getPlanId() {
-        return planId;
-    }
-    
-    @Override
-    public Long getTaskId() {
-        return taskId;
-    }
-    
+
     @Override
     public Optional<Map<String, DataNode<?>>> getDataNodes() {
         return dataNodes.isEmpty() ? Optional.empty() : Optional.of(dataNodes);
@@ -57,5 +43,11 @@ public final class DefaultDataGroup implements DataGroup {
     @Override
     public void init(final Map<String, DataNode<?>> dataNodes) {
         this.dataNodes.putAll(dataNodes);
+    }
+
+    @Override
+    public Optional<DataNode<?>> append(final String name, final DataNode<?> dataNode) {
+        DataNode<?> result = dataNodes.put(name, dataNode);
+        return null == result ? Optional.empty() : Optional.of(result);
     }
 }

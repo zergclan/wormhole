@@ -15,19 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.loader.Loader;
-
-import java.util.Map;
+import com.zergclan.wormhole.common.StringUtil;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Loader for MySQL.
+ * Empty to default value handler for string data node.
  */
-public class MySQLLoader implements Loader {
-
+@RequiredArgsConstructor
+public final class StringBlankToDefaultHandler implements DataNodeFilter<String> {
+    
+    private final String defaultValue;
+    
     @Override
-    public void loaderData(final Map<String, Object> map) {
-
+    public DataNode<String> doFilter(final DataNode<String> node) {
+        if (StringUtil.isBlank(node.getValue())) {
+            node.refresh(defaultValue);
+        }
+        return node;
     }
 }

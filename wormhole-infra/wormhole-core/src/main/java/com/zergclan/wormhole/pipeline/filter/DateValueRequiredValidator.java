@@ -15,19 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.loader.Loader;
-
-import java.util.Map;
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.PatternDate;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
- * Loader for MySQL.
+ * Required validator for date value in {@link PatternDate}.
  */
-public class MySQLLoader implements Loader {
-
+public final class DateValueRequiredValidator implements DataNodeFilter<PatternDate> {
+    
     @Override
-    public void loaderData(final Map<String, Object> map) {
-
+    public DataNode<PatternDate> doFilter(final DataNode<PatternDate> node) {
+        if (null == node.getValue().getDate()) {
+            throw new WormholeException("Required date value can not be null");
+        }
+        return node;
     }
 }

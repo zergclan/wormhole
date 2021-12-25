@@ -15,19 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.loader.Loader;
-
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Loader for MySQL.
+ * Data node type of {@link PatternDate}.
  */
-public class MySQLLoader implements Loader {
-
+@RequiredArgsConstructor
+public final class PatternDateDataNode implements DataNode<PatternDate> {
+    
+    private final String name;
+    
+    private PatternDate patternDate;
+    
     @Override
-    public void loaderData(final Map<String, Object> map) {
-
+    public PatternDate getValue() {
+        return patternDate;
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public DataNode<PatternDate> refresh(final PatternDate patternDate) {
+        this.patternDate = patternDate;
+        return this;
     }
 }

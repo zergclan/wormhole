@@ -26,7 +26,7 @@ public final class DefaultDataGroupTest {
     
     @Test
     public void assertNewInstance() {
-        DataGroup dataGroup = new DefaultDataGroup(1L, 2L);
+        DataGroup dataGroup = new DefaultDataGroup();
         assertNotNull(dataGroup);
     }
 }

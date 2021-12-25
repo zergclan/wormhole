@@ -15,19 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.loader.Loader;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
 /**
- * Loader for MySQL.
+ * Precised code converter for string data node.
  */
-public class MySQLLoader implements Loader {
-
+@RequiredArgsConstructor
+public final class PreciseStringCodeConverter implements DataNodeFilter<String> {
+    
+    private final Map<String, String> sourceTargetMapping;
+    
     @Override
-    public void loaderData(final Map<String, Object> map) {
-
+    public DataNode<String> doFilter(final DataNode<String> node) {
+        String target = initTargetValue(node.getValue());
+        return node.refresh(target);
+    }
+    
+    private String initTargetValue(final String source) {
+        return sourceTargetMapping.get(source);
     }
 }
