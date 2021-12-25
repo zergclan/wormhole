@@ -25,14 +25,39 @@ import lombok.Getter;
 @Getter
 public enum DatabaseType {
 
-    MYSQL("MySQL", "jdbc:mysql//");
+    /**
+     * Compatibility modes for MySQL.
+     */
+    MYSQL("MySQL", "jdbc:mysql://"),
+    /**
+     * Compatibility modes for Oracle.
+     */
+    ORACLE("Oracle", "jdbc:oracle:thin:@"),
+    /**
+     * Compatibility modes for MS SQL Server.
+     */
+    SQL_SERVER("SQL_Server", "jdbc:microsoft:sqlserver://"),
+    /**
+     * Compatibility modes for PostgreSQL.
+     */
+    POSTGRESQL("PostgreSQL", "jdbc:postgresql://"),
+    /**
+     * Compatibility modes for IBM DB2.
+     */
+    DB2("DB2", "jdbc:db2://");
 
-    private final String name;
-
-    private final String protocol;
+    /**
+     * db name.
+     */
+    private String name;
+    /**
+     * db protocol.
+     */
+    private String protocol;
 
     DatabaseType(final String name, final String protocol) {
         this.name = name;
         this.protocol = protocol;
     }
+
 }
