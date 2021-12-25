@@ -45,17 +45,15 @@ public final class ExecutorServiceTest {
         ExecutorService executorService = ExecutorServiceFactory.newSingleThreadExecutor("junit-test", 128, 10 * 1000, FutureTask::new);
         DataGroup dataGroup = createDataGroup();
         Map<String, DataNodePipeline<?>> pipelineMatrix = createPipelineMatrix();
-        PromisedTask<Optional<DataGroup>> task = new DefaultDataGroupTask(dataGroup, pipelineMatrix);
+        PromisedTask<Optional<DataGroup>> task = new DefaultDataGroupTask(1L, 2L, dataGroup, pipelineMatrix);
         Future<Optional<DataGroup>> submit = executorService.submit(task);
         Optional<DataGroup> dataGroupOptional = submit.get();
         assertTrue(dataGroupOptional.isPresent());
         DataGroup actualDataGroup = dataGroupOptional.get();
-        assertEquals(1L, actualDataGroup.getPlanId());
-        assertEquals(2L, actualDataGroup.getTaskId());
         Optional<Map<String, DataNode<?>>> dataNodesOptional = actualDataGroup.getDataNodes();
         assertTrue(dataNodesOptional.isPresent());
         Map<String, DataNode<?>> dataNodeMap = dataNodesOptional.get();
-        assertEquals("hello rose", dataNodeMap.get("name").getValue());
+        assertEquals("hello jack", dataNodeMap.get("name").getValue());
     }
     
     private Map<String, DataNodePipeline<?>> createPipelineMatrix() {
@@ -74,7 +72,7 @@ public final class ExecutorServiceTest {
     }
     
     private DataGroup createDataGroup() {
-        DataGroup result = new DefaultDataGroup(1L, 2L);
+        DataGroup result = new DefaultDataGroup();
         result.init(createDataNodes());
         return result;
     }

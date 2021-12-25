@@ -19,8 +19,15 @@ package com.zergclan.wormhole.writer.mysql;
 
 import com.zergclan.wormhole.loader.Loader;
 
+import java.util.Map;
+
 /**
  * Loader for MySQL.
  */
 public class MySQLLoader implements Loader {
+
+    @Override
+    public void loaderData(final Map<String, Object> map) {
+
+    }
 }

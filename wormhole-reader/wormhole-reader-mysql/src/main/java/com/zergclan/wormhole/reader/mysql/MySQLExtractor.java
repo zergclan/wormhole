@@ -49,7 +49,7 @@ public final class MySQLExtractor implements Extractor {
     }
     
     @Override
-    public Collection<Map<String, Object>> extractDatum(final Collection<ColumnMetaData> columns) {
+    public Collection<Map<String, Object>> extractDatum(final Map<String, ColumnMetaData> columns) {
         // TODO
         return null;
     }
