@@ -15,15 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.pipeline.filter;
+
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Precised code converter for string data node.
  */
-public interface SchedulingExecutor {
+@RequiredArgsConstructor
+public final class PreciseStringCodeConverter implements DataNodeFilter<String> {
     
-    /**
-     * Execute.
-     */
-    void execute();
+    private final Map<String, String> sourceTargetMapping;
+    
+    @Override
+    public DataNode<String> doFilter(final DataNode<String> node) {
+        String target = initTargetValue(node.getValue());
+        return node.refresh(target);
+    }
+    
+    private String initTargetValue(final String source) {
+        return sourceTargetMapping.get(source);
+    }
 }

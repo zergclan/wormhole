@@ -15,15 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.core.data;
+
+import lombok.Getter;
+
+import java.util.Date;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Pattern date.
  */
-public interface SchedulingExecutor {
+@Getter
+public final class PatternDate {
+    
+    private final Date date;
+    
+    private final DatePattern pattern;
+    
+    public PatternDate(final Date date, final DatePattern pattern) {
+        this.pattern = pattern;
+        this.date = date;
+    }
     
     /**
-     * Execute.
+     * Is null.
+     *
+     * @return is null or not.
      */
-    void execute();
+    public boolean isNull() {
+        return null == date || null == pattern;
+    }
 }

@@ -15,21 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.impl;
 
 import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.PatternDate;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import com.zergclan.wormhole.pipeline.DataNodePipeline;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
- * Null to empty handler for data node.
+ * Implemented {@link DataNodePipeline} for {@link com.zergclan.wormhole.core.data.PatternDateDataNode}.
  */
-public final class NullToEmptyHandler implements DataNodeFilter<String> {
-
+public final class PatternDateDataNodePipeline implements DataNodePipeline<PatternDate> {
+    
+    private final Collection<DataNodeFilter<PatternDate>> filterChains = new LinkedList<>();
+    
     @Override
-    public DataNode<String> doFilter(final DataNode<String> node) {
-        if (null == node.getValue()) {
-            return node.refresh("");
+    public void handle(final DataNode<PatternDate> dataNode) {
+        DataNode<PatternDate> temp = dataNode;
+        for (DataNodeFilter<PatternDate> each : filterChains) {
+            temp = each.doFilter(temp);
         }
-        return node;
+        dataNode.refresh(temp.getValue());
+    }
+    
+    @Override
+    public void append(final DataNodeFilter<PatternDate> dataNodeFilter) {
+        filterChains.add(dataNodeFilter);
     }
 }

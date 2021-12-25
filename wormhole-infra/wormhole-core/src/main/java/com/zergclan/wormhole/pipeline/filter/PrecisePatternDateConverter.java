@@ -17,20 +17,29 @@
 
 package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.DatePattern;
+import com.zergclan.wormhole.core.data.PatternDate;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 /**
- * Required validator for data node.
+ * Precised {@link DatePattern} converter of {@link DatePattern}.
  */
-public final class RequiredValidator implements DataNodeFilter<String> {
+@RequiredArgsConstructor
+public final class PrecisePatternDateConverter implements DataNodeFilter<PatternDate> {
+    
+    private final Map<DatePattern, DatePattern> sourceTargetMapping;
     
     @Override
-    public DataNode<String> doFilter(final DataNode<String> node) {
-        if (null == node.getValue()) {
-            throw new WormholeException("Required value can not be null");
-        }
-        return node;
+    public DataNode<PatternDate> doFilter(final DataNode<PatternDate> node) {
+        PatternDate target = initTargetValue(node.getValue());
+        return node.refresh(target);
+    }
+    
+    private PatternDate initTargetValue(final PatternDate patternDate) {
+        return new PatternDate(patternDate.getDate(), sourceTargetMapping.get(patternDate.getPattern()));
     }
 }

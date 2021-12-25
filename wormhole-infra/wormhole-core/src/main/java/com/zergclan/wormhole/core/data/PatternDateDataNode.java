@@ -15,15 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.core.data;
+
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Data node type of {@link PatternDate}.
  */
-public interface SchedulingExecutor {
+@RequiredArgsConstructor
+public final class PatternDateDataNode implements DataNode<PatternDate> {
     
-    /**
-     * Execute.
-     */
-    void execute();
+    private final String name;
+    
+    private PatternDate patternDate;
+    
+    @Override
+    public PatternDate getValue() {
+        return patternDate;
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public DataNode<PatternDate> refresh(final PatternDate patternDate) {
+        this.patternDate = patternDate;
+        return this;
+    }
 }

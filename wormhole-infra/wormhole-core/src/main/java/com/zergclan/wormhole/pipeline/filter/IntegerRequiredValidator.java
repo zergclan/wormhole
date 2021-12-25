@@ -15,15 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.pipeline.filter;
+
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Required validator for integer data node.
  */
-public interface SchedulingExecutor {
+public final class IntegerRequiredValidator implements DataNodeFilter<Integer> {
     
-    /**
-     * Execute.
-     */
-    void execute();
+    @Override
+    public DataNode<Integer> doFilter(final DataNode<Integer> node) {
+        if (null == node.getValue()) {
+            throw new WormholeException("Required value can not be null");
+        }
+        return node;
+    }
 }

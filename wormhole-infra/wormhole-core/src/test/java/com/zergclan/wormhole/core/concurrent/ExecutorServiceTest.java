@@ -23,9 +23,9 @@ import com.zergclan.wormhole.core.data.StringDataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
 import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;
-import com.zergclan.wormhole.pipeline.StringDataNodePipeline;
 import com.zergclan.wormhole.pipeline.data.DefaultDataGroup;
-import com.zergclan.wormhole.pipeline.filter.NullToEmptyHandler;
+import com.zergclan.wormhole.pipeline.filter.StringBlankToDefaultHandler;
+import com.zergclan.wormhole.pipeline.impl.StringDataNodePipeline;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
@@ -55,7 +55,7 @@ public final class ExecutorServiceTest {
         Optional<Map<String, DataNode<?>>> dataNodesOptional = actualDataGroup.getDataNodes();
         assertTrue(dataNodesOptional.isPresent());
         Map<String, DataNode<?>> dataNodeMap = dataNodesOptional.get();
-        assertEquals("hello jack", dataNodeMap.get("name").getValue());
+        assertEquals("hello rose", dataNodeMap.get("name").getValue());
     }
     
     private Map<String, DataNodePipeline<?>> createPipelineMatrix() {
@@ -66,7 +66,7 @@ public final class ExecutorServiceTest {
     
     private DataNodePipeline<String> createNamePipeline() {
         DataNodePipeline<String> result = new StringDataNodePipeline();
-        DataNodeFilter<String> nullToEmptyHandler = new NullToEmptyHandler();
+        DataNodeFilter<String> nullToEmptyHandler = new StringBlankToDefaultHandler("rose");
         result.append(nullToEmptyHandler);
         DataNodeFilter<String> appendHandler = node -> node.refresh("hello " + node.getValue());
         result.append(appendHandler);

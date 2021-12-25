@@ -15,15 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.pipeline.filter;
+
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.PatternDate;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Required validator for date value in {@link PatternDate}.
  */
-public interface SchedulingExecutor {
+public final class DateValueRequiredValidator implements DataNodeFilter<PatternDate> {
     
-    /**
-     * Execute.
-     */
-    void execute();
+    @Override
+    public DataNode<PatternDate> doFilter(final DataNode<PatternDate> node) {
+        if (null == node.getValue().getDate()) {
+            throw new WormholeException("Required date value can not be null");
+        }
+        return node;
+    }
 }

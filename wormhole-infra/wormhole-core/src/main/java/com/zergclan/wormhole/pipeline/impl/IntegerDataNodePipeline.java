@@ -25,23 +25,23 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * Implemented {@link DataNodePipeline} for {@link com.zergclan.wormhole.core.data.StringDataNode}.
+ * Implemented {@link DataNodePipeline} for {@link com.zergclan.wormhole.core.data.IntegerDataNode}.
  */
-public final class StringDataNodePipeline implements DataNodePipeline<String> {
+public final class IntegerDataNodePipeline implements DataNodePipeline<Integer> {
     
-    private final Collection<DataNodeFilter<String>> filterChains = new LinkedList<>();
+    private final Collection<DataNodeFilter<Integer>> filterChains = new LinkedList<>();
     
     @Override
-    public void handle(final DataNode<String> dataNode) {
-        DataNode<String> temp = dataNode;
-        for (DataNodeFilter<String> each : filterChains) {
+    public void handle(final DataNode<Integer> dataNode) {
+        DataNode<Integer> temp = dataNode;
+        for (DataNodeFilter<Integer> each : filterChains) {
             temp = each.doFilter(temp);
         }
         dataNode.refresh(temp.getValue());
     }
     
     @Override
-    public void append(final DataNodeFilter<String> dataNodeFilter) {
+    public void append(final DataNodeFilter<Integer> dataNodeFilter) {
         filterChains.add(dataNodeFilter);
     }
 }

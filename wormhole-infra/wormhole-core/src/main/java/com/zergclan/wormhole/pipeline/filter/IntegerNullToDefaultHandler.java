@@ -15,37 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.filter;
 
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
-
 /**
- * Data node type of date.
+ * Null to default value handler for integer data node.
  */
 @RequiredArgsConstructor
-public final class DateDataNode implements DataNode<Date> {
+public final class IntegerNullToDefaultHandler implements DataNodeFilter<Integer> {
     
-    private final String name;
-
-    private final DatePattern pattern;
-    
-    private Date value;
+    private final Integer defaultValue;
     
     @Override
-    public Date getValue() {
-        return value;
-    }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public DataNode<Date> refresh(final Date value) {
-        this.value = value;
-        return this;
+    public DataNode<Integer> doFilter(final DataNode<Integer> node) {
+        if (null == node.getValue()) {
+            node.refresh(defaultValue);
+        }
+        return node;
     }
 }

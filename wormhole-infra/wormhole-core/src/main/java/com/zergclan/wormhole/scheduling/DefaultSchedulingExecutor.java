@@ -17,13 +17,34 @@
 
 package com.zergclan.wormhole.scheduling;
 
+import com.zergclan.wormhole.core.concurrent.ExecutorService;
+import com.zergclan.wormhole.extracter.Extractor;
+import com.zergclan.wormhole.loader.Loader;
+import lombok.RequiredArgsConstructor;
+
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Default scheduling executor.
  */
-public interface SchedulingExecutor {
+@RequiredArgsConstructor
+public class DefaultSchedulingExecutor implements SchedulingExecutor {
+    
+    private final Extractor extractor;
+    
+    private final Loader loader;
+    
+    private final ExecutorService executorService;
     
     /**
      * Execute.
      */
-    void execute();
+    public void execute() {
+        // TODO Initial configuration
+        
+        // TODO Extract data extractor.extractDatum()
+        // Collection<Map<String, Object>> Datum = extractor.extractDatum();
+    
+        // TODO transform Datum executorService.submit()
+        
+        // TODO Loader data
+    }
 }

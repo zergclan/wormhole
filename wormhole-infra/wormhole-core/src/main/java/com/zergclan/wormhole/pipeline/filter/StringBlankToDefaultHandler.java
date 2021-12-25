@@ -15,15 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.pipeline.filter;
+
+import com.zergclan.wormhole.common.StringUtil;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Empty to default value handler for string data node.
  */
-public interface SchedulingExecutor {
+@RequiredArgsConstructor
+public final class StringBlankToDefaultHandler implements DataNodeFilter<String> {
     
-    /**
-     * Execute.
-     */
-    void execute();
+    private final String defaultValue;
+    
+    @Override
+    public DataNode<String> doFilter(final DataNode<String> node) {
+        if (StringUtil.isBlank(node.getValue())) {
+            node.refresh(defaultValue);
+        }
+        return node;
+    }
 }
