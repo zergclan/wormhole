@@ -22,9 +22,9 @@ import com.zergclan.wormhole.core.data.DataNode;
 import com.zergclan.wormhole.core.data.StringDataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
-import com.zergclan.wormhole.pipeline.DefaultDataGroup;
 import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;
 import com.zergclan.wormhole.pipeline.StringDataNodePipeline;
+import com.zergclan.wormhole.pipeline.data.DefaultDataGroup;
 import com.zergclan.wormhole.pipeline.filter.NullToEmptyHandler;
 import org.junit.jupiter.api.Test;
 
