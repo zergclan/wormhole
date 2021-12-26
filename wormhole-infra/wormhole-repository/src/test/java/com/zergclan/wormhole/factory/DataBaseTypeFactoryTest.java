@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * test get data source in DataSourceModeFactory.
  */
 @FixMethodOrder(MethodSorters.DEFAULT)
-public final class DataSourceModeFactoryTest {
+public final class DataBaseTypeFactoryTest {
     @Test
     public void assertGetOriginDataSource() {
         DataSourceModeFactory dataSourceModeFactory = new DataSourceModeFactory();

@@ -19,8 +19,8 @@ package com.zergclan.wormhole.pipeline;
 
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.data.StringDataNode;
-import com.zergclan.wormhole.pipeline.filter.NullToEmptyHandler;
-import com.zergclan.wormhole.pipeline.filter.RequiredValidator;
+import com.zergclan.wormhole.pipeline.filter.StringBlankToDefaultHandler;
+import com.zergclan.wormhole.pipeline.filter.StringRequiredValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,14 +30,14 @@ public final class FilterTest {
     
     @Test
     public void assertRequiredValidator() {
-        DataNodeFilter<String> dataNodeFilter = new RequiredValidator();
+        DataNodeFilter<String> dataNodeFilter = new StringRequiredValidator();
         WormholeException exception = assertThrows(WormholeException.class, () -> dataNodeFilter.doFilter(new StringDataNode("column")));
         assertEquals("Required value can not be null", exception.getMessage());
     }
     
     @Test
-    public void assertNullToEmptyHandler() {
-        DataNodeFilter<String> dataNodeFilter = new NullToEmptyHandler();
-        assertEquals("", dataNodeFilter.doFilter(new StringDataNode("name")).getValue());
+    public void assertStringBlankToDefaultHandler() {
+        DataNodeFilter<String> dataNodeFilter = new StringBlankToDefaultHandler("default");
+        assertEquals("default", dataNodeFilter.doFilter(new StringDataNode("name")).getValue());
     }
 }

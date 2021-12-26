@@ -15,37 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.filter;
 
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.DatePattern;
+import com.zergclan.wormhole.core.data.PatternDate;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
+import java.util.Map;
 
 /**
- * Data node type of date.
+ * Precised {@link DatePattern} converter of {@link DatePattern}.
  */
 @RequiredArgsConstructor
-public final class DateDataNode implements DataNode<Date> {
+public final class PrecisePatternDateConverter implements DataNodeFilter<PatternDate> {
     
-    private final String name;
-
-    private final DatePattern pattern;
-    
-    private Date value;
+    private final Map<DatePattern, DatePattern> sourceTargetMapping;
     
     @Override
-    public Date getValue() {
-        return value;
+    public DataNode<PatternDate> doFilter(final DataNode<PatternDate> node) {
+        PatternDate target = initTargetValue(node.getValue());
+        return node.refresh(target);
     }
     
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public DataNode<Date> refresh(final Date value) {
-        this.value = value;
-        return this;
+    private PatternDate initTargetValue(final PatternDate patternDate) {
+        return new PatternDate(patternDate.getDate(), sourceTargetMapping.get(patternDate.getPattern()));
     }
 }

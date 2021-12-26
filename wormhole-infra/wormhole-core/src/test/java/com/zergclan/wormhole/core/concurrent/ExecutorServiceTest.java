@@ -22,10 +22,10 @@ import com.zergclan.wormhole.core.data.DataNode;
 import com.zergclan.wormhole.core.data.StringDataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
-import com.zergclan.wormhole.pipeline.DefaultDataGroup;
 import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;
-import com.zergclan.wormhole.pipeline.StringDataNodePipeline;
-import com.zergclan.wormhole.pipeline.filter.NullToEmptyHandler;
+import com.zergclan.wormhole.pipeline.data.DefaultDataGroup;
+import com.zergclan.wormhole.pipeline.filter.StringBlankToDefaultHandler;
+import com.zergclan.wormhole.pipeline.impl.StringDataNodePipeline;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
@@ -45,13 +45,11 @@ public final class ExecutorServiceTest {
         ExecutorService executorService = ExecutorServiceFactory.newSingleThreadExecutor("junit-test", 128, 10 * 1000, FutureTask::new);
         DataGroup dataGroup = createDataGroup();
         Map<String, DataNodePipeline<?>> pipelineMatrix = createPipelineMatrix();
-        PromisedTask<Optional<DataGroup>> task = new DefaultDataGroupTask(dataGroup, pipelineMatrix);
+        PromisedTask<Optional<DataGroup>> task = new DefaultDataGroupTask(1L, 2L, dataGroup, pipelineMatrix);
         Future<Optional<DataGroup>> submit = executorService.submit(task);
         Optional<DataGroup> dataGroupOptional = submit.get();
         assertTrue(dataGroupOptional.isPresent());
         DataGroup actualDataGroup = dataGroupOptional.get();
-        assertEquals(1L, actualDataGroup.getPlanId());
-        assertEquals(2L, actualDataGroup.getTaskId());
         Optional<Map<String, DataNode<?>>> dataNodesOptional = actualDataGroup.getDataNodes();
         assertTrue(dataNodesOptional.isPresent());
         Map<String, DataNode<?>> dataNodeMap = dataNodesOptional.get();
@@ -66,7 +64,7 @@ public final class ExecutorServiceTest {
     
     private DataNodePipeline<String> createNamePipeline() {
         DataNodePipeline<String> result = new StringDataNodePipeline();
-        DataNodeFilter<String> nullToEmptyHandler = new NullToEmptyHandler();
+        DataNodeFilter<String> nullToEmptyHandler = new StringBlankToDefaultHandler("rose");
         result.append(nullToEmptyHandler);
         DataNodeFilter<String> appendHandler = node -> node.refresh("hello " + node.getValue());
         result.append(appendHandler);
@@ -74,7 +72,7 @@ public final class ExecutorServiceTest {
     }
     
     private DataGroup createDataGroup() {
-        DataGroup result = new DefaultDataGroup(1L, 2L);
+        DataGroup result = new DefaultDataGroup();
         result.init(createDataNodes());
         return result;
     }

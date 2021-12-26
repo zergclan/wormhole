@@ -15,47 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
-
 /**
- * Defaulted data group.
+ * Null to default value handler for integer data node.
  */
 @RequiredArgsConstructor
-public final class DefaultDataGroup implements DataGroup {
+public final class IntegerNullToDefaultHandler implements DataNodeFilter<Integer> {
     
-    private static final long serialVersionUID = -5547416880869227229L;
-    
-    private final Long planId;
-    
-    private final Long taskId;
-    
-    private final Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
+    private final Integer defaultValue;
     
     @Override
-    public Long getPlanId() {
-        return planId;
-    }
-    
-    @Override
-    public Long getTaskId() {
-        return taskId;
-    }
-    
-    @Override
-    public Optional<Map<String, DataNode<?>>> getDataNodes() {
-        return dataNodes.isEmpty() ? Optional.empty() : Optional.of(dataNodes);
-    }
-    
-    @Override
-    public void init(final Map<String, DataNode<?>> dataNodes) {
-        this.dataNodes.putAll(dataNodes);
+    public DataNode<Integer> doFilter(final DataNode<Integer> node) {
+        if (null == node.getValue()) {
+            node.refresh(defaultValue);
+        }
+        return node;
     }
 }

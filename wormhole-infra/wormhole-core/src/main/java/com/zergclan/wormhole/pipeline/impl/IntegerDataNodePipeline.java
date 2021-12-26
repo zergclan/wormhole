@@ -15,22 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.impl;
 
-import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.data.DataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import com.zergclan.wormhole.pipeline.DataNodePipeline;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
- * Required validator for data node.
+ * Implemented {@link DataNodePipeline} for {@link com.zergclan.wormhole.core.data.IntegerDataNode}.
  */
-public final class RequiredValidator implements DataNodeFilter<String> {
+public final class IntegerDataNodePipeline implements DataNodePipeline<Integer> {
+    
+    private final Collection<DataNodeFilter<Integer>> filterChains = new LinkedList<>();
     
     @Override
-    public DataNode<String> doFilter(final DataNode<String> node) {
-        if (null == node.getValue()) {
-            throw new WormholeException("Required value can not be null");
+    public void handle(final DataNode<Integer> dataNode) {
+        DataNode<Integer> temp = dataNode;
+        for (DataNodeFilter<Integer> each : filterChains) {
+            temp = each.doFilter(temp);
         }
-        return node;
+        dataNode.refresh(temp.getValue());
+    }
+    
+    @Override
+    public void append(final DataNodeFilter<Integer> dataNodeFilter) {
+        filterChains.add(dataNodeFilter);
     }
 }

@@ -15,18 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.core.data.DataGroup;
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.PatternDate;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-public final class DefaultDataGroupTest {
+/**
+ * Required validator for date value in {@link PatternDate}.
+ */
+public final class DateValueRequiredValidator implements DataNodeFilter<PatternDate> {
     
-    @Test
-    public void assertNewInstance() {
-        DataGroup dataGroup = new DefaultDataGroup(1L, 2L);
-        assertNotNull(dataGroup);
+    @Override
+    public DataNode<PatternDate> doFilter(final DataNode<PatternDate> node) {
+        if (null == node.getValue().getDate()) {
+            throw new WormholeException("Required date value can not be null");
+        }
+        return node;
     }
 }

@@ -42,9 +42,10 @@ public final class DataNodeTest {
 
     @Test
     public void assertDateDataNode() {
-        DataNode<Date> dateDataNode = new DateDataNode("column", DatePattern.NATIVE);
+        Date now = new Date();
+        PatternDate patternDate = new PatternDate(now, DatePattern.NATIVE);
+        DataNode<PatternDate> dateDataNode = new PatternDateDataNode("column");
         assertNotNull(dateDataNode);
-        Date date = new Date();
-        assertEquals(date, dateDataNode.refresh(date).getValue());
+        assertEquals(patternDate, dateDataNode.refresh(patternDate).getValue());
     }
 }

@@ -21,4 +21,9 @@ package com.zergclan.wormhole.scheduling;
  * The root interface from which all scheduling executor objects shall be derived in Wormhole.
  */
 public interface SchedulingExecutor {
+    
+    /**
+     * Execute.
+     */
+    void execute();
 }

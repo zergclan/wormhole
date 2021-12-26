@@ -15,19 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.pipeline.data;
 
-import com.zergclan.wormhole.loader.Loader;
+import com.zergclan.wormhole.core.data.DataGroup;
+import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-/**
- * Loader for MySQL.
- */
-public class MySQLLoader implements Loader {
-
-    @Override
-    public void loaderData(final Map<String, Object> map) {
-
+public final class DefaultDataGroupTest {
+    
+    @Test
+    public void assertNewInstance() {
+        DataGroup dataGroup = new DefaultDataGroup();
+        assertNotNull(dataGroup);
     }
 }

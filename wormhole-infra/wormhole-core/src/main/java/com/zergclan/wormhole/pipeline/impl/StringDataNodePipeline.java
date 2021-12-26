@@ -15,42 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.reader.mysql;
+package com.zergclan.wormhole.pipeline.impl;
 
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.TableMetaData;
-import com.zergclan.wormhole.extracter.Extractor;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import com.zergclan.wormhole.pipeline.DataNodePipeline;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.LinkedList;
 
 /**
- * Extractor for MySQL.
+ * Implemented {@link DataNodePipeline} for {@link com.zergclan.wormhole.core.data.StringDataNode}.
  */
-public final class MySQLExtractor implements Extractor {
+public final class StringDataNodePipeline implements DataNodePipeline<String> {
+    
+    private final Collection<DataNodeFilter<String>> filterChains = new LinkedList<>();
     
     @Override
-    public Collection<TableMetaData> extractTables() {
-        // TODO
-        return null;
+    public void handle(final DataNode<String> dataNode) {
+        DataNode<String> temp = dataNode;
+        for (DataNodeFilter<String> each : filterChains) {
+            temp = each.doFilter(temp);
+        }
+        dataNode.refresh(temp.getValue());
     }
     
     @Override
-    public Collection<ColumnMetaData> extractColumns(final TableMetaData table) {
-        // TODO
-        return null;
-    }
-    
-    @Override
-    public Collection<IndexMetaData> extractIndexes(final TableMetaData table) {
-        // TODO
-        return null;
-    }
-    
-    @Override
-    public Collection<Map<String, Object>> extractDatum(final Map<String, ColumnMetaData> columns) {
-        // TODO
-        return null;
+    public void append(final DataNodeFilter<String> dataNodeFilter) {
+        filterChains.add(dataNodeFilter);
     }
 }

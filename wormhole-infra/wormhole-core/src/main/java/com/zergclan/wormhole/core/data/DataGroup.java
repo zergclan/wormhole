@@ -25,20 +25,6 @@ import java.util.Optional;
  * The root interface from which all converted data objects shall be derived in Wormhole.
  */
 public interface DataGroup extends Serializable {
-    
-    /**
-     * Get plan id.
-     *
-     * @return plan id
-     */
-    Long getPlanId();
-    
-    /**
-     * Get task id.
-     *
-     * @return task id
-     */
-    Long getTaskId();
 
     /**
      * get data nodes.
@@ -58,4 +44,13 @@ public interface DataGroup extends Serializable {
      * @param dataNodes {@link DataNode}
      */
     void init(Map<String, DataNode<?>> dataNodes);
+
+    /**
+     * Append {@link DataNode}.
+     *
+     * @param name name of {@link DataNode}
+     * @param dataNode {@link DataNode}
+     * @return removed {@link DataNode}
+     */
+    Optional<DataNode<?>> append(String name, DataNode<?> dataNode);
 }

@@ -15,19 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.loader.Loader;
-
-import java.util.Map;
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
 
 /**
- * Loader for MySQL.
+ * Required validator for integer data node.
  */
-public class MySQLLoader implements Loader {
-
+public final class IntegerRequiredValidator implements DataNodeFilter<Integer> {
+    
     @Override
-    public void loaderData(final Map<String, Object> map) {
-
+    public DataNode<Integer> doFilter(final DataNode<Integer> node) {
+        if (null == node.getValue()) {
+            throw new WormholeException("Required value can not be null");
+        }
+        return node;
     }
 }
