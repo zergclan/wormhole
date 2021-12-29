@@ -111,4 +111,16 @@ public class PlanInfoController extends AbstractRestController {
     public HttpResult<PageData<PlanInfo>> listByPage(@RequestBody final PageQuery<PlanInfo> pageQuery) {
         return success(planInfoService.listByPage(pageQuery));
     }
+    
+    /**
+     * Trigger by id.
+     *
+     * @param id id
+     * @return {@link PageData}
+     */
+    @GetMapping("/trigger/{id}")
+    public HttpResult<Void> trigger(@PathVariable(value = "id") final Integer id) {
+        planInfoService.triggerById(id);
+        return success();
+    }
 }

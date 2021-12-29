@@ -65,4 +65,10 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     public PageData<PlanInfo> listByPage(final PageQuery<PlanInfo> pageQuery) {
         return planInfoRepository.listByPage(pageQuery);
     }
+    
+    @Override
+    public void triggerById(final Integer id) {
+        PlanInfo planInfo = planInfoRepository.get(id);
+    }
+    
 }

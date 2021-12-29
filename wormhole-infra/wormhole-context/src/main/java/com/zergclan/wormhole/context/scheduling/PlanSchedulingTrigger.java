@@ -15,10 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.context.scheduling;
+
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all scheduling manager objects shall be derived in Wormhole.
+ * Default implemented of {@link SchedulingTrigger}.
  */
-public interface SchedulingManager {
+@RequiredArgsConstructor
+public final class PlanSchedulingTrigger implements SchedulingTrigger {
+    
+    private final String planCode;
+    
+    @Override
+    public String getCode() {
+        return planCode;
+    }
+    
+    @Override
+    public boolean isExecutable() {
+        // TODO judge is executable
+        return true;
+    }
 }
