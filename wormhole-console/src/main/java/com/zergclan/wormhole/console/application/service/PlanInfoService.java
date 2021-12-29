@@ -18,59 +18,59 @@
 package com.zergclan.wormhole.console.application.service;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
+import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 
 import java.util.Collection;
 
 /**
- * Service interface of {@link DatabaseInfo}.
+ * Service interface of {@link PlanInfo}.
  */
-public interface DatabaseInfoService {
+public interface PlanInfoService {
     
     /**
-     * Add {@link DatabaseInfo}.
+     * Add {@link PlanInfo}.
      *
-     * @param databaseInfo {@link DatabaseInfo}
+     * @param planInfo {@link PlanInfo}
      */
-    void add(DatabaseInfo databaseInfo);
-
+    void add(PlanInfo planInfo);
+    
     /**
-     * Edit {@link DatabaseInfo} by id.
+     * Edit {@link PlanInfo} by id.
      *
-     * @param databaseInfo {@link DatabaseInfo}
+     * @param planInfo {@link PlanInfo}
      * @return is edited or not
      */
-    boolean editById(DatabaseInfo databaseInfo);
-
+    boolean editById(PlanInfo planInfo);
+    
     /**
-     * Remove {@link DatabaseInfo} by id.
+     * remove {@link PlanInfo} by id.
      *
      * @param id id
      * @return is removed or not
      */
     boolean removeById(Integer id);
-
+    
     /**
-     * Get {@link DatabaseInfo} by id.
+     * Get {@link PlanInfo} by id.
      *
      * @param id id
-     * @return {@link DatabaseInfo}
+     * @return {@link PlanInfo}
      */
-    DatabaseInfo getById(Integer id);
-
+    PlanInfo getById(Integer id);
+    
     /**
-     * List {@link DatabaseInfo}.
+     * List {@link PlanInfo}.
      *
-     * @return {@link DatabaseInfo}
+     * @return {@link PlanInfo}
      */
-    Collection<DatabaseInfo> listAll();
-
+    Collection<PlanInfo> listAll();
+    
     /**
      * Get {@link PageData} by {@link PageQuery}.
      *
      * @param pageQuery {@link PageQuery}
      * @return {@link PageData}
      */
-    PageData<DatabaseInfo> listByPage(PageQuery<DatabaseInfo> pageQuery);
+    PageData<PlanInfo> listByPage(PageQuery<PlanInfo> pageQuery);
 }

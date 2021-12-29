@@ -66,8 +66,7 @@ public class DatabaseInfoController extends AbstractRestController {
      */
     @PutMapping
     public HttpResult<Void> editById(@RequestBody final DatabaseInfo databaseInfo) {
-        databaseInfoService.editById(databaseInfo);
-        return success();
+        return databaseInfoService.editById(databaseInfo) ? success() : failed();
     }
 
     /**
@@ -78,8 +77,7 @@ public class DatabaseInfoController extends AbstractRestController {
      */
     @DeleteMapping("/{id}")
     public HttpResult<Void> removeById(@PathVariable(value = "id") final Integer id) {
-        databaseInfoService.removeById(id);
-        return success();
+        return databaseInfoService.removeById(id) ? success() : failed();
     }
 
     /**
