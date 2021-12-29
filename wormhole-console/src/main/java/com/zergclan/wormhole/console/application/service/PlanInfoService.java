@@ -73,4 +73,11 @@ public interface PlanInfoService {
      * @return {@link PageData}
      */
     PageData<PlanInfo> listByPage(PageQuery<PlanInfo> pageQuery);
+    
+    /**
+     * Trigger by {@link PlanInfo} id.
+     *
+     * @param id id
+     */
+    void triggerById(Integer id);
 }
