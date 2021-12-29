@@ -48,8 +48,9 @@ public interface UserInfoService {
      * Remove {@link UserInfo} by id.
      *
      * @param id id
+     * @return is removed or not
      */
-    void removeById(Integer id);
+    boolean removeById(Integer id);
 
     /**
      * Get {@link UserInfo} by id.

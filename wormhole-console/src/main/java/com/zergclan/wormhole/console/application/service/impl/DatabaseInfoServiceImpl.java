@@ -42,13 +42,13 @@ public class DatabaseInfoServiceImpl implements DatabaseInfoService {
     }
 
     @Override
-    public void editById(final DatabaseInfo databaseInfo) {
-        databaseInfoRepository.edit(databaseInfo.getId(), databaseInfo);
+    public boolean editById(final DatabaseInfo databaseInfo) {
+        return databaseInfoRepository.edit(databaseInfo.getId(), databaseInfo);
     }
 
     @Override
-    public void removeById(final Integer id) {
-        databaseInfoRepository.remove(id);
+    public boolean removeById(final Integer id) {
+        return databaseInfoRepository.remove(id);
     }
 
     @Override

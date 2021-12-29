@@ -55,8 +55,9 @@ public interface BaseMapper<T extends AbstractPO> {
      * Delete by id.
      *
      * @param id id
+     * @return delete rows
      */
-    void deleteById(Integer id);
+    int deleteById(Integer id);
     
     /**
      * Get one by id.

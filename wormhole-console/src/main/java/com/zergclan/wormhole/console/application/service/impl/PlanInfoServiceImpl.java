@@ -18,54 +18,51 @@
 package com.zergclan.wormhole.console.application.service.impl;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.service.UserInfoService;
+import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
+import com.zergclan.wormhole.console.application.service.PlanInfoService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.util.Collection;
 
 /**
- * Implemented Service of {@link UserInfoService}.
+ * Implemented Service of {@link PlanInfoService}.
  */
-@Service(value = "userInfoService")
-public class UserInfoServiceImpl implements UserInfoService {
+@Service(value = "planInfoService")
+public class PlanInfoServiceImpl implements PlanInfoService {
     
     @Resource
-    private BaseRepository<UserInfo> userInfoRepository;
+    private BaseRepository<PlanInfo> planInfoRepository;
     
     @Override
-    public void add(@RequestBody final UserInfo userInfo) {
-        userInfo.setEnable(0);
-        userInfoRepository.add(userInfo);
+    public void add(final PlanInfo planInfo) {
+        planInfoRepository.add(planInfo);
     }
     
     @Override
-    public boolean editById(final Integer id, final UserInfo userInfo) {
-        return userInfoRepository.edit(id, userInfo);
+    public boolean editById(final PlanInfo planInfo) {
+        return planInfoRepository.edit(planInfo.getId(), planInfo);
     }
     
     @Override
     public boolean removeById(final Integer id) {
-        userInfoRepository.remove(id);
-        return false;
+        return planInfoRepository.remove(id);
     }
     
     @Override
-    public UserInfo getById(final Integer id) {
-        return userInfoRepository.get(id);
+    public PlanInfo getById(final Integer id) {
+        return planInfoRepository.get(id);
     }
     
     @Override
-    public Collection<UserInfo> listAll() {
-        return userInfoRepository.listAll();
+    public Collection<PlanInfo> listAll() {
+        return planInfoRepository.listAll();
     }
     
     @Override
-    public PageData<UserInfo> listByPage(final PageQuery<UserInfo> pageQuery) {
-        return userInfoRepository.listByPage(pageQuery);
+    public PageData<PlanInfo> listByPage(final PageQuery<PlanInfo> pageQuery) {
+        return planInfoRepository.listByPage(pageQuery);
     }
 }
