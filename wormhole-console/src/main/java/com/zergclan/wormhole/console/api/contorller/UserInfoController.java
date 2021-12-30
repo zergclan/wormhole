@@ -67,7 +67,7 @@ public class UserInfoController extends AbstractRestController {
     @PutMapping("/{id}")
     public HttpResult<Void> editById(@PathVariable(value = "id") final Integer id, @RequestBody final UserInfo userInfo) {
         userInfoService.editById(id, userInfo);
-        return success();
+        return userInfoService.editById(id, userInfo) ? success() : failed();
     }
     
     /**

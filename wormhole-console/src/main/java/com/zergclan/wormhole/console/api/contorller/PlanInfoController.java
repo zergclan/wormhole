@@ -19,8 +19,8 @@ package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
-import com.zergclan.wormhole.console.application.service.DatasourceInfoService;
+import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
+import com.zergclan.wormhole.console.application.service.PlanInfoService;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,79 +36,91 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Controller of {@link DatasourceInfo}.
+ * Controller of {@link PlanInfo}.
  */
 @RestController
-@RequestMapping("/datasource")
-public class DatasourceInfoController extends AbstractRestController {
-
+@RequestMapping("/plan")
+public class PlanInfoController extends AbstractRestController {
+    
     @Resource
-    private DatasourceInfoService datasourceInfoService;
-
+    private PlanInfoService planInfoService;
+    
     /**
-     * Add {@link DatasourceInfo}.
+     * Add {@link PlanInfo}.
      *
-     * @param datasourceInfo {@link DatasourceInfo}
+     * @param planInfo {@link PlanInfo}
      * @return {@link HttpResult}
      */
     @PostMapping
-    public HttpResult<Void> add(@RequestBody final DatasourceInfo datasourceInfo) {
-        datasourceInfo.setOperator(getUserSession().getId());
-        datasourceInfoService.add(datasourceInfo);
+    public HttpResult<Void> add(@RequestBody final PlanInfo planInfo) {
+        planInfo.setOperator(getUserSession().getId());
+        planInfoService.add(planInfo);
         return success();
     }
-
+    
     /**
-     * Edit {@link DatasourceInfo}.
+     * Edit {@link PlanInfo}.
      *
-     * @param datasourceInfo {@link DatasourceInfo}
+     * @param planInfo {@link PlanInfo}
      * @return {@link HttpResult}
      */
     @PutMapping
-    public HttpResult<Void> editById(@RequestBody final DatasourceInfo datasourceInfo) {
-        return datasourceInfoService.editById(datasourceInfo) ? success() : failed();
+    public HttpResult<Void> editById(@RequestBody final PlanInfo planInfo) {
+        return planInfoService.editById(planInfo) ? success() : failed();
     }
-
+    
     /**
-     * Remove {@link DatasourceInfo} by id.
+     * Remove {@link PlanInfo} by id.
      *
      * @param id id
      * @return {@link HttpResult}
      */
     @DeleteMapping("/{id}")
     public HttpResult<Void> removeById(@PathVariable(value = "id") final Integer id) {
-        return datasourceInfoService.removeById(id) ? success() : failed();
+        return planInfoService.removeById(id) ? success() : failed();
     }
-
+    
     /**
-     * Get {@link DatasourceInfo} by id.
+     * Get {@link PlanInfo} by id.
      *
      * @param id id
      * @return {@link HttpResult}
      */
     @GetMapping("/{id}")
-    public HttpResult<DatasourceInfo> getById(@PathVariable(value = "id") final Integer id) {
-        return success(datasourceInfoService.getById(id));
+    public HttpResult<PlanInfo> getById(@PathVariable(value = "id") final Integer id) {
+        return success(planInfoService.getById(id));
     }
-
+    
     /**
-     * List all {@link DatasourceInfo}.
+     * List all {@link PlanInfo}.
      *
      * @return {@link HttpResult}
      */
     @GetMapping("/list")
-    public HttpResult<List<DatasourceInfo>> listAll() {
-        return success(new ArrayList<>(datasourceInfoService.listAll()));
+    public HttpResult<List<PlanInfo>> listAll() {
+        return success(new ArrayList<>(planInfoService.listAll()));
     }
-
+    
     /**
-     * List {@link DatasourceInfo} by {@link PageQuery}.
+     * List {@link PlanInfo} by {@link PageQuery}.
      *
      * @param pageQuery {@link PageQuery}
      * @return {@link PageData}
      */
     @PostMapping("/page")
-    public HttpResult<PageData<DatasourceInfo>> listByPage(@RequestBody final PageQuery<DatasourceInfo> pageQuery) {
-        return success(datasourceInfoService.listByPage(pageQuery));
+    public HttpResult<PageData<PlanInfo>> listByPage(@RequestBody final PageQuery<PlanInfo> pageQuery) {
+        return success(planInfoService.listByPage(pageQuery));
+    }
+    
+    /**
+     * Trigger by id.
+     *
+     * @param id id
+     * @return {@link PageData}
+     */
+    @GetMapping("/trigger/{id}")
+    public HttpResult<Void> trigger(@PathVariable(value = "id") final Integer id) {
+        planInfoService.triggerById(id);
+        return success();
     }
 }

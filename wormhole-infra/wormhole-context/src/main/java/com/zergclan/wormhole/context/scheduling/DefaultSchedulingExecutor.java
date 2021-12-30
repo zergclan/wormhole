@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.context.scheduling;
 
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.data.DataGroup;
@@ -38,10 +38,10 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Future;
 
 /**
- * Default scheduling executor.
+ * Default implemented of {@link SchedulingExecutor}.
  */
 @RequiredArgsConstructor
-public class DefaultSchedulingExecutor implements SchedulingExecutor {
+public final class DefaultSchedulingExecutor implements SchedulingExecutor {
     
     private final Extractor extractor;
     
@@ -55,7 +55,6 @@ public class DefaultSchedulingExecutor implements SchedulingExecutor {
      * Execute.
      */
     public void execute() {
-        // TODO Initial configuration
         Long planId = createPlanId();
         Long taskId = createTaskId();
         Map<String, DataNodePipeline<?>> pipelineMatrix = createPipelineMatrix();

@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ErrorDateLog extends AbstractPO {
+public final class ErrorDateLog extends AbstractPO {
     
     private Long planBatch;
     

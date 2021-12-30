@@ -26,6 +26,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Optional;
 
+/**
+ * Implemented Service of {@link LoginService}.
+ */
 @Service(value = "loginService")
 public class LoginServiceImpl implements LoginService {
     

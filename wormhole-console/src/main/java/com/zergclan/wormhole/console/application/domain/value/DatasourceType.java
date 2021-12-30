@@ -19,6 +19,8 @@ package com.zergclan.wormhole.console.application.domain.value;
 
 import lombok.Getter;
 
+import java.util.Optional;
+
 @Getter
 public enum DatasourceType {
     
@@ -31,5 +33,21 @@ public enum DatasourceType {
     DatasourceType(final Integer code, final String name) {
         this.code = code;
         this.name = name;
+    }
+    
+    /**
+     * Get {@link DatasourceType} name by code.
+     *
+     * @param code code
+     * @return name
+     */
+    public static Optional<String> getNameByCode(final Integer code) {
+        DatasourceType[] values = values();
+        for (DatasourceType each : values) {
+            if (each.getCode().equals(code)) {
+                return Optional.of(each.getName());
+            }
+        }
+        return Optional.empty();
     }
 }
