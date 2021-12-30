@@ -98,6 +98,14 @@ public interface BaseRepository<T> {
     Collection<T> list(Collection<Integer> ids);
     
     /**
+     * List by query.
+     *
+     * @param po persistent object
+     * @return persistent object
+     */
+    Collection<T> list(T po);
+    
+    /**
      * page by page query.
      *
      * @param pageQuery page query

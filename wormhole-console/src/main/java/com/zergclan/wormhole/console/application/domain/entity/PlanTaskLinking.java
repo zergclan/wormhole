@@ -17,9 +17,14 @@
 
 package com.zergclan.wormhole.console.application.domain.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  *  Linking bean for {@link PlanInfo} to {@link TaskInfo}.
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public final class PlanTaskLinking extends AbstractPO {
     
     private static final long serialVersionUID = -7323908944176547867L;

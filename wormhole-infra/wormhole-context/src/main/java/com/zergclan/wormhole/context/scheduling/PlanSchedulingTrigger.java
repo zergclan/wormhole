@@ -19,6 +19,8 @@ package com.zergclan.wormhole.context.scheduling;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
+
 /**
  * Default implemented of {@link SchedulingTrigger}.
  */
@@ -26,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 public final class PlanSchedulingTrigger implements SchedulingTrigger {
     
     private final String planCode;
+    
+    private final Collection<String> taskCode;
     
     @Override
     public String getCode() {
