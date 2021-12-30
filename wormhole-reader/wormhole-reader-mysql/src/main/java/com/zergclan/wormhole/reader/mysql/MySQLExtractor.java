@@ -21,6 +21,8 @@ import com.zergclan.wormhole.core.metadata.ColumnMetaData;
 import com.zergclan.wormhole.core.metadata.IndexMetaData;
 import com.zergclan.wormhole.core.metadata.TableMetaData;
 import com.zergclan.wormhole.extracter.Extractor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Collection;
 import java.util.Map;
@@ -28,7 +30,10 @@ import java.util.Map;
 /**
  * Extractor for MySQL.
  */
+@RequiredArgsConstructor
 public final class MySQLExtractor implements Extractor {
+    
+    private final JdbcTemplate jdbcTemplate;
     
     @Override
     public Collection<TableMetaData> extractTables() {

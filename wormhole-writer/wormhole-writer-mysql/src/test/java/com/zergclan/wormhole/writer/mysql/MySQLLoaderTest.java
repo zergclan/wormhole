@@ -36,8 +36,7 @@ public class MySQLLoaderTest {
     @Test
     public void assertMySQLLoader() {
 
-        MySQLLoader loader = new MySQLLoader();
-        loader.setJdbcTemplate(getJdbcTemplate());
+        MySQLLoader loader = new MySQLLoader(getJdbcTemplate());
         loader.setTargetTable("target_table");
         loader.setSelectSql(getSelectSql());
         loader.setInsertSql(getInsertSql());

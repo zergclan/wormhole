@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.context.scheduling;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,22 +35,24 @@ public final class DefaultSchedulingManager implements SchedulingManager {
      * @return is registered or not
      */
     public boolean register(final SchedulingTrigger trigger) {
-        TRIGGER_CONTAINER.put(trigger.getCode(), trigger);
+        TRIGGER_CONTAINER.put(trigger.getPlanCode(), trigger);
         return true;
     }
     
     @Override
     public boolean execute(final SchedulingTrigger trigger) {
-        return execute(trigger.getCode());
+        Collection<String> taskCodes = trigger.getTaskCodes();
+        if (trigger.isExecutable()) {
+            executeTasks(taskCodes);
+        }
+        return true;
     }
     
-    private boolean execute(final String code) {
-        SchedulingTrigger schedulingTrigger = TRIGGER_CONTAINER.get(code);
-        if (schedulingTrigger.isExecutable()) {
-            SchedulingExecutor schedulingExecutor = SchedulingExecutorFactory.createSchedulingExecutor(schedulingTrigger);
+    private void executeTasks(final Collection<String> taskCodes) {
+        SchedulingExecutor schedulingExecutor;
+        for (String each : taskCodes) {
+            schedulingExecutor = SchedulingExecutorFactory.createSchedulingExecutor(each);
             schedulingExecutor.execute();
-            return true;
         }
-        return false;
     }
 }
