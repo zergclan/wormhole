@@ -124,6 +124,12 @@ public class AbstractTransactionalRepository<T extends AbstractPO> implements Ba
     
     @Transactional(readOnly = true)
     @Override
+    public Collection<T> list(final T po) {
+        return baseMapper.listByQuery(po);
+    }
+    
+    @Transactional(readOnly = true)
+    @Override
     public PageData<T> listByPage(final PageQuery<T> pageQuery) {
         PageData<T> result = new PageData<>(pageQuery.getPage(), pageQuery.getSize());
         int total = baseMapper.countByPage(pageQuery.getQuery());

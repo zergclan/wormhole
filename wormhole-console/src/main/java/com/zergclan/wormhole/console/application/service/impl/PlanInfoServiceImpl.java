@@ -19,13 +19,21 @@ package com.zergclan.wormhole.console.application.service.impl;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
+import com.zergclan.wormhole.console.application.domain.entity.PlanTaskLinking;
+import com.zergclan.wormhole.console.application.domain.entity.TaskInfo;
 import com.zergclan.wormhole.console.application.service.PlanInfoService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
+import com.zergclan.wormhole.context.scheduling.DefaultSchedulingManager;
+import com.zergclan.wormhole.context.scheduling.PlanSchedulingTrigger;
+import com.zergclan.wormhole.context.scheduling.SchedulingManager;
+import com.zergclan.wormhole.context.scheduling.SchedulingTrigger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Optional;
 
 /**
  * Implemented Service of {@link PlanInfoService}.
@@ -35,6 +43,12 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     
     @Resource
     private BaseRepository<PlanInfo> planInfoRepository;
+    
+    @Resource
+    private BaseRepository<PlanTaskLinking> planTaskLinkingRepository;
+    
+    @Resource
+    private BaseRepository<TaskInfo> taskInfoRepository;
     
     @Override
     public void add(final PlanInfo planInfo) {
@@ -69,6 +83,35 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     @Override
     public void triggerById(final Integer id) {
         PlanInfo planInfo = planInfoRepository.get(id);
+        Optional<Collection<Integer>> taskIds = listTaskIds(planInfo);
+        if (taskIds.isPresent()) {
+            Collection<TaskInfo> taskInfos = taskInfoRepository.list(taskIds.get());
+            SchedulingTrigger schedulingTrigger = new PlanSchedulingTrigger(planInfo.getCode(), initTaskCodes(taskInfos));
+            SchedulingManager schedulingManager = new DefaultSchedulingManager();
+            schedulingManager.execute(schedulingTrigger);
+        }
     }
     
+    private Collection<String> initTaskCodes(final Collection<TaskInfo> taskInfos) {
+        Collection<String> result = new LinkedList<>();
+        for (TaskInfo each : taskInfos) {
+            result.add(each.getCode());
+        }
+        return result;
+    }
+    
+    private Optional<Collection<Integer>> listTaskIds(final PlanInfo planInfo) {
+        PlanTaskLinking query = new PlanTaskLinking();
+        query.setPlanId(planInfo.getId());
+        Collection<PlanTaskLinking> planTaskLinking = planTaskLinkingRepository.list(query);
+        return planTaskLinking.isEmpty() ? Optional.empty() : Optional.of(initTaskIds(planTaskLinking));
+    }
+    
+    private Collection<Integer> initTaskIds(final Collection<PlanTaskLinking> planTaskLinking) {
+        Collection<Integer> result = new LinkedList<>();
+        for (PlanTaskLinking each : planTaskLinking) {
+            result.add(each.getTaskId());
+        }
+        return result;
+    }
 }

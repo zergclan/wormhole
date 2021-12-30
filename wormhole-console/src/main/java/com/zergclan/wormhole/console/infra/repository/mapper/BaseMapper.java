@@ -90,6 +90,14 @@ public interface BaseMapper<T extends AbstractPO> {
     Collection<T> listAll();
     
     /**
+     * List by query.
+     *
+     * @param po persistent object
+     * @return persistent objects
+     */
+    Collection<T> listByQuery(T po);
+    
+    /**
      * List in ids.
      *
      * @param ids ids

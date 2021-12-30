@@ -33,14 +33,17 @@ public final class DefaultSchedulingManager implements SchedulingManager {
      * @param trigger {@link SchedulingTrigger}
      * @return is registered or not
      */
-    public static boolean registerPlan(final SchedulingTrigger trigger) {
-        final String code = trigger.getCode();
-        TRIGGER_CONTAINER.put(code, trigger);
-        // FIXME for v0.1.0 test
-        return execution(code);
+    public boolean register(final SchedulingTrigger trigger) {
+        TRIGGER_CONTAINER.put(trigger.getCode(), trigger);
+        return true;
     }
     
-    private static boolean execution(final String code) {
+    @Override
+    public boolean execute(final SchedulingTrigger trigger) {
+        return execute(trigger.getCode());
+    }
+    
+    private boolean execute(final String code) {
         SchedulingTrigger schedulingTrigger = TRIGGER_CONTAINER.get(code);
         if (schedulingTrigger.isExecutable()) {
             SchedulingExecutor schedulingExecutor = SchedulingExecutorFactory.createSchedulingExecutor(schedulingTrigger);
