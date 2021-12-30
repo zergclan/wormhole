@@ -31,8 +31,9 @@
     <dependencies>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-core</artifactId>
+            <artifactId>wormhole-repository</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

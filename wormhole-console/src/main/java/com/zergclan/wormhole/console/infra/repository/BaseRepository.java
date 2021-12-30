@@ -47,7 +47,7 @@ public interface BaseRepository<T> {
      *
      * @param id id
      * @param po persistent object
-     * @return update rows
+     * @return is edited or not
      */
     boolean edit(Integer id, T po);
     
@@ -55,8 +55,9 @@ public interface BaseRepository<T> {
      * Delete by id.
      *
      * @param id id
+     * @return is removed or not
      */
-    void remove(Integer id);
+    boolean remove(Integer id);
     
     /**
      * Get one by id.

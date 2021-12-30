@@ -88,8 +88,8 @@ public class AbstractTransactionalRepository<T extends AbstractPO> implements Ba
     
     @Transactional(rollbackFor = Throwable.class)
     @Override
-    public void remove(final Integer id) {
-        baseMapper.deleteById(id);
+    public boolean remove(final Integer id) {
+        return baseMapper.deleteById(id) == 1;
     }
     
     @Transactional(readOnly = true)

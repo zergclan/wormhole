@@ -21,6 +21,9 @@ import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 
 import java.util.Optional;
 
+/**
+ * Service interface of {@link UserInfo} login.
+ */
 public interface LoginService {
     
     /**

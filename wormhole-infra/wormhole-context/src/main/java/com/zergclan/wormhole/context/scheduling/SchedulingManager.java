@@ -15,29 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+package com.zergclan.wormhole.context.scheduling;
 
 /**
- * {@link TaskInfo}.
+ * The root interface from which all scheduling manager objects shall be derived in Wormhole.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class TaskInfo extends AbstractPO {
-    
-    private static final long serialVersionUID = 3553295866589815888L;
-    
-    private String title;
-    
-    private String code;
-
-    private Integer enable;
-    
-    private Integer execute;
-    
-    private String description;
-    
-    private Integer operator;
+public interface SchedulingManager {
 }
