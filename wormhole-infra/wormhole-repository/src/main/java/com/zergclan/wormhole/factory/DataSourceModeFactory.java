@@ -35,7 +35,6 @@ public final class DataSourceModeFactory {
      * @return DataSource
      */
     public DataSource getDataSource(final DatabaseType mode) {
-
         String uuid = UUID.randomUUID().toString().replace("-", "");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
@@ -44,7 +43,6 @@ public final class DataSourceModeFactory {
         dataSource.setUrl(url);
         dataSource.setUsername("root");
         dataSource.setPassword("root");
-
         return dataSource;
     }
 

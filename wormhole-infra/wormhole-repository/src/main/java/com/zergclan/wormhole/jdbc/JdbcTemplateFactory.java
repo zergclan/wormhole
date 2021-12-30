@@ -15,35 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.jdbc;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.Collection;
+import javax.sql.DataSource;
 
 /**
- * Default implemented of {@link SchedulingTrigger}.
+ * Simple factory for create {@link JdbcTemplate}.
  */
-@RequiredArgsConstructor
-public final class PlanSchedulingTrigger implements SchedulingTrigger {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class JdbcTemplateFactory {
     
-    private final String planCode;
-    
-    private final Collection<String> taskCode;
-    
-    @Override
-    public String getPlanCode() {
-        return planCode;
-    }
-    
-    @Override
-    public Collection<String> getTaskCodes() {
-        return taskCode;
-    }
-    
-    @Override
-    public boolean isExecutable() {
-        // TODO judge is executable
-        return true;
+    /**
+     * Create {@link JdbcTemplate} by {@link DataSource}.
+     *
+     * @param dataSource {@link DataSource}
+     * @return {@link JdbcTemplate}
+     */
+    public static JdbcTemplate createJdbcTemplate(final DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }

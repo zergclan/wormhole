@@ -17,17 +17,26 @@
 
 package com.zergclan.wormhole.context.scheduling;
 
+import java.util.Collection;
+
 /**
  * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
  */
 public interface SchedulingTrigger {
     
     /**
-     * Get code.
+     * Get plan code.
      *
-     * @return code
+     * @return plan code
      */
-    String getCode();
+    String getPlanCode();
+    
+    /**
+     * Get task codes.
+     *
+     * @return task codes
+     */
+    Collection<String> getTaskCodes();
     
     /**
      * Is executable.
