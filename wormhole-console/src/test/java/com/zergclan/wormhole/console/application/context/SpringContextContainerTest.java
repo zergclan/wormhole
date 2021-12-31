@@ -15,35 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.console.application.context;
 
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
+import com.zergclan.wormhole.console.infra.repository.BaseRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Collection;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-/**
- * Default implemented of {@link SchedulingTrigger}.
- */
-@RequiredArgsConstructor
-public final class PlanSchedulingTrigger implements SchedulingTrigger {
-    
-    private final String planCode;
-    
-    private final Collection<String> taskCode;
-    
-    @Override
-    public String getPlanCode() {
-        return planCode;
-    }
-    
-    @Override
-    public Collection<String> getTaskCodes() {
-        return taskCode;
-    }
-    
-    @Override
-    public boolean isExecutable() {
-        // TODO judge is executable
-        return true;
+@SpringBootTest
+public final class SpringContextContainerTest {
+
+    @Test
+    public void assertGetBean() {
+        BaseRepository<UserInfo> userInfoRepository = SpringContextContainer.getBean("userInfoRepository", BaseRepository.class);
+        assertNotNull(userInfoRepository);
     }
 }

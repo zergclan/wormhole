@@ -19,6 +19,11 @@ package com.zergclan.wormhole.context.scheduling;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.context.scheduling.plan.PlanSchedulingExecutor;
+import com.zergclan.wormhole.context.scheduling.plan.PlanSchedulingTrigger;
+import com.zergclan.wormhole.context.scheduling.task.TaskSchedulingExecutor;
+import com.zergclan.wormhole.context.scheduling.task.TaskSchedulingTrigger;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.concurrent.ExecutorServiceFactory;
 import com.zergclan.wormhole.extracter.Extractor;
@@ -32,27 +37,53 @@ import lombok.NoArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.LinkedList;
 
 /**
  * {@link SchedulingExecutor} Factory.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SchedulingExecutorFactory {
-    
+
     /**
-     * The newly created {@link SchedulingExecutor} by code.
+     * The newly created {@link SchedulingExecutor} by {@link SchedulingTrigger}.
      *
-     * @param code code
+     * @param trigger {@link SchedulingTrigger}
      * @return {@link SchedulingExecutor}
      */
-    public static SchedulingExecutor createSchedulingExecutor(final String code) {
-        Extractor extractor = createExtractor(code);
-        Loader loader = createLoader(code);
-        ExecutorService executorService = ExecutorServiceFactory.newFixedThreadExecutor(4, 8, code, 1024);
-        DefaultDataGroupSwapper defaultDataGroupSwapper = new DefaultDataGroupSwapper();
-        return new DefaultSchedulingExecutor(1L, 2L, extractor, loader, executorService, defaultDataGroupSwapper);
+    public static SchedulingExecutor createSchedulingExecutor(final SchedulingTrigger trigger) {
+        if (trigger instanceof PlanSchedulingTrigger) {
+            return createPlanSchedulingExecutor((PlanSchedulingTrigger) trigger);
+        } else if (trigger instanceof TaskSchedulingTrigger) {
+            return createTaskSchedulingExecutor((TaskSchedulingTrigger) trigger);
+        }
+        throw new WormholeException("error : create plan scheduling executor fail, code [%s]", trigger.getCode());
     }
-    
+
+    /**
+     * The newly created {@link PlanSchedulingExecutor} by {@link PlanSchedulingTrigger}.
+     *
+     * @param trigger {@link PlanSchedulingTrigger}
+     * @return {@link PlanSchedulingExecutor}
+     */
+    private static PlanSchedulingExecutor createPlanSchedulingExecutor(final PlanSchedulingTrigger trigger) {
+        return new PlanSchedulingExecutor(new LinkedList<>());
+    }
+
+    /**
+     * The newly created {@link TaskSchedulingExecutor} by {@link TaskSchedulingTrigger}.
+     *
+     * @param trigger {@link TaskSchedulingTrigger}
+     * @return {@link TaskSchedulingExecutor}
+     */
+    private static TaskSchedulingExecutor createTaskSchedulingExecutor(final TaskSchedulingTrigger trigger) {
+        Extractor extractor = createExtractor(trigger.getCode());
+        Loader loader = createLoader(trigger.getCode());
+        ExecutorService executorService = ExecutorServiceFactory.newFixedThreadExecutor(4, 8, trigger.getCode(), 256);
+        DefaultDataGroupSwapper defaultDataGroupSwapper = new DefaultDataGroupSwapper();
+        return new TaskSchedulingExecutor(1L, 2L, extractor, loader, executorService, defaultDataGroupSwapper);
+    }
+
     private static Loader createLoader(final String code) {
         String driverClassName = "com.mysql.cj.jdbc.Driver";
         String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/source_ds?serverTimezone=UTC&useSSL=false";

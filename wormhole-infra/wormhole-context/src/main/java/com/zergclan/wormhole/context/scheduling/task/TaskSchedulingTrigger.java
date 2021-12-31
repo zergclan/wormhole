@@ -15,24 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.context.scheduling.task;
 
-/**
- * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
- */
-public interface SchedulingTrigger {
+import com.zergclan.wormhole.context.scheduling.SchedulingTrigger;
 
-    /**
-     * Get expire time.
-     *
-     * @return expire time
-     */
-    Long getExpire();
+public class TaskSchedulingTrigger implements SchedulingTrigger {
 
-    /**
-     * Get code.
-     *
-     * @return code
-     */
-    String getCode();
+    @Override
+    public Long getExpire() {
+        return null;
+    }
+
+    @Override
+    public String getCode() {
+        return null;
+    }
 }

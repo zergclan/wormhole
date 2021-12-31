@@ -24,10 +24,9 @@ import com.zergclan.wormhole.console.application.domain.entity.TaskInfo;
 import com.zergclan.wormhole.console.application.service.PlanInfoService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
-import com.zergclan.wormhole.context.scheduling.DefaultSchedulingManager;
-import com.zergclan.wormhole.context.scheduling.PlanSchedulingTrigger;
 import com.zergclan.wormhole.context.scheduling.SchedulingManager;
-import com.zergclan.wormhole.context.scheduling.SchedulingTrigger;
+import com.zergclan.wormhole.context.scheduling.plan.PlanDefinition;
+import com.zergclan.wormhole.context.scheduling.plan.PlanSchedulingManager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -85,13 +84,17 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         PlanInfo planInfo = planInfoRepository.get(id);
         Optional<Collection<Integer>> taskIds = listTaskIds(planInfo);
         if (taskIds.isPresent()) {
-            Collection<TaskInfo> taskInfos = taskInfoRepository.list(taskIds.get());
-            SchedulingTrigger schedulingTrigger = new PlanSchedulingTrigger(planInfo.getCode(), initTaskCodes(taskInfos));
-            SchedulingManager schedulingManager = new DefaultSchedulingManager();
-            schedulingManager.execute(schedulingTrigger);
+            PlanDefinition planDefinition = initPlanDefinition(planInfo);
+            SchedulingManager<PlanDefinition> schedulingManager = new PlanSchedulingManager();
+            schedulingManager.register(planDefinition);
         }
     }
-    
+
+    private PlanDefinition initPlanDefinition(final PlanInfo planInfo) {
+        // TODO
+        return new PlanDefinition(planInfo.getCode(), new LinkedList<>());
+    }
+
     private Collection<String> initTaskCodes(final Collection<TaskInfo> taskInfos) {
         Collection<String> result = new LinkedList<>();
         for (TaskInfo each : taskInfos) {

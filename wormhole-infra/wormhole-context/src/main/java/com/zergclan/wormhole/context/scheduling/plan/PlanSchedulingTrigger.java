@@ -15,24 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.context.scheduling.plan;
+
+import com.zergclan.wormhole.context.scheduling.SchedulingTrigger;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
+ * Plan implemented of {@link SchedulingTrigger}.
  */
-public interface SchedulingTrigger {
+@RequiredArgsConstructor
+public final class PlanSchedulingTrigger implements SchedulingTrigger {
+    
+    private final String code;
 
-    /**
-     * Get expire time.
-     *
-     * @return expire time
-     */
-    Long getExpire();
+    @Override
+    public Long getExpire() {
+        return 1L;
+    }
 
-    /**
-     * Get code.
-     *
-     * @return code
-     */
-    String getCode();
+    @Override
+    public String getCode() {
+        return code;
+    }
 }
