@@ -24,9 +24,9 @@ import com.zergclan.wormhole.console.application.domain.entity.TaskInfo;
 import com.zergclan.wormhole.console.application.service.PlanInfoService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
-import com.zergclan.wormhole.context.scheduling.SchedulingManager;
-import com.zergclan.wormhole.context.scheduling.plan.PlanDefinition;
-import com.zergclan.wormhole.context.scheduling.plan.PlanSchedulingManager;
+import com.zergclan.wormhole.definition.PlanDefinition;
+import com.zergclan.wormhole.scheduling.SchedulingManager;
+import com.zergclan.wormhole.scheduling.plan.PlanSchedulingManager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

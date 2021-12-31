@@ -15,39 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.definition;
 
-import com.zergclan.wormhole.common.DateUtil;
-import lombok.Getter;
+import lombok.Data;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
- * Date pattern.
+ * Definition of task.
  */
-@Getter
-public enum DatePattern {
+@Data
+public final class TaskDefinition implements Serializable {
 
-    NATIVE_DATE_TIME(0, "yyyy-MM-dd hh:mm:ss"),
+    private static final long serialVersionUID = 1457965137151385333L;
 
-    SLASH_DATE_TIME(1, "yyyy/MM/dd hh:mm:ss");
-    
-    private final int code;
+    private String code;
 
-    private final String pattern;
-
-    DatePattern(final int code, final String pattern) {
-        this.code = code;
-        this.pattern = pattern;
-    }
-
-    /**
-     * Format {@link Date}.
-     *
-     * @param date {@link Date}
-     * @return format date text
-     */
-    public String format(final Date date) {
-        return DateUtil.format(date, pattern);
-    }
+    private Collection<DataNodeDefinition> dataNodeDefinitions;
 }

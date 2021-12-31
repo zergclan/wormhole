@@ -15,15 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.scheduling;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * The root interface from which all scheduling manager objects shall be derived in Wormhole.
  */
-public interface SchedulingExecutor {
-    
+public interface SchedulingManager<T> {
+
     /**
-     * Execute.
+     * Register by definition.
+     *
+     * @param definition definition
+     * @return is registered or not
      */
-    void execute();
+    boolean register(T definition);
+
+    /**
+     * On trigger.
+     */
+    void onTrigger();
 }

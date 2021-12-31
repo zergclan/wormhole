@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.scheduling;
 
 /**
  * The root interface from which all scheduling trigger objects shall be derived in Wormhole.

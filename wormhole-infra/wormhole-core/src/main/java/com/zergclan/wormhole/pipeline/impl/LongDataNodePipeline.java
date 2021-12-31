@@ -15,39 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.impl;
 
-import com.zergclan.wormhole.common.DateUtil;
-import lombok.Getter;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import com.zergclan.wormhole.pipeline.DataNodePipeline;
 
-import java.util.Date;
+import java.util.Collection;
+import java.util.LinkedList;
 
-/**
- * Date pattern.
- */
-@Getter
-public enum DatePattern {
+public final class LongDataNodePipeline implements DataNodePipeline<Long> {
 
-    NATIVE_DATE_TIME(0, "yyyy-MM-dd hh:mm:ss"),
+    private final Collection<DataNodeFilter<Long>> filterChains = new LinkedList<>();
 
-    SLASH_DATE_TIME(1, "yyyy/MM/dd hh:mm:ss");
-    
-    private final int code;
-
-    private final String pattern;
-
-    DatePattern(final int code, final String pattern) {
-        this.code = code;
-        this.pattern = pattern;
+    @Override
+    public void handle(final DataNode<Long> dataNode) {
+        DataNode<Long> temp = dataNode;
+        for (DataNodeFilter<Long> each : filterChains) {
+            temp = each.doFilter(temp);
+        }
+        dataNode.refresh(temp.getValue());
     }
 
-    /**
-     * Format {@link Date}.
-     *
-     * @param date {@link Date}
-     * @return format date text
-     */
-    public String format(final Date date) {
-        return DateUtil.format(date, pattern);
+    @Override
+    public void append(final DataNodeFilter<Long> dataNodeFilter) {
+        filterChains.add(dataNodeFilter);
     }
 }

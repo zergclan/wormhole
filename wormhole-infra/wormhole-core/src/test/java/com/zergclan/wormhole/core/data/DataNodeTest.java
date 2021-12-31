@@ -43,7 +43,7 @@ public final class DataNodeTest {
     @Test
     public void assertDateDataNode() {
         Date now = new Date();
-        PatternDate patternDate = new PatternDate(now, DatePattern.NATIVE);
+        PatternDate patternDate = new PatternDate(now, DatePattern.NATIVE_DATE_TIME);
         DataNode<PatternDate> dateDataNode = new PatternDateDataNode("column");
         assertNotNull(dateDataNode);
         assertEquals(patternDate, dateDataNode.refresh(patternDate).getValue());
