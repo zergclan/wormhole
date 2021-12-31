@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.context.scheduling.task;
 
+import com.zergclan.wormhole.context.scheduling.SchedulingExecutor;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.metadata.ColumnMetaData;
@@ -39,17 +40,17 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Future;
 
 /**
- * Default implemented of {@link SchedulingExecutor}.
+ * Task implemented of {@link SchedulingExecutor}.
  */
 @RequiredArgsConstructor
-public final class DefaultSchedulingExecutor implements SchedulingExecutor {
+public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private final Long planId;
 
     private final Long taskId;
 
     private final Extractor extractor;
-    
+
     private final Loader loader;
 
     private final ExecutorService executorService;

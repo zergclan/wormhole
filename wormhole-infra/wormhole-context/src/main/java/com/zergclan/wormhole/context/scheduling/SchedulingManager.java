@@ -20,21 +20,18 @@ package com.zergclan.wormhole.context.scheduling;
 /**
  * The root interface from which all scheduling manager objects shall be derived in Wormhole.
  */
-public interface SchedulingManager {
-    
+public interface SchedulingManager<T> {
+
     /**
-     * Register {@link SchedulingTrigger}.
+     * Register by definition.
      *
-     * @param trigger {@link SchedulingTrigger}
+     * @param definition definition
      * @return is registered or not
      */
-    boolean register(SchedulingTrigger trigger);
-    
+    boolean register(T definition);
+
     /**
-     * Execute {@link SchedulingTrigger}.
-     *
-     * @param trigger {@link SchedulingTrigger}
-     * @return is executable or not
+     * On trigger.
      */
-    boolean execute(SchedulingTrigger trigger);
+    void onTrigger();
 }

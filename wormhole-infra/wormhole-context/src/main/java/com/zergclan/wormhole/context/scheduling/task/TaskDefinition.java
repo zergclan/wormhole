@@ -15,24 +15,15 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.context.scheduling.task;
+
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
- * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
+ * Task definition.
  */
-public interface SchedulingTrigger {
-
-    /**
-     * Get expire time.
-     *
-     * @return expire time
-     */
-    Long getExpire();
-
-    /**
-     * Get code.
-     *
-     * @return code
-     */
-    String getCode();
+@Data
+public final class TaskDefinition implements Serializable {
 }

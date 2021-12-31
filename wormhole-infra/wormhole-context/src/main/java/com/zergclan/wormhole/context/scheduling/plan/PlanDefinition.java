@@ -15,24 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling;
+package com.zergclan.wormhole.context.scheduling.plan;
+
+import com.zergclan.wormhole.context.scheduling.task.TaskDefinition;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
- * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
+ * Plan definition.
  */
-public interface SchedulingTrigger {
+@Data
+@RequiredArgsConstructor
+public final class PlanDefinition implements Serializable {
 
-    /**
-     * Get expire time.
-     *
-     * @return expire time
-     */
-    Long getExpire();
+    private static final long serialVersionUID = -341262307232903018L;
 
-    /**
-     * Get code.
-     *
-     * @return code
-     */
-    String getCode();
+    private final String code;
+
+    private final Collection<TaskDefinition> taskDefinitions;
 }
