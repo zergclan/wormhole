@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling.task;
+package com.zergclan.wormhole.scheduling.task;
 
-import com.zergclan.wormhole.context.scheduling.SchedulingExecutor;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.metadata.ColumnMetaData;
@@ -26,6 +25,7 @@ import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
 import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;
 import com.zergclan.wormhole.pipeline.data.DefaultDataGroupSwapper;
+import com.zergclan.wormhole.scheduling.SchedulingExecutor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;

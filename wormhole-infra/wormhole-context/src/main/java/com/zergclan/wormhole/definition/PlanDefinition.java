@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling.plan;
+package com.zergclan.wormhole.definition;
 
-import com.zergclan.wormhole.context.scheduling.task.TaskDefinition;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +24,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Plan definition.
+ * Definition of plan.
  */
 @Data
 @RequiredArgsConstructor

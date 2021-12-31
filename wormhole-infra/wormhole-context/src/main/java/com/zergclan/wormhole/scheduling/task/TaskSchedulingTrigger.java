@@ -15,26 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling.plan;
+package com.zergclan.wormhole.scheduling.task;
 
-import com.zergclan.wormhole.context.scheduling.SchedulingExecutor;
-import com.zergclan.wormhole.context.scheduling.task.TaskSchedulingExecutor;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.scheduling.SchedulingTrigger;
 
-import java.util.Collection;
-
-/**
- * Plan implemented of {@link SchedulingExecutor}.
- */
-@RequiredArgsConstructor
-public final class PlanSchedulingExecutor implements SchedulingExecutor {
-
-    private final Collection<TaskSchedulingExecutor> taskSchedulingExecutors;
+public class TaskSchedulingTrigger implements SchedulingTrigger {
 
     @Override
-    public void execute() {
-        for (TaskSchedulingExecutor each : taskSchedulingExecutors) {
-            each.execute();
-        }
+    public Long getExpire() {
+        return null;
+    }
+
+    @Override
+    public String getCode() {
+        return null;
     }
 }

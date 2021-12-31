@@ -15,15 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling.task;
+package com.zergclan.wormhole.definition;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * Task definition.
+ * Definition of data node.
  */
 @Data
-public final class TaskDefinition implements Serializable {
+public final class DataNodeDefinition implements Serializable {
+
+    private static final long serialVersionUID = -3952517130022740415L;
+
+    private String sourceDataOwner;
+
+    private String sourceDataType;
+
+    private String targetDataOwner;
+
+    private String targetDataType;
 }

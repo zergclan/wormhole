@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context.scheduling.plan;
+package com.zergclan.wormhole.scheduling.plan;
 
-import com.zergclan.wormhole.context.scheduling.SchedulingTrigger;
+import com.zergclan.wormhole.scheduling.SchedulingTrigger;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -30,7 +30,7 @@ public final class PlanSchedulingTrigger implements SchedulingTrigger {
 
     @Override
     public Long getExpire() {
-        return 1L;
+        return -1L;
     }
 
     @Override
