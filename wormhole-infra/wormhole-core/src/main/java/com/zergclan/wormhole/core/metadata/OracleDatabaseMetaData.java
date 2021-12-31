@@ -17,9 +17,6 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.common.SystemConstant;
-
-import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -27,20 +24,22 @@ import java.util.Properties;
  */
 public final class OracleDatabaseMetaData extends DatabaseMetaData {
 
+    private static final DatabaseType TYPE = DatabaseType.ORACLE;
+
     private final Properties parameters;
 
-    public OracleDatabaseMetaData(final String hostName, final int port, final Properties parameters) {
-        super(DatabaseType.ORACLE, hostName, port);
+    public OracleDatabaseMetaData(final String hostName, final int port, final String catalog, final Properties parameters) {
+        super(TYPE, hostName, port, catalog);
         this.parameters = parameters;
     }
 
     @Override
-    protected Optional<String> getUrl(final String schema) {
-        SchemaMetaData schemaMetaData = getSchemas().get(schema);
-        return null == schemaMetaData ? Optional.empty() : Optional.of(generateUrl(schemaMetaData));
+    protected String getProtocol() {
+        return TYPE.getProtocol();
     }
 
-    private String generateUrl(final SchemaMetaData schemaMetaData) {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.COLON + schemaMetaData.getName();
+    @Override
+    protected String getParameter() {
+        return "";
     }
 }

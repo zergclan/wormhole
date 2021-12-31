@@ -64,6 +64,7 @@ public final class DatabaseInfoControllerTest {
         databaseInfo.setTitle("database_info_test_title");
         databaseInfo.setHost("127.0.0.1");
         databaseInfo.setPort(3306);
+        databaseInfo.setCatalog("test_db");
         databaseInfo.setUsername("root");
         databaseInfo.setPassword("123456");
         databaseInfo.setDescription("database_info_test_description");

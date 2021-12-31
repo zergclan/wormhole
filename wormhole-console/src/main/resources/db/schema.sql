@@ -36,6 +36,7 @@ CREATE TABLE database_info (
     `host` VARCHAR(15) NOT NULL COMMENT 'IP',
     `port` INT(11) NOT NULL COMMENT '端口',
     `type` tinyint(4) NOT NULL COMMENT '类型0:MySQL 1:Oracle 2:SQLServer 3:PostgreSQL',
+    `catalog` VARCHAR(32) NOT NULL COMMENT '数据库名',
     `username` VARCHAR(32) NOT NULL COMMENT '链接用户名',
     `password` VARCHAR(32) NOT NULL COMMENT '链接密码',
     `description` VARCHAR(255) NOT NULL COMMENT '描述',

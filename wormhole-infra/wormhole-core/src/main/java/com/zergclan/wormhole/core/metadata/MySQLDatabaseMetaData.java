@@ -17,9 +17,6 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.common.SystemConstant;
-
-import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -27,20 +24,22 @@ import java.util.Properties;
  */
 public final class MySQLDatabaseMetaData extends DatabaseMetaData {
 
+    private static final DatabaseType TYPE = DatabaseType.MYSQL;
+
     private final Properties parameters;
 
-    public MySQLDatabaseMetaData(final String hostName, final int port, final Properties parameters) {
-        super(DatabaseType.MYSQL, hostName, port);
+    public MySQLDatabaseMetaData(final String hostName, final int port, final String catalog, final Properties parameters) {
+        super(TYPE, hostName, port, catalog);
         this.parameters = parameters;
     }
 
     @Override
-    protected Optional<String> getUrl(final String schema) {
-        SchemaMetaData schemaMetaData = getSchemas().get(schema);
-        return null == schemaMetaData ? Optional.empty() : Optional.of(generateUrl(schemaMetaData));
+    protected String getProtocol() {
+        return TYPE.getProtocol();
     }
 
-    private String generateUrl(final SchemaMetaData schemaMetaData) {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + schemaMetaData.getName();
+    @Override
+    protected String getParameter() {
+        return "";
     }
 }
