@@ -43,7 +43,7 @@ public abstract class DatabaseMetaData implements MetaData {
 
     @Override
     public String getIdentifier() {
-        return databaseType.getName() + SystemConstant.SPACE + host + SystemConstant.COLON + port + SystemConstant.FORWARD_SLASH + catalog;
+        return databaseType.getName() + SystemConstant.SPACE + host + SystemConstant.COLON + port + SystemConstant.COLON + catalog;
     }
 
     /**
@@ -60,21 +60,5 @@ public abstract class DatabaseMetaData implements MetaData {
      *
      * @return jdbc url
      */
-    public String getJdbcUrl() {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + getCatalog();
-    }
-
-    /**
-     * Get protocol of jdbc.
-     *
-     * @return protocol
-     */
-    protected abstract String getProtocol();
-
-    /**
-     * Get parameter of jdbc.
-     *
-     * @return parameter
-     */
-    protected abstract String getParameter();
+    protected abstract String getJdbcUrl();
 }

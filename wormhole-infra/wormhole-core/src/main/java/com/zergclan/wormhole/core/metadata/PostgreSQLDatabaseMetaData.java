@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.core.metadata;
 
+import com.zergclan.wormhole.common.SystemConstant;
+
 import java.util.Properties;
 
 /**
@@ -34,12 +36,7 @@ public final class PostgreSQLDatabaseMetaData extends DatabaseMetaData {
     }
 
     @Override
-    protected String getProtocol() {
-        return TYPE.getProtocol();
-    }
-
-    @Override
-    protected String getParameter() {
-        return "";
+    protected String getJdbcUrl() {
+        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + getCatalog();
     }
 }
