@@ -29,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -42,39 +43,66 @@ import java.util.concurrent.Future;
  */
 @RequiredArgsConstructor
 public final class DefaultSchedulingExecutor implements SchedulingExecutor {
-    
+
+    private final Long planId;
+
+    private final Long taskId;
+
     private final Extractor extractor;
     
     private final Loader loader;
-    
+
     private final ExecutorService executorService;
 
     private final DefaultDataGroupSwapper defaultDataGroupSwapper;
-    
+
+    private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
+
+    private final Collection<Map<String, Object>> dataMaps = new LinkedList<>();
+
+    private final Map<String, DataNodePipeline<?>> pipelineMatrix = new LinkedHashMap<>();
+
+    private CompletionService<Optional<DataGroup>> completionService;
+
     /**
      * Execute.
      */
     public void execute() {
-        Long planId = createPlanId();
-        Long taskId = createTaskId();
-        Map<String, DataNodePipeline<?>> pipelineMatrix = createPipelineMatrix();
-        Map<String, ColumnMetaData> columns = createColumns();
-        Collection<Map<String, Object>> maps = extractor.extractDatum(columns);
-        final int size = maps.size();
-        if (0 == size) {
-            return;
+        if (initEnvironment()) {
+            extract();
+            transform();
+            load();
         }
-        CompletionService<Optional<DataGroup>> taskCompletionService = new ExecutorCompletionService<>(executorService, new ArrayBlockingQueue<>(size));
+    }
+
+    private boolean initEnvironment() {
+        columns.putAll(createColumns());
+        pipelineMatrix.putAll(createPipelineMatrix());
+        return true;
+    }
+
+    private boolean extract() {
+        dataMaps.addAll(extractor.extractDatum(columns));
+        return true;
+    }
+
+    private void transform() {
+        int size = dataMaps.size();
+        completionService = new ExecutorCompletionService<>(executorService, new ArrayBlockingQueue<>(size));
         DataGroup dataGroup;
-        for (Map<String, Object> each : maps) {
+        for (Map<String, Object> each : dataMaps) {
             dataGroup = defaultDataGroupSwapper.mapToDataGroup(each);
             DefaultDataGroupTask defaultDataGroupTask = new DefaultDataGroupTask(planId, taskId, dataGroup, pipelineMatrix);
-            taskCompletionService.submit(defaultDataGroupTask);
+            completionService.submit(defaultDataGroupTask);
         }
+    }
+
+    private void load() {
+        int size = dataMaps.size();
         for (int i = 0; i < size; i++) {
             Future<Optional<DataGroup>> take;
             try {
-                take = taskCompletionService.take();
+                take = completionService.take();
                 Optional<DataGroup> dataGroupOptional = take.get();
                 if (dataGroupOptional.isPresent()) {
                     Map<String, Object> map = defaultDataGroupSwapper.dataGroupToMap(dataGroupOptional.get());
@@ -89,14 +117,6 @@ public final class DefaultSchedulingExecutor implements SchedulingExecutor {
     private Map<String, DataNodePipeline<?>> createPipelineMatrix() {
         Map<String, DataNodePipeline<?>> result = new LinkedHashMap<>();
         return result;
-    }
-
-    private Long createTaskId() {
-        return 2L;
-    }
-
-    private Long createPlanId() {
-        return 1L;
     }
 
     private Map<String, ColumnMetaData> createColumns() {

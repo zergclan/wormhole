@@ -50,7 +50,7 @@ public final class SchedulingExecutorFactory {
         Loader loader = createLoader(code);
         ExecutorService executorService = ExecutorServiceFactory.newFixedThreadExecutor(4, 8, code, 1024);
         DefaultDataGroupSwapper defaultDataGroupSwapper = new DefaultDataGroupSwapper();
-        return new DefaultSchedulingExecutor(extractor, loader, executorService, defaultDataGroupSwapper);
+        return new DefaultSchedulingExecutor(1L, 2L, extractor, loader, executorService, defaultDataGroupSwapper);
     }
     
     private static Loader createLoader(final String code) {
