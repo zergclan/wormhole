@@ -55,8 +55,6 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private final ExecutorService executorService;
 
-    private final DefaultDataGroupSwapper defaultDataGroupSwapper;
-
     private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
 
     private final Collection<Map<String, Object>> dataMaps = new LinkedList<>();
@@ -92,7 +90,7 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
         completionService = new ExecutorCompletionService<>(executorService, new ArrayBlockingQueue<>(size));
         DataGroup dataGroup;
         for (Map<String, Object> each : dataMaps) {
-            dataGroup = defaultDataGroupSwapper.mapToDataGroup(each);
+            dataGroup = DefaultDataGroupSwapper.mapToDataGroup(each);
             DefaultDataGroupTask defaultDataGroupTask = new DefaultDataGroupTask(planId, taskId, dataGroup, pipelineMatrix);
             completionService.submit(defaultDataGroupTask);
         }
@@ -106,7 +104,7 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
                 take = completionService.take();
                 Optional<DataGroup> dataGroupOptional = take.get();
                 if (dataGroupOptional.isPresent()) {
-                    Map<String, Object> map = defaultDataGroupSwapper.dataGroupToMap(dataGroupOptional.get());
+                    Map<String, Object> map = DefaultDataGroupSwapper.dataGroupToMap(dataGroupOptional.get());
                     loader.loaderData(map);
                 }
             } catch (InterruptedException | ExecutionException e) {

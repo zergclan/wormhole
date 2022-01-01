@@ -17,18 +17,13 @@
 
 package com.zergclan.wormhole.scheduling;
 
+import java.util.concurrent.Delayed;
+
 /**
  * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
  */
-public interface SchedulingTrigger {
-
-    /**
-     * Get expire time.
-     *
-     * @return expire time
-     */
-    Long getExpire();
-
+public interface SchedulingTrigger extends Delayed {
+    
     /**
      * Get code.
      *

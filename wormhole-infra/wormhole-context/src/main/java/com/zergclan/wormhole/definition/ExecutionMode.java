@@ -15,19 +15,40 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling.task;
+package com.zergclan.wormhole.definition;
 
-import com.zergclan.wormhole.scheduling.SchedulingTrigger;
+import lombok.Getter;
 
-public class TaskSchedulingTrigger implements SchedulingTrigger {
+import java.util.Optional;
 
-    @Override
-    public Long getExpire() {
-        return null;
+/**
+ * Execution mode.
+ */
+@Getter
+public enum ExecutionMode {
+
+    SINGLE(0),
+
+    CYCLE(1);
+
+    private final Integer code;
+
+    ExecutionMode(final Integer code) {
+        this.code = code;
     }
 
-    @Override
-    public String getCode() {
-        return null;
+    /**
+     * Get {@link ExecutionMode} by code.
+     *
+     * @param code code
+     * @return {@link ExecutionMode}
+     */
+    public static Optional<ExecutionMode> getExecutionMode(final Integer code) {
+        if (SINGLE.code.equals(code)) {
+            return Optional.of(SINGLE);
+        } else if (CYCLE.code.equals(code)) {
+            return Optional.of(CYCLE);
+        }
+        return Optional.empty();
     }
 }

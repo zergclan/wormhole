@@ -17,24 +17,35 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
+import com.zergclan.wormhole.definition.PlanDefinition;
 import com.zergclan.wormhole.scheduling.SchedulingTrigger;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Plan implemented of {@link SchedulingTrigger}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class PlanSchedulingTrigger implements SchedulingTrigger {
-    
-    private final String code;
 
-    @Override
-    public Long getExpire() {
-        return -1L;
-    }
+    private final PlanDefinition planDefinition;
 
     @Override
     public String getCode() {
-        return code;
+        return planDefinition.getCode();
+    }
+
+    @Override
+    public long getDelay(final TimeUnit timeUnit) {
+        return 0;
+    }
+
+    @Override
+    public int compareTo(final Delayed delayed) {
+        return 0;
     }
 }

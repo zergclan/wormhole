@@ -29,11 +29,23 @@ public final class DataNodeDefinition implements Serializable {
 
     private static final long serialVersionUID = -3952517130022740415L;
 
-    private String sourceDataOwner;
+    private String sourceDatabase;
+
+    private String sourceSchema;
+
+    private String sourceTable;
+
+    private String sourceColumn;
 
     private String sourceDataType;
 
-    private String targetDataOwner;
+    private String targetDatabase;
+
+    private String targetSchema;
+
+    private String targetTable;
+
+    private String targetColumn;
 
     private String targetDataType;
 }
