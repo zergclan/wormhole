@@ -39,7 +39,7 @@ public final class DefaultDataGroupSwapper {
      * @param dataMap data map
      * @return {@link DataGroup}
      */
-    public DataGroup mapToDataGroup(final Map<String, Object> dataMap) {
+    public static DataGroup mapToDataGroup(final Map<String, Object> dataMap) {
         DefaultDataGroup result = new DefaultDataGroup();
         IntegerDataNode integerDataNode;
         StringDataNode stringDataNode;
@@ -66,7 +66,7 @@ public final class DefaultDataGroupSwapper {
      * @param dataGroup {@link DataGroup}
      * @return data map
      */
-    public Map<String, Object> dataGroupToMap(final DataGroup dataGroup) {
+    public static Map<String, Object> dataGroupToMap(final DataGroup dataGroup) {
         Map<String, Object> result = new LinkedHashMap<>();
         Optional<Map<String, DataNode<?>>> dataNodes = dataGroup.getDataNodes();
         if (dataNodes.isPresent()) {

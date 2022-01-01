@@ -22,25 +22,25 @@ import com.zaxxer.hikari.HikariDataSource;
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.concurrent.ExecutorServiceFactory;
+import com.zergclan.wormhole.definition.TaskDefinition;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.jdbc.JdbcTemplateFactory;
 import com.zergclan.wormhole.loader.Loader;
-import com.zergclan.wormhole.pipeline.data.DefaultDataGroupSwapper;
 import com.zergclan.wormhole.reader.mysql.MySQLExtractor;
 import com.zergclan.wormhole.scheduling.plan.PlanSchedulingExecutor;
 import com.zergclan.wormhole.scheduling.plan.PlanSchedulingTrigger;
 import com.zergclan.wormhole.scheduling.task.TaskSchedulingExecutor;
-import com.zergclan.wormhole.scheduling.task.TaskSchedulingTrigger;
 import com.zergclan.wormhole.writer.mysql.MySQLLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * {@link SchedulingExecutor} Factory.
+ * {@link SchedulingExecutor} factory.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SchedulingExecutorFactory {
@@ -54,8 +54,6 @@ public final class SchedulingExecutorFactory {
     public static SchedulingExecutor createSchedulingExecutor(final SchedulingTrigger trigger) {
         if (trigger instanceof PlanSchedulingTrigger) {
             return createPlanSchedulingExecutor((PlanSchedulingTrigger) trigger);
-        } else if (trigger instanceof TaskSchedulingTrigger) {
-            return createTaskSchedulingExecutor((TaskSchedulingTrigger) trigger);
         }
         throw new WormholeException("error : create plan scheduling executor fail, code [%s]", trigger.getCode());
     }
@@ -67,21 +65,26 @@ public final class SchedulingExecutorFactory {
      * @return {@link PlanSchedulingExecutor}
      */
     private static PlanSchedulingExecutor createPlanSchedulingExecutor(final PlanSchedulingTrigger trigger) {
-        return new PlanSchedulingExecutor(new LinkedList<>());
+        Collection<TaskSchedulingExecutor> taskSchedulingExecutors = new LinkedList<>();
+        Collection<TaskDefinition> taskDefinitions = trigger.getPlanDefinition().getTaskDefinitions();
+        for (TaskDefinition each : taskDefinitions) {
+            taskSchedulingExecutors.add(createTaskSchedulingExecutor(each));
+        }
+        return new PlanSchedulingExecutor(taskSchedulingExecutors);
     }
 
     /**
-     * The newly created {@link TaskSchedulingExecutor} by {@link TaskSchedulingTrigger}.
+     * The newly created {@link TaskSchedulingExecutor} by {@link TaskDefinition}.
      *
-     * @param trigger {@link TaskSchedulingTrigger}
+     * @param taskDefinition {@link TaskDefinition}
      * @return {@link TaskSchedulingExecutor}
      */
-    private static TaskSchedulingExecutor createTaskSchedulingExecutor(final TaskSchedulingTrigger trigger) {
-        Extractor extractor = createExtractor(trigger.getCode());
-        Loader loader = createLoader(trigger.getCode());
-        ExecutorService executorService = ExecutorServiceFactory.newFixedThreadExecutor(4, 8, trigger.getCode(), 256);
-        DefaultDataGroupSwapper defaultDataGroupSwapper = new DefaultDataGroupSwapper();
-        return new TaskSchedulingExecutor(1L, 2L, extractor, loader, executorService, defaultDataGroupSwapper);
+    private static TaskSchedulingExecutor createTaskSchedulingExecutor(final TaskDefinition taskDefinition) {
+        String code = taskDefinition.getCode();
+        Extractor extractor = createExtractor(code);
+        Loader loader = createLoader(code);
+        ExecutorService executorService = ExecutorServiceFactory.newFixedThreadExecutor(4, 8, code, 256);
+        return new TaskSchedulingExecutor(1L, 2L, extractor, loader, executorService);
     }
 
     private static Loader createLoader(final String code) {

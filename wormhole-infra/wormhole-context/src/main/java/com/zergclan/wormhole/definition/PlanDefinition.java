@@ -17,22 +17,54 @@
 
 package com.zergclan.wormhole.definition;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.common.WormholeException;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Optional;
 
 /**
  * Definition of plan.
  */
-@Data
-@RequiredArgsConstructor
+@Getter
 public final class PlanDefinition implements Serializable {
 
     private static final long serialVersionUID = -341262307232903018L;
 
     private final String code;
 
-    private final Collection<TaskDefinition> taskDefinitions;
+    private final ExecutionMode executionMode;
+
+    private final String executionCorn;
+
+    private final Integer operator;
+
+    private final Collection<TaskDefinition> taskDefinitions = new LinkedList<>();
+
+    public PlanDefinition(final String code, final Integer executionModeCode, final String executionCorn, final Integer operator) {
+        this.code = code;
+        this.executionMode = createExecutionMode(executionModeCode);
+        this.executionCorn = executionCorn;
+        this.operator = operator;
+    }
+
+    private ExecutionMode createExecutionMode(final Integer executionModeCode) {
+        Optional<ExecutionMode> executionMode = ExecutionMode.getExecutionMode(executionModeCode);
+        if (executionMode.isPresent()) {
+            return executionMode.get();
+        }
+        throw new WormholeException("error : execution mode not find by [%s]", executionMode);
+    }
+
+    /**
+     * Register {@link TaskDefinition}.
+     *
+     * @param taskDefinition {@link TaskDefinition}
+     * @return is registered or not
+     */
+    public boolean registerTask(final TaskDefinition taskDefinition) {
+        return taskDefinitions.add(taskDefinition);
+    }
 }

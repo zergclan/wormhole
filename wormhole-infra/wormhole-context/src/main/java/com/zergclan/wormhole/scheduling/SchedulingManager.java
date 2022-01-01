@@ -31,6 +31,14 @@ public interface SchedulingManager<T> {
     boolean register(T definition);
 
     /**
+     * Execute by definition.
+     *
+     * @param definition definition
+     * @return is executed or not
+     */
+    boolean execute(T definition);
+
+    /**
      * On trigger.
      */
     void onTrigger();

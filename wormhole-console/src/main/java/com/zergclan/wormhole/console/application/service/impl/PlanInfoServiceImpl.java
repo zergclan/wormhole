@@ -25,6 +25,7 @@ import com.zergclan.wormhole.console.application.service.PlanInfoService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import com.zergclan.wormhole.definition.PlanDefinition;
+import com.zergclan.wormhole.definition.TaskDefinition;
 import com.zergclan.wormhole.scheduling.SchedulingManager;
 import com.zergclan.wormhole.scheduling.plan.PlanSchedulingManager;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Optional;
 
 /**
  * Implemented Service of {@link PlanInfoService}.
@@ -78,43 +78,49 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     public PageData<PlanInfo> listByPage(final PageQuery<PlanInfo> pageQuery) {
         return planInfoRepository.listByPage(pageQuery);
     }
-    
+
     @Override
     public void triggerById(final Integer id) {
         PlanInfo planInfo = planInfoRepository.get(id);
-        Optional<Collection<Integer>> taskIds = listTaskIds(planInfo);
-        if (taskIds.isPresent()) {
-            PlanDefinition planDefinition = initPlanDefinition(planInfo);
-            SchedulingManager<PlanDefinition> schedulingManager = new PlanSchedulingManager();
-            schedulingManager.register(planDefinition);
-        }
+        PlanDefinition planDefinition = initPlanDefinition(planInfo);
+        SchedulingManager<PlanDefinition> schedulingManager = new PlanSchedulingManager();
+        schedulingManager.execute(planDefinition);
     }
 
     private PlanDefinition initPlanDefinition(final PlanInfo planInfo) {
-        // TODO
-        return new PlanDefinition(planInfo.getCode(), new LinkedList<>());
-    }
-
-    private Collection<String> initTaskCodes(final Collection<TaskInfo> taskInfos) {
-        Collection<String> result = new LinkedList<>();
+        String code = planInfo.getCode();
+        Integer executionModeCode = planInfo.getExecutionMode();
+        String executionCorn = planInfo.getExecutionCorn();
+        Integer operator = planInfo.getOperator();
+        PlanDefinition result = new PlanDefinition(code, executionModeCode, executionCorn, operator);
+        Collection<TaskInfo> taskInfos = listTask(planInfo);
         for (TaskInfo each : taskInfos) {
-            result.add(each.getCode());
+            result.registerTask(initTaskDefinition(each));
         }
         return result;
     }
-    
-    private Optional<Collection<Integer>> listTaskIds(final PlanInfo planInfo) {
+
+    private Collection<TaskInfo> listTask(final PlanInfo planInfo) {
         PlanTaskLinking query = new PlanTaskLinking();
         query.setPlanId(planInfo.getId());
         Collection<PlanTaskLinking> planTaskLinking = planTaskLinkingRepository.list(query);
-        return planTaskLinking.isEmpty() ? Optional.empty() : Optional.of(initTaskIds(planTaskLinking));
+        if (planTaskLinking.isEmpty()) {
+            return new LinkedList<>();
+        }
+        Collection<Integer> taskIds = initTaskIds(planTaskLinking);
+        return taskInfoRepository.list(taskIds);
     }
-    
+
     private Collection<Integer> initTaskIds(final Collection<PlanTaskLinking> planTaskLinking) {
         Collection<Integer> result = new LinkedList<>();
         for (PlanTaskLinking each : planTaskLinking) {
             result.add(each.getTaskId());
         }
         return result;
+    }
+
+    private TaskDefinition initTaskDefinition(final TaskInfo taskInfo) {
+        String code = taskInfo.getCode();
+        return new TaskDefinition(code);
     }
 }

@@ -18,41 +18,37 @@
 package com.zergclan.wormhole.scheduling.plan;
 
 import com.zergclan.wormhole.definition.PlanDefinition;
-import com.zergclan.wormhole.scheduling.SchedulingExecutor;
 import com.zergclan.wormhole.scheduling.SchedulingExecutorFactory;
 import com.zergclan.wormhole.scheduling.SchedulingManager;
 import com.zergclan.wormhole.scheduling.SchedulingTrigger;
 
-import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.DelayQueue;
 
 /**
  * Plan implemented of {@link SchedulingManager}.
  */
 public final class PlanSchedulingManager implements SchedulingManager<PlanDefinition> {
 
-    private static final Queue<SchedulingTrigger> SCHEDULING_QUEUE = new PriorityQueue<>((trigger1, trigger2) -> (int) (trigger1.getExpire() - trigger2.getExpire()));
-
-    private static final Map<String, SchedulingTrigger> EXECUTION_CONTAINER = new ConcurrentHashMap<>(16);
+    private static final Queue<SchedulingTrigger> DELAY_QUEUE = new DelayQueue<>();
 
     @Override
     public boolean register(final PlanDefinition definition) {
-        return SCHEDULING_QUEUE.offer(createSchedulingTrigger(definition));
+        return DELAY_QUEUE.offer(createSchedulingTrigger(definition));
+    }
+
+    @Override
+    public boolean execute(final PlanDefinition definition) {
+        SchedulingExecutorFactory.createSchedulingExecutor(createSchedulingTrigger(definition)).execute();
+        return true;
     }
 
     @Override
     public void onTrigger() {
         for (;;) {
-            SchedulingTrigger trigger = SCHEDULING_QUEUE.peek();
+            SchedulingTrigger trigger = DELAY_QUEUE.peek();
             if (null != trigger) {
-                String planCode = trigger.getCode();
-                if (null == EXECUTION_CONTAINER.get(planCode)) {
-                    EXECUTION_CONTAINER.put(planCode, SCHEDULING_QUEUE.poll());
-                    SchedulingExecutor schedulingExecutor = SchedulingExecutorFactory.createSchedulingExecutor(trigger);
-                    schedulingExecutor.execute();
-                }
+                SchedulingExecutorFactory.createSchedulingExecutor(trigger).execute();
             }
         }
     }

@@ -21,6 +21,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Definition of task.
@@ -30,7 +31,7 @@ public final class TaskDefinition implements Serializable {
 
     private static final long serialVersionUID = 1457965137151385333L;
 
-    private String code;
+    private final String code;
 
-    private Collection<DataNodeDefinition> dataNodeDefinitions;
+    private final Collection<DataNodeDefinition> dataNodeDefinitions = new LinkedList<>();
 }
