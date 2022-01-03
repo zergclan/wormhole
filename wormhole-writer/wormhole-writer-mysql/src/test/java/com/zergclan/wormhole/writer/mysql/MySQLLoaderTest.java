@@ -52,7 +52,6 @@ public class MySQLLoaderTest {
         loader.loaderData(map);
     }
 
-
     /**
      * get a data source by mode to be the target of sync data.
      * @return DataSource
