@@ -18,7 +18,6 @@
 package com.zergclan.wormhole.writer.mysql;
 
 import com.zergclan.wormhole.loader.Loader;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -32,7 +31,6 @@ import java.util.Map;
 /**
  * Loader for MySQL.
  */
-@RequiredArgsConstructor
 @Setter
 public class MySQLLoader implements Loader {
 
@@ -45,6 +43,15 @@ public class MySQLLoader implements Loader {
     private String insertSql;
 
     private String updateSql;
+
+    public MySQLLoader(final JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.targetTable = "target_table";
+        this.selectSql = " select count(*) from target_table where trans_bigint = ? and trans_varchar = ? ";
+        this.insertSql = " insert into  target_table(trans_int,trans_bigint,trans_varchar,trans_decimal,trans_datetime,create_time,modify_time) "
+                + " values(?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP) ";
+        this.updateSql = " update target_table set trans_int = ?, trans_decimal = ?, trans_datetime = ? where trans_bigint = ? and  trans_varchar = ? ";
+    }
 
     @Override
     public void loaderData(final Map<String, Object> map) {
