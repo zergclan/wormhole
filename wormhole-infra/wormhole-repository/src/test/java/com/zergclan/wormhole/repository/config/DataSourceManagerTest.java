@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.repository.config;
 
 import com.zergclan.wormhole.repository.entity.DataSourceInformation;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
 /**
@@ -28,15 +29,15 @@ public class DataSourceManagerTest {
     /**
      * Test register data source.
      */
-//    @Test
+    @Test
     public void registerDataSource() {
         DataSourceInformation dataSourceInformation = new DataSourceInformation();
         dataSourceInformation.setId("test");
         dataSourceInformation.setDbUser("root");
-        dataSourceInformation.setDbPassword("koma1993");
+        dataSourceInformation.setDbPassword("123456");
         dataSourceInformation.setDbType("mysql");
-        dataSourceInformation.setJdbcUrl("jdbc:mysql://192.168.112.132:3306/test01?characterEncoding=utf-8&useSSL=false");
-        Assertions.assertTrue(DataSourceManager.registerDataSource(dataSourceInformation));
+        dataSourceInformation.setJdbcUrl("jdbc:mysql://10.168.1.10:3306?characterEncoding=utf-8&useSSL=false");
+        Assertions.assertNotNull(DataSourceManager.registerDataSource(dataSourceInformation));
     }
 
     /**

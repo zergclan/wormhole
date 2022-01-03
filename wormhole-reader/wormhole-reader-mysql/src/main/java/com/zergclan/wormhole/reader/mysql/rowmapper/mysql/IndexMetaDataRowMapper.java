@@ -15,25 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.reader.mysql.entity;
+package com.zergclan.wormhole.reader.mysql.rowmapper.mysql;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.core.metadata.IndexMetaData;
+import org.springframework.jdbc.core.RowMapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
- * Test indexMetaData class constant values.
+ * ResultSet to entity conversion.
  */
-public final class IndexMetaDataTest {
-
-    @Test
-    public void assertValues() {
-        assertEquals("tableSchema", IndexMetaData.TABLE_SCHEMA);
-        assertEquals("Table", IndexMetaData.TABLE_NAME);
-        assertEquals("Non_unique", IndexMetaData.NON_UNIQUE);
-        assertEquals("Key_name", IndexMetaData.KEY_NAME);
-        assertEquals("Column_name", IndexMetaData.COLUMN_NAME);
-        assertEquals("Seq_in_index", IndexMetaData.SEQ_IN_INDEX);
+public final class IndexMetaDataRowMapper implements RowMapper<IndexMetaData> {
+    @Override
+    public IndexMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+        IndexMetaData indexMetaData = new IndexMetaData(null, null, rs.getString("Table"),
+                rs.getString("Key_name"), 0 == rs.getInt("Non_unique"));
+        return indexMetaData;
     }
-
 }

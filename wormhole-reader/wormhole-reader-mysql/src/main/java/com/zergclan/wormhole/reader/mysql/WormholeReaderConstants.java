@@ -15,24 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.reader.mysql.entity;
-
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+package com.zergclan.wormhole.reader.mysql;
 
 /**
- * Test tableMetaData class constant values.
+ * Reader Constants.
  */
-public final class TableMetaDataTest {
+public final class WormholeReaderConstants {
 
-    @Test
-    public void assertValues() {
-        assertEquals("tableName", TableMetaData.TABLE_NAME);
-        assertEquals("tableSchema", TableMetaData.TABLE_SCHEMA);
-        assertEquals("tableComment", TableMetaData.TABLE_COMMENT);
-        assertEquals("columns", TableMetaData.COLUMNS);
-        assertEquals("indexes", TableMetaData.INDEXES);
-    }
+    public static final String SQL_SELECT = " SELECT ";
+
+    public static final String SQL_FROM = " FROM ";
+
+    public static final String SQL_WHERE = " WHERE ";
+
+    public static final String SQL_AS = " AS ";
+
+    public static final String DATA_TYPE_DATETIME = "datetime";
 
 }
