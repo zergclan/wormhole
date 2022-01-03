@@ -15,25 +15,32 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.reader.mysql.entity;
+package com.zergclan.wormhole.metadata;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import lombok.Data;
 
 /**
- * Test columnMetaData class constant values.
+ * Information about connecting to the data source.
  */
-public final class ColumnMetaDataTest {
+@Data
+public abstract class DataSourceMetaData {
 
-    @Test
-    public void assertValues() {
-        assertEquals("tableSchema", ColumnMetaData.TABLE_SCHEMA);
-        assertEquals("tableName", ColumnMetaData.TABLE_NAME);
-        assertEquals("columnName", ColumnMetaData.COLUMN_NAME);
-        assertEquals("dataType", ColumnMetaData.DATA_TYPE);
-        assertEquals("columnComment", ColumnMetaData.COLUMN_COMMENT);
-        assertEquals("columnType", ColumnMetaData.COLUMN_TYPE);
+    private String username;
+
+    private String password;
+
+    abstract String getJdbcUrl();
+
+    abstract String getDriverClassName();
+
+    /**
+     * Get id.
+     *
+     * @return Id.
+     */
+    public String getId() {
+        // TODO Md5(username + password + getJdbcUrl + getDriverClassName).
+        return "";
     }
 
 }

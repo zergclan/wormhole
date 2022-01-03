@@ -15,25 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.reader.mysql.rowmapper;
+package com.zergclan.wormhole.reader.mysql.rowmapper.mysql;
 
-import com.zergclan.wormhole.reader.mysql.entity.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.TableMetaData;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
  * ResultSet to entity conversion.
  */
-public final class IndexMetaDataRowMapper implements RowMapper {
+@RequiredArgsConstructor
+public final class TableMetaDataRowMapper implements RowMapper<TableMetaData> {
+
+    private final String databaseIdentifier;
+
     @Override
-    public IndexMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-        IndexMetaData indexMetaData = new IndexMetaData();
-        indexMetaData.setTableName(rs.getString(IndexMetaData.TABLE_NAME));
-        indexMetaData.setIsUnique(0 == rs.getInt(IndexMetaData.NON_UNIQUE));
-        indexMetaData.setKeyName(rs.getString(IndexMetaData.KEY_NAME));
-        indexMetaData.setColumnName(rs.getString(IndexMetaData.COLUMN_NAME));
-        indexMetaData.setSeqInIndex(rs.getInt(IndexMetaData.SEQ_IN_INDEX));
-        return indexMetaData;
+    public TableMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+        TableMetaData tableMetaData = new TableMetaData(databaseIdentifier, rs.getString("TABLE_SCHEMA"),
+                rs.getString("TABLE_NAME"), rs.getString("TABLE_COMMENT"));
+        return tableMetaData;
     }
 }

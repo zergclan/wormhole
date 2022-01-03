@@ -20,9 +20,9 @@ package com.zergclan.wormhole.reader.mysql.domain.impl;
 import com.zergclan.wormhole.reader.mysql.domain.AbsJdbcConcatSqlDOM;
 
 /**
- * Get h2 metadata implementation.
+ * Get mysql metadata implementation.
  */
-public final class H2MetadataDOMImpl extends AbsJdbcConcatSqlDOM {
+public final class MysqlConcatSqlDOMImpl extends AbsJdbcConcatSqlDOM {
 
     @Override
     public String getQueryAllTablesSql(final String schema) {
@@ -34,7 +34,7 @@ public final class H2MetadataDOMImpl extends AbsJdbcConcatSqlDOM {
 
     @Override
     public String getQueryAllColumnsSql(final String schema, final String tableName) {
-        String selectColumn = "TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, DATA_TYPE, COLUMN_COMMENT,COLUMN_TYPE";
+        String selectColumn = "TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, DATA_TYPE, COLUMN_TYPE, COLUMN_COMMENT, IS_NULLABLE";
         String fromTable = "information_schema.COLUMNS";
         String whereCondition = "TABLE_SCHEMA = '" + schema + "' and TABLE_NAME = '" + tableName + "'";
         return concatSql(selectColumn, fromTable, whereCondition);
@@ -42,6 +42,10 @@ public final class H2MetadataDOMImpl extends AbsJdbcConcatSqlDOM {
 
     @Override
     public String getQueryTableIndexSql(final String schema, final String tableName) {
+        /**
+         * The order of the queried combined index fields needs to be ordered.
+         */
         return "show index from " + schema + "." + tableName + " where Non_unique = 0";
     }
+
 }

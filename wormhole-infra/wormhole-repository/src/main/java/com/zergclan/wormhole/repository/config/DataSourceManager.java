@@ -47,7 +47,7 @@ public abstract class DataSourceManager {
      * @param dataSourceInformation Data source information.
      * @return Boolean result.
      */
-    public static Boolean registerDataSource(final DataSourceInformation dataSourceInformation) {
+    public static JdbcTemplate registerDataSource(final DataSourceInformation dataSourceInformation) {
         if (StringUtil.isBlank(dataSourceInformation.getId())) {
             throw new WormholeException("Datasource information is missing ID parameter.");
         }
@@ -72,7 +72,7 @@ public abstract class DataSourceManager {
             }
         }
 
-        return true;
+        return jdbcTemplate;
     }
 
     private static void setPassword(final HikariConfig config, final String password) {

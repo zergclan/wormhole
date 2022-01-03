@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.reader.mysql.rowmapper;
+package com.zergclan.wormhole.reader.mysql.rowmapper.mysql;
 
-import com.zergclan.wormhole.reader.mysql.entity.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.ColumnMetaData;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -26,16 +27,17 @@ import java.sql.SQLException;
 /**
  * ResultSet to entity conversion.
  */
-public final class ColumnMetaDataRowMapper implements RowMapper {
+@RequiredArgsConstructor
+public final class ColumnMetaDataRowMapper implements RowMapper<ColumnMetaData> {
+
+    private final String databaseIdentifier;
+
     @Override
     public ColumnMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-        ColumnMetaData columnMetaData = new ColumnMetaData();
-        columnMetaData.setTableSchema(rs.getString(ColumnMetaData.TABLE_SCHEMA));
-        columnMetaData.setTableName(rs.getString(ColumnMetaData.TABLE_NAME));
-        columnMetaData.setColumnName(rs.getString(ColumnMetaData.COLUMN_NAME));
-        columnMetaData.setDataType(rs.getString(ColumnMetaData.DATA_TYPE));
-        columnMetaData.setColumnComment(rs.getString(ColumnMetaData.COLUMN_COMMENT));
-        columnMetaData.setColumnType(rs.getString(ColumnMetaData.COLUMN_TYPE));
+        ColumnMetaData columnMetaData = new ColumnMetaData(databaseIdentifier,
+                rs.getString("TABLE_SCHEMA"), rs.getString("TABLE_NAME"),
+                rs.getString("COLUMN_NAME"), rs.getString("COLUMN_TYPE"),
+                "NO".equals(rs.getString("IS_NULLABLE")), rs.getString("COLUMN_COMMENT"));
         return columnMetaData;
     }
 }
