@@ -23,6 +23,7 @@ import com.zergclan.wormhole.core.metadata.ColumnMetaData;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
+import com.zergclan.wormhole.pipeline.DataNodePipelineFactory;
 import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;
 import com.zergclan.wormhole.pipeline.data.DefaultDataGroupSwapper;
 import com.zergclan.wormhole.scheduling.SchedulingExecutor;
@@ -115,23 +116,34 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private Map<String, DataNodePipeline<?>> createPipelineMatrix() {
         Map<String, DataNodePipeline<?>> result = new LinkedHashMap<>();
+        result.put("id", DataNodePipelineFactory.createDataNodePipeline("INT:NOT:NULL#INT:NOT:NULL"));
+        result.put("transInt", DataNodePipelineFactory.createDataNodePipeline("INT:NOT:NULL#INT:DEFAULT:1"));
+        result.put("transBigint", DataNodePipelineFactory.createDataNodePipeline("BIGINT:NOT:NULL#BIGINT:DEFAULT:2"));
+        result.put("transVarchar", DataNodePipelineFactory.createDataNodePipeline("VARCHAR:NOT:NULL#VARCHAR:NOT:NULL"));
+        result.put("transDecimal", DataNodePipelineFactory.createDataNodePipeline("DECIMAL:NOT:NULL#DECIMAL:NOT:NULL"));
+        result.put("transDatetime", DataNodePipelineFactory.createDataNodePipeline("DATETIME:NOT:NULL#DATETIME:NOT:NULL"));
+        result.put("createTime", DataNodePipelineFactory.createDataNodePipeline("DATETIME:NOT:NULL#DATETIME:NOT:NULL"));
+        result.put("modifyTime", DataNodePipelineFactory.createDataNodePipeline("DATETIME:NOT:NULL#DATETIME:NOT:NULL"));
         return result;
     }
 
     private Map<String, ColumnMetaData> createColumns() {
         Map<String, ColumnMetaData> result = new LinkedHashMap<>();
         result.put("id", createColumn("id", "INT(11)"));
-        result.put("name", createColumn("name", "VARCHAR(32)"));
-        result.put("age", createColumn("age", "INT(11)"));
-        result.put("create_time", createColumn("create_time", "datetime(0)"));
-        result.put("update_time", createColumn("create_time", "datetime(0)"));
+        result.put("transInt", createColumn("trans_int", "INT(11)"));
+        result.put("transBigint", createColumn("trans_bigint", "BIGINT(20)"));
+        result.put("transVarchar", createColumn("trans_varchar", "VARCHAR(32)"));
+        result.put("transDecimal", createColumn("trans_decimal", "DECIMAL(18,2)"));
+        result.put("transDatetime", createColumn("trans_datetime", "DATETIME(0)"));
+        result.put("createTime", createColumn("create_time", "DATETIME(0)"));
+        result.put("modifyTime", createColumn("create_time", "DATETIME(0)"));
         return result;
     }
 
     private ColumnMetaData createColumn(final String name, final String dataType) {
         String databaseIdentifier = "MySQL#127.0.0.1:3306";
-        String schema = "source_test_ds";
-        String table = "test_table";
+        String schema = "source_db";
+        String table = "source_table";
         boolean nullable = false;
         String comment = "";
         return new ColumnMetaData(databaseIdentifier, schema, table, name, dataType, nullable, comment);

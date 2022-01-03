@@ -17,11 +17,13 @@
 
 package com.zergclan.wormhole.core.concurrent;
 
+import com.zergclan.wormhole.common.WormholeException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -149,13 +151,27 @@ public final class ExecutorServiceFactory {
             if (null == namePrefix) {
                 namePrefix = "default";
             }
+            if (null == handler) {
+                handler = new DefaultExecutorRejectedHandler();
+            }
             if (null == threadFactory) {
                 threadFactory = new DefaultThreadFactory(namePrefix);
             }
             return new ExecutorService(new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, new ArrayBlockingQueue<>(workQueueSize), threadFactory), handler);
         }
     }
-    
+
+    /**
+     * Default implemented {@link ExecutorRejectedHandler} for WormholeExecutorService.
+     */
+    private static class DefaultExecutorRejectedHandler implements ExecutorRejectedHandler {
+
+        @Override
+        public <V> Future<V> handle(final PromisedTask<V> task) {
+            throw new WormholeException("error : promised task");
+        }
+    }
+
     /**
      * Default thread factory for WormholeExecutorService.
      */

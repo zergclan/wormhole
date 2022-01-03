@@ -87,26 +87,26 @@ public final class SchedulingExecutorFactory {
         return new TaskSchedulingExecutor(1L, 2L, extractor, loader, executorService);
     }
 
-    private static Loader createLoader(final String code) {
-        String driverClassName = "com.mysql.cj.jdbc.Driver";
-        String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/source_ds?serverTimezone=UTC&useSSL=false";
-        String username = "root";
-        String password = "root";
-        DataSource dataSource = createDataSource(driverClassName, jdbcUrl, username, password);
-        JdbcTemplate jdbcTemplate = JdbcTemplateFactory.createJdbcTemplate(dataSource);
-        return new MySQLLoader(jdbcTemplate);
-    }
-    
     private static Extractor createExtractor(final String code) {
         String driverClassName = "com.mysql.cj.jdbc.Driver";
-        String jdbcUrl = "jdbc:mysql://127.0.0.1:3307/target_ds?serverTimezone=UTC&useSSL=false";
+        String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/source_db?serverTimezone=UTC&useSSL=false";
         String username = "root";
-        String password = "root";
+        String password = "123456";
         DataSource dataSource = createDataSource(driverClassName, jdbcUrl, username, password);
         JdbcTemplate jdbcTemplate = JdbcTemplateFactory.createJdbcTemplate(dataSource);
         return new MySQLExtractor(jdbcTemplate);
     }
-    
+
+    private static Loader createLoader(final String code) {
+        String driverClassName = "com.mysql.cj.jdbc.Driver";
+        String jdbcUrl = "jdbc:mysql://127.0.0.1:3307/target_db?serverTimezone=UTC&useSSL=false";
+        String username = "root";
+        String password = "123456";
+        DataSource dataSource = createDataSource(driverClassName, jdbcUrl, username, password);
+        JdbcTemplate jdbcTemplate = JdbcTemplateFactory.createJdbcTemplate(dataSource);
+        return new MySQLLoader(jdbcTemplate);
+    }
+
     private static DataSource createDataSource(final String driverClassName, final String jdbcUrl, final String username, final String password) {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(driverClassName);
