@@ -79,21 +79,9 @@ public final class MySQLExtractor implements Extractor {
             if (StringUtil.isBlank(tableName)) {
                 tableName = column.getValue().getSchema() + "." + column.getValue().getTable();
             }
-            String columnName = transformColumn(column.getValue().getName(), column.getValue().getDataType());
-            selectColumns.add(columnName + WormholeReaderConstants.SQL_AS + column.getKey());
+            selectColumns.add(column.getValue().getName() + WormholeReaderConstants.SQL_AS + column.getKey());
         }
         String queryDataSql = WormholeReaderConstants.SQL_SELECT + selectColumns + WormholeReaderConstants.SQL_FROM + tableName;
         return jdbcTemplate.queryForList(queryDataSql);
-    }
-
-    private String transformColumn(final String columnName, final String dataType) {
-        if (null == dataType) {
-            return columnName;
-        }
-        String resultColumnName = columnName;
-        if (WormholeReaderConstants.DATA_TYPE_DATETIME.equals(dataType)) {
-            resultColumnName = "date_format(" + columnName + ", '%Y-%m-%d %H:%i:%s')";
-        }
-        return resultColumnName;
     }
 }

@@ -30,6 +30,4 @@ public final class WormholeReaderConstants {
 
     public static final String SQL_AS = " AS ";
 
-    public static final String DATA_TYPE_DATETIME = "datetime";
-
 }
