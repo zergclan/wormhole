@@ -88,6 +88,7 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private void transform() {
         int size = dataMaps.size();
+        System.out.println("=====================dataMaps size" + size);
         completionService = new ExecutorCompletionService<>(executorService, new ArrayBlockingQueue<>(size));
         DataGroup dataGroup;
         for (Map<String, Object> each : dataMaps) {
@@ -99,6 +100,7 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private void load() {
         int size = dataMaps.size();
+        int count = 0;
         for (int i = 0; i < size; i++) {
             Future<Optional<DataGroup>> take;
             try {
@@ -106,7 +108,9 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
                 Optional<DataGroup> dataGroupOptional = take.get();
                 if (dataGroupOptional.isPresent()) {
                     Map<String, Object> map = DefaultDataGroupSwapper.dataGroupToMap(dataGroupOptional.get());
+                    count++;
                     loader.loaderData(map);
+                    System.out.println("=====================count" + count);
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();

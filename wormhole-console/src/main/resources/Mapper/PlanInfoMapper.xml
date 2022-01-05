@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.PlanInfoMapper">
+    <resultMap id="PlanInfoResultMap" type="com.zergclan.wormhole.console.application.domain.entity.PlanInfo">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="code" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="execution_mode" property="executionMode" jdbcType="INTEGER"/>
+        <result column="execution_corn" property="executionCorn" jdbcType="VARCHAR"/>
+        <result column="execution_count" property="executionCount" jdbcType="INTEGER"/>
+        <result column="effective_date" property="effectiveDate" jdbcType="TIMESTAMP"/>
+        <result column="is_enable" property="enable" jdbcType="INTEGER"/>
+        <result column="is_execute" property="execute" jdbcType="INTEGER"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="operator" property="operator" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="table_name">plan_info</sql>
+
+    <sql id="id">id = #{id,jdbcType=INTEGER}</sql>
+
+    <sql id="limit">LIMIT #{start}, #{size}</sql>
+
+    <sql id="insert_columns">
+        title, code, execution_mode, execution_corn, execution_count, effective_date, is_enable, is_execute, description, operator, create_time, modify_time
+    </sql>
+
+    <sql id="insert_values">
+        #{title,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{executionMode,jdbcType=INTEGER}, #{executionCorn,jdbcType=VARCHAR},
+        #{effectiveDate,jdbcType=TIMESTAMP}, #{is_enable,jdbcType=INTEGER}, #{is_execute,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR},
+        #{operator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+    </sql>
+
+    <sql id="insert_batch_values">
+        #{batch.title,jdbcType=VARCHAR}, #{batch.code,jdbcType=VARCHAR}, #{batch.executionMode,jdbcType=INTEGER}, #{batch.executionCorn,jdbcType=VARCHAR},
+        #{batch.effectiveDate,jdbcType=TIMESTAMP}, #{batch.is_enable,jdbcType=INTEGER}, #{batch.is_execute,jdbcType=INTEGER}, #{batch.description,jdbcType=VARCHAR},
+        #{batch.operator,jdbcType=INTEGER}, #{batch.createTime,jdbcType=TIMESTAMP}, #{batch.modifyTime,jdbcType=TIMESTAMP}
+    </sql>
+
+    <sql id="update_columns">
+        <if test="null != title">
+            title = #{title,jdbcType=VARCHAR},
+        </if>
+        <if test="null != code">
+            code = #{code,jdbcType=VARCHAR},
+        </if>
+        <if test="null != executionMode">
+            execution_mode = #{executionMode,jdbcType=INTEGER},
+        </if>
+        <if test="null != executionCorn">
+            execution_corn = #{executionCorn,jdbcType=VARCHAR},
+        </if>
+        <if test="null != effectiveDate">
+            execution_corn = #{effectiveDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="null != is_enable">
+            is_enable = #{enable,jdbcType=INTEGER},
+        </if>
+        <if test="null != is_execute">
+            is_execute = #{execute,jdbcType=INTEGER},
+        </if>
+        <if test="null != description">
+            description = #{description,jdbcType=VARCHAR},
+        </if>
+        <if test="null != operator">
+            operator = #{operator,jdbcType=INTEGER},
+        </if>
+    </sql>
+
+    <sql id="select_columns">
+        id, title, code, execution_mode, execution_corn, execution_count, effective_date, is_enable, is_execute, description, operator, create_time, modify_time
+    </sql>
+
+    <sql id="select_count">
+        COUNT(id) AS total
+    </sql>
+
+    <sql id="where_fuzzy_query">
+        <if test="null != title">
+            OR title LIKE CONCAT('%', #{title,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="null != host">
+            OR code LIKE CONCAT('%', #{code,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="null != description">
+            OR description LIKE CONCAT('%', #{description,jdbcType=VARCHAR}, '%')
+        </if>
+    </sql>
+
+    <sql id="where_fuzzy_query_page">
+        <if test="null != query.title">
+            OR title LIKE CONCAT('%', #{title,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="null != query.host">
+            OR code LIKE CONCAT('%', #{code,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="null != query.description">
+            OR description LIKE CONCAT('%', #{description,jdbcType=VARCHAR}, '%')
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.entity.PlanInfo">
+        INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.Collection">
+        INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>)
+        VALUES
+        <foreach collection="list" item="batch" separator=",">
+            (<include refid="insert_batch_values"/>)
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.entity.PlanInfo">
+        UPDATE <include refid="table_name"/>
+        <set>
+            <include refid="update_columns"/>
+            modify_time = #{modifyTime,jdbcType=VARCHAR}
+        </set>
+        WHERE <include refid="id"/>
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM <include refid="table_name"/> WHERE <include refid="id"/>
+    </delete>
+
+    <select id="get" parameterType="java.lang.Integer" resultMap="PlanInfoResultMap">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/> WHERE <include refid="id"/>
+    </select>
+
+    <select id="countAll" resultType="java.lang.Integer">
+        SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
+    </select>
+
+    <select id="listAll" resultMap="PlanInfoResultMap">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
+    </select>
+
+    <select id="listInIds" parameterType="java.util.Collection" resultType="java.lang.Integer">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+    </select>
+
+    <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.entity.PlanInfo" resultType="java.lang.Integer">
+        SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query"/>
+        </where>
+    </select>
+
+    <select id="page" parameterType="com.zergclan.wormhole.console.api.vo.PageQuery" resultMap="PlanInfoResultMap">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query_page"/>
+        </where>
+        <include refid="limit"/>
+    </select>
+</mapper>

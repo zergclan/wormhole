@@ -120,6 +120,7 @@ public class PlanInfoController extends AbstractRestController {
      */
     @GetMapping("/trigger/{id}")
     public HttpResult<Void> trigger(@PathVariable(value = "id") final Integer id) {
+        System.out.println("id" + id);
         planInfoService.triggerById(id);
         return success();
     }

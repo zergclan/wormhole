@@ -54,7 +54,8 @@ public final class PlanSchedulingManager implements SchedulingManager<PlanDefini
     }
 
     private SchedulingTrigger createSchedulingTrigger(final PlanDefinition definition) {
+        return new PlanSchedulingTrigger(definition);
         // TODO create trigger by definition
-        return null;
+        // return null;
     }
 }

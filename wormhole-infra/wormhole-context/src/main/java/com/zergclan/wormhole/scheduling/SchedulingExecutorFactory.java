@@ -66,10 +66,12 @@ public final class SchedulingExecutorFactory {
      */
     private static PlanSchedulingExecutor createPlanSchedulingExecutor(final PlanSchedulingTrigger trigger) {
         Collection<TaskSchedulingExecutor> taskSchedulingExecutors = new LinkedList<>();
-        Collection<TaskDefinition> taskDefinitions = trigger.getPlanDefinition().getTaskDefinitions();
-        for (TaskDefinition each : taskDefinitions) {
-            taskSchedulingExecutors.add(createTaskSchedulingExecutor(each));
-        }
+        // Collection<TaskDefinition> taskDefinitions = trigger.getPlanDefinition().getTaskDefinitions();
+//        for (TaskDefinition each : taskDefinitions) {
+//            taskSchedulingExecutors.add(createTaskSchedulingExecutor(each));
+//        }
+        new TaskDefinition("task");
+        taskSchedulingExecutors.add(createTaskSchedulingExecutor(new TaskDefinition("task")));
         return new PlanSchedulingExecutor(taskSchedulingExecutors);
     }
 
