@@ -93,8 +93,8 @@ public class PlanInfoServiceImpl implements PlanInfoService {
         String executionCorn = planInfo.getExecutionCorn();
         Integer operator = planInfo.getOperator();
         PlanDefinition result = new PlanDefinition(code, executionModeCode, executionCorn, operator);
-        Collection<TaskInfo> taskInfos = listTask(planInfo);
-        for (TaskInfo each : taskInfos) {
+        Collection<TaskInfo> tasks = listTask(planInfo);
+        for (TaskInfo each : tasks) {
             result.registerTask(initTaskDefinition(each));
         }
         return result;

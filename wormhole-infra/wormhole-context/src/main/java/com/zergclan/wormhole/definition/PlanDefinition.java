@@ -19,6 +19,7 @@ package com.zergclan.wormhole.definition;
 
 import com.zergclan.wormhole.common.WormholeException;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -28,20 +29,21 @@ import java.util.Optional;
 /**
  * Definition of plan.
  */
+@NoArgsConstructor
 @Getter
 public final class PlanDefinition implements Serializable {
 
     private static final long serialVersionUID = -341262307232903018L;
 
-    private final String code;
+    private String code;
 
-    private final ExecutionMode executionMode;
+    private ExecutionMode executionMode;
 
-    private final String executionCorn;
+    private String executionCorn;
 
-    private final Integer operator;
+    private Integer operator;
 
-    private final Collection<TaskDefinition> taskDefinitions = new LinkedList<>();
+    private Collection<TaskDefinition> taskDefinitions = new LinkedList<>();
 
     public PlanDefinition(final String code, final Integer executionModeCode, final String executionCorn, final Integer operator) {
         this.code = code;
