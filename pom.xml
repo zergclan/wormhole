@@ -76,7 +76,7 @@
         <spring-boot.version>2.6.1</spring-boot.version>
         <!-- databases -->
         <HikariCP.version>4.0.3</HikariCP.version>
-        <h2.version>1.4.200</h2.version>
+        <h2.version>2.0.206</h2.version>
         <mysql.version>8.0.27</mysql.version>
         <!-- test -->
         <junit5.version>5.8.1</junit5.version>
