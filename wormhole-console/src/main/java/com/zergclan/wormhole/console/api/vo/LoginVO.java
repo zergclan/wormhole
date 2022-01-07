@@ -28,6 +28,8 @@ import java.io.Serializable;
 @Data
 public final class LoginVO implements Serializable {
     
+    private static final long serialVersionUID = -5117267032894797182L;
+    
     @NotBlank(message = "loginName can not be blank")
     private String loginName;
     

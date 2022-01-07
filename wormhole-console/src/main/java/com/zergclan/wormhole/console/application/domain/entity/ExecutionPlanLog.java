@@ -15,27 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.contorller;
+package com.zergclan.wormhole.console.application.domain.entity;
 
-import com.zergclan.wormhole.console.api.vo.HttpResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * Service discovery controller.
+ * {@link ExecutionPlanLog}.
  */
-@RestController
-@RequestMapping("/metrics")
-public class DiscoveryController extends AbstractRestController {
-
-    /**
-     * Get application run status.
-     *
-     * @return run status
-     */
-    @GetMapping("/status")
-    public HttpResult<String> status() {
-        return success("UP");
-    }
+@Data
+@EqualsAndHashCode(callSuper = true)
+public final class ExecutionPlanLog extends AbstractPO {
+    
+    private Long planBatch;
+    
+    private Integer planId;
+    
+    private Integer status;
+    
+    private String description;
+    
+    private Integer operator;
 }

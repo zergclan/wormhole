@@ -15,14 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository.transaction;
+package com.zergclan.wormhole.console.api.vo;
 
-import com.zergclan.wormhole.console.application.domain.entity.ErrorDateLog;
-import org.springframework.stereotype.Repository;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
- * Transactional repository of {@link ErrorDateLog}.
+ * Login result.
  */
-@Repository(value = "errorDateLogRepository")
-public class ErrorDateLogRepository extends AbstractTransactionalRepository<ErrorDateLog> {
+@Data
+public final class LoginResult implements Serializable {
+    
+    private static final long serialVersionUID = -7036855054412530232L;
+    
+    private boolean logined;
+    
+    private String token;
 }

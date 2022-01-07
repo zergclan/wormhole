@@ -19,6 +19,7 @@ package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.security.UserSessionManager;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
+import com.zergclan.wormhole.console.api.vo.LoginResult;
 import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 
@@ -50,15 +51,14 @@ public class LoginController extends AbstractRestController {
      * @return {@link HttpResult}
      */
     @PostMapping(value = "/login")
-    public HttpResult<String> login(@RequestBody final LoginVO loginVO) {
+    public HttpResult<LoginResult> login(@RequestBody final LoginVO loginVO) {
+        LoginResult result = new LoginResult();
         Optional<UserInfo> userInfo = AntiCorruptionService.userLoginVOToPO(loginVO);
         if (userInfo.isPresent()) {
-            Optional<String> token = loginService.login(userInfo.get());
-            if (token.isPresent()) {
-                return success(ResultCode.SUCCESS, token.get());
-            }
+            result = loginService.login(userInfo.get());
+            return result.isLogined() ? success(result) : failed(ResultCode.UNAUTHORIZED, result);
         }
-        return failed(ResultCode.UNAUTHORIZED, "");
+        return failed(ResultCode.UNAUTHORIZED, result);
     }
     
     /**

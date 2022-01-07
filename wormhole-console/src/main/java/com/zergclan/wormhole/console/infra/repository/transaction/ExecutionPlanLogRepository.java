@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository.mapper;
+package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import com.zergclan.wormhole.console.application.domain.entity.ErrorDateLog;
-import org.apache.ibatis.annotations.Mapper;
+import com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog;
+import org.springframework.stereotype.Repository;
 
 /**
- * Mapper of {@link ErrorDateLog}.
+ * Transactional repository of {@link ExecutionPlanLog}.
  */
-@Mapper
-public interface ErrorDateLogMapper extends BaseMapper<ErrorDateLog> {
+@Repository(value = "executionPlanLogRepository")
+public class ExecutionPlanLogRepository extends AbstractTransactionalRepository<ExecutionPlanLog> {
 }

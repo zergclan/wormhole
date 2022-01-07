@@ -39,7 +39,7 @@ import java.util.List;
  * Controller of {@link DatabaseInfo}.
  */
 @RestController
-@RequestMapping("/database")
+@RequestMapping("/instance/database")
 public class DatabaseInfoController extends AbstractRestController {
     
     @Resource

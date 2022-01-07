@@ -19,8 +19,8 @@ package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
-import com.zergclan.wormhole.console.application.service.PlanInfoService;
+import com.zergclan.wormhole.console.application.domain.entity.TaskInfo;
+import com.zergclan.wormhole.console.application.service.TaskInfoService;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,91 +36,79 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Controller of {@link PlanInfo}.
+ * Controller of {@link TaskInfo}.
  */
 @RestController
-@RequestMapping("/scheduling/plan")
-public class PlanInfoController extends AbstractRestController {
+@RequestMapping("/scheduling/task")
+public class TaskInfoController extends AbstractRestController {
     
     @Resource
-    private PlanInfoService planInfoService;
+    private TaskInfoService taskInfoService;
     
     /**
-     * Add {@link PlanInfo}.
+     * Add {@link TaskInfo}.
      *
-     * @param planInfo {@link PlanInfo}
+     * @param taskInfo {@link TaskInfo}
      * @return {@link HttpResult}
      */
     @PostMapping
-    public HttpResult<Void> add(@RequestBody final PlanInfo planInfo) {
-        planInfo.setOperator(getUserSession().getId());
-        planInfoService.add(planInfo);
+    public HttpResult<Void> add(@RequestBody final TaskInfo taskInfo) {
+        taskInfo.setOperator(getUserSession().getId());
+        taskInfoService.add(taskInfo);
         return success();
     }
     
     /**
-     * Edit {@link PlanInfo}.
+     * Edit {@link TaskInfo}.
      *
-     * @param planInfo {@link PlanInfo}
+     * @param taskInfo {@link TaskInfo}
      * @return {@link HttpResult}
      */
     @PutMapping
-    public HttpResult<Void> editById(@RequestBody final PlanInfo planInfo) {
-        return planInfoService.editById(planInfo) ? success() : failed();
+    public HttpResult<Void> editById(@RequestBody final TaskInfo taskInfo) {
+        return taskInfoService.editById(taskInfo) ? success() : failed();
     }
     
     /**
-     * Remove {@link PlanInfo} by id.
+     * Remove {@link TaskInfo} by id.
      *
      * @param id id
      * @return {@link HttpResult}
      */
     @DeleteMapping("/{id}")
     public HttpResult<Void> removeById(@PathVariable(value = "id") final Integer id) {
-        return planInfoService.removeById(id) ? success() : failed();
+        return taskInfoService.removeById(id) ? success() : failed();
     }
     
     /**
-     * Get {@link PlanInfo} by id.
+     * Get {@link TaskInfo} by id.
      *
      * @param id id
      * @return {@link HttpResult}
      */
     @GetMapping("/{id}")
-    public HttpResult<PlanInfo> getById(@PathVariable(value = "id") final Integer id) {
-        return success(planInfoService.getById(id));
+    public HttpResult<TaskInfo> getById(@PathVariable(value = "id") final Integer id) {
+        return success(taskInfoService.getById(id));
     }
     
     /**
-     * List all {@link PlanInfo}.
+     * List all {@link TaskInfo}.
      *
      * @return {@link HttpResult}
      */
     @GetMapping("/list")
-    public HttpResult<List<PlanInfo>> listAll() {
-        return success(new ArrayList<>(planInfoService.listAll()));
+    public HttpResult<List<TaskInfo>> listAll() {
+        return success(new ArrayList<>(taskInfoService.listAll()));
     }
     
     /**
-     * List {@link PlanInfo} by {@link PageQuery}.
+     * List {@link TaskInfo} by {@link PageQuery}.
      *
      * @param pageQuery {@link PageQuery}
      * @return {@link PageData}
      */
     @PostMapping("/page")
-    public HttpResult<PageData<PlanInfo>> listByPage(@RequestBody final PageQuery<PlanInfo> pageQuery) {
-        return success(planInfoService.listByPage(pageQuery));
-    }
-    
-    /**
-     * Trigger by id for test.
-     *
-     * @param id id
-     * @return {@link PageData}
-     */
-    @GetMapping("/trigger/{id}")
-    public HttpResult<Void> trigger(@PathVariable(value = "id") final Integer id) {
-        planInfoService.triggerById(id);
-        return success();
+    public HttpResult<PageData<TaskInfo>> listByPage(@RequestBody final PageQuery<TaskInfo> pageQuery) {
+        return success(taskInfoService.listByPage(pageQuery));
     }
 }
