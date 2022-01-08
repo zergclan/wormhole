@@ -39,7 +39,7 @@ import java.util.List;
  * Controller of {@link UserInfo}.
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/system/user")
 public class UserInfoController extends AbstractRestController {
     
     @Resource

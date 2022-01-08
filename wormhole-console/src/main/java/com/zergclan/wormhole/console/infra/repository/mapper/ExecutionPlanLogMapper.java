@@ -17,12 +17,12 @@
 
 package com.zergclan.wormhole.console.infra.repository.mapper;
 
-import com.zergclan.wormhole.console.application.domain.entity.PlanExecutionLog;
+import com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Mapper of {@link PlanExecutionLog}.
+ * Mapper of {@link ExecutionPlanLog}.
  */
 @Mapper
-public interface PlanExecutionLogMapper extends BaseMapper<PlanExecutionLog> {
+public interface ExecutionPlanLogMapper extends BaseMapper<ExecutionPlanLog> {
 }

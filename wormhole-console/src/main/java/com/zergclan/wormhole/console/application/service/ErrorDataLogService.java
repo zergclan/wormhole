@@ -15,25 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.application.service;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.api.vo.PageQuery;
+import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
+import com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog;
+import com.zergclan.wormhole.console.infra.repository.PageData;
 
 /**
- * {@link PlanExecutionLog}.
+ * Service interface of {@link ErrorDataLog}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class PlanExecutionLog extends AbstractPO {
+public interface ErrorDataLogService {
     
-    private Long planBatch;
+    /**
+     * Get {@link ErrorDataLog} by id.
+     *
+     * @param id id
+     * @return {@link ErrorDataLog}
+     */
+    ErrorDataLog getById(Integer id);
     
-    private Integer planId;
-    
-    private Integer status;
-    
-    private String description;
-    
-    private Integer operator;
+    /**
+     * List {@link DatasourceInfo} by {@link PageQuery}.
+     *
+     * @param pageQuery {@link PageQuery}
+     * @return {@link PageData}
+     */
+    PageData<ErrorDataLog> listByPage(PageQuery<ErrorDataLog> pageQuery);
 }

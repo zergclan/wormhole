@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
+import com.zergclan.wormhole.console.api.vo.LoginResult;
 import com.zergclan.wormhole.console.api.vo.LoginVO;
 import com.zergclan.wormhole.console.infra.util.JsonConverter;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javax.annotation.Resource;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -49,11 +52,12 @@ public final class LoginControllerTest {
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> actualLogin = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
+        HttpResult<Map<String, String>> actualLogin = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         assertEquals(200, actualLogin.getCode());
         assertEquals("SUCCESS", actualLogin.getMessage());
-        String token = actualLogin.getData();
-        mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/logout").header("token", token).contentType("application/json").content(requestJson)).andReturn();
+        String token = actualLogin.getData().get("token");
+        mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/logout").header("token", token).contentType("application/json")
+                .content(requestJson)).andReturn();
         HttpResult<String> actualLogout = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         assertEquals(200, actualLogout.getCode());
         assertEquals("SUCCESS", actualLogout.getMessage());
@@ -67,7 +71,9 @@ public final class LoginControllerTest {
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("").build();
+        LoginResult loginResult = new LoginResult();
+        loginResult.setToken(null);
+        HttpResult<LoginResult> expectedResult = new HttpResult<LoginResult>().toBuilder().code(401).message("UNAUTHORIZED").data(loginResult).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
     
@@ -79,7 +85,9 @@ public final class LoginControllerTest {
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
-        HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(401).message("UNAUTHORIZED").data("").build();
+        LoginResult loginResult = new LoginResult();
+        loginResult.setToken(null);
+        HttpResult<LoginResult> expectedResult = new HttpResult<LoginResult>().toBuilder().code(401).message("UNAUTHORIZED").data(loginResult).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
     }
 }

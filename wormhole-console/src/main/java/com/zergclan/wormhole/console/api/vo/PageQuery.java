@@ -17,8 +17,7 @@
 
 package com.zergclan.wormhole.console.api.vo;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
@@ -29,22 +28,17 @@ import java.io.Serializable;
  *
  * @param <T> class type of query object
  */
+@Data
 public final class PageQuery<T> implements Serializable {
     
     private static final long serialVersionUID = 7535045351524894851L;
     
     @Min(value = 1, message = "page number must greater than 0 ")
-    @Getter
-    @Setter
     private Integer page;
     
     @Range(min = 2, max = 10, message = "page size must greater than 2 Less than 10 ")
-    @Getter
-    @Setter
     private Integer size;
     
-    @Getter
-    @Setter
     private T query;
     
     /**

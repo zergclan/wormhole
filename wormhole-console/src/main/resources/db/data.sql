@@ -20,9 +20,9 @@ INSERT INTO user_info (id, username, password, email, is_enable, create_time, mo
 (1, 'root', '123456', 'jacky7boy@163.com', 0, {ts '2012-11-19 18:30:30.00'}, {ts '2012-11-19 18:30:30.00'});
 
 DELETE FROM database_info;
-INSERT INTO database_info (id, title, host, port, catalog, type, username, password, description, operator, create_time, modify_time)
-VALUES ( 1, 'MySQL测试源数据库', '127.0.0.1', 3306, 'source_db', 0, 'root', '123456', 'MySQL测试源数据库', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'}),
-        ( 2, 'MySQL测试源数据库', '127.0.0.1', 3307, 'target_db', 0, 'root', '123456', 'MySQL测试源数据库', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
+INSERT INTO database_info (id, host, port, catalog, type, username, password, description, operator, create_time, modify_time)
+VALUES ( 1, '127.0.0.1', 3306, 'source_db', 0, 'root', '123456', 'MySQL测试源数据库', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'}),
+        ( 2, '127.0.0.1', 3307, 'target_db', 0, 'root', '123456', 'MySQL测试源数据库', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
 
 DELETE FROM datasource_info;
 INSERT INTO datasource_info (id, database_id, schema, username, password, extend_parameters, description, operator, create_time, modify_time)

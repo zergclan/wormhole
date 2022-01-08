@@ -39,7 +39,7 @@ import java.util.List;
  * Controller of {@link DatasourceInfo}.
  */
 @RestController
-@RequestMapping("/datasource")
+@RequestMapping("/config/datasource")
 public class DatasourceInfoController extends AbstractRestController {
 
     @Resource

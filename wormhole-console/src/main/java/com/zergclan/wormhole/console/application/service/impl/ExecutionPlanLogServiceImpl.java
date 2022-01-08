@@ -17,33 +17,31 @@
 
 package com.zergclan.wormhole.console.application.service.impl;
 
-import com.zergclan.wormhole.console.api.security.UserSessionManager;
-import com.zergclan.wormhole.console.api.vo.LoginResult;
-import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
-import com.zergclan.wormhole.console.application.service.LoginService;
+import com.zergclan.wormhole.console.api.vo.PageQuery;
+import com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog;
+import com.zergclan.wormhole.console.application.service.ExecutionPlanLogService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
+import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 /**
- * Implemented Service of {@link LoginService}.
+ * Implemented Service of {@link ExecutionPlanLogService}.
  */
-@Service(value = "loginService")
-public class LoginServiceImpl implements LoginService {
+@Service(value = "executionPlanLogService")
+public class ExecutionPlanLogServiceImpl implements ExecutionPlanLogService {
     
     @Resource
-    private BaseRepository<UserInfo> userInfoRepository;
+    private BaseRepository<ExecutionPlanLog> executionPlanLogRepository;
     
     @Override
-    public LoginResult login(final UserInfo userInfo) {
-        LoginResult result = new LoginResult();
-        UserInfo user = userInfoRepository.getOne(userInfo);
-        if (null == user) {
-            return result;
-        }
-        result.setToken(UserSessionManager.createUserSession(user));
-        result.setLogined(true);
-        return result;
+    public ExecutionPlanLog getById(final Integer id) {
+        return executionPlanLogRepository.get(id);
+    }
+    
+    @Override
+    public PageData<ExecutionPlanLog> listByPage(final PageQuery<ExecutionPlanLog> pageQuery) {
+        return executionPlanLogRepository.listByPage(pageQuery);
     }
 }
