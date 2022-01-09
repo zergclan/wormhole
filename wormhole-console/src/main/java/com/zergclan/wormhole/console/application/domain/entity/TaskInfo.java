@@ -28,16 +28,22 @@ import lombok.EqualsAndHashCode;
 public final class TaskInfo extends AbstractPO {
     
     private static final long serialVersionUID = 3553295866589815888L;
-    
-    private String title;
-    
+
+    private Integer planId;
+
     private String code;
 
-    private Integer enable;
-    
+    private Integer sourceDatasourceId;
+
+    private String sourceDatasourceOwner;
+
+    private Integer targetDatasourceId;
+
+    private String targetDatasourceOwner;
+
     private Integer execute;
-    
+
     private String description;
-    
+
     private Integer operator;
 }
