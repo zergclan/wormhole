@@ -27,17 +27,17 @@ VALUES ( 1, '127.0.0.1', 3306, 'source_db', 0, 'root', '123456', 'MySQL测试源
 DELETE FROM datasource_info;
 INSERT INTO datasource_info (id, database_id, schema, username, password, extend_parameters, description, operator, create_time, modify_time)
 VALUES ( 1, 1, 'source_db', 'root', '123456', 'characterEncoding=UTF-8&serverTimezone=UTC', 'MySQL测试源数据源', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'}),
-    ( 1, 2, 'target_db', 'root', '123456', 'characterEncoding=UTF-8&serverTimezone=UTC', 'MySQL测试目前数据源', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
+    ( 2, 2, 'target_db', 'root', '123456', 'characterEncoding=UTF-8&serverTimezone=UTC', 'MySQL测试目前数据源', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
 
 DELETE FROM plan_info;
 INSERT INTO plan_info (id, title, code, execution_mode, execution_corn, execution_count, effective_date, is_enable, is_execute, description, operator, create_time, modify_time)
 VALUES ( 1, 'MySQL测试方案', 'mysql_test_plan', '0', '0 0 12 * * ?', 0, '2012-12-01 10:30:30.00', 0, 0, 'MySQL测试方案', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
 
 DELETE FROM task_info;
-INSERT INTO task_info (id, title, code, source_id, target_id, is_enable, is_execute, description, operator, create_time, modify_time)
+INSERT INTO task_info (id, title, code, source_datasource_id, target_datasource_id, is_enable, is_execute, description, operator, create_time, modify_time)
 VALUES ( 1, 'MySQL测试任务一对一', 'mysql_test_task_one_to_one', 1, 2, 0, 0, 'MySQL测试任务一对一', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
 
 DELETE FROM plan_task_linking;
-INSERT INTO plan_task_linking (id, plan_id, task_id, order, operator, create_time, modify_time)
+INSERT INTO plan_task_linking (id, plan_id, task_id, `order`, operator, create_time, modify_time)
 VALUES ( 1, 1, 1, 0, 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'});
 
