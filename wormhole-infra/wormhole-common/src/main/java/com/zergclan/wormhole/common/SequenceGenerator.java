@@ -15,52 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.vo;
+package com.zergclan.wormhole.common;
 
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-/**
- * Code for http result.
- */
-@Getter
-public enum ResultCode {
-
-    /**
-     * Result code for success.
-     */
-    SUCCESS(200, "SUCCESS"),
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SequenceGenerator {
     
     /**
-     * Result code for bad request.
+     * Generate id.
+     *
+     * @return id
      */
-    BAD_REQUEST(400, "BAD_REQUEST"),
-
-    /**
-     * Result code for unauthorized.
-     */
-    UNAUTHORIZED(401, "UNAUTHORIZED"),
-    
-    /**
-     * Result code for not acceptable.
-     */
-    NOT_ACCEPTABLE(406, "NOT_ACCEPTABLE"),
-    
-    /**
-     * Result code for failed.
-     */
-    FAILED(500, "FAILED"),
-    
-    /**
-     * Result code for error.
-     */
-    ERROR(999, "ERROR");
-
-    private final int code;
-
-    private final String message;
-    
-    ResultCode(final int code, final String message) {
-        this.code = code;
-        this.message = message;
+    public static Long generateId() {
+        return SnowflakeIdWorker.generateId();
     }
 }

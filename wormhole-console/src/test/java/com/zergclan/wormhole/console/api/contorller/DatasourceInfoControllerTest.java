@@ -61,7 +61,7 @@ public final class DatasourceInfoControllerTest {
     }
     
     private void assertRemoveById() throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/config/datasource/2").header("token", "wormhole-console-test-token")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/config/datasource/2").header("token", "wormhole-console-test-token").header("trace", "trace")
                 .contentType("application/json").content("")).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
@@ -71,7 +71,7 @@ public final class DatasourceInfoControllerTest {
         datasourceInfo.setId(2);
         datasourceInfo.setDescription("test_datasource_info_description_update");
         String requestJson = JSON_CONVERTER.toJson(datasourceInfo);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/config/datasource").header("token", "wormhole-console-test-token")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/config/datasource").header("token", "wormhole-console-test-token").header("trace", "trace")
                 .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
@@ -80,7 +80,7 @@ public final class DatasourceInfoControllerTest {
     private void assertAdd(final DatasourceInfo datasourceInfo) throws Exception {
         datasourceInfo.setSchema("test_target_ds");
         String requestJson = JSON_CONVERTER.toJson(datasourceInfo);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/config/datasource").header("token", "wormhole-console-test-token")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/config/datasource").header("token", "wormhole-console-test-token").header("trace", "trace")
                 .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> expectedResult = new HttpResult<String>().toBuilder().code(200).message("SUCCESS").data(null).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
@@ -93,7 +93,7 @@ public final class DatasourceInfoControllerTest {
         pageQuery.setSize(2);
         pageQuery.setQuery(new DatasourceInfo());
         String requestJson = JSON_CONVERTER.toJson(pageQuery);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/config/datasource/page").header("token", "wormhole-console-test-token")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/config/datasource/page").header("token", "wormhole-console-test-token").header("trace", "trace")
                 .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<Object> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         List<Map<String, Object>> items = (ArrayList) ((LinkedHashMap) httpResult.getData()).get("items");
@@ -103,14 +103,14 @@ public final class DatasourceInfoControllerTest {
     
     @SuppressWarnings("all")
     private void assertList() throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/config/datasource/list").header("token", "wormhole-console-test-token")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/config/datasource/list").header("token", "wormhole-console-test-token").header("trace", "trace")
                 .contentType("application/json").content("")).andReturn();
         HttpResult<List<DatasourceInfo>> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         assertEquals(1, httpResult.getData().size());
     }
     
     private void assertGetById(final DatasourceInfo datasourceInfo) throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/config/datasource/1").header("token", "wormhole-console-test-token")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/config/datasource/1").header("token", "wormhole-console-test-token").header("trace", "trace")
                 .contentType("application/json").content("")).andReturn();
         HttpResult<DatasourceInfo> expectedResult = new HttpResult<DatasourceInfo>().toBuilder().code(200).message("SUCCESS").data(datasourceInfo).build();
         assertEquals(JSON_CONVERTER.toJson(expectedResult), mvcResult.getResponse().getContentAsString());
