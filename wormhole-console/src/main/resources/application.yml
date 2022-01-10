@@ -37,3 +37,9 @@ mybatis:
   configuration:
     call-setters-on-nulls: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+springfox:
+  documentation:
+    enabled: true
+    swagger-ui:
+      enabled: true

@@ -51,13 +51,14 @@ public final class LoginControllerTest {
         loginVO.setPassword("123456");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").header("trace", "trace")
+                .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<Map<String, String>> actualLogin = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         assertEquals(200, actualLogin.getCode());
         assertEquals("SUCCESS", actualLogin.getMessage());
         String token = actualLogin.getData().get("token");
-        mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/logout").header("token", token).contentType("application/json")
-                .content(requestJson)).andReturn();
+        mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/logout").header("token", token).header("trace", "trace")
+                .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<String> actualLogout = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         assertEquals(200, actualLogout.getCode());
         assertEquals("SUCCESS", actualLogout.getMessage());
@@ -70,7 +71,8 @@ public final class LoginControllerTest {
         loginVO.setPassword("pwd_error");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").header("trace", "trace")
+                .contentType("application/json").content(requestJson)).andReturn();
         LoginResult loginResult = new LoginResult();
         loginResult.setToken(null);
         HttpResult<LoginResult> expectedResult = new HttpResult<LoginResult>().toBuilder().code(401).message("UNAUTHORIZED").data(loginResult).build();
@@ -84,7 +86,8 @@ public final class LoginControllerTest {
         loginVO.setPassword("123456");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").contentType("application/json").content(requestJson)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").header("trace", "trace")
+                .contentType("application/json").content(requestJson)).andReturn();
         LoginResult loginResult = new LoginResult();
         loginResult.setToken(null);
         HttpResult<LoginResult> expectedResult = new HttpResult<LoginResult>().toBuilder().code(401).message("UNAUTHORIZED").data(loginResult).build();
