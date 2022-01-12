@@ -15,24 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.common.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * System constant.
+ * Constant of mark.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SystemConstant {
-
-    public static final String SPACE = "#";
-
-    public static final String COLON = ":";
-
-    public static final String FORWARD_SLASH = "/";
-
-    public static final int TRUE = 1;
+public final class MarkConstant {
     
-    public static final int FALSE = 0;
+    public static final String SPACE = "#";
+    
+    public static final String COLON = ":";
+    
+    public static final String FORWARD_SLASH = "/";
+    
+    public static final String QUESTION = "?";
+    
+    public static final String AND = "&";
+    
+    public static final String AT = "@";
 }

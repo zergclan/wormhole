@@ -15,28 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.core.metadata.plan;
 
-import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.metadata.Refreshable;
 
-import java.util.Properties;
-
-/**
- * Meta data for SQL_Server data base.
- */
-public final class SQLServerDatabaseMetaData extends DatabaseMetaData {
-
-    private static final DatabaseType TYPE = DatabaseType.SQL_SERVER;
-
-    private final Properties parameters;
-
-    public SQLServerDatabaseMetaData(final String hostName, final int port, final String catalog, final Properties parameters) {
-        super(TYPE, hostName, port, catalog);
-        this.parameters = parameters;
-    }
-
+public final class PlanMetadata implements Metadata, Refreshable<PlanMetadata> {
+    
     @Override
-    protected String getJdbcUrl() {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + getCatalog();
+    public String getIdentifier() {
+        // TODO create planCode
+        return "plan";
+    }
+    
+    @Override
+    public boolean refresh(final PlanMetadata planMetaData) {
+        // TODO refresh
+        return false;
     }
 }

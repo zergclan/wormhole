@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.console.infra.util;
 
-import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
@@ -185,6 +185,6 @@ public final class BeanMapper {
      * @return key of mapper
      */
     private static <S, T> String createKey(final Class<S> sourceClazz, final Class<T> targetClazz) {
-        return sourceClazz.getCanonicalName() + SystemConstant.SPACE + targetClazz.getCanonicalName();
+        return sourceClazz.getCanonicalName() + MarkConstant.SPACE + targetClazz.getCanonicalName();
     }
 }

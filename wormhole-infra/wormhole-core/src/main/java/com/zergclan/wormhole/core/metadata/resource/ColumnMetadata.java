@@ -15,19 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.core.metadata.resource;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all meta data objects shall be derived in Wormhole.
+ * Metadata for column.
  */
-public interface MetaData extends Serializable {
+@RequiredArgsConstructor
+@Getter
+public final class ColumnMetadata implements Metadata {
 
-    /**
-     * Get identifier.
-     *
-     * @return identifier
-     */
-    String getIdentifier();
+    private final String dataSourceIdentifier;
+
+    private final String schema;
+
+    private final String table;
+
+    private final String name;
+
+    private final String dataType;
+
+    private final boolean nullable;
+
+    private final String comment;
+
+    @Override
+    public String getIdentifier() {
+        return dataSourceIdentifier + MarkConstant.SPACE + schema + MarkConstant.SPACE + table + MarkConstant.SPACE + name;
+    }
 }

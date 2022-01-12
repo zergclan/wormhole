@@ -15,28 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.core.metadata.resource;
 
-import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Properties;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * Meta data for DB2 data base.
+ * Metadata table.
  */
-public final class DB2DatabaseMetaData extends DatabaseMetaData {
+@RequiredArgsConstructor
+@Getter
+public final class TableMetadata implements Metadata {
 
-    private static final DatabaseType TYPE = DatabaseType.DB2;
+    private final String dataSourceIdentifier;
 
-    private final Properties parameters;
+    private final String schema;
 
-    public DB2DatabaseMetaData(final String hostName, final int port, final String catalog, final Properties parameters) {
-        super(TYPE, hostName, port, catalog);
-        this.parameters = parameters;
-    }
+    private final String name;
+
+    private final String comment;
+
+    private final Map<String, ColumnMetadata> columns = new LinkedHashMap<>();
+
+    private final Map<String, IndexMetadata> indexes = new LinkedHashMap<>();
 
     @Override
-    protected String getJdbcUrl() {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + getCatalog();
+    public String getIdentifier() {
+        return dataSourceIdentifier + MarkConstant.SPACE + schema + MarkConstant.SPACE + name;
     }
 }

@@ -15,27 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.common;
 
-import com.zergclan.wormhole.common.SystemConstant;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-@RequiredArgsConstructor
-@Getter
-public final class SchemaMetaData implements MetaData {
-
-    private final String databaseIdentifier;
-
-    private final String name;
-
-    private final Map<String, TableMetaData> tables = new LinkedHashMap<>();
-
-    @Override
-    public String getIdentifier() {
-        return databaseIdentifier + SystemConstant.SPACE + name;
+/**
+ * Util tools for Object.
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ObjectUtil {
+    
+    /**
+     * Is null.
+     *
+     * @param object object
+     * @return is null object or not.
+     */
+    public static boolean isNull(final Object object) {
+        return null == object;
     }
 }

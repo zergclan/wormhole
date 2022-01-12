@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.reader.mysql.rowmapper.mysql;
 
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -28,13 +28,13 @@ import java.sql.SQLException;
  * ResultSet to entity conversion.
  */
 @RequiredArgsConstructor
-public final class ColumnMetaDataRowMapper implements RowMapper<ColumnMetaData> {
+public final class ColumnMetaDataRowMapper implements RowMapper<ColumnMetadata> {
 
     private final String databaseIdentifier;
 
     @Override
-    public ColumnMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-        ColumnMetaData columnMetaData = new ColumnMetaData(databaseIdentifier,
+    public ColumnMetadata mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+        ColumnMetadata columnMetaData = new ColumnMetadata(databaseIdentifier,
                 rs.getString("TABLE_SCHEMA"), rs.getString("TABLE_NAME"),
                 rs.getString("COLUMN_NAME"), rs.getString("COLUMN_TYPE"),
                 "NO".equals(rs.getString("IS_NULLABLE")), rs.getString("COLUMN_COMMENT"));

@@ -18,9 +18,9 @@
 package com.zergclan.wormhole.reader.mysql;
 
 import com.google.gson.Gson;
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.SchemaMetaData;
-import com.zergclan.wormhole.core.metadata.TableMetaData;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.repository.config.DataSourceManager;
 import com.zergclan.wormhole.repository.entity.DataSourceInformation;
@@ -36,15 +36,14 @@ import java.util.Map;
  */
 public final class MySQLExtractorTest {
 
-
     /**
      * Extract tables.
      */
 //    @Test
     public void extractTables() {
         Extractor extractor = initExtractor();
-        SchemaMetaData schemaMetaData = new SchemaMetaData("1", "source_db");
-        Collection<TableMetaData> tableMetaData = extractor.extractTables(schemaMetaData);
+        SchemaMetadata schemaMetaData = new SchemaMetadata("1", "source_db");
+        Collection<TableMetadata> tableMetaData = extractor.extractTables(schemaMetaData);
         System.out.println(new Gson().toJson(tableMetaData));
         assertNotNull(tableMetaData);
     }
@@ -55,8 +54,8 @@ public final class MySQLExtractorTest {
 //    @Test
     public void extractColumns() {
         Extractor extractor = initExtractor();
-        TableMetaData tableMetaData = new TableMetaData("2", "source_db", "source_table", null);
-        Collection<ColumnMetaData> columnMetaData = extractor.extractColumns(tableMetaData);
+        TableMetadata tableMetadata = new TableMetadata("2", "source_db", "source_table", null);
+        Collection<ColumnMetadata> columnMetaData = extractor.extractColumns(tableMetadata);
         System.out.println(new Gson().toJson(columnMetaData));
         assertNotNull(columnMetaData);
     }
@@ -67,14 +66,14 @@ public final class MySQLExtractorTest {
 //    @Test
     public void extractDatum() {
         Extractor extractor = initExtractor();
-        Map<String, ColumnMetaData> map = new LinkedHashMap<>();
-        map.put("id", new ColumnMetaData("12", "source_db", "source_table", "id", null, false, null));
-        map.put("transInt", new ColumnMetaData("12", "source_db", "source_table", "trans_int", null, false, null));
-        map.put("transBigint", new ColumnMetaData("12", "source_db", "source_table", "trans_bigint", null, false, null));
-        map.put("transVarchar", new ColumnMetaData("12", "source_db", "source_table", "trans_varchar", null, false, null));
-        map.put("transDecimal", new ColumnMetaData("12", "source_db", "source_table", "trans_decimal", null, false, null));
-        map.put("transDatetime", new ColumnMetaData("12", "source_db", "source_table", "trans_datetime", "datetime", false, null));
-        map.put("createTime", new ColumnMetaData("12", "source_db", "source_table", "create_time", "datetime", false, null));
+        Map<String, ColumnMetadata> map = new LinkedHashMap<>();
+        map.put("id", new ColumnMetadata("12", "source_db", "source_table", "id", null, false, null));
+        map.put("transInt", new ColumnMetadata("12", "source_db", "source_table", "trans_int", null, false, null));
+        map.put("transBigint", new ColumnMetadata("12", "source_db", "source_table", "trans_bigint", null, false, null));
+        map.put("transVarchar", new ColumnMetadata("12", "source_db", "source_table", "trans_varchar", null, false, null));
+        map.put("transDecimal", new ColumnMetadata("12", "source_db", "source_table", "trans_decimal", null, false, null));
+        map.put("transDatetime", new ColumnMetadata("12", "source_db", "source_table", "trans_datetime", "datetime", false, null));
+        map.put("createTime", new ColumnMetadata("12", "source_db", "source_table", "create_time", "datetime", false, null));
         Collection<Map<String, Object>> extractDatum = extractor.extractDatum(map);
         System.out.println(new Gson().toJson(extractDatum));
         assertNotNull(extractDatum);

@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.console.application.service.impl;
 
-import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;
@@ -89,7 +89,7 @@ public class DatasourceInfoServiceImpl implements DatasourceInfoService {
     }
     
     private String createDatasourceOwner(final DatabaseInfo databaseInfo) {
-        return getDatabaseType(databaseInfo) + SystemConstant.SPACE + databaseInfo.getHost() + SystemConstant.COLON + databaseInfo.getPort();
+        return getDatabaseType(databaseInfo) + MarkConstant.SPACE + databaseInfo.getHost() + MarkConstant.COLON + databaseInfo.getPort();
     }
     
     private String getDatabaseType(final DatabaseInfo databaseInfo) {

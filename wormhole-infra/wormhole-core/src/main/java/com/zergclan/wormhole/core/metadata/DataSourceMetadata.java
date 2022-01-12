@@ -17,34 +17,46 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.common.SystemConstant;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 
 /**
- * Meta data table.
+ * The root interface from which all data source metadata objects shall be derived in Wormhole.
  */
-@RequiredArgsConstructor
-@Getter
-public final class TableMetaData implements MetaData {
+public interface DataSourceMetadata extends Metadata {
 
-    private final String databaseIdentifier;
+    /**
+     * Get driver class name.
+     *
+     * @return driver class name
+     */
+    String getDriverClassName();
 
-    private final String schema;
+    /**
+     * Get jdbc url.
+     *
+     * @return jdbc url
+     */
+    String getJdbcUrl();
 
-    private final String name;
+    /**
+     * Get username.
+     *
+     * @return username
+     */
+    String getUsername();
 
-    private final String comment;
+    /**
+     * Get password.
+     *
+     * @return password
+     */
+    String getPassword();
 
-    private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
-
-    private final Map<String, IndexMetaData> indexes = new LinkedHashMap<>();
-
-    @Override
-    public String getIdentifier() {
-        return databaseIdentifier + SystemConstant.SPACE + schema + SystemConstant.SPACE + name;
-    }
+    /**
+     * Register {@link SchemaMetadata}.
+     *
+     * @param schemaMetaData {@link SchemaMetadata}
+     * @return is registered or not
+     */
+    boolean registerSchema(SchemaMetadata schemaMetaData);
 }

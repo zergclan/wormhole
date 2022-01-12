@@ -15,28 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.common.constant;
 
-import com.zergclan.wormhole.common.SystemConstant;
+import org.junit.jupiter.api.Test;
 
-import java.util.Properties;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Meta data for Oracle data base.
- */
-public final class OracleDatabaseMetaData extends DatabaseMetaData {
-
-    private static final DatabaseType TYPE = DatabaseType.ORACLE;
-
-    private final Properties parameters;
-
-    public OracleDatabaseMetaData(final String hostName, final int port, final String catalog, final Properties parameters) {
-        super(TYPE, hostName, port, catalog);
-        this.parameters = parameters;
-    }
+public final class StateConstantTest {
     
-    @Override
-    protected String getJdbcUrl() {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.COLON + getCatalog();
+    @Test
+    public void assertStates() {
+        assertEquals(1, StateConstant.TRUE);
+        assertEquals(0, StateConstant.FALSE);
     }
 }

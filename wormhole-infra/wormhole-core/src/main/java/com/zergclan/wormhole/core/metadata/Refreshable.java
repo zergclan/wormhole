@@ -17,34 +17,18 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.common.SystemConstant;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
-import java.util.LinkedHashSet;
-
 /**
- * Meta data of index.
+ * The root interface from which all refreshable bean objects shall be derived in Wormhole.
+ *
+ * @param <T> class type of refreshable bean.
  */
-@RequiredArgsConstructor
-@Getter
-public final class IndexMetaData implements MetaData {
-
-    private final String databaseIdentifier;
-
-    private final String schema;
-
-    private final String table;
-
-    private final String name;
-
-    private final boolean isUnique;
-
-    private final Collection<String> columnNames = new LinkedHashSet<>();
-
-    @Override
-    public String getIdentifier() {
-        return databaseIdentifier + SystemConstant.SPACE + schema + SystemConstant.SPACE + table + SystemConstant.SPACE + name;
-    }
+public interface Refreshable<T> {
+    
+    /**
+     * Refresh.
+     *
+     * @param t refreshed bean
+     * @return is refreshed or not
+     */
+    boolean refresh(T t);
 }
