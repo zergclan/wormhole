@@ -17,33 +17,17 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.common.SystemConstant;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
 
-/**
- * Meta data for column.
- */
-@RequiredArgsConstructor
-@Getter
-public final class ColumnMetaData implements MetaData {
-
-    private final String databaseIdentifier;
-
-    private final String schema;
-
-    private final String table;
-
-    private final String name;
-
-    private final String dataType;
-
-    private final boolean nullable;
-
-    private final String comment;
-
-    @Override
-    public String getIdentifier() {
-        return databaseIdentifier + SystemConstant.SPACE + schema + SystemConstant.SPACE + table + SystemConstant.SPACE + name;
-    }
+public interface DataSourceMetaData extends MetaData {
+    
+    String getDriverClassName();
+    
+    String getJdbcUrl();
+    
+    String getUsername();
+    
+    String getPassword();
+    
+    boolean registerSchema(SchemaMetaData schemaMetaData);
 }

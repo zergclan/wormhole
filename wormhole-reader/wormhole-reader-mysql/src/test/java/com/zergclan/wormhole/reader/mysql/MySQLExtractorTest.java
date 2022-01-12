@@ -18,9 +18,6 @@
 package com.zergclan.wormhole.reader.mysql;
 
 import com.google.gson.Gson;
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.SchemaMetaData;
-import com.zergclan.wormhole.core.metadata.TableMetaData;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.repository.config.DataSourceManager;
 import com.zergclan.wormhole.repository.entity.DataSourceInformation;

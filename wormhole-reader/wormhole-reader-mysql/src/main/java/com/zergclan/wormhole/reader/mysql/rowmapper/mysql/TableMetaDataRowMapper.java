@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.reader.mysql.rowmapper.mysql;
 
-import com.zergclan.wormhole.core.metadata.TableMetaData;
+import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 

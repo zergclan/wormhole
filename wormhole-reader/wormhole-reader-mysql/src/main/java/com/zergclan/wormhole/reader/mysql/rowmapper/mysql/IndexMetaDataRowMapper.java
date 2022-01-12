@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.reader.mysql.rowmapper.mysql;
 
-import com.zergclan.wormhole.core.metadata.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

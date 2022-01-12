@@ -18,10 +18,10 @@
 package com.zergclan.wormhole.reader.mysql;
 
 import com.zergclan.wormhole.common.StringUtil;
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.SchemaMetaData;
-import com.zergclan.wormhole.core.metadata.TableMetaData;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
+import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.reader.mysql.domain.AbsJdbcConcatSqlDOM;
 import com.zergclan.wormhole.reader.mysql.domain.impl.MysqlConcatSqlDOMImpl;
@@ -52,7 +52,7 @@ public final class MySQLExtractor implements Extractor {
     @Override
     public Collection<TableMetaData> extractTables(final SchemaMetaData schemaMetaData) {
         String queryAllTablesSql = jdbcConcatSqlDOM.getQueryAllTablesSql(schemaMetaData.getName());
-        return executeSql(queryAllTablesSql, new TableMetaDataRowMapper(schemaMetaData.getDatabaseIdentifier())).orElseGet(ArrayList::new);
+        return executeSql(queryAllTablesSql, new TableMetaDataRowMapper(schemaMetaData.getDataSourceIdentifier())).orElseGet(ArrayList::new);
     }
 
     private <T> Optional<List<T>> executeSql(final String executeSql, final RowMapper<T> rowMapper) {
@@ -62,7 +62,7 @@ public final class MySQLExtractor implements Extractor {
     @Override
     public Collection<ColumnMetaData> extractColumns(final TableMetaData table) {
         String queryAllColumnsSql = jdbcConcatSqlDOM.getQueryAllColumnsSql(table.getSchema(), table.getName());
-        return executeSql(queryAllColumnsSql, new ColumnMetaDataRowMapper(table.getDatabaseIdentifier())).orElseGet(ArrayList::new);
+        return executeSql(queryAllColumnsSql, new ColumnMetaDataRowMapper(table.getDataSourceIdentifier())).orElseGet(ArrayList::new);
     }
 
     @Override

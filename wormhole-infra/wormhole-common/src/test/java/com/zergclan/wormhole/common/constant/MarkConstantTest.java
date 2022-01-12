@@ -15,17 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.common.constant;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class SystemConstantTest {
+public final class MarkConstantTest {
     
     @Test
-    public void assertValues() {
-        assertEquals(1, SystemConstant.TRUE);
-        assertEquals(0, SystemConstant.FALSE);
+    public void assertMarks() {
+        assertEquals("#", MarkConstant.SPACE);
+        assertEquals(":", MarkConstant.COLON);
+        assertEquals("/", MarkConstant.FORWARD_SLASH);
+        assertEquals("?", MarkConstant.QUESTION);
+        assertEquals("&", MarkConstant.AND);
+        assertEquals("@", MarkConstant.AT);
     }
 }

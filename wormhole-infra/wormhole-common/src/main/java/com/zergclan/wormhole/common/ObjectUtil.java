@@ -15,28 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.common;
 
-import com.zergclan.wormhole.common.SystemConstant;
-
-import java.util.Properties;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * Meta data for SQL_Server data base.
+ * Util tools for Object.
  */
-public final class SQLServerDatabaseMetaData extends DatabaseMetaData {
-
-    private static final DatabaseType TYPE = DatabaseType.SQL_SERVER;
-
-    private final Properties parameters;
-
-    public SQLServerDatabaseMetaData(final String hostName, final int port, final String catalog, final Properties parameters) {
-        super(TYPE, hostName, port, catalog);
-        this.parameters = parameters;
-    }
-
-    @Override
-    protected String getJdbcUrl() {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + getCatalog();
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ObjectUtil {
+    
+    /**
+     * Is null.
+     *
+     * @param object object
+     * @return is null object or not.
+     */
+    public static boolean isNull(final Object object) {
+        return null == object;
     }
 }

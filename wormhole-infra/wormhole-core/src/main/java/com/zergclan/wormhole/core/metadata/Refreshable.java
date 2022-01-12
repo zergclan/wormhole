@@ -17,47 +17,18 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import lombok.Getter;
-
 /**
- * Type of database.
+ * The root interface from which all refreshable bean objects shall be derived in Wormhole.
+ *
+ * @param <T> class type of refreshable bean.
  */
-@Getter
-public enum DatabaseType {
-
+public interface Refreshable<T> {
+    
     /**
-     * Compatibility modes for MySQL.
+     * Refresh.
+     *
+     * @param t refreshed bean
+     * @return is refreshed or not
      */
-    MYSQL("MySQL", "jdbc:mysql://"),
-    /**
-     * Compatibility modes for Oracle.
-     */
-    ORACLE("Oracle", "jdbc:oracle:thin:@"),
-    /**
-     * Compatibility modes for MS SQL Server.
-     */
-    SQL_SERVER("SQL_Server", "jdbc:microsoft:sqlserver://"),
-    /**
-     * Compatibility modes for PostgreSQL.
-     */
-    POSTGRESQL("PostgreSQL", "jdbc:postgresql://"),
-    /**
-     * Compatibility modes for IBM DB2.
-     */
-    DB2("DB2", "jdbc:db2://");
-
-    /**
-     * db name.
-     */
-    private String name;
-    /**
-     * db protocol.
-     */
-    private String protocol;
-
-    DatabaseType(final String name, final String protocol) {
-        this.name = name;
-        this.protocol = protocol;
-    }
-
+    boolean refresh(T t);
 }

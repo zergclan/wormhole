@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.factory;
 
-import com.zergclan.wormhole.core.metadata.DatabaseType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 

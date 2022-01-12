@@ -15,27 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.util;
 
-import com.zergclan.wormhole.common.SystemConstant;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-@RequiredArgsConstructor
-@Getter
-public final class SchemaMetaData implements MetaData {
-
-    private final String databaseIdentifier;
-
-    private final String name;
-
-    private final Map<String, TableMetaData> tables = new LinkedHashMap<>();
-
-    @Override
-    public String getIdentifier() {
-        return databaseIdentifier + SystemConstant.SPACE + name;
+public class SocketUtil {
+    
+    public static void main(String[] args) throws Exception {
+        List<Socket> sockets = new LinkedList<>();
+        for (int i = 0; i < 3; i++) {
+            sockets.add(new Socket("127.0.0.1", 3307));
+        }
+        System.out.println(111);
     }
 }

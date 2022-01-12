@@ -23,7 +23,7 @@ import java.io.Serializable;
  * The root interface from which all meta data objects shall be derived in Wormhole.
  */
 public interface MetaData extends Serializable {
-
+    
     /**
      * Get identifier.
      *

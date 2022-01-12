@@ -15,28 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.core.metadata.resource;
 
-import com.zergclan.wormhole.common.SystemConstant;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.MetaData;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Properties;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 /**
- * Meta data for MySQL data base.
+ * Meta data of index.
  */
-public final class MySQLDatabaseMetaData extends DatabaseMetaData {
+@RequiredArgsConstructor
+@Getter
+public final class IndexMetaData implements MetaData {
 
-    private static final DatabaseType TYPE = DatabaseType.MYSQL;
+    private final String dataSourceIdentifier;
 
-    private final Properties parameters;
+    private final String schema;
 
-    public MySQLDatabaseMetaData(final String hostName, final int port, final String catalog, final Properties parameters) {
-        super(TYPE, hostName, port, catalog);
-        this.parameters = parameters;
-    }
+    private final String table;
+
+    private final String name;
+
+    private final boolean isUnique;
+
+    private final Collection<String> columnNames = new LinkedHashSet<>();
 
     @Override
-    protected String getJdbcUrl() {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + getCatalog();
+    public String getIdentifier() {
+        return dataSourceIdentifier + MarkConstant.SPACE + schema + MarkConstant.SPACE + table + MarkConstant.SPACE + name;
     }
 }

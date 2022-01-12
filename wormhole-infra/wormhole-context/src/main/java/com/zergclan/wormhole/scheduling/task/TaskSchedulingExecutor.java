@@ -19,7 +19,6 @@ package com.zergclan.wormhole.scheduling.task;
 
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
