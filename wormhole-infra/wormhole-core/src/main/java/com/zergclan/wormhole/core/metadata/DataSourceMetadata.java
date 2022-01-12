@@ -17,17 +17,46 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 
 /**
- * The root interface from which all meta data objects shall be derived in Wormhole.
+ * The root interface from which all data source metadata objects shall be derived in Wormhole.
  */
-public interface MetaData extends Serializable {
-    
+public interface DataSourceMetadata extends Metadata {
+
     /**
-     * Get identifier.
+     * Get driver class name.
      *
-     * @return identifier
+     * @return driver class name
      */
-    String getIdentifier();
+    String getDriverClassName();
+
+    /**
+     * Get jdbc url.
+     *
+     * @return jdbc url
+     */
+    String getJdbcUrl();
+
+    /**
+     * Get username.
+     *
+     * @return username
+     */
+    String getUsername();
+
+    /**
+     * Get password.
+     *
+     * @return password
+     */
+    String getPassword();
+
+    /**
+     * Register {@link SchemaMetadata}.
+     *
+     * @param schemaMetaData {@link SchemaMetadata}
+     * @return is registered or not
+     */
+    boolean registerSchema(SchemaMetadata schemaMetaData);
 }

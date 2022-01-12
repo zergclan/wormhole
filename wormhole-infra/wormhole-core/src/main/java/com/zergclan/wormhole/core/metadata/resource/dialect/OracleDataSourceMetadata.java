@@ -18,24 +18,23 @@
 package com.zergclan.wormhole.core.metadata.resource.dialect;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.DataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
-import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringJoiner;
 
 /**
- *
+ * Metadata for Oracle data source.
  */
 @RequiredArgsConstructor
-public final class MySQLDataSourceMetaData implements DataSourceMetaData {
-    
-    private final static DatabaseType TYPE = DatabaseType.MYSQL;
+public final class OracleDataSourceMetadata implements DataSourceMetadata {
+
+    private static final DatabaseType TYPE = DatabaseType.ORACLE;
     
     private final String host;
     
@@ -52,31 +51,23 @@ public final class MySQLDataSourceMetaData implements DataSourceMetaData {
     private final Properties parameters;
     
     @Getter
-    private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
+    private final Map<String, SchemaMetadata> schemas = new LinkedHashMap<>();
     
     @Override
     public String getDriverClassName() {
-        return "com.mysql.cj.jdbc.Driver";
+        // TODO driver class name for ORACLE
+        return "";
     }
     
     @Override
     public String getJdbcUrl() {
-        return TYPE.getProtocol() + host + MarkConstant.COLON + port + MarkConstant.FORWARD_SLASH + catalog + MarkConstant.QUESTION + parseParameter(parameters);
+        return TYPE.getProtocol() + host + MarkConstant.COLON + port + MarkConstant.FORWARD_SLASH + catalog;
     }
     
     @Override
-    public boolean registerSchema(final SchemaMetaData schemaMetaData) {
+    public boolean registerSchema(final SchemaMetadata schemaMetaData) {
         schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
         return true;
-    }
-    
-    private String parseParameter(final Properties parameterProperties) {
-        StringJoiner stringJoiner = new StringJoiner(MarkConstant.AND);
-        for (Map.Entry<Object, Object> entry : parameterProperties.entrySet()) {
-            stringJoiner.add(String.valueOf(entry.getKey()));
-            stringJoiner.add(String.valueOf(entry.getValue()));
-        }
-        return stringJoiner.toString();
     }
     
     @Override

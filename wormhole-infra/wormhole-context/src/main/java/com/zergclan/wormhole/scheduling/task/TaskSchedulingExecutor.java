@@ -19,6 +19,7 @@ package com.zergclan.wormhole.scheduling.task;
 
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.data.DataGroup;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
@@ -55,7 +56,7 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private final ExecutorService executorService;
 
-    private final Map<String, ColumnMetaData> columns = new LinkedHashMap<>();
+    private final Map<String, ColumnMetadata> columns = new LinkedHashMap<>();
 
     private final Collection<Map<String, Object>> dataMaps = new LinkedList<>();
 
@@ -130,8 +131,8 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
         return result;
     }
 
-    private Map<String, ColumnMetaData> createColumns() {
-        Map<String, ColumnMetaData> result = new LinkedHashMap<>();
+    private Map<String, ColumnMetadata> createColumns() {
+        Map<String, ColumnMetadata> result = new LinkedHashMap<>();
         result.put("id", createColumn("id", "INT(11)"));
         result.put("transInt", createColumn("trans_int", "INT(11)"));
         result.put("transBigint", createColumn("trans_bigint", "BIGINT(20)"));
@@ -143,12 +144,12 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
         return result;
     }
 
-    private ColumnMetaData createColumn(final String name, final String dataType) {
+    private ColumnMetadata createColumn(final String name, final String dataType) {
         String databaseIdentifier = "MySQL#127.0.0.1:3306";
         String schema = "source_db";
         String table = "source_table";
         boolean nullable = false;
         String comment = "";
-        return new ColumnMetaData(databaseIdentifier, schema, table, name, dataType, nullable, comment);
+        return new ColumnMetadata(databaseIdentifier, schema, table, name, dataType, nullable, comment);
     }
 }

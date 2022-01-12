@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.extracter;
 
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
-import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 
 import java.util.Collection;
 import java.util.Map;
@@ -31,34 +31,34 @@ import java.util.Map;
 public interface Extractor {
 
     /**
-     * Extract {@link TableMetaData}.
+     * Extract {@link TableMetadata}.
      *
-     * @param schemaMetaData {@link SchemaMetaData}
-     * @return {@link TableMetaData}
+     * @param schemaMetaData {@link SchemaMetadata}
+     * @return {@link TableMetadata}
      */
-    Collection<TableMetaData> extractTables(SchemaMetaData schemaMetaData);
+    Collection<TableMetadata> extractTables(SchemaMetadata schemaMetaData);
 
     /**
-     * Extract {@link ColumnMetaData} of {@link TableMetaData}.
+     * Extract {@link ColumnMetadata} of {@link TableMetadata}.
      *
-     * @param tableMetaData {@link TableMetaData}
-     * @return {@link ColumnMetaData}
+     * @param tableMetaData {@link TableMetadata}
+     * @return {@link ColumnMetadata}
      */
-    Collection<ColumnMetaData> extractColumns(TableMetaData tableMetaData);
+    Collection<ColumnMetadata> extractColumns(TableMetadata tableMetaData);
 
     /**
-     * Extract {@link IndexMetaData} of {@link TableMetaData}.
+     * Extract {@link IndexMetadata} of {@link TableMetadata}.
      *
-     * @param table {@link TableMetaData}
-     * @return {@link IndexMetaData}
+     * @param table {@link TableMetadata}
+     * @return {@link IndexMetadata}
      */
-    Collection<IndexMetaData> extractIndexes(TableMetaData table);
+    Collection<IndexMetadata> extractIndexes(TableMetadata table);
 
     /**
      * Extract datum.
      *
-     * @param columns {@link ColumnMetaData}
+     * @param columns {@link ColumnMetadata}
      * @return datum
      */
-    Collection<Map<String, Object>> extractDatum(Map<String, ColumnMetaData> columns);
+    Collection<Map<String, Object>> extractDatum(Map<String, ColumnMetadata> columns);
 }

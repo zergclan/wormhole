@@ -15,22 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
+package com.zergclan.wormhole.core.metadata.resource;
 
-import com.zergclan.wormhole.core.metadata.MetaData;
-import com.zergclan.wormhole.core.metadata.Refreshable;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public final class PlanMetaData implements MetaData, Refreshable<PlanMetaData> {
-    
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * Metadata table.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class TableMetadata implements Metadata {
+
+    private final String dataSourceIdentifier;
+
+    private final String schema;
+
+    private final String name;
+
+    private final String comment;
+
+    private final Map<String, ColumnMetadata> columns = new LinkedHashMap<>();
+
+    private final Map<String, IndexMetadata> indexes = new LinkedHashMap<>();
+
     @Override
     public String getIdentifier() {
-        // TODO create planCode
-        return "plan";
-    }
-    
-    @Override
-    public boolean refresh(final PlanMetaData planMetaData) {
-        // TODO refresh
-        return false;
+        return dataSourceIdentifier + MarkConstant.SPACE + schema + MarkConstant.SPACE + name;
     }
 }

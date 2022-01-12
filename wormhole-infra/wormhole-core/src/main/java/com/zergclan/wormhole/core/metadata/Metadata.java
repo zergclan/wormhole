@@ -15,19 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.util;
+package com.zergclan.wormhole.core.metadata;
 
-import java.net.Socket;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.Serializable;
 
-public class SocketUtil {
+/**
+ * The root interface from which all metadata objects shall be derived in Wormhole.
+ */
+public interface Metadata extends Serializable {
     
-    public static void main(String[] args) throws Exception {
-        List<Socket> sockets = new LinkedList<>();
-        for (int i = 0; i < 3; i++) {
-            sockets.add(new Socket("127.0.0.1", 3307));
-        }
-        System.out.println(111);
-    }
+    /**
+     * Get identifier.
+     *
+     * @return identifier
+     */
+    String getIdentifier();
 }

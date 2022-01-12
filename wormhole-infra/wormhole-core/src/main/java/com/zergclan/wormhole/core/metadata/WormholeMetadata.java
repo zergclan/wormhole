@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.metadata;
 
+import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,66 +26,60 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Root implemented {@link MetaData} in wormhole project.
+ * Root implemented {@link Metadata} in wormhole project.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public final class WormholeMetadata implements MetaData, Cloneable, Refreshable<WormholeMetadata> {
+public final class WormholeMetadata implements Metadata, Refreshable<WormholeMetadata> {
     
-    private final Map<String, DataSourceMetaData> dataSources = new LinkedHashMap<>();
+    private final Map<String, DataSourceMetadata> dataSources = new LinkedHashMap<>();
     
-    private final Map<String, PlanMetaData> plans = new LinkedHashMap<>();
+    private final Map<String, PlanMetadata> plans = new LinkedHashMap<>();
     
-    private WormholeMetadata(final Map<String, DataSourceMetaData> dataSources, final Map<String, PlanMetaData> plans) {
+    private WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans) {
         this.dataSources.putAll(dataSources);
         this.plans.putAll(plans);
     }
     
     /**
-     * Register {@link DataSourceMetaData}.
+     * Register {@link DataSourceMetadata}.
      *
-     * @param dataSourceMetaData {@link DataSourceMetaData}
+     * @param dataSourceMetaData {@link DataSourceMetadata}
      * @return is registered or not
      */
-    public MetaData register(final DataSourceMetaData dataSourceMetaData) {
+    public Metadata register(final DataSourceMetadata dataSourceMetaData) {
         return dataSources.put(dataSourceMetaData.getIdentifier(), dataSourceMetaData);
     }
     
     /**
-     * Register {@link PlanMetaData}.
+     * Register {@link PlanMetadata}.
      *
-     * @param planMetaData {@link PlanMetaData}
+     * @param planMetadata {@link PlanMetadata}
      * @return is registered or not
      */
-    public MetaData register(final PlanMetaData planMetaData) {
-        return plans.put(planMetaData.getIdentifier(), planMetaData);
+    public Metadata register(final PlanMetadata planMetadata) {
+        return plans.put(planMetadata.getIdentifier(), planMetadata);
     }
     
     @Override
     public String getIdentifier() {
         return "wormhole";
     }
-    
-    @Override
-    protected WormholeMetadata clone() throws CloneNotSupportedException {
-        super.clone();
-        return new WormholeMetadata(this.dataSources, this.plans);
-    }
-    
+
     @Override
     public boolean refresh(final WormholeMetadata wormholeMetadata) {
         return refreshResources(wormholeMetadata.getDataSources()) && refreshPlans(wormholeMetadata.getPlans());
     }
     
-    private boolean refreshResources(final Map<String, DataSourceMetaData> dataSources) {
-        for (Map.Entry<String, DataSourceMetaData> entry : dataSources.entrySet()) {
+    private boolean refreshResources(final Map<String, DataSourceMetadata> dataSources) {
+        for (Map.Entry<String, DataSourceMetadata> entry : dataSources.entrySet()) {
             register(entry.getValue());
         }
         return true;
     }
     
-    private boolean refreshPlans(final Map<String, PlanMetaData> plans) {
-        for (Map.Entry<String, PlanMetaData> entry : plans.entrySet()) {
+    private boolean refreshPlans(final Map<String, PlanMetadata> plans) {
+        for (Map.Entry<String, PlanMetadata> entry : plans.entrySet()) {
             register(entry.getValue());
         }
         return true;

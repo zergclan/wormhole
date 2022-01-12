@@ -18,9 +18,9 @@
 package com.zergclan.wormhole.core.metadata.resource.dialect;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.DataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
-import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -29,12 +29,12 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Meta data for Oracle data source.
+ * Metadata for PostgreSQL data source.
  */
 @RequiredArgsConstructor
-public final class OracleDataSourceMetaData implements DataSourceMetaData {
+public final class PostgreSQLDataSourceMetadata implements DataSourceMetadata {
 
-    private static final DatabaseType TYPE = DatabaseType.ORACLE;
+    private static final DatabaseType TYPE = DatabaseType.POSTGRESQL;
     
     private final String host;
     
@@ -51,12 +51,11 @@ public final class OracleDataSourceMetaData implements DataSourceMetaData {
     private final Properties parameters;
     
     @Getter
-    private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
+    private final Map<String, SchemaMetadata> schemas = new LinkedHashMap<>();
     
     @Override
     public String getDriverClassName() {
-        // TODO driver class name for ORACLE
-        return "";
+        return "org.postgresql.Driver";
     }
     
     @Override
@@ -65,7 +64,7 @@ public final class OracleDataSourceMetaData implements DataSourceMetaData {
     }
     
     @Override
-    public boolean registerSchema(final SchemaMetaData schemaMetaData) {
+    public boolean registerSchema(final SchemaMetadata schemaMetaData) {
         schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
         return true;
     }

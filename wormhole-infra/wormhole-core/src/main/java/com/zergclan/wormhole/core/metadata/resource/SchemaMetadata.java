@@ -15,19 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata;
+package com.zergclan.wormhole.core.metadata.resource;
 
-import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public interface DataSourceMetaData extends MetaData {
-    
-    String getDriverClassName();
-    
-    String getJdbcUrl();
-    
-    String getUsername();
-    
-    String getPassword();
-    
-    boolean registerSchema(SchemaMetaData schemaMetaData);
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * Metadata of schema.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class SchemaMetadata implements Metadata {
+
+    private final String dataSourceIdentifier;
+
+    private final String name;
+
+    private final Map<String, TableMetadata> tables = new LinkedHashMap<>();
+
+    @Override
+    public String getIdentifier() {
+        return dataSourceIdentifier + MarkConstant.SPACE + name;
+    }
 }

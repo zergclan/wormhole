@@ -18,25 +18,33 @@
 package com.zergclan.wormhole.core.metadata.resource;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.MetaData;
+import com.zergclan.wormhole.core.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
+/**
+ * Metadata for column.
+ */
 @RequiredArgsConstructor
 @Getter
-public final class SchemaMetaData implements MetaData {
+public final class ColumnMetadata implements Metadata {
 
     private final String dataSourceIdentifier;
 
+    private final String schema;
+
+    private final String table;
+
     private final String name;
 
-    private final Map<String, TableMetaData> tables = new LinkedHashMap<>();
+    private final String dataType;
+
+    private final boolean nullable;
+
+    private final String comment;
 
     @Override
     public String getIdentifier() {
-        return dataSourceIdentifier + MarkConstant.SPACE + name;
+        return dataSourceIdentifier + MarkConstant.SPACE + schema + MarkConstant.SPACE + table + MarkConstant.SPACE + name;
     }
 }

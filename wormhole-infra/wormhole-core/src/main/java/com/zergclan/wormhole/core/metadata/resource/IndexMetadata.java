@@ -18,16 +18,19 @@
 package com.zergclan.wormhole.core.metadata.resource;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.MetaData;
+import com.zergclan.wormhole.core.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
+
 /**
- * Meta data for column.
+ * Metadata of index.
  */
 @RequiredArgsConstructor
 @Getter
-public final class ColumnMetaData implements MetaData {
+public final class IndexMetadata implements Metadata {
 
     private final String dataSourceIdentifier;
 
@@ -37,11 +40,9 @@ public final class ColumnMetaData implements MetaData {
 
     private final String name;
 
-    private final String dataType;
+    private final boolean isUnique;
 
-    private final boolean nullable;
-
-    private final String comment;
+    private final Collection<String> columnNames = new LinkedHashSet<>();
 
     @Override
     public String getIdentifier() {
