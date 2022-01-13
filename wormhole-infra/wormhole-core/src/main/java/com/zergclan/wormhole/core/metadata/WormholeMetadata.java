@@ -19,7 +19,6 @@ package com.zergclan.wormhole.core.metadata;
 
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedHashMap;
@@ -29,17 +28,11 @@ import java.util.Map;
  * Root implemented {@link Metadata} in wormhole project.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Getter
-public final class WormholeMetadata implements Metadata, Refreshable<WormholeMetadata> {
+public final class WormholeMetadata implements Metadata {
     
     private final Map<String, DataSourceMetadata> dataSources = new LinkedHashMap<>();
     
     private final Map<String, PlanMetadata> plans = new LinkedHashMap<>();
-    
-    private WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans) {
-        this.dataSources.putAll(dataSources);
-        this.plans.putAll(plans);
-    }
     
     /**
      * Register {@link DataSourceMetadata}.
@@ -64,24 +57,5 @@ public final class WormholeMetadata implements Metadata, Refreshable<WormholeMet
     @Override
     public String getIdentifier() {
         return "wormhole";
-    }
-
-    @Override
-    public boolean refresh(final WormholeMetadata wormholeMetadata) {
-        return refreshResources(wormholeMetadata.getDataSources()) && refreshPlans(wormholeMetadata.getPlans());
-    }
-    
-    private boolean refreshResources(final Map<String, DataSourceMetadata> dataSources) {
-        for (Map.Entry<String, DataSourceMetadata> entry : dataSources.entrySet()) {
-            register(entry.getValue());
-        }
-        return true;
-    }
-    
-    private boolean refreshPlans(final Map<String, PlanMetadata> plans) {
-        for (Map.Entry<String, PlanMetadata> entry : plans.entrySet()) {
-            register(entry.getValue());
-        }
-        return true;
     }
 }
