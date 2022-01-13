@@ -18,57 +18,33 @@
 package com.zergclan.wormhole.core.metadata.plan;
 
 import com.zergclan.wormhole.core.metadata.Metadata;
-import com.zergclan.wormhole.core.metadata.Refreshable;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Metadata for plan.
+ * Metadata for task.
  */
 @RequiredArgsConstructor
-@Getter
-public final class PlanMetadata implements Metadata, Refreshable<TaskMetadata> {
+public final class TaskMetadata implements Metadata {
     
     private final String code;
     
-    private final ExecutionMode executionMode;
+    private final String sourceResource;
     
-    private final String executionCorn;
-    
-    private final LocalDateTime effectiveDate;
-    
-    private final AtomicBoolean execute;
+    private final String targetResource;
     
     private final AtomicBoolean enable;
     
-    private final AtomicLong executionCount;
+    private final Map<String, Collection<String>> dataNodeMapping = new LinkedHashMap<>();
     
-    private final Map<String, TaskMetadata> tasks = new LinkedHashMap<>();
+    private final Map<String, DataNodeMetadata> dataNodes = new LinkedHashMap<>();
     
     @Override
     public String getIdentifier() {
         return code;
-    }
-    
-    /**
-     * Register {@link TaskMetadata}.
-     *
-     * @param taskMetadata {@link TaskMetadata}
-     * @return is registered or not
-     */
-    public Metadata register(final TaskMetadata taskMetadata) {
-        return tasks.put(taskMetadata.getIdentifier(), taskMetadata);
-    }
-    
-    @Override
-    public boolean refresh(final TaskMetadata taskMetadata) {
-        tasks.put(taskMetadata.getIdentifier(), taskMetadata);
-        return true;
     }
 }
