@@ -15,24 +15,49 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.common.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
- * Util tools for Object.
+ * Util tools for Date.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ObjectUtil {
+public final class DateUtil {
     
     /**
-     * Is null.
+     * Get current time millis.
      *
-     * @param object object
-     * @return is null object or not.
+     * @return current time millis
      */
-    public static boolean isNull(final Object object) {
-        return null == object;
+    public static long currentTimeMillis() {
+        return System.currentTimeMillis();
+    }
+
+    /**
+     * Format {@link Date}.
+     *
+     * @param date {@link Date}
+     * @param pattern pattern
+     * @return format date text
+     */
+    public static String format(final Date date, final String pattern) {
+        return new SimpleDateFormat(pattern).format(date);
+    }
+
+    /**
+     * Parse date text to {@link Date}.
+     *
+     * @param text date text
+     * @param pattern pattern
+     * @return {@link Date}
+     */
+    public static Date parse(final String text, final String pattern) {
+        return new SimpleDateFormat(pattern).parse(text, new ParsePosition(0));
     }
 }

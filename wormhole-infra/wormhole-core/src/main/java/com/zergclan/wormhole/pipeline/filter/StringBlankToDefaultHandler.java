@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.common.StringUtil;
+import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.core.data.DataNode;
 import com.zergclan.wormhole.pipeline.DataNodeFilter;
 import lombok.RequiredArgsConstructor;

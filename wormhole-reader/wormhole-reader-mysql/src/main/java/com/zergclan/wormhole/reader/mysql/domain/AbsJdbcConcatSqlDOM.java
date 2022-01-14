@@ -17,8 +17,7 @@
 
 package com.zergclan.wormhole.reader.mysql.domain;
 
-import com.zergclan.wormhole.common.StringUtil;
-
+import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.reader.mysql.WormholeReaderConstants;
 
 /**

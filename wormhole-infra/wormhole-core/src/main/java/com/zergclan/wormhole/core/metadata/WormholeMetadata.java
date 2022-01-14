@@ -17,12 +17,20 @@
 
 package com.zergclan.wormhole.core.metadata;
 
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import com.zergclan.wormhole.pipeline.DataNodePipeline;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Root implemented {@link Metadata} in wormhole project.
@@ -30,28 +38,102 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeMetadata implements Metadata {
     
+    private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
+    
     private final Map<String, DataSourceMetadata> dataSources = new LinkedHashMap<>();
     
     private final Map<String, PlanMetadata> plans = new LinkedHashMap<>();
     
+    private final Map<String, DataNodePipeline<?>> pipelines = new LinkedHashMap<>();
+    
     /**
-     * Register {@link DataSourceMetadata}.
+     * Get {@link PlanMetadata} by plan identifier.
      *
-     * @param dataSourceMetaData {@link DataSourceMetadata}
-     * @return is registered or not
+     * @param planIdentifier plan identifier
+     * @return {@link PlanMetadata}
      */
-    public Metadata register(final DataSourceMetadata dataSourceMetaData) {
-        return dataSources.put(dataSourceMetaData.getIdentifier(), dataSourceMetaData);
+    public Optional<PlanMetadata> get(final String planIdentifier) {
+        Validator.notNull(planIdentifier, "error : get plan metadata plan identifier can not be null");
+        LOCK.readLock().lock();
+        try {
+            PlanMetadata planMetadata = plans.get(planIdentifier);
+            return null == planMetadata ? Optional.empty() : Optional.of(planMetadata);
+        } finally {
+            LOCK.readLock().unlock();
+        }
     }
     
     /**
-     * Register {@link PlanMetadata}.
+     * Get {@link CachedPlanMetadata} by plan identifier.
      *
-     * @param planMetadata {@link PlanMetadata}
+     * @param planIdentifier plan identifier
+     * @return {@link CachedPlanMetadata}
+     */
+    public Optional<CachedPlanMetadata> cachedMetadata(final String planIdentifier) {
+        Validator.notNull(planIdentifier, "error : cached plan metadata plan identifier can not be null");
+        LOCK.writeLock().lock();
+        try {
+            PlanMetadata planMetadata = plans.get(planIdentifier);
+            if (null == planMetadata) {
+                return Optional.empty();
+            }
+            return Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources, pipelines));
+        } finally {
+            LOCK.writeLock().unlock();
+        }
+    }
+    
+    /**
+     * Register {@link Metadata}.
+     *
+     * @param metadata {@link Metadata}
      * @return is registered or not
      */
-    public Metadata register(final PlanMetadata planMetadata) {
-        return plans.put(planMetadata.getIdentifier(), planMetadata);
+    public boolean register(final Metadata metadata) {
+        Validator.notNull(metadata, "error : metadata can not be null");
+        final ReentrantReadWriteLock.WriteLock writeLock = LOCK.writeLock();
+        writeLock.lock();
+        try {
+            if (metadata instanceof DataSourceMetadata) {
+                return register((DataSourceMetadata) metadata);
+            }
+            if (metadata instanceof SchemaMetadata) {
+                return register((SchemaMetadata) metadata);
+            }
+            if (metadata instanceof PlanMetadata) {
+                return register((PlanMetadata) metadata);
+            }
+            if (metadata instanceof TaskMetadata) {
+                return register((TaskMetadata) metadata);
+            }
+            throw new WormholeException("error : register metadata failed [%s] not find", metadata.getIdentifier());
+        } finally {
+            writeLock.unlock();
+        }
+    }
+    
+    private boolean register(final DataSourceMetadata dataSourceMetaData) {
+        dataSources.put(dataSourceMetaData.getIdentifier(), dataSourceMetaData);
+        return true;
+    }
+    
+    private boolean register(final SchemaMetadata schemaMetadata) {
+        String dataSourceIdentifier = schemaMetadata.getDataSourceIdentifier();
+        DataSourceMetadata dataSourceMetadata = dataSources.get(dataSourceIdentifier);
+        dataSourceMetadata.registerSchema(schemaMetadata);
+        return true;
+    }
+    
+    private boolean register(final PlanMetadata planMetadata) {
+        plans.put(planMetadata.getIdentifier(), planMetadata);
+        return true;
+    }
+    
+    private boolean register(final TaskMetadata taskMetadata) {
+        String jobIdentifier = taskMetadata.getPlanIdentifier();
+        PlanMetadata planMetadata = plans.get(jobIdentifier);
+        planMetadata.register(taskMetadata);
+        return true;
     }
     
     @Override

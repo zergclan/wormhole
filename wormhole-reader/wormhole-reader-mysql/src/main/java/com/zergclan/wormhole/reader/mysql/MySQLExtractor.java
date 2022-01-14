@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.reader.mysql;
 
-import com.zergclan.wormhole.common.StringUtil;
+import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
