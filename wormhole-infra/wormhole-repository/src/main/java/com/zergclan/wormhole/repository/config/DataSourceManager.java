@@ -19,8 +19,8 @@ package com.zergclan.wormhole.repository.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.common.StringUtil;
 import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.repository.entity.DataSourceInformation;
 import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.Map;

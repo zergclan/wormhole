@@ -15,40 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.definition;
-
-import lombok.Getter;
-
-import java.util.Optional;
+package com.zergclan.wormhole.common.util;
 
 /**
- * Execution mode.
+ * Util tools for String.
+ * <p>
+ *     Mainly for internal use within the framework,
+ *     referenced {@code org.apache.commons.lang3.Validate} from
+ *     <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
+ * </p>
  */
-@Getter
-public enum ExecutionMode {
-
-    SINGLE(0),
-
-    CYCLE(1);
-
-    private final Integer code;
-
-    ExecutionMode(final Integer code) {
-        this.code = code;
-    }
-
+public final class StringUtil {
+    
     /**
-     * Get {@link ExecutionMode} by code.
+     * Is blank validation of char sequence.
      *
-     * @param code code
-     * @return {@link ExecutionMode}
+     * @param charSequence char sequence
+     * @return is blank or not
      */
-    public static Optional<ExecutionMode> getExecutionMode(final Integer code) {
-        if (SINGLE.code.equals(code)) {
-            return Optional.of(SINGLE);
-        } else if (CYCLE.code.equals(code)) {
-            return Optional.of(CYCLE);
+    public static boolean isBlank(final CharSequence charSequence) {
+        final int strLen = charSequence == null ? 0 : charSequence.length();
+        if (strLen == 0) {
+            return true;
         }
-        return Optional.empty();
+        for (int i = 0; i < strLen; ++i) {
+            if (!Character.isWhitespace(charSequence.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

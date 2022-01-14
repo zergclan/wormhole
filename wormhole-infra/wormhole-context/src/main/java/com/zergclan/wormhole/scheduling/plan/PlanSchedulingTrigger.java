@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
-import com.zergclan.wormhole.definition.PlanDefinition;
 import com.zergclan.wormhole.scheduling.SchedulingTrigger;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +31,13 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public final class PlanSchedulingTrigger implements SchedulingTrigger {
 
-    private final PlanDefinition planDefinition;
-
+    private final String planIdentifier;
+    
     @Override
-    public String getCode() {
-        return planDefinition.getCode();
+    public String getIdentifier() {
+        return planIdentifier;
     }
-
+    
     @Override
     public long getDelay(final TimeUnit timeUnit) {
         return 0;

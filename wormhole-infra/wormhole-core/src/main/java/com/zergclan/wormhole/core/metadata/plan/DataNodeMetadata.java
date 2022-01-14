@@ -27,12 +27,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class DataNodeMetadata implements Metadata {
     
+    private final String taskIdentifier;
+    
     private final String columnIdentifier;
     
     private final DataNodeType type;
     
     @Override
     public String getIdentifier() {
-        return columnIdentifier + MarkConstant.COLON + type.getIdentifier();
+        return taskIdentifier + MarkConstant.SPACE + columnIdentifier + MarkConstant.COLON + type.getIdentifier();
     }
 }

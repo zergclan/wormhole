@@ -15,23 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.definition;
+package com.zergclan.wormhole.common.util;
 
-import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Objects;
 
 /**
- * Definition of task.
+ * Util tools for Validator.
+ * <p>
+ *     Mainly for internal use within the framework,
+ *     referenced {@code org.apache.commons.lang3.Validate} from
+ *     <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
+ * </p>
  */
-@Data
-public final class TaskDefinition implements Serializable {
-
-    private static final long serialVersionUID = 1457965137151385333L;
-
-    private final String code;
-
-    private final Collection<DataNodeDefinition> dataNodeDefinitions = new LinkedList<>();
+public final class Validator {
+    
+    /**
+     * Validate not null.
+     *
+     * @param object object
+     * @param message error message
+     * @param args args
+     * @param <T> class type of object
+     * @return object
+     */
+    public static <T> T notNull(final T object, final String message, final Object... args) {
+        return Objects.requireNonNull(object, () -> String.format(message, args));
+    }
 }

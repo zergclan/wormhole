@@ -15,49 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.engine;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
- * Util tools for Date.
+ * Initializer of {@link WormholeExecutionEngine}.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateUtil {
+public final class WormholeExecutionEngineInitializer {
     
     /**
-     * Get current time millis.
+     * Init {@link WormholeExecutionEngine} by {@link WormholeEngineConfig}.
      *
-     * @return current time millis
+     * @param wormholeConfig {@link WormholeEngineConfig}
+     * @return {@link WormholeExecutionEngine}
      */
-    public static long currentTimeMillis() {
-        return System.currentTimeMillis();
-    }
-
-    /**
-     * Format {@link Date}.
-     *
-     * @param date {@link Date}
-     * @param pattern pattern
-     * @return format date text
-     */
-    public static String format(final Date date, final String pattern) {
-        return new SimpleDateFormat(pattern).format(date);
-    }
-
-    /**
-     * Parse date text to {@link Date}.
-     *
-     * @param text date text
-     * @param pattern pattern
-     * @return {@link Date}
-     */
-    public static Date parse(final String text, final String pattern) {
-        return new SimpleDateFormat(pattern).parse(text, new ParsePosition(0));
+    public static WormholeExecutionEngine init(final WormholeEngineConfig wormholeConfig) {
+        // FIXME create WormholeExecutionEngine
+        return new WormholeExecutionEngine(null);
     }
 }

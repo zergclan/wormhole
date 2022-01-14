@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.core.concurrent;
 
 import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.util.Validator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -68,17 +69,15 @@ public final class ExecutorServiceFactory {
      * @param maxSize Maximum size of threads
      * @param namePrefix name prefix of thread in thread pool executor
      * @param workQueueSize work queue size
-     * @param keepAliveTime keep alive time
      * @param handler wormhole rejected handler
      * @return wormhole executor service instance
      */
-    public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize, final int keepAliveTime,
-                                                         final ExecutorRejectedHandler handler) {
-        return new ExecutorBuilder().corePoolSize(coreSize).maxPoolSize(maxSize).namePrefix(namePrefix).keepAliveTime(keepAliveTime).workQueueSize(workQueueSize).handler(handler).build();
+    public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize, final ExecutorRejectedHandler handler) {
+        return new ExecutorBuilder().corePoolSize(coreSize).maxPoolSize(maxSize).namePrefix(namePrefix).workQueueSize(workQueueSize).handler(handler).build();
     }
 
     /**
-     * Builder for WormholeExecutorService.
+     * Builder for {@link ExecutorService}.
      */
     private static class ExecutorBuilder {
 
@@ -151,27 +150,19 @@ public final class ExecutorServiceFactory {
             if (null == namePrefix) {
                 namePrefix = "default";
             }
-            if (null == handler) {
-                handler = new DefaultExecutorRejectedHandler();
+            if (null == workQueue) {
+                workQueue = new ArrayBlockingQueue<>(workQueueSize);
             }
             if (null == threadFactory) {
                 threadFactory = new DefaultThreadFactory(namePrefix);
             }
-            return new ExecutorService(new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, new ArrayBlockingQueue<>(workQueueSize), threadFactory), handler);
+            if (null == handler) {
+                handler = new DefaultExecutorRejectedHandler();
+            }
+            return new ExecutorService(new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, workQueue, threadFactory), handler);
         }
     }
-
-    /**
-     * Default implemented {@link ExecutorRejectedHandler} for WormholeExecutorService.
-     */
-    private static class DefaultExecutorRejectedHandler implements ExecutorRejectedHandler {
-
-        @Override
-        public <V> Future<V> handle(final PromisedTask<V> task) {
-            throw new WormholeException("error : promised task");
-        }
-    }
-
+    
     /**
      * Default thread factory for WormholeExecutorService.
      */
@@ -192,7 +183,10 @@ public final class ExecutorServiceFactory {
             
         }
         
+        @SuppressWarnings("all")
+        @Override
         public Thread newThread(final Runnable runnable) {
+            Validator.notNull(runnable, "error : new thread runnable is null");
             Thread result = new Thread(group, runnable, namePrefix + THREAD_NUMBER.getAndIncrement());
             if (result.isDaemon()) {
                 result.setDaemon(false);
@@ -201,6 +195,17 @@ public final class ExecutorServiceFactory {
                 result.setPriority(Thread.NORM_PRIORITY);
             }
             return result;
+        }
+    }
+    
+    /**
+     * Default implemented {@link ExecutorRejectedHandler} for WormholeExecutorService.
+     */
+    private static class DefaultExecutorRejectedHandler implements ExecutorRejectedHandler {
+        
+        @Override
+        public <V> Future<V> handle(final PromisedTask<V> task) {
+            throw new WormholeException("error : executor rejected");
         }
     }
 }

@@ -17,7 +17,9 @@
 
 package com.zergclan.wormhole.core.metadata.plan;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
@@ -29,7 +31,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Metadata for task.
  */
 @RequiredArgsConstructor
+@Getter
 public final class TaskMetadata implements Metadata {
+    
+    private final String planIdentifier;
     
     private final String code;
     
@@ -45,6 +50,6 @@ public final class TaskMetadata implements Metadata {
     
     @Override
     public String getIdentifier() {
-        return code;
+        return planIdentifier + MarkConstant.SPACE + code;
     }
 }
