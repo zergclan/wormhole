@@ -31,5 +31,6 @@ public final class MarkConstantTest {
         assertEquals("?", MarkConstant.QUESTION);
         assertEquals("&", MarkConstant.AND);
         assertEquals("@", MarkConstant.AT);
+        assertEquals("=", MarkConstant.EQUAL);
     }
 }

@@ -28,37 +28,40 @@ public enum DatabaseType {
     /**
      * Compatibility modes for MySQL.
      */
-    MYSQL("MySQL", "jdbc:mysql://", 3306),
+    MYSQL("MySQL", "jdbc:mysql://", 3306, "com.mysql.cj.jdbc.Driver"),
     
     /**
      * Compatibility modes for Oracle.
      */
-    ORACLE("Oracle", "jdbc:oracle:thin:@", 1521),
+    ORACLE("Oracle", "jdbc:oracle:thin:@", 1521, "oracle.jdbc.OracleDriver"),
     
     /**
      * Compatibility modes for MS SQL Server.
      */
-    SQL_SERVER("SQL_Server", "jdbc:microsoft:sqlserver://", 1433),
+    SQL_SERVER("SQL_Server", "jdbc:microsoft:sqlserver://", 1433, "om.microsoft.sqlserver.jdbc.SQLServerDriver"),
     
     /**
      * Compatibility modes for PostgreSQL.
      */
-    POSTGRESQL("PostgreSQL", "jdbc:postgresql://", 5431),
+    POSTGRESQL("PostgreSQL", "jdbc:postgresql://", 5431, "org.postgresql.Driver"),
     
     /**
      * Compatibility modes for H2.
      */
-    H2("H2", "jdbc:h2:", -1);
+    H2("H2", "jdbc:h2:", -1, "org.h2.Driver");
     
     private final String name;
     
     private final String protocol;
     
     private final Integer defaultPort;
+
+    private final String defaultDriverClassName;
     
-    DatabaseType(final String name, final String protocol, final Integer defaultPort) {
+    DatabaseType(final String name, final String protocol, final Integer defaultPort, final String defaultDriverClassName) {
         this.name = name;
         this.protocol = protocol;
         this.defaultPort = defaultPort;
+        this.defaultDriverClassName = defaultDriverClassName;
     }
 }

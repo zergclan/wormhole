@@ -19,13 +19,14 @@ package com.zergclan.wormhole.scheduling;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zergclan.wormhole.DataSourceManager;
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.concurrent.ExecutorServiceFactory;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
-import com.zergclan.wormhole.jdbc.JdbcTemplateFactory;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.reader.mysql.MySQLExtractor;
 import com.zergclan.wormhole.scheduling.plan.PlanSchedulingExecutor;
@@ -33,11 +34,11 @@ import com.zergclan.wormhole.scheduling.task.TaskSchedulingExecutor;
 import com.zergclan.wormhole.writer.mysql.MySQLLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Properties;
 
 /**
  * {@link SchedulingExecutor} factory.
@@ -83,23 +84,29 @@ public final class SchedulingExecutorFactory {
     }
 
     private static Extractor createExtractor() {
-        String driverClassName = "com.mysql.cj.jdbc.Driver";
-        String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/source_db?serverTimezone=UTC&useSSL=false";
+        int port = 3306;
+        String host = "127.0.0.1";
         String username = "root";
         String password = "123456";
-        DataSource dataSource = createDataSource(driverClassName, jdbcUrl, username, password);
-        JdbcTemplate jdbcTemplate = JdbcTemplateFactory.createJdbcTemplate(dataSource);
-        return new MySQLExtractor(jdbcTemplate);
+        String catalog = "source_db";
+        Properties properties = new Properties();
+        properties.setProperty("serverTimezone", "UTC");
+        properties.setProperty("useSSL", "false");
+        MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
+        return new MySQLExtractor(DataSourceManager.register(dataSourceMetadata));
     }
 
     private static Loader createLoader() {
-        String driverClassName = "com.mysql.cj.jdbc.Driver";
-        String jdbcUrl = "jdbc:mysql://127.0.0.1:3307/target_db?serverTimezone=UTC&useSSL=false";
+        int port = 3307;
+        String host = "127.0.0.1";
         String username = "root";
         String password = "123456";
-        DataSource dataSource = createDataSource(driverClassName, jdbcUrl, username, password);
-        JdbcTemplate jdbcTemplate = JdbcTemplateFactory.createJdbcTemplate(dataSource);
-        return new MySQLLoader(jdbcTemplate);
+        String catalog = "target_db";
+        Properties properties = new Properties();
+        properties.setProperty("serverTimezone", "UTC");
+        properties.setProperty("useSSL", "false");
+        MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
+        return new MySQLLoader(DataSourceManager.register(dataSourceMetadata));
     }
 
     private static DataSource createDataSource(final String driverClassName, final String jdbcUrl, final String username, final String password) {

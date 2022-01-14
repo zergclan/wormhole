@@ -18,18 +18,19 @@
 package com.zergclan.wormhole.reader.mysql;
 
 import com.google.gson.Gson;
+import com.zergclan.wormhole.DataSourceManager;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
-import com.zergclan.wormhole.repository.config.DataSourceManager;
-import com.zergclan.wormhole.repository.entity.DataSourceInformation;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Mysql extractor test.
@@ -82,16 +83,19 @@ public final class MySQLExtractorTest {
     /**
      * Init extractor.
      *
-     * @return
+     * @return Extractor.
      */
     private Extractor initExtractor() {
-        DataSourceInformation dataSourceInformation = new DataSourceInformation();
-        dataSourceInformation.setId("test");
-        dataSourceInformation.setDbUser("root");
-        dataSourceInformation.setDbPassword("123456");
-        dataSourceInformation.setDbType("mysql");
-        dataSourceInformation.setJdbcUrl("jdbc:mysql://10.168.1.10:3306?characterEncoding=utf-8&useSSL=false");
-        return new MySQLExtractor(DataSourceManager.registerDataSource(dataSourceInformation));
+        int port = 3306;
+        String host = "10.168.1.10";
+        String username = "root";
+        String password = "123456";
+        String catalog = "mysql";
+        Properties properties = new Properties();
+        properties.setProperty("characterEncoding", "utf-8");
+        properties.setProperty("useSSL", "false");
+        MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
+        return new MySQLExtractor(DataSourceManager.register(dataSourceMetadata));
     }
 
 }
