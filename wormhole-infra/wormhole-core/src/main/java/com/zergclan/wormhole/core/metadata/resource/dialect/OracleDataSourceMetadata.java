@@ -35,41 +35,40 @@ import java.util.Properties;
 public final class OracleDataSourceMetadata implements DataSourceMetadata {
 
     private static final DatabaseType TYPE = DatabaseType.ORACLE;
-    
+
     private final String host;
-    
+
     private final int port;
-    
+
     @Getter
     private final String username;
-    
+
     @Getter
     private final String password;
-    
+
     private final String catalog;
-    
+
     private final Properties parameters;
-    
+
     @Getter
     private final Map<String, SchemaMetadata> schemas = new LinkedHashMap<>();
-    
+
     @Override
     public String getDriverClassName() {
-        // TODO driver class name for ORACLE
-        return "";
+        return TYPE.getDefaultDriverClassName();
     }
-    
+
     @Override
     public String getJdbcUrl() {
         return TYPE.getProtocol() + host + MarkConstant.COLON + port + MarkConstant.FORWARD_SLASH + catalog;
     }
-    
+
     @Override
     public boolean registerSchema(final SchemaMetadata schemaMetaData) {
         schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
         return true;
     }
-    
+
     @Override
     public String getIdentifier() {
         return TYPE.getName() + MarkConstant.SPACE + host + MarkConstant.COLON + port + MarkConstant.COLON + catalog + MarkConstant.SPACE + username + MarkConstant.AT + password;

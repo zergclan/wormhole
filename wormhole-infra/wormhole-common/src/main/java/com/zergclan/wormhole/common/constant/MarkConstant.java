@@ -37,4 +37,6 @@ public final class MarkConstant {
     public static final String AND = "&";
     
     public static final String AT = "@";
+
+    public static final String EQUAL = "=";
 }

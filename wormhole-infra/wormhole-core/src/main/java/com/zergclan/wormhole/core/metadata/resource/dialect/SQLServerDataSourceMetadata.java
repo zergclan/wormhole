@@ -55,8 +55,7 @@ public final class SQLServerDataSourceMetadata implements DataSourceMetadata {
     
     @Override
     public String getDriverClassName() {
-        // TODO driver class name for ORACLE
-        return "";
+        return TYPE.getDefaultDriverClassName();
     }
     
     @Override

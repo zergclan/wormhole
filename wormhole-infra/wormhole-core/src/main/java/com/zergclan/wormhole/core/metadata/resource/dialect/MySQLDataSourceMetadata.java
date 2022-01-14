@@ -57,7 +57,7 @@ public final class MySQLDataSourceMetadata implements DataSourceMetadata {
     
     @Override
     public String getDriverClassName() {
-        return "com.mysql.cj.jdbc.Driver";
+        return TYPE.getDefaultDriverClassName();
     }
     
     @Override
@@ -74,8 +74,7 @@ public final class MySQLDataSourceMetadata implements DataSourceMetadata {
     private String parseParameter(final Properties parameterProperties) {
         StringJoiner stringJoiner = new StringJoiner(MarkConstant.AND);
         for (Map.Entry<Object, Object> entry : parameterProperties.entrySet()) {
-            stringJoiner.add(String.valueOf(entry.getKey()));
-            stringJoiner.add(String.valueOf(entry.getValue()));
+            stringJoiner.add(entry.getKey() + MarkConstant.EQUAL + entry.getValue());
         }
         String result = stringJoiner.toString();
         return StringUtil.isBlank(result) ? "" : MarkConstant.QUESTION + result;
