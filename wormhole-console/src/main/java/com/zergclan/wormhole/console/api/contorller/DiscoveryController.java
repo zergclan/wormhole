@@ -19,12 +19,14 @@ package com.zergclan.wormhole.console.api.contorller;
 
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Service discovery controller.
  */
 @RestController
+@RequestMapping("/metrics")
 public class DiscoveryController extends AbstractRestController {
 
     /**

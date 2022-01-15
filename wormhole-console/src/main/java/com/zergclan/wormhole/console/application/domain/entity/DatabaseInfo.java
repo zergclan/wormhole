@@ -29,11 +29,11 @@ public final class DatabaseInfo extends AbstractPO {
     
     private static final long serialVersionUID = -2497678602227442782L;
     
-    private String title;
-    
     private String host;
     
     private Integer port;
+
+    private String catalog;
     
     private Integer type;
     

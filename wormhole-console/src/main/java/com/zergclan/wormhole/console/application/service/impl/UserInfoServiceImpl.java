@@ -49,8 +49,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
     
     @Override
-    public void removeById(final Integer id) {
+    public boolean removeById(final Integer id) {
         userInfoRepository.remove(id);
+        return false;
     }
     
     @Override

@@ -88,8 +88,8 @@ public class AbstractTransactionalRepository<T extends AbstractPO> implements Ba
     
     @Transactional(rollbackFor = Throwable.class)
     @Override
-    public void remove(final Integer id) {
-        baseMapper.deleteById(id);
+    public boolean remove(final Integer id) {
+        return baseMapper.deleteById(id) == 1;
     }
     
     @Transactional(readOnly = true)
@@ -120,6 +120,12 @@ public class AbstractTransactionalRepository<T extends AbstractPO> implements Ba
     @Override
     public Collection<T> list(final Collection<Integer> ids) {
         return baseMapper.listInIds(ids);
+    }
+    
+    @Transactional(readOnly = true)
+    @Override
+    public Collection<T> list(final T po) {
+        return baseMapper.listByQuery(po);
     }
     
     @Transactional(readOnly = true)

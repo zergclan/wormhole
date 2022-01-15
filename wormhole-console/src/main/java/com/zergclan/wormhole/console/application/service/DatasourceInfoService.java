@@ -39,15 +39,17 @@ public interface DatasourceInfoService {
      * Edit {@link DatasourceInfo} by id.
      *
      * @param datasourceInfo {@link DatasourceInfo}
+     * @return is edited or not
      */
-    void editById(DatasourceInfo datasourceInfo);
+    boolean editById(DatasourceInfo datasourceInfo);
 
     /**
      * Remove {@link DatasourceInfo} by id.
      *
      * @param id id
+     * @return is removed or not
      */
-    void removeById(Integer id);
+    boolean removeById(Integer id);
 
     /**
      * Get {@link DatasourceInfo} by id.

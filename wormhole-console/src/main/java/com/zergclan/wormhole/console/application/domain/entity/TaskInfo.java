@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TaskInfo extends AbstractPO {
+public final class TaskInfo extends AbstractPO {
     
     private static final long serialVersionUID = 3553295866589815888L;
     

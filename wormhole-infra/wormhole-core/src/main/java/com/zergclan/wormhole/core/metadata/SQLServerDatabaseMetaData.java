@@ -19,7 +19,6 @@ package com.zergclan.wormhole.core.metadata;
 
 import com.zergclan.wormhole.common.SystemConstant;
 
-import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -27,20 +26,17 @@ import java.util.Properties;
  */
 public final class SQLServerDatabaseMetaData extends DatabaseMetaData {
 
+    private static final DatabaseType TYPE = DatabaseType.SQL_SERVER;
+
     private final Properties parameters;
 
-    public SQLServerDatabaseMetaData(final String hostName, final int port, final Properties parameters) {
-        super(DatabaseType.SQL_SERVER, hostName, port);
+    public SQLServerDatabaseMetaData(final String hostName, final int port, final String catalog, final Properties parameters) {
+        super(TYPE, hostName, port, catalog);
         this.parameters = parameters;
     }
 
     @Override
-    protected Optional<String> getUrl(final String schema) {
-        SchemaMetaData schemaMetaData = getSchemas().get(schema);
-        return null == schemaMetaData ? Optional.empty() : Optional.of(generateUrl(schemaMetaData));
-    }
-
-    private String generateUrl(final SchemaMetaData schemaMetaData) {
-        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + schemaMetaData.getName();
+    protected String getJdbcUrl() {
+        return getDatabaseType().getProtocol() + getHost() + SystemConstant.COLON + getPort() + SystemConstant.FORWARD_SLASH + getCatalog();
     }
 }

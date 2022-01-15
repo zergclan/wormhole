@@ -18,14 +18,17 @@
 package com.zergclan.wormhole.console.application.service.impl;
 
 import com.zergclan.wormhole.console.api.security.UserSessionManager;
+import com.zergclan.wormhole.console.api.vo.LoginResult;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.application.service.LoginService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
+/**
+ * Implemented Service of {@link LoginService}.
+ */
 @Service(value = "loginService")
 public class LoginServiceImpl implements LoginService {
     
@@ -33,12 +36,14 @@ public class LoginServiceImpl implements LoginService {
     private BaseRepository<UserInfo> userInfoRepository;
     
     @Override
-    public Optional<String> login(final UserInfo userInfo) {
+    public LoginResult login(final UserInfo userInfo) {
+        LoginResult result = new LoginResult();
         UserInfo user = userInfoRepository.getOne(userInfo);
         if (null == user) {
-            return Optional.empty();
+            return result;
         }
-        String token = UserSessionManager.createUserSession(user);
-        return Optional.of(token);
+        result.setToken(UserSessionManager.createUserSession(user));
+        result.setLogined(true);
+        return result;
     }
 }

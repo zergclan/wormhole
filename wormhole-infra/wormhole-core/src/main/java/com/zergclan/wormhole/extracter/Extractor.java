@@ -19,6 +19,7 @@ package com.zergclan.wormhole.extracter;
 
 import com.zergclan.wormhole.core.metadata.ColumnMetaData;
 import com.zergclan.wormhole.core.metadata.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.SchemaMetaData;
 import com.zergclan.wormhole.core.metadata.TableMetaData;
 
 import java.util.Collection;
@@ -32,9 +33,10 @@ public interface Extractor {
     /**
      * Extract {@link TableMetaData}.
      *
+     * @param schemaMetaData {@link SchemaMetaData}
      * @return {@link TableMetaData}
      */
-    Collection<TableMetaData> extractTables();
+    Collection<TableMetaData> extractTables(SchemaMetaData schemaMetaData);
 
     /**
      * Extract {@link ColumnMetaData} of {@link TableMetaData}.

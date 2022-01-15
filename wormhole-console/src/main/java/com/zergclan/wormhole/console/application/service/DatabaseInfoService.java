@@ -39,15 +39,17 @@ public interface DatabaseInfoService {
      * Edit {@link DatabaseInfo} by id.
      *
      * @param databaseInfo {@link DatabaseInfo}
+     * @return is edited or not
      */
-    void editById(DatabaseInfo databaseInfo);
+    boolean editById(DatabaseInfo databaseInfo);
 
     /**
      * Remove {@link DatabaseInfo} by id.
      *
      * @param id id
+     * @return is removed or not
      */
-    void removeById(Integer id);
+    boolean removeById(Integer id);
 
     /**
      * Get {@link DatabaseInfo} by id.

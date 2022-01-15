@@ -28,7 +28,9 @@ import java.util.Date;
 @Getter
 public enum DatePattern {
 
-    NATIVE(0, "yyyy-MM-dd hh:mm:ss");
+    NATIVE_DATE_TIME(0, "yyyy-MM-dd hh:mm:ss"),
+
+    SLASH_DATE_TIME(1, "yyyy/MM/dd hh:mm:ss");
     
     private final int code;
 

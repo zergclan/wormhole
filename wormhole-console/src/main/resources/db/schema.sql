@@ -32,10 +32,10 @@ CREATE TABLE `user_info` (
 DROP TABLE IF EXISTS `database_info`;
 CREATE TABLE database_info (
     `id` INT(11) AUTO_INCREMENT COMMENT '主键',
-    `title` VARCHAR(32) NOT NULL COMMENT '名称',
     `host` VARCHAR(15) NOT NULL COMMENT 'IP',
     `port` INT(11) NOT NULL COMMENT '端口',
     `type` tinyint(4) NOT NULL COMMENT '类型0:MySQL 1:Oracle 2:SQLServer 3:PostgreSQL',
+    `catalog` VARCHAR(32) NOT NULL COMMENT '数据库名',
     `username` VARCHAR(32) NOT NULL COMMENT '链接用户名',
     `password` VARCHAR(32) NOT NULL COMMENT '链接密码',
     `description` VARCHAR(255) NOT NULL COMMENT '描述',
@@ -43,8 +43,7 @@ CREATE TABLE database_info (
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `uk_title`(`title`),
-    UNIQUE INDEX `uk_host_port`(`host`, `port`)
+    UNIQUE INDEX `uk_host_port_catalog`(`host`, `port`, `catalog`)
 ) ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '数据库信息';
 
 DROP TABLE IF EXISTS `datasource_info`;

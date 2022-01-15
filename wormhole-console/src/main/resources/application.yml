@@ -32,7 +32,6 @@ spring:
       schema-locations: classpath:db/schema.sql
       data-locations: classpath:db/data.sql
 
-
 mybatis:
   mapper-locations: classpath:Mapper/*.xml
   configuration:

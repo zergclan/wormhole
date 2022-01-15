@@ -22,7 +22,8 @@ package com.zergclan.wormhole.repository;
  */
 public enum DbTypeEnum {
 
-    MYSQL("mysql", "com.mysql.cj.jdbc.Driver", "select 1", "mysql数据库");
+    MYSQL("mysql", "com.mysql.cj.jdbc.Driver", "select 1", "mysql数据库"),
+    ORACLE("oracle", "oracle.jdbc.OracleDriver", "select 1", "mysql数据库");
 
     private final String db;
     private final String driverClassName;

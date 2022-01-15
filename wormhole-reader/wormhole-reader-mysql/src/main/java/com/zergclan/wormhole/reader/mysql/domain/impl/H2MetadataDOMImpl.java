@@ -17,34 +17,31 @@
 
 package com.zergclan.wormhole.reader.mysql.domain.impl;
 
-import com.zergclan.wormhole.reader.mysql.entity.ColumnMetaData;
-import com.zergclan.wormhole.reader.mysql.entity.TableMetaData;
+import com.zergclan.wormhole.reader.mysql.domain.AbsJdbcConcatSqlDOM;
 
 /**
  * Get h2 metadata implementation.
  */
-public final class H2MetadataDOMImpl extends AbstractJdbcMetadataDOM {
+public final class H2MetadataDOMImpl extends AbsJdbcConcatSqlDOM {
 
     @Override
-    protected String getQueryAllTablesSql(final String dbName) {
-        StringBuffer sql = new StringBuffer();
-        sql.append("select TABLE_NAME " + TableMetaData.TABLE_NAME + ", TABLE_SCHEMA " + TableMetaData.TABLE_SCHEMA + ", TABLE_COMMENT " + TableMetaData.TABLE_COMMENT)
-                .append(" from information_schema.TABLES where TABLE_SCHEMA = '" + dbName + "' and TABLE_TYPE = 'BASE TABLE'");
-        return sql.toString();
+    public String getQueryAllTablesSql(final String schema) {
+        String selectColumn = "TABLE_NAME, TABLE_SCHEMA, TABLE_COMMENT";
+        String fromTable = "information_schema.TABLES";
+        String whereCondition = "TABLE_SCHEMA = '" + schema + "' and TABLE_TYPE = 'BASE TABLE'";
+        return concatSql(selectColumn, fromTable, whereCondition);
     }
 
     @Override
-    protected String getQueryAllColumnsSql(final String dbName, final String tableName) {
-        StringBuffer sql = new StringBuffer();
-        sql.append("select TABLE_SCHEMA " + ColumnMetaData.TABLE_SCHEMA + ", TABLE_NAME " + ColumnMetaData.TABLE_NAME + ", COLUMN_NAME " + ColumnMetaData.COLUMN_NAME)
-                .append(", DATA_TYPE " + ColumnMetaData.DATA_TYPE + ", COLUMN_COMMENT " + ColumnMetaData.COLUMN_COMMENT + ",COLUMN_TYPE " + ColumnMetaData.COLUMN_TYPE)
-                .append(" from information_schema.COLUMNS ")
-                .append("where TABLE_SCHEMA = '" + dbName + "' and TABLE_NAME = '" + tableName + "'");
-        return sql.toString();
+    public String getQueryAllColumnsSql(final String schema, final String tableName) {
+        String selectColumn = "TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, DATA_TYPE, COLUMN_COMMENT,COLUMN_TYPE";
+        String fromTable = "information_schema.COLUMNS";
+        String whereCondition = "TABLE_SCHEMA = '" + schema + "' and TABLE_NAME = '" + tableName + "'";
+        return concatSql(selectColumn, fromTable, whereCondition);
     }
 
     @Override
-    protected String getQueryTableIndexSql(final String tableSchema, final String tableName) {
-        return "show index from " + tableSchema + "." + tableName + " where Non_unique = 0";
+    public String getQueryTableIndexSql(final String schema, final String tableName) {
+        return "show index from " + schema + "." + tableName + " where Non_unique = 0";
     }
 }

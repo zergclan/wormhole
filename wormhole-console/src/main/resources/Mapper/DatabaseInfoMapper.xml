@@ -20,9 +20,9 @@
 <mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.DatabaseInfoMapper">
     <resultMap id="DatabaseInfoResultMap" type="com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo">
         <result column="id" property="id" jdbcType="INTEGER"/>
-        <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="host" property="host" jdbcType="VARCHAR"/>
         <result column="port" property="port" jdbcType="INTEGER"/>
+        <result column="catalog" property="catalog" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="INTEGER"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
@@ -39,30 +39,30 @@
     <sql id="limit">LIMIT #{start}, #{size}</sql>
 
     <sql id="insert_columns">
-        title, host, port, type, username, password, description, operator, create_time, modify_time
+        host, port, catalog, type, username, password, description, operator, create_time, modify_time
     </sql>
 
     <sql id="insert_values">
-        #{title,jdbcType=VARCHAR}, #{host,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
+        #{host,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER}, #{catalog,jdbcType=VARCHAR},#{type,jdbcType=INTEGER},
         #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
         #{operator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
     </sql>
 
     <sql id="insert_batch_values">
-        #{batch.title,jdbcType=VARCHAR}, #{batch.host,jdbcType=VARCHAR}, #{batch.port,jdbcType=INTEGER}, #{batch.type,jdbcType=INTEGER},
+        #{batch.host,jdbcType=VARCHAR}, #{batch.port,jdbcType=INTEGER}, #{batch.catalog,jdbcType=VARCHAR}, #{batch.type,jdbcType=INTEGER},
         #{batch.username,jdbcType=VARCHAR}, #{batch.password,jdbcType=VARCHAR}, #{batch.description,jdbcType=VARCHAR},
         #{batch.operator,jdbcType=INTEGER}, #{batch.createTime,jdbcType=TIMESTAMP}, #{batch.modifyTime,jdbcType=TIMESTAMP}
     </sql>
 
     <sql id="update_columns">
-        <if test="null != title">
-            title = #{title,jdbcType=VARCHAR},
-        </if>
         <if test="null != host">
             host = #{host,jdbcType=VARCHAR},
         </if>
         <if test="null != port">
             port = #{port,jdbcType=INTEGER},
+        </if>
+        <if test="null != catalog">
+            catalog = #{catalog,jdbcType=VARCHAR},
         </if>
         <if test="null != type">
             type = #{type,jdbcType=INTEGER},
@@ -82,7 +82,7 @@
     </sql>
 
     <sql id="select_columns">
-        id, title, host, port, type, username, password, description, operator, create_time, modify_time
+        id, host, port, catalog, type, username, password, description, operator, create_time, modify_time
     </sql>
 
     <sql id="select_count">
@@ -90,18 +90,15 @@
     </sql>
 
     <sql id="where_unique_query">
-        host = #{host,jdbcType=VARCHAR} AND port = #{port,jdbcType=INTEGER}
+        host = #{host,jdbcType=VARCHAR} AND port = #{port,jdbcType=INTEGER} AND catalog = #{catalog,jdbcType=VARCHAR}
     </sql>
 
     <sql id="where_fuzzy_query">
-        <if test="null != operator">
-            AND operator = #{operator,jdbcType=VARCHAR}
-        </if>
-        <if test="null != title">
-            OR title LIKE CONCAT('%', #{title,jdbcType=VARCHAR}, '%')
-        </if>
         <if test="null != host">
             OR host LIKE CONCAT('%', #{host,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="null != catalog">
+            OR catalog LIKE CONCAT('%', #{catalog,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != description">
             OR description LIKE CONCAT('%', #{description,jdbcType=VARCHAR}, '%')
@@ -109,14 +106,11 @@
     </sql>
 
     <sql id="where_fuzzy_query_page">
-        <if test="null != query.operator">
-            AND operator = #{query.operator,jdbcType=VARCHAR}
-        </if>
-        <if test="null != query.title">
-            OR title LIKE CONCAT('%', #{query.title,jdbcType=VARCHAR}, '%')
-        </if>
         <if test="null != query.host">
             OR host LIKE CONCAT('%', #{query.host,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="null != query.catalog">
+            OR catalog LIKE CONCAT('%', #{query.catalog,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != query.description">
             OR description LIKE CONCAT('%', #{query.description,jdbcType=VARCHAR}, '%')

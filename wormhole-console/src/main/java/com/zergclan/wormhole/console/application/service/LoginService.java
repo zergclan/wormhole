@@ -17,17 +17,19 @@
 
 package com.zergclan.wormhole.console.application.service;
 
+import com.zergclan.wormhole.console.api.vo.LoginResult;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 
-import java.util.Optional;
-
+/**
+ * Service interface of {@link UserInfo} login.
+ */
 public interface LoginService {
     
     /**
      * Login by {@link UserInfo}.
      *
      * @param userInfo {@link UserInfo}
-     * @return token
+     * @return {@link LoginResult}
      */
-    Optional<String> login(UserInfo userInfo);
+    LoginResult login(UserInfo userInfo);
 }

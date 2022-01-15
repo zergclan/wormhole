@@ -55,8 +55,9 @@ public interface BaseMapper<T extends AbstractPO> {
      * Delete by id.
      *
      * @param id id
+     * @return delete rows
      */
-    void deleteById(Integer id);
+    int deleteById(Integer id);
     
     /**
      * Get one by id.
@@ -87,6 +88,14 @@ public interface BaseMapper<T extends AbstractPO> {
      * @return persistent objects
      */
     Collection<T> listAll();
+    
+    /**
+     * List by query.
+     *
+     * @param po persistent object
+     * @return persistent objects
+     */
+    Collection<T> listByQuery(T po);
     
     /**
      * List in ids.

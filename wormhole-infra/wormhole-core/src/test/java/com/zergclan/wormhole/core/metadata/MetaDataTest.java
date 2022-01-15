@@ -19,82 +19,54 @@ package com.zergclan.wormhole.core.metadata;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class MetaDataTest {
 
     @Test
     public void assertMySQLDataSourceMetaData() {
-        DatabaseMetaData databaseMetaData = new MySQLDatabaseMetaData("127.0.0.1", 3306, new Properties());
+        DatabaseMetaData databaseMetaData = new MySQLDatabaseMetaData("127.0.0.1", 3306, "mysql_db", new Properties());
         assertEquals(DatabaseType.MYSQL, databaseMetaData.getDatabaseType());
         assertEquals("127.0.0.1", databaseMetaData.getHost());
         assertEquals(3306, databaseMetaData.getPort());
-        Optional<String> urlOptional = databaseMetaData.getUrl("mysql_db");
-        assertFalse(urlOptional.isPresent());
-        databaseMetaData.addSchema(new SchemaMetaData(databaseMetaData.getIdentifier(), "mysql_db"));
-        Optional<String> jdbcUrlOptional = databaseMetaData.getUrl("mysql_db");
-        assertTrue(jdbcUrlOptional.isPresent());
-        assertEquals("jdbc:mysql://127.0.0.1:3306/mysql_db", jdbcUrlOptional.get());
+        assertEquals("jdbc:mysql://127.0.0.1:3306/mysql_db", databaseMetaData.getJdbcUrl());
     }
 
     @Test
     public void assertOracleDataSourceMetaData() {
-        DatabaseMetaData databaseMetaData = new OracleDatabaseMetaData("127.0.0.1", 1521, new Properties());
+        DatabaseMetaData databaseMetaData = new OracleDatabaseMetaData("127.0.0.1", 1521, "ORCL", new Properties());
         assertEquals(DatabaseType.ORACLE, databaseMetaData.getDatabaseType());
         assertEquals("127.0.0.1", databaseMetaData.getHost());
         assertEquals(1521, databaseMetaData.getPort());
-        Optional<String> urlOptional = databaseMetaData.getUrl("ORCL");
-        assertFalse(urlOptional.isPresent());
-        databaseMetaData.addSchema(new SchemaMetaData(databaseMetaData.getIdentifier(), "ORCL"));
-        Optional<String> jdbcUrlOptional = databaseMetaData.getUrl("ORCL");
-        assertTrue(jdbcUrlOptional.isPresent());
-        assertEquals("jdbc:oracle:thin:@127.0.0.1:1521:ORCL", jdbcUrlOptional.get());
+        assertEquals("jdbc:oracle:thin:@127.0.0.1:1521:ORCL", databaseMetaData.getJdbcUrl());
     }
 
     @Test
     public void assertDB2DataSourceMetaData() {
-        DatabaseMetaData databaseMetaData = new DB2DatabaseMetaData("127.0.0.1", 6789, new Properties());
+        DatabaseMetaData databaseMetaData = new DB2DatabaseMetaData("127.0.0.1", 6789, "db2_db", new Properties());
         assertEquals(DatabaseType.DB2, databaseMetaData.getDatabaseType());
         assertEquals("127.0.0.1", databaseMetaData.getHost());
         assertEquals(6789, databaseMetaData.getPort());
-        Optional<String> urlOptional = databaseMetaData.getUrl("db2_db");
-        assertFalse(urlOptional.isPresent());
-        databaseMetaData.addSchema(new SchemaMetaData(databaseMetaData.getIdentifier(), "db2_db"));
-        Optional<String> jdbcUrlOptional = databaseMetaData.getUrl("db2_db");
-        assertTrue(jdbcUrlOptional.isPresent());
-        assertEquals("jdbc:db2://127.0.0.1:6789/db2_db", jdbcUrlOptional.get());
+        assertEquals("jdbc:db2://127.0.0.1:6789/db2_db", databaseMetaData.getJdbcUrl());
     }
 
     @Test
     public void assertSQLServerDataSourceMetaData() {
-        DatabaseMetaData databaseMetaData = new SQLServerDatabaseMetaData("127.0.0.1", 1433, new Properties());
+        DatabaseMetaData databaseMetaData = new SQLServerDatabaseMetaData("127.0.0.1", 1433, "sql_server_db", new Properties());
         assertEquals(DatabaseType.SQL_SERVER, databaseMetaData.getDatabaseType());
         assertEquals("127.0.0.1", databaseMetaData.getHost());
         assertEquals(1433, databaseMetaData.getPort());
-        Optional<String> urlOptional = databaseMetaData.getUrl("sql_server_db");
-        assertFalse(urlOptional.isPresent());
-        databaseMetaData.addSchema(new SchemaMetaData(databaseMetaData.getIdentifier(), "sql_server_db"));
-        Optional<String> jdbcUrlOptional = databaseMetaData.getUrl("sql_server_db");
-        assertTrue(jdbcUrlOptional.isPresent());
-        assertEquals("jdbc:microsoft:sqlserver://127.0.0.1:1433/sql_server_db", jdbcUrlOptional.get());
+        assertEquals("jdbc:microsoft:sqlserver://127.0.0.1:1433/sql_server_db", databaseMetaData.getJdbcUrl());
     }
 
     @Test
     public void assertPostgreSQLDataSourceMetaData() {
-        DatabaseMetaData databaseMetaData = new PostgreSQLDatabaseMetaData("127.0.0.1", 5432, new Properties());
+        DatabaseMetaData databaseMetaData = new PostgreSQLDatabaseMetaData("127.0.0.1", 5432, "pg_db", new Properties());
         assertEquals(DatabaseType.POSTGRESQL, databaseMetaData.getDatabaseType());
         assertEquals("127.0.0.1", databaseMetaData.getHost());
         assertEquals(5432, databaseMetaData.getPort());
-        Optional<String> urlOptional = databaseMetaData.getUrl("pg_db");
-        assertFalse(urlOptional.isPresent());
-        databaseMetaData.addSchema(new SchemaMetaData(databaseMetaData.getIdentifier(), "pg_db"));
-        Optional<String> jdbcUrlOptional = databaseMetaData.getUrl("pg_db");
-        assertTrue(jdbcUrlOptional.isPresent());
-        assertEquals("jdbc:postgresql://127.0.0.1:5432/pg_db", jdbcUrlOptional.get());
+        assertEquals("jdbc:postgresql://127.0.0.1:5432/pg_db", databaseMetaData.getJdbcUrl());
     }
 }

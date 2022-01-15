@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Meta data for database.
@@ -38,11 +37,13 @@ public abstract class DatabaseMetaData implements MetaData {
 
     private final int port;
 
+    private final String catalog;
+
     private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
 
     @Override
     public String getIdentifier() {
-        return databaseType.getName() + SystemConstant.SPACE + host + SystemConstant.COLON + port;
+        return databaseType.getName() + SystemConstant.SPACE + host + SystemConstant.COLON + port + SystemConstant.COLON + catalog;
     }
 
     /**
@@ -57,8 +58,7 @@ public abstract class DatabaseMetaData implements MetaData {
     /**
      * Get jdbc url.
      *
-     * @param schema schema
      * @return jdbc url
      */
-    protected abstract Optional<String> getUrl(String schema);
+    protected abstract String getJdbcUrl();
 }
