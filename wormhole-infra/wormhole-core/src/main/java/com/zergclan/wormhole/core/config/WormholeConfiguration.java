@@ -15,23 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.core.config;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
+import java.util.Collection;
 
-/**
- * Sequence generator.
- */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SequenceGenerator {
+public final class WormholeConfiguration implements Serializable {
     
-    /**
-     * Generate id.
-     *
-     * @return id
-     */
-    public static Long generateId() {
-        return SnowflakeIdWorker.generateId();
-    }
+    private static final long serialVersionUID = -8160534204609183661L;
+    
+    private Collection<DataSourceConfiguration> dataSourcesConfigurations;
+    
+    private Collection<PlanConfiguration> planConfigurations;
+    
+    private Collection<PipelineConfiguration> pipelineConfigurations;
 }

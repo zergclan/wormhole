@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.engine;
+package com.zergclan.wormhole.core.metadata.swapper;
 
-public final class WormholeEngineConfig {
+public final class DatasourceMetadataConfigurationSwapper {
 }

@@ -15,23 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.core.config;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-/**
- * Sequence generator.
- */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SequenceGenerator {
-    
-    /**
-     * Generate id.
-     *
-     * @return id
-     */
-    public static Long generateId() {
-        return SnowflakeIdWorker.generateId();
-    }
+public final class PipelineConfiguration {
 }

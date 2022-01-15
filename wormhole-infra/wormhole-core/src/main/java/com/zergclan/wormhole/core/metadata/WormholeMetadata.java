@@ -24,10 +24,7 @@ import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -35,16 +32,22 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Root implemented {@link Metadata} in wormhole project.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeMetadata implements Metadata {
+    
     
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     
-    private final Map<String, DataSourceMetadata> dataSources = new LinkedHashMap<>();
+    private final Map<String, DataSourceMetadata> dataSources;
     
-    private final Map<String, PlanMetadata> plans = new LinkedHashMap<>();
+    private final Map<String, PlanMetadata> plans;
     
-    private final Map<String, DataNodePipeline<?>> pipelines = new LinkedHashMap<>();
+    private final Map<String, DataNodePipeline<?>> pipelines;
+    
+    public WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans, final Map<String, DataNodePipeline<?>> pipelines) {
+        this.dataSources = dataSources;
+        this.plans = plans;
+        this.pipelines = pipelines;
+    }
     
     /**
      * Get {@link PlanMetadata} by plan identifier.
@@ -74,10 +77,7 @@ public final class WormholeMetadata implements Metadata {
         LOCK.writeLock().lock();
         try {
             PlanMetadata planMetadata = plans.get(planIdentifier);
-            if (null == planMetadata) {
-                return Optional.empty();
-            }
-            return Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources, pipelines));
+            return null == planMetadata ? Optional.empty() : Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources, pipelines));
         } finally {
             LOCK.writeLock().unlock();
         }
@@ -118,9 +118,7 @@ public final class WormholeMetadata implements Metadata {
     }
     
     private boolean register(final SchemaMetadata schemaMetadata) {
-        String dataSourceIdentifier = schemaMetadata.getDataSourceIdentifier();
-        DataSourceMetadata dataSourceMetadata = dataSources.get(dataSourceIdentifier);
-        dataSourceMetadata.registerSchema(schemaMetadata);
+        dataSources.get(schemaMetadata.getDataSourceIdentifier()).registerSchema(schemaMetadata);
         return true;
     }
     
@@ -130,9 +128,7 @@ public final class WormholeMetadata implements Metadata {
     }
     
     private boolean register(final TaskMetadata taskMetadata) {
-        String jobIdentifier = taskMetadata.getPlanIdentifier();
-        PlanMetadata planMetadata = plans.get(jobIdentifier);
-        planMetadata.register(taskMetadata);
+        plans.get(taskMetadata.getPlanIdentifier()).register(taskMetadata);
         return true;
     }
     

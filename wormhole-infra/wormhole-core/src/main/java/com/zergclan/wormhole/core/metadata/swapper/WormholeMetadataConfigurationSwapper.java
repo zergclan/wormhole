@@ -15,23 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.core.metadata.swapper;
 
+import com.zergclan.wormhole.core.config.WormholeConfiguration;
+import com.zergclan.wormhole.core.metadata.WormholeMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-/**
- * Sequence generator.
- */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SequenceGenerator {
-    
-    /**
-     * Generate id.
-     *
-     * @return id
-     */
-    public static Long generateId() {
-        return SnowflakeIdWorker.generateId();
+public final class WormholeMetadataConfigurationSwapper {
+
+    public static WormholeMetadata swapToMetadata(WormholeConfiguration wormholeConfiguration) {
+        return null;
     }
+    
+
 }

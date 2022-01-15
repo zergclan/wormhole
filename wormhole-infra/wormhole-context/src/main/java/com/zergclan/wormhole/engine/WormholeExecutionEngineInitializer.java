@@ -17,8 +17,16 @@
 
 package com.zergclan.wormhole.engine;
 
+import com.zergclan.wormhole.core.config.WormholeConfiguration;
+import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.metadata.WormholeMetadata;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.pipeline.DataNodePipeline;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Initializer of {@link WormholeExecutionEngine}.
@@ -27,13 +35,24 @@ import lombok.NoArgsConstructor;
 public final class WormholeExecutionEngineInitializer {
     
     /**
-     * Init {@link WormholeExecutionEngine} by {@link WormholeEngineConfig}.
+     * Init {@link WormholeExecutionEngine} by {@link WormholeConfiguration}.
      *
-     * @param wormholeConfig {@link WormholeEngineConfig}
+     * @param configuration {@link WormholeConfiguration}
      * @return {@link WormholeExecutionEngine}
      */
-    public static WormholeExecutionEngine init(final WormholeEngineConfig wormholeConfig) {
+    public static WormholeExecutionEngine init(final WormholeConfiguration configuration) {
+        // TODO init wormholeMetadata dataSources
+        
+        // TODO init wormholeMetadata
+    
+        Map<String, DataSourceMetadata> dataSources = new LinkedHashMap<>();
+        Map<String, PlanMetadata> plans = new LinkedHashMap<>();
+        Map<String, DataNodePipeline<?>> pipelines = new LinkedHashMap<>();
+        
+        
+        
+        
         // FIXME create WormholeExecutionEngine
-        return new WormholeExecutionEngine(null);
+        return new WormholeExecutionEngine(new WormholeMetadata(dataSources, plans, pipelines));
     }
 }
