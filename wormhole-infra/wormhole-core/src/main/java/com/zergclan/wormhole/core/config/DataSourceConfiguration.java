@@ -17,10 +17,36 @@
 
 package com.zergclan.wormhole.core.config;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Properties;
+
+/**
+ * Data source configuration.
+ */
+@RequiredArgsConstructor
+@Getter
 public final class DataSourceConfiguration implements Serializable {
     
     private static final long serialVersionUID = 1663604199838185645L;
-    
+
+    private final String host;
+
+    private final int port;
+
+    private final String databaseTypeName;
+
+    private final String username;
+
+    private final String password;
+
+    private final String catalog;
+
+    private final Properties parameters;
+
+    private final Map<String, SchemaConfiguration> schemas = new LinkedHashMap<>();
 }

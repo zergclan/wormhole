@@ -88,7 +88,6 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private void transform() {
         int size = dataMaps.size();
-        System.out.println("=====================dataMaps size" + size);
         completionService = new ExecutorCompletionService<>(executorService, new ArrayBlockingQueue<>(size));
         DataGroup dataGroup;
         for (Map<String, Object> each : dataMaps) {

@@ -33,8 +33,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Root implemented {@link Metadata} in wormhole project.
  */
 public final class WormholeMetadata implements Metadata {
-    
-    
+
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     
     private final Map<String, DataSourceMetadata> dataSources;

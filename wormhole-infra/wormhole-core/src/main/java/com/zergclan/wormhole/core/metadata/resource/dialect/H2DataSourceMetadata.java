@@ -1,0 +1,58 @@
+package com.zergclan.wormhole.core.metadata.resource.dialect;
+
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Properties;
+
+@RequiredArgsConstructor
+public final class H2DataSourceMetadata implements DataSourceMetadata {
+
+    private static final DatabaseType TYPE = DatabaseType.H2;
+
+    private final String host;
+
+    private final int port;
+
+    @Getter
+    private final String username;
+
+    @Getter
+    private final String password;
+
+    private final String catalog;
+
+    private final Properties parameters;
+
+    @Getter
+    private final Map<String, SchemaMetadata> schemas = new LinkedHashMap<>();
+
+    @Override
+    public String getDriverClassName() {
+        // TODO driver class name
+        return "";
+    }
+
+    @Override
+    public String getJdbcUrl() {
+        // TODO init jdbc url
+        return "";
+    }
+
+    @Override
+    public boolean registerSchema(final SchemaMetadata schemaMetaData) {
+        schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
+        return true;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return TYPE.getName() + MarkConstant.SPACE + host + MarkConstant.COLON + port + MarkConstant.COLON + catalog + MarkConstant.SPACE + username + MarkConstant.AT + password;
+    }
+}

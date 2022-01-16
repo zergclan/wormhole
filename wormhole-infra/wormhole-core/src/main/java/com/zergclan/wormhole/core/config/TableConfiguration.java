@@ -15,7 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.swapper;
+package com.zergclan.wormhole.core.config;
 
-public final class PipelineMetadataConfigurationSwapper {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * Table configuration.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class TableConfiguration implements Serializable {
+
+    private static final long serialVersionUID = 3156948577954133313L;
+
+    private final String name;
+
+    private final String comment;
+
+    private final Map<String, ColumnConfiguration> columns = new LinkedHashMap<>();
+
+    private final Map<String, IndexConfiguration> indexes = new LinkedHashMap<>();
 }

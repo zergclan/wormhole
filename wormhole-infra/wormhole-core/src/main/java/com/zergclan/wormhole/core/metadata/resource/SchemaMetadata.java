@@ -38,6 +38,17 @@ public final class SchemaMetadata implements Metadata {
 
     private final Map<String, TableMetadata> tables = new LinkedHashMap<>();
 
+    /**
+     * Register {@link TableMetadata}.
+     *
+     * @param tableMetadata {@link TableMetadata}
+     * @return is registered or not.
+     */
+    public boolean registerTable(final TableMetadata tableMetadata) {
+        tables.put(tableMetadata.getIdentifier(), tableMetadata);
+        return true;
+    }
+
     @Override
     public String getIdentifier() {
         return dataSourceIdentifier + MarkConstant.SPACE + name;

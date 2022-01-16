@@ -20,9 +20,9 @@ package com.zergclan.wormhole.core.config;
 import java.io.Serializable;
 
 /**
- * Pipeline configuration.
+ * Task configuration.
  */
-public final class PipelineConfiguration implements Serializable {
+public final class TaskConfiguration implements Serializable {
 
-    private static final long serialVersionUID = -6843915287721626617L;
+    private static final long serialVersionUID = 5125883893404187330L;
 }

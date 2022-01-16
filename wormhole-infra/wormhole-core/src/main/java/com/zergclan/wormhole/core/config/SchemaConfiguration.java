@@ -15,7 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.swapper;
+package com.zergclan.wormhole.core.config;
 
-public final class PlanMetadataConfigurationSwapper {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * Schema configuration.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class SchemaConfiguration {
+
+    private final String name;
+
+    private final Map<String, TableConfiguration> tables = new LinkedHashMap<>();
 }

@@ -17,12 +17,8 @@
 
 package com.zergclan.wormhole.core.config;
 
-import java.io.Serializable;
-
 /**
- * Pipeline configuration.
+ * Index configuration.
  */
-public final class PipelineConfiguration implements Serializable {
-
-    private static final long serialVersionUID = -6843915287721626617L;
+public final class IndexConfiguration {
 }

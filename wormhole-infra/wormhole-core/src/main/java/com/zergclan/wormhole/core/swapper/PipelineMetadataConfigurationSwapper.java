@@ -15,14 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.config;
+package com.zergclan.wormhole.core.swapper;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.core.config.PipelineConfiguration;
 
 /**
- * Pipeline configuration.
+ * Pipeline metadata configuration swapper.
  */
-public final class PipelineConfiguration implements Serializable {
+public final class PipelineMetadataConfigurationSwapper {
 
-    private static final long serialVersionUID = -6843915287721626617L;
+    /**
+     * swap to metadata.
+     *
+     * @param pipelineConfiguration {@link PipelineConfiguration}
+     */
+    public static void swapToMetadata(final PipelineConfiguration pipelineConfiguration) {
+        // TODO swap to metadata
+    }
 }

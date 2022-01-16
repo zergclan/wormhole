@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Metadata for plan.
+ * Plan metadata.
  */
 @RequiredArgsConstructor
 @Getter
