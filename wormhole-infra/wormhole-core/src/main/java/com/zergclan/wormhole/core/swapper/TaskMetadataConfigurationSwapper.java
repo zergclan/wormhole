@@ -15,7 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.engine;
+package com.zergclan.wormhole.core.swapper;
 
-public final class WormholeEngineConfig {
+import com.zergclan.wormhole.core.config.TaskConfiguration;
+import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
+
+/**
+ * Task metadata configuration swapper.
+ */
+public final class TaskMetadataConfigurationSwapper {
+
+    /**
+     * Swap to {@link TaskMetadata}.
+     *
+     * @param taskConfiguration {@link TaskConfiguration}
+     * @return {@link TaskMetadata}
+     */
+    public static TaskMetadata swapToMetadata(final TaskConfiguration taskConfiguration) {
+        // TODO swap to metadata
+        return null;
+    }
 }

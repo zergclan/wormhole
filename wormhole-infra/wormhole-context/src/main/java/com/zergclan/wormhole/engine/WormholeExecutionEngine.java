@@ -62,7 +62,7 @@ public final class WormholeExecutionEngine implements Runnable {
     }
     
     /**
-     * Try execute by plan identifier.
+     * Try to execute by plan identifier.
      *
      * @param planIdentifier plan identifier
      * @return is executing or not

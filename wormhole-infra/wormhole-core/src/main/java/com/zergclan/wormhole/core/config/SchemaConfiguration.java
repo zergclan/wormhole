@@ -15,10 +15,8 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.resource;
+package com.zergclan.wormhole.core.config;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -26,31 +24,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Metadata of schema.
+ * Schema configuration.
  */
 @RequiredArgsConstructor
 @Getter
-public final class SchemaMetadata implements Metadata {
-
-    private final String dataSourceIdentifier;
+public final class SchemaConfiguration {
 
     private final String name;
 
-    private final Map<String, TableMetadata> tables = new LinkedHashMap<>();
-
-    /**
-     * Register {@link TableMetadata}.
-     *
-     * @param tableMetadata {@link TableMetadata}
-     * @return is registered or not.
-     */
-    public boolean registerTable(final TableMetadata tableMetadata) {
-        tables.put(tableMetadata.getIdentifier(), tableMetadata);
-        return true;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return dataSourceIdentifier + MarkConstant.SPACE + name;
-    }
+    private final Map<String, TableConfiguration> tables = new LinkedHashMap<>();
 }

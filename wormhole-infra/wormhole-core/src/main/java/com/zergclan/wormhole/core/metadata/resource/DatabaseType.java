@@ -19,6 +19,8 @@ package com.zergclan.wormhole.core.metadata.resource;
 
 import lombok.Getter;
 
+import java.util.Optional;
+
 /**
  * Type of database.
  */
@@ -38,7 +40,7 @@ public enum DatabaseType {
     /**
      * Compatibility modes for MS SQL Server.
      */
-    SQL_SERVER("SQL_Server", "jdbc:microsoft:sqlserver://", 1433, "om.microsoft.sqlserver.jdbc.SQLServerDriver"),
+    SQL_SERVER("SQL_Server", "jdbc:microsoft:sqlserver://", 1433, "com.microsoft.sqlserver.jdbc.SQLServerDriver"),
     
     /**
      * Compatibility modes for PostgreSQL.
@@ -63,5 +65,26 @@ public enum DatabaseType {
         this.protocol = protocol;
         this.defaultPort = defaultPort;
         this.defaultDriverClassName = defaultDriverClassName;
+    }
+
+    /**
+     * Get {@link DatabaseType} by code.
+     *
+     * @param name name
+     * @return {@link DatabaseType}
+     */
+    public static Optional<DatabaseType> getDatabaseType(final String name) {
+        if (MYSQL.name.equalsIgnoreCase(name)) {
+            return Optional.of(MYSQL);
+        } else if (ORACLE.name.equalsIgnoreCase(name)) {
+            return Optional.of(ORACLE);
+        } else if (SQL_SERVER.name.equalsIgnoreCase(name)) {
+            return Optional.of(SQL_SERVER);
+        } else if (POSTGRESQL.name.equalsIgnoreCase(name)) {
+            return Optional.of(POSTGRESQL);
+        } else if (H2.name.equalsIgnoreCase(name)) {
+            return Optional.of(H2);
+        }
+        return Optional.empty();
     }
 }

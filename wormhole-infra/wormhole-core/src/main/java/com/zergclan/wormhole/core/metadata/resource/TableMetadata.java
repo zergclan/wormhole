@@ -44,6 +44,28 @@ public final class TableMetadata implements Metadata {
 
     private final Map<String, IndexMetadata> indexes = new LinkedHashMap<>();
 
+    /**
+     * Register {@link ColumnMetadata}.
+     *
+     * @param columnMetadata {@link ColumnMetadata}
+     * @return is registered or not.
+     */
+    public boolean registerColumn(final ColumnMetadata columnMetadata) {
+        columns.put(columnMetadata.getIdentifier(), columnMetadata);
+        return true;
+    }
+
+    /**
+     * Register {@link IndexMetadata}.
+     *
+     * @param indexMetadata {@link IndexMetadata}
+     * @return is registered or not.
+     */
+    public boolean registerIndex(final IndexMetadata indexMetadata) {
+        indexes.put(indexMetadata.getIdentifier(), indexMetadata);
+        return true;
+    }
+
     @Override
     public String getIdentifier() {
         return dataSourceIdentifier + MarkConstant.SPACE + schema + MarkConstant.SPACE + name;

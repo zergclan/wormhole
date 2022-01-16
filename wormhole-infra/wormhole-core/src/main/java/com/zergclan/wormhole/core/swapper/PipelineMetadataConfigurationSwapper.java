@@ -15,26 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.engine;
+package com.zergclan.wormhole.core.swapper;
 
-import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.core.swapper.WormholeMetadataConfigurationSwapper;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.zergclan.wormhole.core.config.PipelineConfiguration;
 
 /**
- * Initializer of {@link WormholeExecutionEngine}.
+ * Pipeline metadata configuration swapper.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class WormholeExecutionEngineInitializer {
-    
+public final class PipelineMetadataConfigurationSwapper {
+
     /**
-     * Init {@link WormholeExecutionEngine} by {@link WormholeConfiguration}.
+     * swap to metadata.
      *
-     * @param configuration {@link WormholeConfiguration}
-     * @return {@link WormholeExecutionEngine}
+     * @param pipelineConfiguration {@link PipelineConfiguration}
      */
-    public static WormholeExecutionEngine init(final WormholeConfiguration configuration) {
-        return new WormholeExecutionEngine(WormholeMetadataConfigurationSwapper.swapToMetadata(configuration));
+    public static void swapToMetadata(final PipelineConfiguration pipelineConfiguration) {
+        // TODO swap to metadata
     }
 }
