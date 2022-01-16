@@ -34,22 +34,8 @@ public final class JdbcTemplateBuilder {
      * @return JdbcTemplate.
      */
     static JdbcTemplate build(final DataSourceMetadata dataSourceMetadata) {
-        String identifier = dataSourceMetadata.getIdentifier();
-        JdbcTemplate jdbcTemplate = DataSourceManager.get(identifier);
-        if (jdbcTemplate != null) {
-            return jdbcTemplate;
-        }
-
-        synchronized (identifier) {
-            jdbcTemplate = DataSourceManager.get(identifier);
-            if (jdbcTemplate != null) {
-                return jdbcTemplate;
-            }
-            DataSource dataSource = DataSourceFactory.createDataSource(dataSourceMetadata);
-            jdbcTemplate = new JdbcTemplate(dataSource);
-            return jdbcTemplate;
-        }
-
+        DataSource dataSource = DataSourceFactory.createDataSource(dataSourceMetadata);
+        return new JdbcTemplate(dataSource);
     }
 
 }

@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.reader.mysql;
 
 import com.google.gson.Gson;
-import com.zergclan.wormhole.DataSourceManager;
+import com.zergclan.wormhole.JdbcTemplateManager;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
@@ -95,7 +95,7 @@ public final class MySQLExtractorTest {
         properties.setProperty("characterEncoding", "utf-8");
         properties.setProperty("useSSL", "false");
         MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
-        return new MySQLExtractor(DataSourceManager.register(dataSourceMetadata));
+        return new MySQLExtractor(JdbcTemplateManager.register(dataSourceMetadata));
     }
 
 }

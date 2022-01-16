@@ -24,11 +24,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Manager data source.
+ * JdbcTemplate for Managing data sources.
  */
-public final class DataSourceManager {
+public final class JdbcTemplateManager {
 
-    private static final Map<String, JdbcTemplate> DATASOURCE_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, JdbcTemplate> JDBC_TEMPLATE_CONTAINER = new ConcurrentHashMap<>();
 
     /**
      * Get jdbcTemplate by identifier.
@@ -37,7 +37,7 @@ public final class DataSourceManager {
      * @return JdbcTemplate.
      */
     public static JdbcTemplate get(final String identifier) {
-        return DATASOURCE_MAP.get(identifier);
+        return JDBC_TEMPLATE_CONTAINER.get(identifier);
     }
 
     /**
@@ -59,7 +59,7 @@ public final class DataSourceManager {
                 return jdbcTemplate;
             }
             jdbcTemplate = JdbcTemplateBuilder.build(dataSourceMetadata);
-            DATASOURCE_MAP.put(identifier, jdbcTemplate);
+            JDBC_TEMPLATE_CONTAINER.put(identifier, jdbcTemplate);
             return jdbcTemplate;
         }
     }
@@ -71,7 +71,7 @@ public final class DataSourceManager {
      * @return Boolean result.
      */
     public static boolean unRegister(final String identifier) {
-        DATASOURCE_MAP.remove(identifier);
+        JDBC_TEMPLATE_CONTAINER.remove(identifier);
         return true;
     }
 
