@@ -25,7 +25,7 @@ import java.util.Properties;
 /**
  * Test datasource manager.
  */
-public final class DataSourceManagerTest {
+public final class JdbcTemplateManagerTest {
 
     /**
      * Test datasource manager.
@@ -34,10 +34,10 @@ public final class DataSourceManagerTest {
     public void test() {
         MySQLDataSourceMetadata dataSourceMetadata = getDataSourceMetadata();
         String identifier = dataSourceMetadata.getIdentifier();
-        Assertions.assertNotNull(DataSourceManager.register(dataSourceMetadata));
-        Assertions.assertNotNull(DataSourceManager.get(identifier));
-        Assertions.assertTrue(DataSourceManager.unRegister(identifier));
-        Assertions.assertNull(DataSourceManager.get(identifier));
+        Assertions.assertNotNull(JdbcTemplateManager.register(dataSourceMetadata));
+        Assertions.assertNotNull(JdbcTemplateManager.get(identifier));
+        Assertions.assertTrue(JdbcTemplateManager.unRegister(identifier));
+        Assertions.assertNull(JdbcTemplateManager.get(identifier));
     }
 
     /**

@@ -19,7 +19,7 @@ package com.zergclan.wormhole.scheduling;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.DataSourceManager;
+import com.zergclan.wormhole.JdbcTemplateManager;
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.concurrent.ExecutorServiceFactory;
@@ -93,7 +93,7 @@ public final class SchedulingExecutorFactory {
         properties.setProperty("serverTimezone", "UTC");
         properties.setProperty("useSSL", "false");
         MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
-        return new MySQLExtractor(DataSourceManager.register(dataSourceMetadata));
+        return new MySQLExtractor(JdbcTemplateManager.register(dataSourceMetadata));
     }
 
     private static Loader createLoader() {
@@ -106,7 +106,7 @@ public final class SchedulingExecutorFactory {
         properties.setProperty("serverTimezone", "UTC");
         properties.setProperty("useSSL", "false");
         MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
-        return new MySQLLoader(DataSourceManager.register(dataSourceMetadata));
+        return new MySQLLoader(JdbcTemplateManager.register(dataSourceMetadata));
     }
 
     private static DataSource createDataSource(final String driverClassName, final String jdbcUrl, final String username, final String password) {
