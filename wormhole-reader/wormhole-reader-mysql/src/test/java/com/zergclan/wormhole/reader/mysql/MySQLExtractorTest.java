@@ -55,7 +55,7 @@ public final class MySQLExtractorTest {
 //    @Test
     public void extractColumns() {
         Extractor extractor = initExtractor();
-        TableMetadata tableMetadata = new TableMetadata("2", "source_db", "source_table", null);
+        TableMetadata tableMetadata = new TableMetadata("2", "source_db", "source_table");
         Collection<ColumnMetadata> columnMetaData = extractor.extractColumns(tableMetadata);
         System.out.println(new Gson().toJson(columnMetaData));
         assertNotNull(columnMetaData);
@@ -68,13 +68,13 @@ public final class MySQLExtractorTest {
     public void extractDatum() {
         Extractor extractor = initExtractor();
         Map<String, ColumnMetadata> map = new LinkedHashMap<>();
-        map.put("id", new ColumnMetadata("12", "source_db", "source_table", "id", null, false, null));
-        map.put("transInt", new ColumnMetadata("12", "source_db", "source_table", "trans_int", null, false, null));
-        map.put("transBigint", new ColumnMetadata("12", "source_db", "source_table", "trans_bigint", null, false, null));
-        map.put("transVarchar", new ColumnMetadata("12", "source_db", "source_table", "trans_varchar", null, false, null));
-        map.put("transDecimal", new ColumnMetadata("12", "source_db", "source_table", "trans_decimal", null, false, null));
-        map.put("transDatetime", new ColumnMetadata("12", "source_db", "source_table", "trans_datetime", "datetime", false, null));
-        map.put("createTime", new ColumnMetadata("12", "source_db", "source_table", "create_time", "datetime", false, null));
+        map.put("id", new ColumnMetadata("12", "source_db", "source_table", "id", null, false));
+        map.put("transInt", new ColumnMetadata("12", "source_db", "source_table", "trans_int", null, false));
+        map.put("transBigint", new ColumnMetadata("12", "source_db", "source_table", "trans_bigint", null, false));
+        map.put("transVarchar", new ColumnMetadata("12", "source_db", "source_table", "trans_varchar", null, false));
+        map.put("transDecimal", new ColumnMetadata("12", "source_db", "source_table", "trans_decimal", null, false));
+        map.put("transDatetime", new ColumnMetadata("12", "source_db", "source_table", "trans_datetime", "datetime", false));
+        map.put("createTime", new ColumnMetadata("12", "source_db", "source_table", "create_time", "datetime", false));
         Collection<Map<String, Object>> extractDatum = extractor.extractDatum(map);
         System.out.println(new Gson().toJson(extractDatum));
         assertNotNull(extractDatum);

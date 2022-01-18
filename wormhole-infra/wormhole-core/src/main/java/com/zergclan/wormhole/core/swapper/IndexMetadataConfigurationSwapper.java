@@ -17,27 +17,27 @@
 
 package com.zergclan.wormhole.core.swapper;
 
-import com.zergclan.wormhole.core.config.ColumnConfiguration;
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.config.IndexConfiguration;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Column metadata configuration swapper.
+ * Index metadata configuration swapper.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ColumnMetadataConfigurationSwapper {
-
+public class IndexMetadataConfigurationSwapper {
+    
     /**
-     * Swap to {@link ColumnMetadata}.
+     * Swap to {@link IndexMetadata}.
      *
-     * @param columnConfiguration {@link ColumnConfiguration}
+     * @param indexConfiguration {@link IndexConfiguration}
      * @param dataSourceIdentifier data source identifier
      * @param schemaName schema name
      * @param tableName table name
-     * @return {@link ColumnMetadata}
+     * @return {@link IndexMetadata}
      */
-    public static ColumnMetadata swapToMetadata(final ColumnConfiguration columnConfiguration, final String dataSourceIdentifier, final String schemaName, final String tableName) {
-        return new ColumnMetadata(dataSourceIdentifier, schemaName, tableName, columnConfiguration.getName(), columnConfiguration.getDataType(), columnConfiguration.isNullable());
+    public static IndexMetadata swapToMetadata(final IndexConfiguration indexConfiguration, final String dataSourceIdentifier, final String schemaName, final String tableName) {
+        return new IndexMetadata(dataSourceIdentifier, schemaName, tableName, indexConfiguration.getName(), indexConfiguration.isUnique(), indexConfiguration.getColumnNames());
     }
 }

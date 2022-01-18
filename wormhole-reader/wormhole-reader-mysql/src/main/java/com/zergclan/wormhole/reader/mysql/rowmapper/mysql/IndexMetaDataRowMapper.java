@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 /**
  * ResultSet to entity conversion.
@@ -30,7 +31,7 @@ public final class IndexMetaDataRowMapper implements RowMapper<IndexMetadata> {
     @Override
     public IndexMetadata mapRow(final ResultSet rs, final int rowNum) throws SQLException {
         IndexMetadata indexMetaData = new IndexMetadata(null, null, rs.getString("Table"),
-                rs.getString("Key_name"), 0 == rs.getInt("Non_unique"));
+                rs.getString("Key_name"), 0 == rs.getInt("Non_unique"), new LinkedList<>());
         return indexMetaData;
     }
 }

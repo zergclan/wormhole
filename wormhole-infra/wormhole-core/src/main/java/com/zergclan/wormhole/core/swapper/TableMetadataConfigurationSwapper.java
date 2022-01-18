@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.core.swapper;
 
 import com.zergclan.wormhole.core.config.ColumnConfiguration;
+import com.zergclan.wormhole.core.config.IndexConfiguration;
 import com.zergclan.wormhole.core.config.TableConfiguration;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import lombok.AccessLevel;
@@ -40,7 +41,7 @@ public final class TableMetadataConfigurationSwapper {
      * @return {@link TableMetadata}
      */
     public static TableMetadata swapToMetadata(final TableConfiguration tableConfiguration, final String dataSourceIdentifier, final String schemaName) {
-        TableMetadata result = new TableMetadata(dataSourceIdentifier, schemaName, tableConfiguration.getName(), tableConfiguration.getComment());
+        TableMetadata result = new TableMetadata(dataSourceIdentifier, schemaName, tableConfiguration.getName());
         registerColumns(result, tableConfiguration, dataSourceIdentifier, schemaName);
         registerIndexes(result, tableConfiguration, dataSourceIdentifier, schemaName);
         return result;
@@ -52,9 +53,13 @@ public final class TableMetadataConfigurationSwapper {
         for (Map.Entry<String, ColumnConfiguration> entry : columns.entrySet()) {
             tableMetadata.registerColumn(ColumnMetadataConfigurationSwapper.swapToMetadata(entry.getValue(), dataSourceIdentifier, schemaName, tableName));
         }
-
     }
-
+    
     private static void registerIndexes(final TableMetadata tableMetadata, final TableConfiguration tableConfiguration, final String dataSourceIdentifier, final String schemaName) {
+        Map<String, IndexConfiguration> indexes = tableConfiguration.getIndexes();
+        String tableName = tableMetadata.getName();
+        for (Map.Entry<String, IndexConfiguration> entry : indexes.entrySet()) {
+            tableMetadata.registerIndex(IndexMetadataConfigurationSwapper.swapToMetadata(entry.getValue(), dataSourceIdentifier, schemaName, tableName));
+        }
     }
 }

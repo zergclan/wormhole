@@ -23,7 +23,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
 
 /**
  * Metadata of index.
@@ -40,9 +39,9 @@ public final class IndexMetadata implements Metadata {
 
     private final String name;
 
-    private final boolean isUnique;
+    private final boolean unique;
 
-    private final Collection<String> columnNames = new LinkedHashSet<>();
+    private final Collection<String> columnNames;
 
     @Override
     public String getIdentifier() {

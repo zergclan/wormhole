@@ -37,7 +37,7 @@ public final class ColumnMetaDataRowMapper implements RowMapper<ColumnMetadata> 
         ColumnMetadata columnMetaData = new ColumnMetadata(databaseIdentifier,
                 rs.getString("TABLE_SCHEMA"), rs.getString("TABLE_NAME"),
                 rs.getString("COLUMN_NAME"), rs.getString("COLUMN_TYPE"),
-                "NO".equals(rs.getString("IS_NULLABLE")), rs.getString("COLUMN_COMMENT"));
+                "NO".equals(rs.getString("IS_NULLABLE")));
         return columnMetaData;
     }
 }
