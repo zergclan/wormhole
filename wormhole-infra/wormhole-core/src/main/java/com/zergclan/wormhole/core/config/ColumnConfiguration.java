@@ -17,8 +17,19 @@
 
 package com.zergclan.wormhole.core.config;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Column configuration.
  */
+@RequiredArgsConstructor
+@Getter
 public final class ColumnConfiguration {
+    
+    private final String name;
+    
+    private final String dataType;
+    
+    private final boolean nullable;
 }

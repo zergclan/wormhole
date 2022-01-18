@@ -17,8 +17,21 @@
 
 package com.zergclan.wormhole.core.config;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
+
 /**
  * Index configuration.
  */
+@RequiredArgsConstructor
+@Getter
 public final class IndexConfiguration {
+    
+    private final String name;
+    
+    private final boolean unique;
+    
+    private final Collection<String> columnNames;
 }

@@ -41,8 +41,6 @@ public final class ColumnMetadata implements Metadata {
 
     private final boolean nullable;
 
-    private final String comment;
-
     @Override
     public String getIdentifier() {
         return dataSourceIdentifier + MarkConstant.SPACE + schema + MarkConstant.SPACE + table + MarkConstant.SPACE + name;

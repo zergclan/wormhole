@@ -147,8 +147,6 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
         String databaseIdentifier = "MySQL#127.0.0.1:3306";
         String schema = "source_db";
         String table = "source_table";
-        boolean nullable = false;
-        String comment = "";
-        return new ColumnMetadata(databaseIdentifier, schema, table, name, dataType, nullable, comment);
+        return new ColumnMetadata(databaseIdentifier, schema, table, name, dataType, false);
     }
 }

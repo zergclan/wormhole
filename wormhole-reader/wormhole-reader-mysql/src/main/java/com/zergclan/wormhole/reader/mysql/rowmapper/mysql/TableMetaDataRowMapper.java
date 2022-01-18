@@ -35,7 +35,7 @@ public final class TableMetaDataRowMapper implements RowMapper<TableMetadata> {
     @Override
     public TableMetadata mapRow(final ResultSet rs, final int rowNum) throws SQLException {
         TableMetadata tableMetaData = new TableMetadata(databaseIdentifier, rs.getString("TABLE_SCHEMA"),
-                rs.getString("TABLE_NAME"), rs.getString("TABLE_COMMENT"));
+                rs.getString("TABLE_NAME"));
         return tableMetaData;
     }
 }

@@ -37,9 +37,7 @@ public final class TableMetadata implements Metadata {
     private final String schema;
 
     private final String name;
-
-    private final String comment;
-
+    
     private final Map<String, ColumnMetadata> columns = new LinkedHashMap<>();
 
     private final Map<String, IndexMetadata> indexes = new LinkedHashMap<>();
