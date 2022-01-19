@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.common.DateUtil;
+import com.zergclan.wormhole.common.util.DateUtil;
 import lombok.Getter;
 
 import java.util.Date;

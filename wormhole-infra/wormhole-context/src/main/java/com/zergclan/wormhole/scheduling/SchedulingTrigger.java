@@ -25,9 +25,10 @@ import java.util.concurrent.Delayed;
 public interface SchedulingTrigger extends Delayed {
     
     /**
-     * Get code.
+     * Get identifier.
      *
-     * @return code
+     * @return identifier
      */
-    String getCode();
+    String getIdentifier();
+    
 }

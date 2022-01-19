@@ -39,7 +39,12 @@ public enum ResultCode {
      * Result code for unauthorized.
      */
     UNAUTHORIZED(401, "UNAUTHORIZED"),
-
+    
+    /**
+     * Result code for not acceptable.
+     */
+    NOT_ACCEPTABLE(406, "NOT_ACCEPTABLE"),
+    
     /**
      * Result code for failed.
      */

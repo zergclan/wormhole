@@ -37,7 +37,7 @@ import java.util.Optional;
  * Swapper for {@link DataGroup} to data map.
  */
 public final class DefaultDataGroupSwapper {
-
+    
     /**
      * Swap data map to {@link DataGroup}.
      *

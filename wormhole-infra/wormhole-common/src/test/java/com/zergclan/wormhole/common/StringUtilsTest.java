@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.common;
 
+import com.zergclan.wormhole.common.util.StringUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -29,8 +29,8 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <mybatis-spring-boot-starter.version>2.2.0</mybatis-spring-boot-starter.version>
         <orika-core.version>1.5.4</orika-core.version>
+        <mybatis-spring-boot-starter.version>2.2.0</mybatis-spring-boot-starter.version>
     </properties>
 
     <dependencies>
@@ -42,6 +42,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

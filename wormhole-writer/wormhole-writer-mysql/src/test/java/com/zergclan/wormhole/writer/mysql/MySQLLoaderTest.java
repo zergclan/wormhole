@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.writer.mysql;
 
-import com.zergclan.wormhole.core.metadata.DatabaseType;
+import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import com.zergclan.wormhole.factory.DataSourceModeFactory;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;

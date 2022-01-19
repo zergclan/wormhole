@@ -17,11 +17,11 @@
 
 package com.zergclan.wormhole.reader.mysql;
 
-import com.zergclan.wormhole.common.StringUtil;
-import com.zergclan.wormhole.core.metadata.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.SchemaMetaData;
-import com.zergclan.wormhole.core.metadata.TableMetaData;
+import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.reader.mysql.domain.AbsJdbcConcatSqlDOM;
 import com.zergclan.wormhole.reader.mysql.domain.impl.MysqlConcatSqlDOMImpl;
@@ -50,9 +50,9 @@ public final class MySQLExtractor implements Extractor {
     private final AbsJdbcConcatSqlDOM jdbcConcatSqlDOM = new MysqlConcatSqlDOMImpl();
 
     @Override
-    public Collection<TableMetaData> extractTables(final SchemaMetaData schemaMetaData) {
+    public Collection<TableMetadata> extractTables(final SchemaMetadata schemaMetaData) {
         String queryAllTablesSql = jdbcConcatSqlDOM.getQueryAllTablesSql(schemaMetaData.getName());
-        return executeSql(queryAllTablesSql, new TableMetaDataRowMapper(schemaMetaData.getDatabaseIdentifier())).orElseGet(ArrayList::new);
+        return executeSql(queryAllTablesSql, new TableMetaDataRowMapper(schemaMetaData.getDataSourceIdentifier())).orElseGet(ArrayList::new);
     }
 
     private <T> Optional<List<T>> executeSql(final String executeSql, final RowMapper<T> rowMapper) {
@@ -60,22 +60,22 @@ public final class MySQLExtractor implements Extractor {
     }
 
     @Override
-    public Collection<ColumnMetaData> extractColumns(final TableMetaData table) {
+    public Collection<ColumnMetadata> extractColumns(final TableMetadata table) {
         String queryAllColumnsSql = jdbcConcatSqlDOM.getQueryAllColumnsSql(table.getSchema(), table.getName());
-        return executeSql(queryAllColumnsSql, new ColumnMetaDataRowMapper(table.getDatabaseIdentifier())).orElseGet(ArrayList::new);
+        return executeSql(queryAllColumnsSql, new ColumnMetaDataRowMapper(table.getDataSourceIdentifier())).orElseGet(ArrayList::new);
     }
 
     @Override
-    public Collection<IndexMetaData> extractIndexes(final TableMetaData table) {
+    public Collection<IndexMetadata> extractIndexes(final TableMetadata table) {
         // TODO
         return null;
     }
 
     @Override
-    public Collection<Map<String, Object>> extractDatum(final Map<String, ColumnMetaData> columns) {
+    public Collection<Map<String, Object>> extractDatum(final Map<String, ColumnMetadata> columns) {
         StringJoiner selectColumns = new StringJoiner(", ");
         String tableName = "";
-        for (Map.Entry<String, ColumnMetaData> column : columns.entrySet()) {
+        for (Map.Entry<String, ColumnMetadata> column : columns.entrySet()) {
             if (StringUtil.isBlank(tableName)) {
                 tableName = column.getValue().getSchema() + "." + column.getValue().getTable();
             }

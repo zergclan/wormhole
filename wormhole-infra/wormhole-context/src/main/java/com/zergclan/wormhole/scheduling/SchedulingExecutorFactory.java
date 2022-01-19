@@ -19,25 +19,26 @@ package com.zergclan.wormhole.scheduling;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zergclan.wormhole.JdbcTemplateManager;
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.concurrent.ExecutorServiceFactory;
-import com.zergclan.wormhole.definition.TaskDefinition;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
-import com.zergclan.wormhole.jdbc.JdbcTemplateFactory;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.reader.mysql.MySQLExtractor;
 import com.zergclan.wormhole.scheduling.plan.PlanSchedulingExecutor;
-import com.zergclan.wormhole.scheduling.plan.PlanSchedulingTrigger;
 import com.zergclan.wormhole.scheduling.task.TaskSchedulingExecutor;
 import com.zergclan.wormhole.writer.mysql.MySQLLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Properties;
 
 /**
  * {@link SchedulingExecutor} factory.
@@ -46,67 +47,66 @@ import java.util.LinkedList;
 public final class SchedulingExecutorFactory {
 
     /**
-     * The newly created {@link SchedulingExecutor} by {@link SchedulingTrigger}.
+     * The newly created {@link SchedulingExecutor} by {@link Metadata}.
      *
-     * @param trigger {@link SchedulingTrigger}
+     * @param metadata {@link Metadata}
      * @return {@link SchedulingExecutor}
      */
-    public static SchedulingExecutor createSchedulingExecutor(final SchedulingTrigger trigger) {
-        if (trigger instanceof PlanSchedulingTrigger) {
-            return createPlanSchedulingExecutor((PlanSchedulingTrigger) trigger);
+    public static SchedulingExecutor createSchedulingExecutor(final Metadata metadata) {
+        if (metadata instanceof CachedPlanMetadata) {
+            return createPlanSchedulingExecutor((CachedPlanMetadata) metadata);
         }
-        throw new WormholeException("error : create plan scheduling executor fail, code [%s]", trigger.getCode());
+        throw new WormholeException("error : create plan scheduling executor fail, identifier [%s]", metadata.getIdentifier());
     }
 
     /**
-     * The newly created {@link PlanSchedulingExecutor} by {@link PlanSchedulingTrigger}.
+     * The newly created {@link PlanSchedulingExecutor} by {@link CachedPlanMetadata}.
      *
-     * @param trigger {@link PlanSchedulingTrigger}
+     * @param cachedPlanMetadata {@link CachedPlanMetadata}
      * @return {@link PlanSchedulingExecutor}
      */
-    private static PlanSchedulingExecutor createPlanSchedulingExecutor(final PlanSchedulingTrigger trigger) {
+    private static PlanSchedulingExecutor createPlanSchedulingExecutor(final CachedPlanMetadata cachedPlanMetadata) {
         Collection<TaskSchedulingExecutor> taskSchedulingExecutors = new LinkedList<>();
-        // Collection<TaskDefinition> taskDefinitions = trigger.getPlanDefinition().getTaskDefinitions();
-//        for (TaskDefinition each : taskDefinitions) {
-//            taskSchedulingExecutors.add(createTaskSchedulingExecutor(each));
-//        }
-        new TaskDefinition("task");
-        taskSchedulingExecutors.add(createTaskSchedulingExecutor(new TaskDefinition("task")));
+        taskSchedulingExecutors.add(createTaskSchedulingExecutor());
         return new PlanSchedulingExecutor(taskSchedulingExecutors);
     }
 
     /**
-     * The newly created {@link TaskSchedulingExecutor} by {@link TaskDefinition}.
+     * The newly created {@link TaskSchedulingExecutor}.
      *
-     * @param taskDefinition {@link TaskDefinition}
      * @return {@link TaskSchedulingExecutor}
      */
-    private static TaskSchedulingExecutor createTaskSchedulingExecutor(final TaskDefinition taskDefinition) {
-        String code = taskDefinition.getCode();
-        Extractor extractor = createExtractor(code);
-        Loader loader = createLoader(code);
-        ExecutorService executorService = ExecutorServiceFactory.newFixedThreadExecutor(4, 8, code, 256);
+    private static TaskSchedulingExecutor createTaskSchedulingExecutor() {
+        Extractor extractor = createExtractor();
+        Loader loader = createLoader();
+        ExecutorService executorService = ExecutorServiceFactory.newFixedThreadExecutor(4, 8, "task", 256);
         return new TaskSchedulingExecutor(1L, 2L, extractor, loader, executorService);
     }
 
-    private static Extractor createExtractor(final String code) {
-        String driverClassName = "com.mysql.cj.jdbc.Driver";
-        String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/source_db?serverTimezone=UTC&useSSL=false";
+    private static Extractor createExtractor() {
+        int port = 3306;
+        String host = "127.0.0.1";
         String username = "root";
         String password = "123456";
-        DataSource dataSource = createDataSource(driverClassName, jdbcUrl, username, password);
-        JdbcTemplate jdbcTemplate = JdbcTemplateFactory.createJdbcTemplate(dataSource);
-        return new MySQLExtractor(jdbcTemplate);
+        String catalog = "source_db";
+        Properties properties = new Properties();
+        properties.setProperty("serverTimezone", "UTC");
+        properties.setProperty("useSSL", "false");
+        MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
+        return new MySQLExtractor(JdbcTemplateManager.register(dataSourceMetadata));
     }
 
-    private static Loader createLoader(final String code) {
-        String driverClassName = "com.mysql.cj.jdbc.Driver";
-        String jdbcUrl = "jdbc:mysql://127.0.0.1:3307/target_db?serverTimezone=UTC&useSSL=false";
+    private static Loader createLoader() {
+        int port = 3307;
+        String host = "127.0.0.1";
         String username = "root";
         String password = "123456";
-        DataSource dataSource = createDataSource(driverClassName, jdbcUrl, username, password);
-        JdbcTemplate jdbcTemplate = JdbcTemplateFactory.createJdbcTemplate(dataSource);
-        return new MySQLLoader(jdbcTemplate);
+        String catalog = "target_db";
+        Properties properties = new Properties();
+        properties.setProperty("serverTimezone", "UTC");
+        properties.setProperty("useSSL", "false");
+        MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
+        return new MySQLLoader(JdbcTemplateManager.register(dataSourceMetadata));
     }
 
     private static DataSource createDataSource(final String driverClassName, final String jdbcUrl, final String username, final String password) {
