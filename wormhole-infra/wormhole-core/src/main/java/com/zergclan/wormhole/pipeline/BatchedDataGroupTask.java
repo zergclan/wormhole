@@ -1,0 +1,60 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.zergclan.wormhole.pipeline;
+
+import com.zergclan.wormhole.core.concurrent.PromisedTask;
+import com.zergclan.wormhole.core.data.DataGroup;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Optional;
+
+@RequiredArgsConstructor
+public final class BatchedDataGroupTask implements PromisedTask<Collection<DataGroup>> {
+    
+    private Long planBatchId;
+    
+    private Long taskBatchId;
+    
+    private final Collection<DataGroup> batchedSourceDataGroup;
+    
+    private final Collection<DataGroupPipeline> dataGroupPipelines;
+    
+    @Override
+    public Collection<DataGroup> call() throws Exception {
+        Collection<DataGroup> result = new LinkedList<>();
+        Optional<DataGroup> handledDataGroup;
+        for (DataGroup each : batchedSourceDataGroup) {
+            handledDataGroup = handle(each);
+            if (handledDataGroup.isPresent()) {
+                result.add(handledDataGroup.get());
+            }
+        }
+        return result;
+    }
+    
+    private Optional<DataGroup> handle(final DataGroup dataGroup) {
+        DataGroup result;
+        for (DataGroupPipeline each : dataGroupPipelines) {
+            result = each.handle(dataGroup);
+            
+        }
+        return Optional.empty();
+    }
+}

@@ -46,8 +46,8 @@ public final class DefaultDataGroup implements DataGroup {
     }
 
     @Override
-    public Optional<DataNode<?>> append(final String name, final DataNode<?> dataNode) {
-        DataNode<?> result = dataNodes.put(name, dataNode);
+    public Optional<DataNode<?>> append(final String dataNodeName, final DataNode<?> dataNode) {
+        DataNode<?> result = dataNodes.put(dataNodeName, dataNode);
         return null == result ? Optional.empty() : Optional.of(result);
     }
 }

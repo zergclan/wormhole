@@ -15,37 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
-
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Optional;
+package com.zergclan.wormhole.pipeline;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * The root interface from which all pipeline objects shall be derived in Wormhole.
  */
-public interface DataGroup extends Serializable {
+public interface Pipeline<D> {
     
     /**
-     * Init {@link DataGroup}.
+     * Handle data.
      *
-     * @param dataNodes {@link DataNode}
+     * @param data data
+     * @return data
      */
-    void init(Map<String, DataNode<?>> dataNodes);
-    
-    /**
-     * get data nodes.
-     *
-     * @return data nodes
-     */
-    Optional<Map<String, DataNode<?>>> getDataNodes();
-    
-    /**
-     * Append {@link DataNode}.
-     *
-     * @param dataNodeName name of {@link DataNode}
-     * @param dataNode {@link DataNode}
-     * @return removed {@link DataNode}
-     */
-    Optional<DataNode<?>> append(String dataNodeName, DataNode<?> dataNode);
+    D handle(D data);
 }
