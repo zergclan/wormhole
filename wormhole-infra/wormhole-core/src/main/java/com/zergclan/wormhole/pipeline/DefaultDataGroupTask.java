@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline;
 
-import com.zergclan.wormhole.core.concurrent.PromisedTask;
+import com.zergclan.wormhole.core.concurrent.ProcessTask;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public final class DefaultDataGroupTask implements PromisedTask<Optional<DataGroup>> {
+public final class DefaultDataGroupTask implements ProcessTask {
 
     private final Long planId;
 
@@ -35,15 +35,10 @@ public final class DefaultDataGroupTask implements PromisedTask<Optional<DataGro
     private final DataGroup dataGroup;
     
     private final Map<String, DataNodePipeline<?>> pipelineMatrix;
-
+    
     @Override
-    public Optional<DataGroup> call() throws Exception {
-        Optional<Map<String, DataNode<?>>> dataNodesOptional = dataGroup.getDataNodes();
-        if (dataNodesOptional.isPresent()) {
-            handle(dataNodesOptional.get());
-            return Optional.of(dataGroup);
-        }
-        return Optional.empty();
+    public void run() {
+        dataGroup.getDataNodes().ifPresent(this::handle);
     }
     
     private void handle(final Map<String, DataNode<?>> dataNodeMap) {

@@ -20,12 +20,7 @@ package com.zergclan.wormhole.pipeline;
 import com.zergclan.wormhole.core.data.DataGroup;
 
 /**
- *
+ * The root interface from which all data group pipeline objects shall be derived in Wormhole.
  */
-public final class DataGroupPipeline implements Pipeline<DataGroup> {
-    
-    @Override
-    public DataGroup handle(DataGroup data) {
-        return null;
-    }
+public interface DataGroupPipeline extends Pipeline<DataGroup> {
 }

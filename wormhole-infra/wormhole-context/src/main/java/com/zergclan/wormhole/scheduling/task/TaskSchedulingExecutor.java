@@ -25,6 +25,7 @@ import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
 import com.zergclan.wormhole.pipeline.DataNodePipelineFactory;
 import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;
+import com.zergclan.wormhole.pipeline.data.DefaultDataGroup;
 import com.zergclan.wormhole.pipeline.data.DefaultDataGroupSwapper;
 import com.zergclan.wormhole.scheduling.SchedulingExecutor;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +34,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.Future;
 
 /**
  * Task implemented of {@link SchedulingExecutor}.
@@ -62,8 +57,6 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private final Map<String, DataNodePipeline<?>> pipelineMatrix = new LinkedHashMap<>();
 
-    private CompletionService<Optional<DataGroup>> completionService;
-
     /**
      * Execute.
      */
@@ -81,40 +74,21 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
         return true;
     }
 
-    private boolean extract() {
+    private void extract() {
         dataMaps.addAll(extractor.extractDatum(columns));
-        return true;
     }
 
     private void transform() {
-        int size = dataMaps.size();
-        completionService = new ExecutorCompletionService<>(executorService, new ArrayBlockingQueue<>(size));
         DataGroup dataGroup;
         for (Map<String, Object> each : dataMaps) {
             dataGroup = DefaultDataGroupSwapper.mapToDataGroup(each);
             DefaultDataGroupTask defaultDataGroupTask = new DefaultDataGroupTask(planId, taskId, dataGroup, pipelineMatrix);
-            completionService.submit(defaultDataGroupTask);
+            executorService.submit(defaultDataGroupTask);
         }
     }
 
     private void load() {
-        int size = dataMaps.size();
-        int count = 0;
-        for (int i = 0; i < size; i++) {
-            Future<Optional<DataGroup>> take;
-            try {
-                take = completionService.take();
-                Optional<DataGroup> dataGroupOptional = take.get();
-                if (dataGroupOptional.isPresent()) {
-                    Map<String, Object> map = DefaultDataGroupSwapper.dataGroupToMap(dataGroupOptional.get());
-                    count++;
-                    loader.loaderData(map);
-                    System.out.println("=====================count" + count);
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
+        loader.loaderData(DefaultDataGroupSwapper.dataGroupToMap(new DefaultDataGroup()));
     }
 
     private Map<String, DataNodePipeline<?>> createPipelineMatrix() {

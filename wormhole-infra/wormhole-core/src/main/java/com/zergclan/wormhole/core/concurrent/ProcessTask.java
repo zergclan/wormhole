@@ -17,12 +17,8 @@
 
 package com.zergclan.wormhole.core.concurrent;
 
-import java.util.concurrent.Callable;
-
 /**
  * The root interface from which all executed task shall be derived in Wormhole.
- *
- * @param <V> the class type of result
  */
-public interface PromisedTask<V> extends Callable<V> {
+public interface ProcessTask extends Runnable {
 }

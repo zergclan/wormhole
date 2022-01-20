@@ -17,16 +17,14 @@
 
 package com.zergclan.wormhole.pipeline;
 
-import com.zergclan.wormhole.core.concurrent.PromisedTask;
+import com.zergclan.wormhole.core.concurrent.ProcessTask;
 import com.zergclan.wormhole.core.data.DataGroup;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Optional;
 
 @RequiredArgsConstructor
-public final class BatchedDataGroupTask implements PromisedTask<Collection<DataGroup>> {
+public final class BatchedDataGroupTask implements ProcessTask {
     
     private Long planBatchId;
     
@@ -37,24 +35,15 @@ public final class BatchedDataGroupTask implements PromisedTask<Collection<DataG
     private final Collection<DataGroupPipeline> dataGroupPipelines;
     
     @Override
-    public Collection<DataGroup> call() throws Exception {
-        Collection<DataGroup> result = new LinkedList<>();
-        Optional<DataGroup> handledDataGroup;
+    public void run() {
         for (DataGroup each : batchedSourceDataGroup) {
-            handledDataGroup = handle(each);
-            if (handledDataGroup.isPresent()) {
-                result.add(handledDataGroup.get());
-            }
+            handle(each);
         }
-        return result;
     }
     
-    private Optional<DataGroup> handle(final DataGroup dataGroup) {
-        DataGroup result;
+    private void handle(final DataGroup dataGroup) {
         for (DataGroupPipeline each : dataGroupPipelines) {
-            result = each.handle(dataGroup);
-            
+            each.handle(dataGroup);
         }
-        return Optional.empty();
     }
 }

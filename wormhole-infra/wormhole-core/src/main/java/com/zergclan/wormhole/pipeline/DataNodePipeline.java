@@ -22,7 +22,7 @@ import com.zergclan.wormhole.core.data.DataNode;
 /**
  * The root interface from which all data node pipeline objects shall be derived in Wormhole.
  */
-public interface DataNodePipeline<V> {
+public interface DataNodePipeline<V> extends Pipeline<DataNode<V>> {
     
     /**
      * Handle {@link DataNode}.

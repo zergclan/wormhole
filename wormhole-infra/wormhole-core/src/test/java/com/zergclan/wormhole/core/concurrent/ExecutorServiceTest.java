@@ -17,69 +17,15 @@
 
 package com.zergclan.wormhole.core.concurrent;
 
-import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
-import com.zergclan.wormhole.pipeline.DataNodeFilter;
-import com.zergclan.wormhole.pipeline.DataNodePipeline;
-import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;
-import com.zergclan.wormhole.pipeline.data.DefaultDataGroup;
-import com.zergclan.wormhole.pipeline.filter.StringBlankToDefaultHandler;
-import com.zergclan.wormhole.pipeline.impl.StringDataNodePipeline;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public final class ExecutorServiceTest {
     
     @Test
-    public void assertSubmit() throws ExecutionException, InterruptedException {
-        ExecutorService executorService = ExecutorServiceFactory.newSingleThreadExecutor("junit-test", 128, 10 * 1000, FutureTask::new);
-        DataGroup dataGroup = createDataGroup();
-        Map<String, DataNodePipeline<?>> pipelineMatrix = createPipelineMatrix();
-        PromisedTask<Optional<DataGroup>> task = new DefaultDataGroupTask(1L, 2L, dataGroup, pipelineMatrix);
-        Future<Optional<DataGroup>> submit = executorService.submit(task);
-        Optional<DataGroup> dataGroupOptional = submit.get();
-        assertTrue(dataGroupOptional.isPresent());
-        DataGroup actualDataGroup = dataGroupOptional.get();
-        Optional<Map<String, DataNode<?>>> dataNodesOptional = actualDataGroup.getDataNodes();
-        assertTrue(dataNodesOptional.isPresent());
-        Map<String, DataNode<?>> dataNodeMap = dataNodesOptional.get();
-        assertEquals("hello jack", dataNodeMap.get("name").getValue());
-    }
-    
-    private Map<String, DataNodePipeline<?>> createPipelineMatrix() {
-        Map<String, DataNodePipeline<?>> result = new LinkedHashMap<>();
-        result.put("name", createNamePipeline());
-        return result;
-    }
-    
-    private DataNodePipeline<String> createNamePipeline() {
-        DataNodePipeline<String> result = new StringDataNodePipeline();
-        DataNodeFilter<String> nullToEmptyHandler = new StringBlankToDefaultHandler("rose");
-        result.append(nullToEmptyHandler);
-        DataNodeFilter<String> appendHandler = node -> node.refresh("hello " + node.getValue());
-        result.append(appendHandler);
-        return result;
-    }
-    
-    private DataGroup createDataGroup() {
-        DataGroup result = new DefaultDataGroup();
-        result.init(createDataNodes());
-        return result;
-    }
-    
-    private Map<String, DataNode<?>> createDataNodes() {
-        Map<String, DataNode<?>> result = new LinkedHashMap<>();
-        result.put("name", new StringDataNode("name").refresh("jack"));
-        return result;
+    public void assertSubmit() {
+        ExecutorService executorService = ExecutorServiceFactory.newSingleThreadExecutor("junit-test", 128, 10 * 1000);
+        assertNotNull(executorService);
     }
 }

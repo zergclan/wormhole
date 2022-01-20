@@ -26,7 +26,6 @@ public interface Pipeline<D> {
      * Handle data.
      *
      * @param data data
-     * @return data
      */
-    D handle(D data);
+    void handle(D data);
 }

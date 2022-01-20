@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +34,22 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ExecutorServiceFactory {
+    
+    private static final ExecutorRejectedHandler DEFAULT_REJECTED_HANDLER = task -> {
+        throw new WormholeException("error : executor rejected");
+    };
+    
+    /**
+     * The newly created single-threaded {@link ExecutorService}.
+     *
+     * @param namePrefix name prefix of thread in thread pool executor
+     * @param workQueueSize work queue size
+     * @param keepAliveTime keep alive time
+     * @return wormhole executor service instance
+     */
+    public static ExecutorService newSingleThreadExecutor(final String namePrefix, final int workQueueSize, final int keepAliveTime) {
+        return newSingleThreadExecutor(namePrefix, workQueueSize, keepAliveTime, DEFAULT_REJECTED_HANDLER);
+    }
     
     /**
      * The newly created single-threaded WormholeExecutorService.
@@ -59,7 +74,7 @@ public final class ExecutorServiceFactory {
      * @return wormhole executor service instance
      */
     public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize) {
-        return new ExecutorBuilder().corePoolSize(coreSize).maxPoolSize(maxSize).namePrefix(namePrefix).workQueueSize(workQueueSize).build();
+        return newFixedThreadExecutor(coreSize, maxSize, namePrefix, workQueueSize, DEFAULT_REJECTED_HANDLER);
     }
     
     /**
@@ -156,9 +171,6 @@ public final class ExecutorServiceFactory {
             if (null == threadFactory) {
                 threadFactory = new DefaultThreadFactory(namePrefix);
             }
-            if (null == handler) {
-                handler = new DefaultExecutorRejectedHandler();
-            }
             return new ExecutorService(new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, workQueue, threadFactory), handler);
         }
     }
@@ -195,17 +207,6 @@ public final class ExecutorServiceFactory {
                 result.setPriority(Thread.NORM_PRIORITY);
             }
             return result;
-        }
-    }
-    
-    /**
-     * Default implemented {@link ExecutorRejectedHandler} for WormholeExecutorService.
-     */
-    private static class DefaultExecutorRejectedHandler implements ExecutorRejectedHandler {
-        
-        @Override
-        public <V> Future<V> handle(final PromisedTask<V> task) {
-            throw new WormholeException("error : executor rejected");
         }
     }
 }
