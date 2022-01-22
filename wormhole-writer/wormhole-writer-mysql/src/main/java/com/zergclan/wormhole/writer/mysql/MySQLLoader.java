@@ -17,19 +17,15 @@
 
 package com.zergclan.wormhole.writer.mysql;
 
+import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import com.zergclan.wormhole.loader.JdbcLoadContent;
+import com.zergclan.wormhole.loader.LoadContent;
 import com.zergclan.wormhole.loader.Loader;
 import lombok.Setter;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.ResultSetExtractor;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Loader for MySQL.
@@ -37,83 +33,85 @@ import java.util.Map;
 @Setter
 public class MySQLLoader implements Loader {
 
-    private final JdbcTemplate jdbcTemplate;
+    public final static String SELECT_STR = "SELECT-";
+    public final static String INSERT_STR = "INSERT-";
+    public final static String UPDATE_STR = "UPDATE-";
 
-    private String targetTable;
-
-    private String selectSql;
-
-    private String insertSql;
-
-    private String updateSql;
+    private final SqlExecutor sqlExecutor;
+    private final Map<String,String> sqlMap = new HashMap<>(8);
 
     public MySQLLoader(final JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.targetTable = "target_table";
-        this.selectSql = " select count(*) from target_table where trans_bigint = ? and trans_varchar = ? ";
-        this.insertSql = " insert into  target_table(trans_int,trans_bigint,trans_varchar,trans_decimal,trans_datetime,create_time,modify_time) "
-                + " values(?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP) ";
-        this.updateSql = " update target_table set trans_int = ?, trans_decimal = ?, trans_datetime = ? where trans_bigint = ? and  trans_varchar = ? ";
+        this.sqlExecutor =  new SqlExecutor(jdbcTemplate);
     }
 
     @Override
-    public void loaderData(final Map<String, Object> map) {
-        if ("target_table".equals(targetTable)) {
-            try {
-                //select
-                int count = jdbcTemplate.query(new PreparedStatementCreator() {
-                    @Override
-                    public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-                        PreparedStatement ps = connection.prepareStatement(selectSql);
-                        ps.setLong(1, Long.parseLong(String.valueOf(map.get("transBigint"))));
-                        ps.setString(2, String.valueOf(map.get("transVarchar")));
-                        return ps;
-                    }
-                }, new ResultSetExtractor<Integer>() {
-                    @Override
-                    public Integer extractData(final ResultSet rs) throws SQLException, DataAccessException {
-                        return rs.getRow();
-                    }
-                });
+    public void loaderData(final LoadContent loadContent) {
+        JdbcLoadContent jdbcLoadContent = (JdbcLoadContent) loadContent;
+        Collection<Map<String, Object>> listData = jdbcLoadContent.getLoadData();
+        Map<String, TableMetadata> tables = jdbcLoadContent.getTables();
+        for (Map.Entry<String, TableMetadata> entry : tables.entrySet()) {
+            String table = entry.getKey();
+            TableMetadata tableMetadata = entry.getValue();
+            System.out.println("load data into "+table);
 
-                //insert or update
-                if (count == 0) {
-                    jdbcTemplate.update(new PreparedStatementCreator() {
-                        @Override
-                        public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-                            PreparedStatement ps1 = connection.prepareStatement(insertSql);
-                            ps1.setInt(1, Integer.parseInt(String.valueOf(map.get("transInt"))));
-                            ps1.setLong(2, Long.parseLong(String.valueOf(map.get("transBigint"))));
-                            ps1.setString(3, String.valueOf(map.get("transVarchar")));
-                            ps1.setBigDecimal(4, new BigDecimal(String.valueOf(map.get("transDecimal"))));
-                            ps1.setObject(5, map.get("transDatetime"));
-                            System.out.println(ps1);
-                            return ps1;
-                        }
-                    });
+            List<Map<String, Object>> insertData = new LinkedList<>();
+            List<Map<String, Object>> updateData = new LinkedList<>();
+            for(Map<String, Object> mapData : listData) {
+                int count = executeSelect(tableMetadata,mapData);
+                if(count > 0) {
+                    updateData.add(mapData);
                 } else {
-                    jdbcTemplate.update(new PreparedStatementCreator() {
-                        @Override
-                        public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-                            PreparedStatement ps2 = connection.prepareStatement(updateSql);
-                            ps2.setInt(1, Integer.parseInt(String.valueOf(map.get("transInt"))));
-                            ps2.setBigDecimal(2, new BigDecimal(String.valueOf(map.get("transDecimal"))));
-                            ps2.setObject(3, map.get("transDatetime"));
-                            ps2.setLong(4, Long.parseLong(String.valueOf(map.get("transBigint"))));
-                            ps2.setString(5, String.valueOf(map.get("transVarchar")));
-                            System.out.println(ps2);
-                            return ps2;
-                        }
-                    });
+                    insertData.add(mapData);
                 }
-            } catch (DataAccessException throwables) {
-                System.out.println("error...");
-                throwables.printStackTrace();
             }
-        } else {
-            // TODO the relationship between tables and data
-            System.out.println("no implement...");
+            executeBatchInsert(tableMetadata,insertData);
+            executeBatchUpdate(tableMetadata,insertData);
         }
+    }
 
+    private int executeSelect(final TableMetadata tableMetadata, final Map<String, Object> mapData) {
+        String selectSql = sqlMap.get(SELECT_STR+tableMetadata.getDataSourceIdentifier());
+        if(StringUtil.isBlank(selectSql)) {
+            selectSql = registerSqlMap(SELECT_STR, tableMetadata);
+        }
+        int count = sqlExecutor.queryCount(selectSql,mapData);
+        return count;
+    }
+
+    private void executeBatchInsert(final TableMetadata tableMetadata, final List<Map<String, Object>> insertData) {
+        String insertSql = sqlMap.get(INSERT_STR+tableMetadata.getDataSourceIdentifier());
+        if(StringUtil.isBlank(insertSql)) {
+            insertSql = registerSqlMap(INSERT_STR, tableMetadata);
+        }
+        int[] result = sqlExecutor.batchInsert(insertSql,insertData);
+    }
+
+    private void executeBatchUpdate(final TableMetadata tableMetadata, final List<Map<String, Object>> insertData) {
+        String updateStr = sqlMap.get(UPDATE_STR+tableMetadata.getDataSourceIdentifier());
+        if(StringUtil.isBlank(updateStr)) {
+            updateStr = registerSqlMap(UPDATE_STR, tableMetadata);
+        }
+        int[] result = sqlExecutor.batchUpdate(updateStr,insertData);
+    }
+
+    private String registerSqlMap(final String strType, final TableMetadata tableMetadata) {
+        String sqlStr;
+        switch(strType) {
+            case SELECT_STR : {
+                sqlStr = SqlGenerator.createSelectSql(tableMetadata);
+                break;
+            }
+            case INSERT_STR : {
+                sqlStr = SqlGenerator.createBatchInsertSql(tableMetadata);
+                break;
+            }
+            case UPDATE_STR : {
+                sqlStr = SqlGenerator.createBatchUpdateSql(tableMetadata);
+                break;
+            }
+            default : sqlStr = "";  // TODO throws Exception
+        }
+        sqlMap.put(SELECT_STR+tableMetadata.getDataSourceIdentifier(), sqlStr);
+        return sqlStr;
     }
 }

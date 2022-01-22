@@ -14,35 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.zergclan.wormhole.loader;
 
-package com.zergclan.wormhole.common.util;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
- * Util tools for String.
- * <p>
- *     Mainly for internal use within the framework,
- *     referenced {@code org.apache.commons.lang3.Validate} from
- *     <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
- * </p>
+ * The load content for Jdbc
  */
-public final class StringUtil extends org.apache.commons.lang3.StringUtils {
-    
+@Data
+@RequiredArgsConstructor
+public class JdbcLoadContent implements LoadContent {
+
+    Collection<Map<String, Object>> loadData;
+
+    Map<String, TableMetadata> tables;
+
     /**
-     * Is blank validation of char sequence.
+     * Register {@link TableMetadata}.
      *
-     * @param charSequence char sequence
-     * @return is blank or not
+     * @param tableMetadata {@link TableMetadata}
+     * @return is registered or not.
      */
-    public static boolean isBlank(final CharSequence charSequence) {
-        final int strLen = charSequence == null ? 0 : charSequence.length();
-        if (strLen == 0) {
-            return true;
-        }
-        for (int i = 0; i < strLen; ++i) {
-            if (!Character.isWhitespace(charSequence.charAt(i))) {
-                return false;
-            }
-        }
+    public boolean registerTable(final TableMetadata tableMetadata) {
+        tables.put(tableMetadata.getIdentifier(), tableMetadata);
         return true;
     }
 }

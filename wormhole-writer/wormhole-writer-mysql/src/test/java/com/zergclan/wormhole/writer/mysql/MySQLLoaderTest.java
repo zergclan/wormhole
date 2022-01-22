@@ -49,7 +49,7 @@ public class MySQLLoaderTest {
         map.put("transDecimal", new BigDecimal(18.2));
         map.put("transDatetime", new Date());
 
-        loader.loaderData(map);
+//        loader.loaderData(map);
     }
 
     /**
@@ -71,7 +71,7 @@ public class MySQLLoaderTest {
                 + "  `create_time` datetime NOT NULL COMMENT '创建时间',"
                 + "  `modify_time` datetime NOT NULL COMMENT '更新时间',"
                 + "  PRIMARY KEY (`id`)"
-                + ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='目标表';"
+                + ") ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT='目标表';"
                 + "create unique index UN_target_table on `target_table`(`trans_bigint`,`trans_varchar`);";
         jdbcTemplate.execute(createUserTableSqlStr);
 

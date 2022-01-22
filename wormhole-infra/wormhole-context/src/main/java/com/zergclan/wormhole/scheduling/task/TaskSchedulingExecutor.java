@@ -20,7 +20,11 @@ package com.zergclan.wormhole.scheduling.task;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
+import com.zergclan.wormhole.loader.JdbcLoadContent;
+import com.zergclan.wormhole.loader.LoadContent;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.pipeline.DataNodePipeline;
 import com.zergclan.wormhole.pipeline.DataNodePipelineFactory;
@@ -29,11 +33,7 @@ import com.zergclan.wormhole.pipeline.data.DefaultDataGroupSwapper;
 import com.zergclan.wormhole.scheduling.SchedulingExecutor;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -99,6 +99,7 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private void load() {
         int size = dataMaps.size();
+        Collection<Map<String, Object>> loadData = new ArrayList<>(128);
         int count = 0;
         for (int i = 0; i < size; i++) {
             Future<Optional<DataGroup>> take;
@@ -107,14 +108,13 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
                 Optional<DataGroup> dataGroupOptional = take.get();
                 if (dataGroupOptional.isPresent()) {
                     Map<String, Object> map = DefaultDataGroupSwapper.dataGroupToMap(dataGroupOptional.get());
-                    count++;
-                    loader.loaderData(map);
-                    System.out.println("=====================count" + count);
+                    loadData.add(map);
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
+        loader.loaderData(createLoadContent(loadData));
     }
 
     private Map<String, DataNodePipeline<?>> createPipelineMatrix() {
@@ -141,6 +141,28 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
         result.put("createTime", createColumn("create_time", "DATETIME(0)"));
         result.put("modifyTime", createColumn("create_time", "DATETIME(0)"));
         return result;
+    }
+
+    private LoadContent createLoadContent(final Collection<Map<String, Object>> loadData) {
+        JdbcLoadContent jdbcLoadContent = new JdbcLoadContent();
+        jdbcLoadContent.setLoadData(loadData);
+
+        String databaseIdentifier = "MySQL#127.0.0.1:3306";
+        String schema = "source_db";
+        String table = "source_table";
+        String index = "index";
+        Collection<String> columnNames = new ArrayList<>(8);
+        columnNames.add("trans_int");
+        columnNames.add("trans_varchar");
+        IndexMetadata indexMetadata = new IndexMetadata(databaseIdentifier,schema,table,index,true,columnNames);
+        TableMetadata tableMetadata = new TableMetadata(databaseIdentifier,schema,table);
+        columns.forEach((key,value) -> {
+            tableMetadata.registerColumn(value);
+        });
+        tableMetadata.registerIndex(indexMetadata);
+
+        jdbcLoadContent.registerTable(tableMetadata);
+        return jdbcLoadContent;
     }
 
     private ColumnMetadata createColumn(final String name, final String dataType) {
