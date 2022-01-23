@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.writer.mysql;
+package com.zergclan.wormhole.writer.xsql;
 
 import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;

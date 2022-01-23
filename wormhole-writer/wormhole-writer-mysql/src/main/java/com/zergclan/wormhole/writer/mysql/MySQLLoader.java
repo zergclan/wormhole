@@ -22,6 +22,8 @@ import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.loader.JdbcLoadContent;
 import com.zergclan.wormhole.loader.LoadContent;
 import com.zergclan.wormhole.loader.Loader;
+import com.zergclan.wormhole.writer.xsql.SqlExecutor;
+import com.zergclan.wormhole.writer.xsql.SqlGenerator;
 import lombok.Setter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
