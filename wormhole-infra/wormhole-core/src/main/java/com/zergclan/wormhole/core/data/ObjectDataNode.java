@@ -15,19 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.core.data;
 
-/**
- * The root interface from which all pipeline objects shall be derived in Wormhole.
- *
- * @param <T> class type of handle object
- */
-public interface Pipeline<T> {
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public final class ObjectDataNode implements DataNode<Object> {
     
-    /**
-     * Handle data.
-     *
-     * @param data data
-     */
-    void handle(T data);
+    private final String name;
+    
+    private Object value;
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public Object getValue() {
+        return value;
+    }
+    
+    @Override
+    public DataNode<Object> refresh(final Object value) {
+        this.value = value;
+        return this;
+    }
 }

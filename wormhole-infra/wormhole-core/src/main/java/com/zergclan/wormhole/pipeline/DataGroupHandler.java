@@ -17,17 +17,19 @@
 
 package com.zergclan.wormhole.pipeline;
 
-/**
- * The root interface from which all pipeline objects shall be derived in Wormhole.
- *
- * @param <T> class type of handle object
- */
-public interface Pipeline<T> {
+public interface DataGroupHandler<D> {
     
     /**
      * Handle data.
      *
      * @param data data
      */
-    void handle(T data);
+    void handle(D data);
+    
+    /**
+     * Get order.
+     *
+     * @return order
+     */
+    int getOrder();
 }

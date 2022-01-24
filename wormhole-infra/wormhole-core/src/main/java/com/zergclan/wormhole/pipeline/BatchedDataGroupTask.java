@@ -18,32 +18,18 @@
 package com.zergclan.wormhole.pipeline;
 
 import com.zergclan.wormhole.core.concurrent.ProcessTask;
-import com.zergclan.wormhole.core.data.DataGroup;
+import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
 
 @RequiredArgsConstructor
 public final class BatchedDataGroupTask implements ProcessTask {
     
-    private Long planBatchId;
+    private final BatchedDataGroup batchedDataGroup;
     
-    private Long taskBatchId;
-    
-    private final Collection<DataGroup> batchedSourceDataGroup;
-    
-    private final Collection<DataGroupPipeline> dataGroupPipelines;
+    private final Pipeline<BatchedDataGroup> chainedPipeline;
     
     @Override
     public void run() {
-        for (DataGroup each : batchedSourceDataGroup) {
-            handle(each);
-        }
-    }
-    
-    private void handle(final DataGroup dataGroup) {
-        for (DataGroupPipeline each : dataGroupPipelines) {
-            each.handle(dataGroup);
-        }
+        chainedPipeline.handle(batchedDataGroup);
     }
 }

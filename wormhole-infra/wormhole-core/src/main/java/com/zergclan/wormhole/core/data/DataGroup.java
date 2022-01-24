@@ -19,7 +19,6 @@ package com.zergclan.wormhole.core.data;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * The root interface from which all converted data objects shall be derived in Wormhole.
@@ -29,23 +28,23 @@ public interface DataGroup extends Serializable {
     /**
      * Init {@link DataGroup}.
      *
-     * @param dataNodes {@link DataNode}
+     * @param dataMap data map
      */
-    void init(Map<String, DataNode<?>> dataNodes);
-    
+    void init(Map<String, Object> dataMap);
+
     /**
-     * get data nodes.
+     * Get {@link DataNode} by name.
      *
-     * @return data nodes
+     * @param name name
+     * @return {@link DataNode}
      */
-    Optional<Map<String, DataNode<?>>> getDataNodes();
-    
+    DataNode<?> getDataNode(String name);
+
     /**
      * Append {@link DataNode}.
      *
-     * @param dataNodeName name of {@link DataNode}
      * @param dataNode {@link DataNode}
      * @return removed {@link DataNode}
      */
-    Optional<DataNode<?>> append(String dataNodeName, DataNode<?> dataNode);
+    boolean append(DataNode<?> dataNode);
 }

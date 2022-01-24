@@ -17,17 +17,19 @@
 
 package com.zergclan.wormhole.pipeline;
 
+import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import lombok.RequiredArgsConstructor;
+
 /**
- * The root interface from which all pipeline objects shall be derived in Wormhole.
- *
- * @param <T> class type of handle object
+ * Chained data group pipeline.
  */
-public interface Pipeline<T> {
+@RequiredArgsConstructor
+public final class ChainedDataGroupPipeline implements Pipeline<BatchedDataGroup> {
     
-    /**
-     * Handle data.
-     *
-     * @param data data
-     */
-    void handle(T data);
+    private DataGroupHandler<BatchedDataGroup> dataGroupHandler;
+    
+    @Override
+    public void handle(final BatchedDataGroup data) {
+        dataGroupHandler.handle(data);
+    }
 }

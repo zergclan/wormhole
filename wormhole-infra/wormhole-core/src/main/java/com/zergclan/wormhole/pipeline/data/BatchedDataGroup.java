@@ -18,44 +18,35 @@
 package com.zergclan.wormhole.pipeline.data;
 
 import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.core.data.ObjectDataNode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.LinkedHashMap;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Map;
 
-/**
- * Defaulted data group.
- */
 @RequiredArgsConstructor
-public final class DefaultDataGroup implements DataGroup {
+public final class BatchedDataGroup {
     
-    private static final long serialVersionUID = -5547416880869227229L;
+    private Long planBatchId;
     
-    private final Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
+    private Long taskBatchId;
     
-    @Override
-    public void init(final Map<String, Object> dataMap) {
-        for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
-            dataNodes.put(entry.getKey(), new ObjectDataNode(entry.getKey()).refresh(entry.getValue()));
+    private final int batchSize;
+    
+    private final Collection<DataGroup> errorData = new LinkedList<>();
+    
+    @Getter
+    private final Collection<DataGroup> sourceData = new LinkedList<>();
+    
+    public void init(final Collection<Map<String, Object>> sourceData) {
+        for (Map<String, Object> each : sourceData) {
+            this.sourceData.add(DefaultDataGroupSwapper.mapToDataGroup(each));
         }
     }
     
-    @Override
-    public DataNode<?> getDataNode(final String name) {
-        return dataNodes.get(name);
+    public void clearError(final DataGroup dataGroup) {
+        sourceData.remove(dataGroup);
+        errorData.add(dataGroup);
     }
-    
-    @Override
-    public boolean append(final DataNode<?> dataNode) {
-        final String name = dataNode.getName();
-        if (dataNodes.containsKey(name)) {
-            return false;
-        }
-        dataNodes.put(name, dataNode);
-        return true;
-    }
-    
-    
 }

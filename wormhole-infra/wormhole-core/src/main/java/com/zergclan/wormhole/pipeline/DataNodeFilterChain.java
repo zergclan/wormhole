@@ -17,17 +17,7 @@
 
 package com.zergclan.wormhole.pipeline;
 
-/**
- * The root interface from which all pipeline objects shall be derived in Wormhole.
- *
- * @param <T> class type of handle object
- */
-public interface Pipeline<T> {
-    
-    /**
-     * Handle data.
-     *
-     * @param data data
-     */
-    void handle(T data);
+public final class DataNodeFilterChain {
+
+
 }

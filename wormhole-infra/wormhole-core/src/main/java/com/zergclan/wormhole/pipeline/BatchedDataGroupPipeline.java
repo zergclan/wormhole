@@ -17,17 +17,14 @@
 
 package com.zergclan.wormhole.pipeline;
 
-/**
- * The root interface from which all pipeline objects shall be derived in Wormhole.
- *
- * @param <T> class type of handle object
- */
-public interface Pipeline<T> {
+import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+
+public class BatchedDataGroupPipeline implements Pipeline<BatchedDataGroup>{
     
-    /**
-     * Handle data.
-     *
-     * @param data data
-     */
-    void handle(T data);
+    private DataGroupHandler<BatchedDataGroup> dataGroupHandler;
+    
+    @Override
+    public void handle(final BatchedDataGroup data) {
+        dataGroupHandler.handle(data);
+    }
 }
