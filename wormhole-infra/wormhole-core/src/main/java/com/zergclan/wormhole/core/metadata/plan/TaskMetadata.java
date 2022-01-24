@@ -40,14 +40,16 @@ public final class TaskMetadata implements Metadata {
     
     private final String sourceResource;
     
+    private final Map<String, DataNodeMetadata> sourceDataNodes = new LinkedHashMap<>();
+    
     private final String targetResource;
+    
+    private final Map<String, DataNodeMetadata> targetDataNodes = new LinkedHashMap<>();
     
     private final AtomicBoolean enable;
 
     // FIXME create mapping config for target and source with pipeline
     private final Map<String, Collection<String>> dataNodeMapping = new LinkedHashMap<>();
-    
-    private final Map<String, DataNodeMetadata> dataNodes = new LinkedHashMap<>();
     
     @Override
     public String getIdentifier() {

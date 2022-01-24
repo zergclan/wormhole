@@ -15,17 +15,15 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.pipeline.filter;
 
-/**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
- */
-public interface ExecutorRejectedHandler {
-    
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+import com.zergclan.wormhole.core.data.PatternDate;
+import com.zergclan.wormhole.pipeline.Filter;
+
+import java.util.Collection;
+import java.util.LinkedList;
+
+public final class DateDataNodeFilterChain {
+
+    private final Collection<Filter<PatternDate>> filters = new LinkedList<>();
 }

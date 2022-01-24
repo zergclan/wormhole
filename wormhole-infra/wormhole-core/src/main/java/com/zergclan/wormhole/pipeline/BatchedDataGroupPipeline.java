@@ -15,17 +15,16 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.pipeline;
 
-/**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
- */
-public interface ExecutorRejectedHandler {
+import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+
+public class BatchedDataGroupPipeline implements Pipeline<BatchedDataGroup> {
     
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+    private Handler<BatchedDataGroup> dataGroupHandler;
+    
+    @Override
+    public void handle(final BatchedDataGroup data) {
+        dataGroupHandler.handle(data);
+    }
 }

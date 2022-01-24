@@ -22,9 +22,9 @@ import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.loader.Loader;
-import com.zergclan.wormhole.pipeline.DataNodePipeline;
-import com.zergclan.wormhole.pipeline.DataNodePipelineFactory;
-import com.zergclan.wormhole.pipeline.DefaultDataGroupTask;
+import com.zergclan.wormhole.pipeline.BatchedDataGroupTask;
+import com.zergclan.wormhole.pipeline.Pipeline;
+import com.zergclan.wormhole.pipeline.data.DefaultDataGroup;
 import com.zergclan.wormhole.pipeline.data.DefaultDataGroupSwapper;
 import com.zergclan.wormhole.scheduling.SchedulingExecutor;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +33,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.Future;
 
 /**
  * Task implemented of {@link SchedulingExecutor}.
@@ -60,9 +54,7 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private final Collection<Map<String, Object>> dataMaps = new LinkedList<>();
 
-    private final Map<String, DataNodePipeline<?>> pipelineMatrix = new LinkedHashMap<>();
-
-    private CompletionService<Optional<DataGroup>> completionService;
+    private final Map<String, Pipeline<?>> pipelineMatrix = new LinkedHashMap<>();
 
     /**
      * Execute.
@@ -81,52 +73,25 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
         return true;
     }
 
-    private boolean extract() {
+    private void extract() {
         dataMaps.addAll(extractor.extractDatum(columns));
-        return true;
     }
 
     private void transform() {
-        int size = dataMaps.size();
-        completionService = new ExecutorCompletionService<>(executorService, new ArrayBlockingQueue<>(size));
         DataGroup dataGroup;
         for (Map<String, Object> each : dataMaps) {
             dataGroup = DefaultDataGroupSwapper.mapToDataGroup(each);
-            DefaultDataGroupTask defaultDataGroupTask = new DefaultDataGroupTask(planId, taskId, dataGroup, pipelineMatrix);
-            completionService.submit(defaultDataGroupTask);
+            BatchedDataGroupTask defaultDataGroupTask = null;
+            executorService.submit(defaultDataGroupTask);
         }
     }
 
     private void load() {
-        int size = dataMaps.size();
-        int count = 0;
-        for (int i = 0; i < size; i++) {
-            Future<Optional<DataGroup>> take;
-            try {
-                take = completionService.take();
-                Optional<DataGroup> dataGroupOptional = take.get();
-                if (dataGroupOptional.isPresent()) {
-                    Map<String, Object> map = DefaultDataGroupSwapper.dataGroupToMap(dataGroupOptional.get());
-                    count++;
-                    loader.loaderData(map);
-                    System.out.println("=====================count" + count);
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
+        loader.loaderData(DefaultDataGroupSwapper.dataGroupToMap(new DefaultDataGroup()));
     }
 
-    private Map<String, DataNodePipeline<?>> createPipelineMatrix() {
-        Map<String, DataNodePipeline<?>> result = new LinkedHashMap<>();
-        result.put("id", DataNodePipelineFactory.createDataNodePipeline("INT:NOT:NULL#INT:NOT:NULL"));
-        result.put("transInt", DataNodePipelineFactory.createDataNodePipeline("INT:NOT:NULL#INT:DEFAULT:1"));
-        result.put("transBigint", DataNodePipelineFactory.createDataNodePipeline("BIGINT:NOT:NULL#BIGINT:DEFAULT:2"));
-        result.put("transVarchar", DataNodePipelineFactory.createDataNodePipeline("VARCHAR:NOT:NULL#VARCHAR:NOT:NULL"));
-        result.put("transDecimal", DataNodePipelineFactory.createDataNodePipeline("DECIMAL:NOT:NULL#DECIMAL:NOT:NULL"));
-        result.put("transDatetime", DataNodePipelineFactory.createDataNodePipeline("DATETIME:NOT:NULL#DATETIME:NOT:NULL"));
-        result.put("createTime", DataNodePipelineFactory.createDataNodePipeline("DATETIME:NOT:NULL#DATETIME:NOT:NULL"));
-        result.put("modifyTime", DataNodePipelineFactory.createDataNodePipeline("DATETIME:NOT:NULL#DATETIME:NOT:NULL"));
+    private Map<String, Pipeline<?>> createPipelineMatrix() {
+        Map<String, Pipeline<?>> result = new LinkedHashMap<>();
         return result;
     }
 

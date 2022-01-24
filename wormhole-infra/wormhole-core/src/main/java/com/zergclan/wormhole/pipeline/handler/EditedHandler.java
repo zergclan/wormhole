@@ -15,36 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.handler;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.pipeline.FilterChain;
+import com.zergclan.wormhole.pipeline.Handler;
+import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import lombok.RequiredArgsConstructor;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * The root interface from which all converted data objects shall be derived in Wormhole.
- */
-public interface DataGroup extends Serializable {
-    
-    /**
-     * Init {@link DataGroup}.
-     *
-     * @param dataMap data map
-     */
-    void init(Map<String, Object> dataMap);
+@RequiredArgsConstructor
+public final class EditedHandler implements Handler<BatchedDataGroup> {
 
-    /**
-     * Get {@link DataNode} by name.
-     *
-     * @param name name
-     * @return {@link DataNode}
-     */
-    DataNode<?> getDataNode(String name);
+    private final Integer order;
 
-    /**
-     * Append {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return removed {@link DataNode}
-     */
-    boolean append(DataNode<?> dataNode);
+    private final Handler<BatchedDataGroup> dataGroupHandler;
+
+    private final Map<String, FilterChain<DataNode<?>>> filterChain = new LinkedHashMap<>();
+
+    @Override
+    public void handle(final BatchedDataGroup data) {
+        // TODO handle
+    }
+
+    @Override
+    public int getOrder() {
+        return order;
+    }
 }

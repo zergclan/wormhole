@@ -15,14 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.pipeline.filter;
 
-import java.util.concurrent.Callable;
+import com.zergclan.wormhole.core.data.StringDataNode;
+import com.zergclan.wormhole.pipeline.Filter;
+import com.zergclan.wormhole.pipeline.FilterChain;
 
-/**
- * The root interface from which all executed task shall be derived in Wormhole.
- *
- * @param <V> the class type of result
- */
-public interface PromisedTask<V> extends Callable<V> {
+import java.util.Collection;
+import java.util.LinkedList;
+
+public final class StringDataNodeFilterChain implements FilterChain<StringDataNode> {
+
+    private final Collection<Filter<StringDataNode>> filters = new LinkedList<>();
+
+    @Override
+    public void doFilter(final StringDataNode data) {
+        for (Filter<StringDataNode> each : filters) {
+            each.doFilter(data);
+        }
+    }
 }

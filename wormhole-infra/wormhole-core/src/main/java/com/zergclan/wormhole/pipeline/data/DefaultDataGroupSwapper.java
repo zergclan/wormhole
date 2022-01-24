@@ -19,16 +19,9 @@ package com.zergclan.wormhole.pipeline.data;
 
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.core.data.DatePattern;
-import com.zergclan.wormhole.core.data.IntegerDataNode;
+import com.zergclan.wormhole.core.data.ObjectDataNode;
 import com.zergclan.wormhole.core.data.PatternDate;
-import com.zergclan.wormhole.core.data.PatternDateDataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -46,29 +39,8 @@ public final class DefaultDataGroupSwapper {
      */
     public static DataGroup mapToDataGroup(final Map<String, Object> dataMap) {
         DefaultDataGroup result = new DefaultDataGroup();
-        IntegerDataNode integerDataNode;
-        StringDataNode stringDataNode;
         for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
-            String name = entry.getKey();
-            Object value = entry.getValue();
-            if (value instanceof Integer) {
-                integerDataNode = new IntegerDataNode(name);
-                result.append(name, integerDataNode.refresh((Integer) value));
-            } else if (value instanceof BigDecimal) {
-                stringDataNode = new StringDataNode(name);
-                result.append(name, stringDataNode.refresh(value.toString()));
-            } else if (value instanceof Date) {
-                PatternDateDataNode patternDateDataNode = new PatternDateDataNode(name);
-                // TODO to date
-            } else if (value instanceof LocalDateTime) {
-                PatternDateDataNode patternDateDataNode = new PatternDateDataNode(name);
-                Date date = Date.from(((LocalDateTime) value).atZone(ZoneId.systemDefault()).toInstant());
-                PatternDate patternDate = new PatternDate(date, DatePattern.NATIVE_DATE_TIME);
-                result.append(name, patternDateDataNode.refresh(patternDate));
-            } else {
-                stringDataNode = new StringDataNode(name);
-                result.append(name, stringDataNode.refresh(String.valueOf(value)));
-            }
+            result.append(new ObjectDataNode(entry.getKey()).refresh(entry.getValue()));
         }
         return result;
     }
@@ -81,7 +53,7 @@ public final class DefaultDataGroupSwapper {
      */
     public static Map<String, Object> dataGroupToMap(final DataGroup dataGroup) {
         Map<String, Object> result = new LinkedHashMap<>();
-        Optional<Map<String, DataNode<?>>> dataNodes = dataGroup.getDataNodes();
+        Optional<Map<String, DataNode<?>>> dataNodes = Optional.empty();
         if (dataNodes.isPresent()) {
             Map<String, DataNode<?>> dataNodeMap = dataNodes.get();
             for (Map.Entry<String, DataNode<?>> entry : dataNodeMap.entrySet()) {

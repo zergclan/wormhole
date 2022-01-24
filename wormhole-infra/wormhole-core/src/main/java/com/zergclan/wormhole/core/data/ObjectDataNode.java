@@ -15,17 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.core.data;
 
-/**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
- */
-public interface ExecutorRejectedHandler {
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public final class ObjectDataNode implements DataNode<Object> {
     
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+    private final String name;
+    
+    private Object value;
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public Object getValue() {
+        return value;
+    }
+    
+    @Override
+    public DataNode<Object> refresh(final Object value) {
+        this.value = value;
+        return this;
+    }
 }

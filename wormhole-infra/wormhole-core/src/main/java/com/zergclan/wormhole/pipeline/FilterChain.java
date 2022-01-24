@@ -15,17 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.pipeline;
 
-/**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
- */
-public interface ExecutorRejectedHandler {
-    
+public interface FilterChain<D> {
+
     /**
-     * Handle {@link ProcessTask}.
+     * Do filter.
      *
-     * @param task {@link ProcessTask}
+     * @param data data
      */
-    void handle(ProcessTask task);
+    void doFilter(D data);
 }

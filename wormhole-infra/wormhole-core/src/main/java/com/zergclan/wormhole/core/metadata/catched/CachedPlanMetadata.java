@@ -21,7 +21,7 @@ import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
-import com.zergclan.wormhole.pipeline.DataNodePipeline;
+import com.zergclan.wormhole.pipeline.Pipeline;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -44,7 +44,7 @@ public final class CachedPlanMetadata implements Metadata {
      * @param pipelines pipelines
      * @return {@link CachedPlanMetadata}
      */
-    public static CachedPlanMetadata builder(final PlanMetadata planMetadata, final Map<String, DataSourceMetadata> dataSources, final Map<String, DataNodePipeline<?>> pipelines) {
+    public static CachedPlanMetadata builder(final PlanMetadata planMetadata, final Map<String, DataSourceMetadata> dataSources, final Map<String, Pipeline<?>> pipelines) {
         return new CachedBuilder(planMetadata, dataSources, pipelines).build();
     }
     
@@ -60,7 +60,7 @@ public final class CachedPlanMetadata implements Metadata {
         
         private final Map<String, DataSourceMetadata> dataSources;
     
-        private final Map<String, DataNodePipeline<?>> pipelines;
+        private final Map<String, Pipeline<?>> pipelines;
         
         CachedPlanMetadata build() {
             return new CachedPlanMetadata();

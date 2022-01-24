@@ -15,17 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.pipeline.filter;
+
+import com.zergclan.wormhole.core.data.IntegerDataNode;
+import com.zergclan.wormhole.pipeline.Filter;
+import com.zergclan.wormhole.pipeline.FilterChain;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
+ * Implemented {@link FilterChain} for {@link IntegerDataNode}.
  */
-public interface ExecutorRejectedHandler {
-    
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+public class IntegerDataNodeFilterChain implements FilterChain<IntegerDataNode> {
+
+    private final Collection<Filter<IntegerDataNode>> filters = new LinkedList<>();
+
+    @Override
+    public void doFilter(final IntegerDataNode data) {
+        for (Filter<IntegerDataNode> each : filters) {
+            each.doFilter(data);
+        }
+    }
 }

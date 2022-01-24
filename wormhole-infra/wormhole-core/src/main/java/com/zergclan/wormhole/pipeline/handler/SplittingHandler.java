@@ -15,33 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.impl;
+package com.zergclan.wormhole.pipeline.handler;
 
 import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.pipeline.DataNodeFilter;
-import com.zergclan.wormhole.pipeline.DataNodePipeline;
+import com.zergclan.wormhole.pipeline.FilterChain;
+import com.zergclan.wormhole.pipeline.Handler;
+import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/**
- * Implemented {@link DataNodePipeline} for {@link com.zergclan.wormhole.core.data.IntegerDataNode}.
- */
-public final class IntegerDataNodePipeline implements DataNodePipeline<Integer> {
-    
-    private final Collection<DataNodeFilter<Integer>> filterChains = new LinkedList<>();
-    
+@RequiredArgsConstructor
+public final class SplittingHandler implements Handler<BatchedDataGroup> {
+
+    private final Integer order;
+
+    private final Handler<BatchedDataGroup> dataGroupHandler;
+
+    private final Map<String, FilterChain<DataNode<?>>> filterChain = new LinkedHashMap<>();
+
     @Override
-    public void handle(final DataNode<Integer> dataNode) {
-        DataNode<Integer> temp = dataNode;
-        for (DataNodeFilter<Integer> each : filterChains) {
-            temp = each.doFilter(temp);
-        }
-        dataNode.refresh(temp.getValue());
+    public void handle(final BatchedDataGroup data) {
+        // TODO handle
     }
-    
+
     @Override
-    public void append(final DataNodeFilter<Integer> dataNodeFilter) {
-        filterChains.add(dataNodeFilter);
+    public int getOrder() {
+        return order;
     }
 }
