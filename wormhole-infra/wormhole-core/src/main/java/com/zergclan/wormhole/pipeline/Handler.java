@@ -17,7 +17,19 @@
 
 package com.zergclan.wormhole.pipeline;
 
-public final class DataNodeFilterChain {
+public interface Handler<D> {
 
+    /**
+     * Handle data.
+     *
+     * @param data data
+     */
+    void handle(D data);
 
+    /**
+     * Get order.
+     *
+     * @return order
+     */
+    int getOrder();
 }

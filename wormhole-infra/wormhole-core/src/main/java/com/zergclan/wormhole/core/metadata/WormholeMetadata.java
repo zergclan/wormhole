@@ -23,7 +23,7 @@ import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
-import com.zergclan.wormhole.pipeline.DataNodePipeline;
+import com.zergclan.wormhole.pipeline.Pipeline;
 
 import java.util.Map;
 import java.util.Optional;
@@ -40,9 +40,9 @@ public final class WormholeMetadata implements Metadata {
     
     private final Map<String, PlanMetadata> plans;
     
-    private final Map<String, DataNodePipeline<?>> pipelines;
+    private final Map<String, Pipeline<?>> pipelines;
     
-    public WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans, final Map<String, DataNodePipeline<?>> pipelines) {
+    public WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans, final Map<String, Pipeline<?>> pipelines) {
         this.dataSources = dataSources;
         this.plans = plans;
         this.pipelines = pipelines;

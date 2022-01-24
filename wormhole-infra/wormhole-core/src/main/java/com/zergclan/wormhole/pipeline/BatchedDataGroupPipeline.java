@@ -19,9 +19,9 @@ package com.zergclan.wormhole.pipeline;
 
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 
-public class BatchedDataGroupPipeline implements Pipeline<BatchedDataGroup>{
+public class BatchedDataGroupPipeline implements Pipeline<BatchedDataGroup> {
     
-    private DataGroupHandler<BatchedDataGroup> dataGroupHandler;
+    private Handler<BatchedDataGroup> dataGroupHandler;
     
     @Override
     public void handle(final BatchedDataGroup data) {

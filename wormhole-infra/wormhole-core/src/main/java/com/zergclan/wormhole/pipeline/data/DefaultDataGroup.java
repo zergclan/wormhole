@@ -46,7 +46,7 @@ public final class DefaultDataGroup implements DataGroup {
     public DataNode<?> getDataNode(final String name) {
         return dataNodes.get(name);
     }
-    
+
     @Override
     public boolean append(final DataNode<?> dataNode) {
         final String name = dataNode.getName();
@@ -56,6 +56,4 @@ public final class DefaultDataGroup implements DataGroup {
         dataNodes.put(name, dataNode);
         return true;
     }
-    
-    
 }

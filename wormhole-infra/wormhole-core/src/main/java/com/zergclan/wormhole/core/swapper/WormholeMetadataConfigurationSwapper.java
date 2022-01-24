@@ -24,7 +24,7 @@ import com.zergclan.wormhole.core.config.WormholeConfiguration;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.pipeline.DataNodePipeline;
+import com.zergclan.wormhole.pipeline.Pipeline;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -47,7 +47,7 @@ public final class WormholeMetadataConfigurationSwapper {
     public static WormholeMetadata swapToMetadata(final WormholeConfiguration wormholeConfiguration) {
         Map<String, DataSourceMetadata> dataSources = createDataSourceMetadata(wormholeConfiguration.getDataSourcesConfigurations());
         Map<String, PlanMetadata> plans = createPlanMetadata(wormholeConfiguration.getPlanConfigurations());
-        Map<String, DataNodePipeline<?>> pipelines = createDataNodePipeline(wormholeConfiguration.getPipelineConfigurations());
+        Map<String, Pipeline<?>> pipelines = createDataNodePipeline(wormholeConfiguration.getPipelineConfigurations());
         return new WormholeMetadata(dataSources, plans, pipelines);
     }
 
@@ -69,8 +69,8 @@ public final class WormholeMetadataConfigurationSwapper {
         return result;
     }
 
-    private static Map<String, DataNodePipeline<?>> createDataNodePipeline(final Collection<PipelineConfiguration> pipelineConfigurations) {
-        Map<String, DataNodePipeline<?>> result = new LinkedHashMap<>();
+    private static Map<String, Pipeline<?>> createDataNodePipeline(final Collection<PipelineConfiguration> pipelineConfigurations) {
+        Map<String, Pipeline<?>> result = new LinkedHashMap<>();
         for (PipelineConfiguration each : pipelineConfigurations) {
             PipelineMetadataConfigurationSwapper.swapToMetadata(each);
         }

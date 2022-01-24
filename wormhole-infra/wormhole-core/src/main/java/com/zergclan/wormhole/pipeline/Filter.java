@@ -17,10 +17,19 @@
 
 package com.zergclan.wormhole.pipeline;
 
-import com.zergclan.wormhole.core.data.DataGroup;
+public interface Filter<D> {
 
-/**
- * The root interface from which all data group pipeline objects shall be derived in Wormhole.
- */
-public interface DataGroupPipeline extends Pipeline<DataGroup> {
+    /**
+     * Do filter.
+     *
+     * @param data data
+     */
+    void doFilter(D data);
+
+    /**
+     * Get order.
+     *
+     * @return order
+     */
+    int getOrder();
 }

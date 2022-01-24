@@ -15,19 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.pipeline;
 
-import java.util.concurrent.Delayed;
+public interface FilterChain<D> {
 
-/**
- * The root interface from which all scheduling trigger objects shall be derived in Wormhole.
- */
-public interface SchedulingTrigger extends Delayed {
-    
     /**
-     * Get identifier.
+     * Do filter.
      *
-     * @return identifier
+     * @param data data
      */
-    String getIdentifier();
+    void doFilter(D data);
 }

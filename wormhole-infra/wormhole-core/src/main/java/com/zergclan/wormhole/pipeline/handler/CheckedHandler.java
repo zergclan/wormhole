@@ -19,8 +19,8 @@ package com.zergclan.wormhole.pipeline.handler;
 
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.pipeline.DataGroupHandler;
-import com.zergclan.wormhole.pipeline.DataNodeFilter;
+import com.zergclan.wormhole.pipeline.FilterChain;
+import com.zergclan.wormhole.pipeline.Handler;
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
 
@@ -29,43 +29,31 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public final class CheckedDataGroupHandler implements DataGroupHandler<BatchedDataGroup> {
-    
+public final class CheckedHandler implements Handler<BatchedDataGroup> {
+
     private final Integer order;
     
-    private final DataGroupHandler<BatchedDataGroup> dataGroupHandler;
+    private final Handler<BatchedDataGroup> dataGroupHandler;
     
-    private final Map<String, Collection<DataNodeFilter<?>>> filters = new LinkedHashMap<>();
-    
+    private final Map<String, FilterChain<DataNode<?>>> filterChain = new LinkedHashMap<>();
+
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {
         Collection<DataGroup> sourceData = batchedDataGroup.getSourceData();
         for (DataGroup each : sourceData) {
-            if (!checkDataGroup(each)) {
-                batchedDataGroup.clearError(each);
-            }
+            checkDataGroup(each);
         }
         dataGroupHandler.handle(batchedDataGroup);
     }
-    
-    private boolean checkDataGroup(final DataGroup dataGroup) {
-        for (Map.Entry<String, Collection<DataNodeFilter<?>>> entry : filters.entrySet()) {
-            if (!checkDataNode(dataGroup.getDataNode(entry.getKey()), entry.getValue())) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    private boolean checkDataNode(final DataNode dataNode, final Collection<DataNodeFilter<?>> filters) {
-        boolean result = false;
-        for (DataNodeFilter<?> each : filters) {
-            result = each.doFilter(dataNode);
-        }
-    }
-    
+
     @Override
     public int getOrder() {
-        return 0;
+        return order;
+    }
+
+    private void checkDataGroup(final DataGroup dataGroup) {
+        for (Map.Entry<String, FilterChain<DataNode<?>>> entry : filterChain.entrySet()) {
+            entry.getValue().doFilter(dataGroup.getDataNode(entry.getKey()));
+        }
     }
 }

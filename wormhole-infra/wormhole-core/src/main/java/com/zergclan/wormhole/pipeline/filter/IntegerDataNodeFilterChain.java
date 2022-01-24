@@ -15,33 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.impl;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.pipeline.DataNodeFilter;
-import com.zergclan.wormhole.pipeline.DataNodePipeline;
+import com.zergclan.wormhole.core.data.IntegerDataNode;
+import com.zergclan.wormhole.pipeline.Filter;
+import com.zergclan.wormhole.pipeline.FilterChain;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * Implemented {@link DataNodePipeline} for {@link com.zergclan.wormhole.core.data.IntegerDataNode}.
+ * Implemented {@link FilterChain} for {@link IntegerDataNode}.
  */
-public final class IntegerDataNodePipeline implements DataNodePipeline<Integer> {
-    
-    private final Collection<DataNodeFilter<Integer>> filterChains = new LinkedList<>();
-    
+public class IntegerDataNodeFilterChain implements FilterChain<IntegerDataNode> {
+
+    private final Collection<Filter<IntegerDataNode>> filters = new LinkedList<>();
+
     @Override
-    public void handle(final DataNode<Integer> dataNode) {
-        DataNode<Integer> temp = dataNode;
-        for (DataNodeFilter<Integer> each : filterChains) {
-            temp = each.doFilter(temp);
+    public void doFilter(final IntegerDataNode data) {
+        for (Filter<IntegerDataNode> each : filters) {
+            each.doFilter(data);
         }
-        dataNode.refresh(temp.getValue());
-    }
-    
-    @Override
-    public void append(final DataNodeFilter<Integer> dataNodeFilter) {
-        filterChains.add(dataNodeFilter);
     }
 }

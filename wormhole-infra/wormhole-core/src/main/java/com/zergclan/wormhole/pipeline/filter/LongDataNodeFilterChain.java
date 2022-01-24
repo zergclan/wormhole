@@ -15,30 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.impl;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.pipeline.DataNodeFilter;
-import com.zergclan.wormhole.pipeline.DataNodePipeline;
+import com.zergclan.wormhole.core.data.StringDataNode;
+import com.zergclan.wormhole.pipeline.Filter;
+import com.zergclan.wormhole.pipeline.FilterChain;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-public final class LongDataNodePipeline implements DataNodePipeline<Long> {
+public final class LongDataNodeFilterChain implements FilterChain<StringDataNode> {
 
-    private final Collection<DataNodeFilter<Long>> filterChains = new LinkedList<>();
-
-    @Override
-    public void handle(final DataNode<Long> dataNode) {
-        DataNode<Long> temp = dataNode;
-        for (DataNodeFilter<Long> each : filterChains) {
-            temp = each.doFilter(temp);
-        }
-        dataNode.refresh(temp.getValue());
-    }
+    private final Collection<Filter<Long>> filterChains = new LinkedList<>();
 
     @Override
-    public void append(final DataNodeFilter<Long> dataNodeFilter) {
-        filterChains.add(dataNodeFilter);
+    public void doFilter(final StringDataNode data) {
+        // TODO
     }
 }

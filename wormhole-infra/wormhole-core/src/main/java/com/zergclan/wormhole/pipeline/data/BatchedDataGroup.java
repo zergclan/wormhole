@@ -38,13 +38,23 @@ public final class BatchedDataGroup {
     
     @Getter
     private final Collection<DataGroup> sourceData = new LinkedList<>();
-    
+
+    /**
+     * Init.
+     *
+     * @param sourceData source data
+     */
     public void init(final Collection<Map<String, Object>> sourceData) {
         for (Map<String, Object> each : sourceData) {
             this.sourceData.add(DefaultDataGroupSwapper.mapToDataGroup(each));
         }
     }
-    
+
+    /**
+     * Clear error.
+     *
+     * @param dataGroup data group
+     */
     public void clearError(final DataGroup dataGroup) {
         sourceData.remove(dataGroup);
         errorData.add(dataGroup);

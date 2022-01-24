@@ -53,7 +53,7 @@ public final class DefaultDataGroupSwapper {
      */
     public static Map<String, Object> dataGroupToMap(final DataGroup dataGroup) {
         Map<String, Object> result = new LinkedHashMap<>();
-        Optional<Map<String, DataNode<?>>> dataNodes = dataGroup.getDataNodes();
+        Optional<Map<String, DataNode<?>>> dataNodes = Optional.empty();
         if (dataNodes.isPresent()) {
             Map<String, DataNode<?>> dataNodeMap = dataNodes.get();
             for (Map.Entry<String, DataNode<?>> entry : dataNodeMap.entrySet()) {

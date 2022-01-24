@@ -26,10 +26,10 @@ public final class BatchedDataGroupTask implements ProcessTask {
     
     private final BatchedDataGroup batchedDataGroup;
     
-    private final Pipeline<BatchedDataGroup> chainedPipeline;
+    private final Pipeline<BatchedDataGroup> batchedPipeline;
     
     @Override
     public void run() {
-        chainedPipeline.handle(batchedDataGroup);
+        batchedPipeline.handle(batchedDataGroup);
     }
 }

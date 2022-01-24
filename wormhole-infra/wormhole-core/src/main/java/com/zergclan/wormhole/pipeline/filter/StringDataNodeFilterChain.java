@@ -15,26 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.StringDataNode;
+import com.zergclan.wormhole.pipeline.Filter;
+import com.zergclan.wormhole.pipeline.FilterChain;
 
-/**
- * The root interface from which all data node pipeline objects shall be derived in Wormhole.
- */
-public interface DataNodePipeline<V> extends Pipeline<DataNode<V>> {
-    
-    /**
-     * Handle {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     */
-    void handle(DataNode<V> dataNode);
-    
-    /**
-     * Append {@link DataNodeFilter}.
-     *
-     * @param dataNodeFilter {@link DataNodeFilter}
-     */
-    void append(DataNodeFilter<V> dataNodeFilter);
+import java.util.Collection;
+import java.util.LinkedList;
+
+public final class StringDataNodeFilterChain implements FilterChain<StringDataNode> {
+
+    private final Collection<Filter<StringDataNode>> filters = new LinkedList<>();
+
+    @Override
+    public void doFilter(final StringDataNode data) {
+        for (Filter<StringDataNode> each : filters) {
+            each.doFilter(data);
+        }
+    }
 }

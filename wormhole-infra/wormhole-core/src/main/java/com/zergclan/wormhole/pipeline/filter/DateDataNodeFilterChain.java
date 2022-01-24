@@ -15,21 +15,15 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline;
+package com.zergclan.wormhole.pipeline.filter;
 
-public interface DataGroupHandler<D> {
-    
-    /**
-     * Handle data.
-     *
-     * @param data data
-     */
-    void handle(D data);
-    
-    /**
-     * Get order.
-     *
-     * @return order
-     */
-    int getOrder();
+import com.zergclan.wormhole.core.data.PatternDate;
+import com.zergclan.wormhole.pipeline.Filter;
+
+import java.util.Collection;
+import java.util.LinkedList;
+
+public final class DateDataNodeFilterChain {
+
+    private final Collection<Filter<PatternDate>> filters = new LinkedList<>();
 }
