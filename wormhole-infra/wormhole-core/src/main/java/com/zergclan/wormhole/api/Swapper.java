@@ -15,34 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.api;
 
 /**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
+ * The root interface from which all swapper objects shall be derived in Wormhole.
  *
- * @param <V> class type of data node value
+ * @param <S> class type of source
+ * @param <T> class type of target
  */
-public interface DataNode<V> {
+public interface Swapper<S, T> {
     
     /**
-     * Get data node name.
+     * Swap source to target.
      *
-     * @return data node name
+     * @param source source
+     * @return target
      */
-    String getName();
+    T swapToTarget(S source);
     
     /**
-     * Get data node value.
+     * Swap target to source.
      *
-     * @return data node value
+     * @param target target
+     * @return source
      */
-    V getValue();
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param value data node value
-     * @return {@link DataNode}
-     */
-    DataNode<V> refresh(V value);
+    S swapToSource(T target);
 }

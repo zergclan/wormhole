@@ -15,34 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.scheduling;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
 /**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
+ * Plan implemented of {@link SchedulingTrigger}.
  */
-public interface DataNode<V> {
+@RequiredArgsConstructor
+@Getter
+public final class PlanSchedulingTrigger implements SchedulingTrigger {
+
+    private final String planIdentifier;
     
-    /**
-     * Get data node name.
-     *
-     * @return data node name
-     */
-    String getName();
+    @Override
+    public String getIdentifier() {
+        return planIdentifier;
+    }
     
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param value data node value
-     * @return {@link DataNode}
-     */
-    DataNode<V> refresh(V value);
+    @Override
+    public long getDelay(final TimeUnit timeUnit) {
+        return 0;
+    }
+
+    @Override
+    public int compareTo(final Delayed delayed) {
+        return 0;
+    }
 }

@@ -15,34 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.handler;
+
+import com.zergclan.wormhole.api.Handler;
+import com.zergclan.wormhole.loader.Loader;
+import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
+ * Loaded handler.
  */
-public interface DataNode<V> {
-    
-    /**
-     * Get data node name.
-     *
-     * @return data node name
-     */
-    String getName();
-    
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param value data node value
-     * @return {@link DataNode}
-     */
-    DataNode<V> refresh(V value);
+@RequiredArgsConstructor
+public final class LoadedHandler implements Handler<BatchedDataGroup> {
+
+    private final Loader loader;
+
+    @Override
+    public void handle(final BatchedDataGroup data) {
+        // TODO loader data
+    }
+
+    @Override
+    public int getOrder() {
+        return Integer.MAX_VALUE;
+    }
 }

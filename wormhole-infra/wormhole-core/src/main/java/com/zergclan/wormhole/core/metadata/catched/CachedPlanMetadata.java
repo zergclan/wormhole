@@ -17,11 +17,11 @@
 
 package com.zergclan.wormhole.core.metadata.catched;
 
+import com.zergclan.wormhole.api.Pipeline;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
-import com.zergclan.wormhole.pipeline.Pipeline;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 

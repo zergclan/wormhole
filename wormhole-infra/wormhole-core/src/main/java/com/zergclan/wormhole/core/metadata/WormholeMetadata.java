@@ -17,13 +17,13 @@
 
 package com.zergclan.wormhole.core.metadata;
 
+import com.zergclan.wormhole.api.Pipeline;
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
-import com.zergclan.wormhole.pipeline.Pipeline;
 
 import java.util.Map;
 import java.util.Optional;

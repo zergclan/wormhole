@@ -31,7 +31,14 @@ public interface DataGroup extends Serializable {
      * @param dataMap data map
      */
     void init(Map<String, Object> dataMap);
-
+    
+    /**
+     * Get data map.
+     *
+     * @return data map
+     */
+    Map<String, Object> getDataMap();
+    
     /**
      * Get {@link DataNode} by name.
      *
@@ -39,7 +46,7 @@ public interface DataGroup extends Serializable {
      * @return {@link DataNode}
      */
     DataNode<?> getDataNode(String name);
-
+    
     /**
      * Append {@link DataNode}.
      *

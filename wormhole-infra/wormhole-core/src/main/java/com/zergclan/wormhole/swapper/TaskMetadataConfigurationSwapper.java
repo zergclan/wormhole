@@ -15,34 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.swapper;
+
+import com.zergclan.wormhole.core.config.TaskConfiguration;
+import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
 
 /**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
+ * Task metadata configuration swapper.
  */
-public interface DataNode<V> {
-    
+public final class TaskMetadataConfigurationSwapper {
+
     /**
-     * Get data node name.
+     * Swap to {@link TaskMetadata}.
      *
-     * @return data node name
+     * @param taskConfiguration {@link TaskConfiguration}
+     * @return {@link TaskMetadata}
      */
-    String getName();
-    
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param value data node value
-     * @return {@link DataNode}
-     */
-    DataNode<V> refresh(V value);
+    public static TaskMetadata swapToMetadata(final TaskConfiguration taskConfiguration) {
+        // TODO swap to metadata
+        return null;
+    }
 }
