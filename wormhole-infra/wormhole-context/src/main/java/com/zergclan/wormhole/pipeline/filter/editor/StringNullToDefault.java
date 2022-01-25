@@ -15,34 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.filter.editor;
 
-/**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
- */
-public interface DataNode<V> {
+import com.zergclan.wormhole.api.Filter;
+import com.zergclan.wormhole.core.data.DataNode;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Objects;
+
+@RequiredArgsConstructor
+public class StringNullToDefault implements Filter<DataNode> {
     
-    /**
-     * Get data node name.
-     *
-     * @return data node name
-     */
-    String getName();
+    private final Object defaultValue;
     
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param value data node value
-     * @return {@link DataNode}
-     */
-    DataNode<V> refresh(V value);
+    @Override
+    public void doFilter(final DataNode data) {
+        Object value = data.getValue();
+        if (Objects.isNull(value)) {
+            data.refresh(defaultValue);
+        }
+    }
 }

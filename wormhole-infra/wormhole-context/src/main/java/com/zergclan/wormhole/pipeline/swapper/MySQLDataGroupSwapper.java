@@ -15,34 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.swapper;
+
+import com.zergclan.wormhole.api.Swapper;
+import com.zergclan.wormhole.core.data.DataGroup;
+import com.zergclan.wormhole.pipeline.data.MySQLDataGroup;
+
+import java.util.Map;
 
 /**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
+ * MySQL data group swapper.
  */
-public interface DataNode<V> {
+public final class MySQLDataGroupSwapper implements Swapper<Map<String, Object>, DataGroup> {
     
-    /**
-     * Get data node name.
-     *
-     * @return data node name
-     */
-    String getName();
+    @Override
+    public DataGroup swapToTarget(final Map<String, Object> dataMap) {
+        MySQLDataGroup result = new MySQLDataGroup();
+        result.init(dataMap);
+        return result;
+    }
     
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param value data node value
-     * @return {@link DataNode}
-     */
-    DataNode<V> refresh(V value);
+    @Override
+    public Map<String, Object> swapToSource(final DataGroup dataGroup) {
+        return dataGroup.getDataMap();
+    }
 }

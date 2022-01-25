@@ -15,26 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.engine;
+package com.zergclan.wormhole.swapper;
 
-import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.swapper.WormholeMetadataConfigurationSwapper;
+import com.zergclan.wormhole.core.config.IndexConfiguration;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Initializer of {@link WormholeExecutionEngine}.
+ * Index metadata configuration swapper.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class WormholeExecutionEngineInitializer {
+public class IndexMetadataConfigurationSwapper {
     
     /**
-     * Init {@link WormholeExecutionEngine} by {@link WormholeConfiguration}.
+     * Swap to {@link IndexMetadata}.
      *
-     * @param configuration {@link WormholeConfiguration}
-     * @return {@link WormholeExecutionEngine}
+     * @param indexConfiguration {@link IndexConfiguration}
+     * @param dataSourceIdentifier data source identifier
+     * @param schemaName schema name
+     * @param tableName table name
+     * @return {@link IndexMetadata}
      */
-    public static WormholeExecutionEngine init(final WormholeConfiguration configuration) {
-        return new WormholeExecutionEngine(WormholeMetadataConfigurationSwapper.swapToMetadata(configuration));
+    public static IndexMetadata swapToMetadata(final IndexConfiguration indexConfiguration, final String dataSourceIdentifier, final String schemaName, final String tableName) {
+        return new IndexMetadata(dataSourceIdentifier, schemaName, tableName, indexConfiguration.getName(), indexConfiguration.isUnique(), indexConfiguration.getColumnNames());
     }
 }

@@ -22,7 +22,7 @@ import com.zergclan.wormhole.core.metadata.WormholeMetadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.scheduling.SchedulingExecutorFactory;
 import com.zergclan.wormhole.scheduling.SchedulingTrigger;
-import com.zergclan.wormhole.scheduling.plan.PlanSchedulingTrigger;
+import com.zergclan.wormhole.scheduling.PlanSchedulingTrigger;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;

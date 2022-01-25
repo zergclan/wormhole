@@ -15,26 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.engine;
+package com.zergclan.wormhole.swapper;
 
-import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.swapper.WormholeMetadataConfigurationSwapper;
+import com.zergclan.wormhole.core.config.ColumnConfiguration;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Initializer of {@link WormholeExecutionEngine}.
+ * Column metadata configuration swapper.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class WormholeExecutionEngineInitializer {
-    
+public final class ColumnMetadataConfigurationSwapper {
+
     /**
-     * Init {@link WormholeExecutionEngine} by {@link WormholeConfiguration}.
+     * Swap to {@link ColumnMetadata}.
      *
-     * @param configuration {@link WormholeConfiguration}
-     * @return {@link WormholeExecutionEngine}
+     * @param columnConfiguration {@link ColumnConfiguration}
+     * @param dataSourceIdentifier data source identifier
+     * @param schemaName schema name
+     * @param tableName table name
+     * @return {@link ColumnMetadata}
      */
-    public static WormholeExecutionEngine init(final WormholeConfiguration configuration) {
-        return new WormholeExecutionEngine(WormholeMetadataConfigurationSwapper.swapToMetadata(configuration));
+    public static ColumnMetadata swapToMetadata(final ColumnConfiguration columnConfiguration, final String dataSourceIdentifier, final String schemaName, final String tableName) {
+        return new ColumnMetadata(dataSourceIdentifier, schemaName, tableName, columnConfiguration.getName(), columnConfiguration.getDataType(), columnConfiguration.isNullable());
     }
 }

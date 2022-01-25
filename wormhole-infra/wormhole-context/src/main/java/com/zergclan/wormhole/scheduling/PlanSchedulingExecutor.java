@@ -15,34 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.scheduling;
+
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
 
 /**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
- *
- * @param <V> class type of data node value
+ * Plan implemented of {@link SchedulingExecutor}.
  */
-public interface DataNode<V> {
-    
-    /**
-     * Get data node name.
-     *
-     * @return data node name
-     */
-    String getName();
-    
-    /**
-     * Get data node value.
-     *
-     * @return data node value
-     */
-    V getValue();
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param value data node value
-     * @return {@link DataNode}
-     */
-    DataNode<V> refresh(V value);
+@RequiredArgsConstructor
+public final class PlanSchedulingExecutor implements SchedulingExecutor {
+
+    private final Collection<TaskSchedulingExecutor> taskSchedulingExecutors;
+
+    @Override
+    public void execute() {
+        for (TaskSchedulingExecutor each : taskSchedulingExecutors) {
+            each.execute();
+        }
+    }
 }
