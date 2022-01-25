@@ -15,23 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.chain;
+package com.zergclan.wormhole.pipeline.filter.editor;
 
 import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.api.FilterChain;
 import com.zergclan.wormhole.core.data.DataGroup;
+import com.zergclan.wormhole.core.data.DataNode;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Map;
 
-public final class ValidatedFilterChain implements FilterChain<DataGroup> {
+/**
+ * Not blank validate implemented of {@link Filter}.
+ */
+@SuppressWarnings("all")
+@RequiredArgsConstructor
+public final class NullToDefaultEditor implements Filter<DataGroup> {
     
-    private final Collection<Filter<DataGroup>> filters = new LinkedList<>();
+    private final Map<String, Object> defaultValue;
     
     @Override
-    public void doFilter(final DataGroup dataGroup) {
-        for (Filter<DataGroup> each : filters) {
-            each.doFilter(dataGroup);
+    public void doFilter(final DataGroup data) {
+        for (Map.Entry<String, Object> entry : defaultValue.entrySet()) {
+            DataNode dataNode = data.getDataNode(entry.getKey());
+            dataNode.refresh(entry.getValue());
         }
     }
 }

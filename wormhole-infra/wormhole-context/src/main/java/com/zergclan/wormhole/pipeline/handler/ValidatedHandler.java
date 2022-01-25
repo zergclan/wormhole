@@ -38,7 +38,7 @@ public final class ValidatedHandler implements Handler<BatchedDataGroup> {
     
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {
-        for (DataGroup each : batchedDataGroup.getSourceData()) {
+        for (DataGroup each : batchedDataGroup.getSourceDataGroup()) {
             validate(each, batchedDataGroup);
         }
         nextHandler.handle(batchedDataGroup);

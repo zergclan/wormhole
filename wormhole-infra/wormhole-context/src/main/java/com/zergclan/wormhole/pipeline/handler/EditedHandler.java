@@ -20,9 +20,12 @@ package com.zergclan.wormhole.pipeline.handler;
 import com.zergclan.wormhole.api.FilterChain;
 import com.zergclan.wormhole.api.Handler;
 
+import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
 
 /**
  * Edit implemented of {@link Handler}.
@@ -37,10 +40,22 @@ public final class EditedHandler implements Handler<BatchedDataGroup> {
     private final Handler<BatchedDataGroup> nextHandler;
 
     @Override
-    public void handle(final BatchedDataGroup data) {
-        // TODO handle
+    public void handle(final BatchedDataGroup batchedDataGroup) {
+        Collection<DataGroup> sourceDataGroup = batchedDataGroup.getSourceDataGroup();
+        for (DataGroup each : sourceDataGroup) {
+            edit(each, batchedDataGroup);
+        }
+        nextHandler.handle(batchedDataGroup);
     }
-
+    
+    private void edit(final DataGroup dataGroup, final BatchedDataGroup batchedDataGroup) {
+        try {
+            filterChain.doFilter(dataGroup);
+        } catch (WormholeException exception) {
+            batchedDataGroup.clearError(dataGroup);
+        }
+    }
+    
     @Override
     public int getOrder() {
         return order;

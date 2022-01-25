@@ -15,15 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.chain;
+package com.zergclan.wormhole.pipeline.filter.chain;
 
+import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.api.FilterChain;
 import com.zergclan.wormhole.core.data.DataGroup;
 
-public final class EditedFilterChain implements FilterChain<DataGroup> {
+import java.util.Collection;
+import java.util.LinkedList;
+
+/**
+ * Data group implemented of {@link FilterChain}.
+ */
+public final class DataGroupFilterChain implements FilterChain<DataGroup> {
+    
+    private final Collection<Filter<DataGroup>> filters = new LinkedList<>();
     
     @Override
     public void doFilter(final DataGroup dataGroup) {
-    
+        for (Filter<DataGroup> each : filters) {
+            each.doFilter(dataGroup);
+        }
     }
 }
