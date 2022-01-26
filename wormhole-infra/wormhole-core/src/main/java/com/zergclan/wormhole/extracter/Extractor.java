@@ -60,5 +60,5 @@ public interface Extractor {
      * @param columns {@link ColumnMetadata}
      * @return datum
      */
-    Collection<Map<String, Object>> extractDatum(Map<String, ColumnMetadata> columns);
+    Collection<Map<String, Object>> extractData(Map<String, ColumnMetadata> columns);
 }

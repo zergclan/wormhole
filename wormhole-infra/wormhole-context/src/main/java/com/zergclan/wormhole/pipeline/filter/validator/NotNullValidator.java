@@ -18,13 +18,9 @@
 package com.zergclan.wormhole.pipeline.filter.validator;
 
 import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
-import java.util.Objects;
 
 /**
  * Not null validate implemented of {@link Filter}.
@@ -32,15 +28,18 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public final class NotNullValidator implements Filter<DataGroup> {
     
-    private final Collection<String> names;
+    private final String[] names;
     
     @Override
-    public void doFilter(final DataGroup dataGroup) {
-        for (String each : names) {
-            DataNode<?> dataNode = dataGroup.getDataNode(each);
-            if (Objects.isNull(dataNode.getValue())) {
-                throw new WormholeException("error : data node [%s] value can not be null", dataNode.getName());
+    public boolean doFilter(final DataGroup dataGroup) {
+        final int length = names.length;
+        DataNode<?> dataNode;
+        for (int i = 0; i < length; i++) {
+            dataNode = dataGroup.getDataNode(names[i]);
+            if (dataNode.isNull()) {
+                return false;
             }
         }
+        return true;
     }
 }

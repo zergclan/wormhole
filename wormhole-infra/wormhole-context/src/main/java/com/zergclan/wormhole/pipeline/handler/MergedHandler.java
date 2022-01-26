@@ -23,6 +23,8 @@ import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Iterator;
+
 /**
  * Merged handler.
  */
@@ -36,10 +38,20 @@ public final class MergedHandler implements Handler<BatchedDataGroup> {
     private final Handler<BatchedDataGroup> nextHandler;
     
     @Override
-    public void handle(final BatchedDataGroup data) {
-        // TODO handle
+    public void handle(final BatchedDataGroup batchedDataGroup) {
+        Iterator<DataGroup> iterator = batchedDataGroup.getSourceDataGroup().iterator();
+        while (iterator.hasNext()) {
+            merge(iterator.next(), batchedDataGroup);
+        }
+        nextHandler.handle(batchedDataGroup);
     }
-
+    
+    private void merge(final DataGroup dataGroup, final BatchedDataGroup batchedDataGroup) {
+        if (!filterChain.doFilter(dataGroup)) {
+            batchedDataGroup.clearError(dataGroup);
+        }
+    }
+    
     @Override
     public int getOrder() {
         return order;

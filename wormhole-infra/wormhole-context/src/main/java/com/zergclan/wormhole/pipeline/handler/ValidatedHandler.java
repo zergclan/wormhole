@@ -19,10 +19,11 @@ package com.zergclan.wormhole.pipeline.handler;
 
 import com.zergclan.wormhole.api.FilterChain;
 import com.zergclan.wormhole.api.Handler;
-import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Iterator;
 
 /**
  * Validate implemented of {@link Handler}.
@@ -38,16 +39,15 @@ public final class ValidatedHandler implements Handler<BatchedDataGroup> {
     
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {
-        for (DataGroup each : batchedDataGroup.getSourceDataGroup()) {
-            validate(each, batchedDataGroup);
+        Iterator<DataGroup> iterator = batchedDataGroup.getSourceDataGroup().iterator();
+        if (iterator.hasNext()) {
+            validate(iterator.next(), batchedDataGroup);
         }
         nextHandler.handle(batchedDataGroup);
     }
     
     private void validate(final DataGroup dataGroup, final BatchedDataGroup batchedDataGroup) {
-        try {
-            filterChain.doFilter(dataGroup);
-        } catch (WormholeException exception) {
+        if (!filterChain.doFilter(dataGroup)) {
             batchedDataGroup.clearError(dataGroup);
         }
     }

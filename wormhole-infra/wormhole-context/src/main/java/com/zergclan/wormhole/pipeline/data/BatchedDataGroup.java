@@ -41,6 +41,7 @@ public final class BatchedDataGroup {
     @Getter
     private final Collection<DataGroup> sourceDataGroup = new LinkedList<>();
     
+    @Getter
     private final Collection<DataGroup> errorDataGroup = new LinkedList<>();
     
     /**

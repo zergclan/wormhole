@@ -15,18 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.convertor;
+package com.zergclan.wormhole.pipeline.data;
 
-import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.core.data.DataGroup;
+import lombok.RequiredArgsConstructor;
 
-/**
- * Business code convert implemented of {@link Filter}
- */
-public final class BusinessCodeConvertor implements Filter<DataGroup> {
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+@RequiredArgsConstructor
+public final class CodeMapper {
     
-    @Override
-    public void doFilter(DataGroup data) {
+    private final String defaultCode;
     
+    private final Map<String, String> sourceTargetCodeMapping;
+    
+    /**
+     * Get target code.
+     *
+     * @param sourceCode source code
+     * @return target code
+     */
+    public Optional<String> getTargetCode(final String sourceCode) {
+        String targetCode = sourceTargetCodeMapping.get(sourceCode);
+        return Objects.isNull(targetCode) ? getDefault() : Optional.of(targetCode);
+    }
+    
+    private Optional<String> getDefault() {
+        return Objects.isNull(defaultCode) ? Optional.empty() : Optional.of(defaultCode);
     }
 }
