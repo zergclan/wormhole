@@ -64,6 +64,12 @@ public final class MySQLDataGroup implements DataGroup {
         return true;
     }
     
+    @Override
+    public boolean refresh(final DataNode<?> dataNode) {
+        dataNodes.put(dataNode.getName(), dataNode);
+        return true;
+    }
+    
     // FIXME implemented in plugin
     private static class MySQLDataGroupSwapper implements Swapper<Map.Entry<String, Object>, DataNode<?>> {
     

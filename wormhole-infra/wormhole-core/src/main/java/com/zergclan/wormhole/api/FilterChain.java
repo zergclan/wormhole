@@ -22,12 +22,13 @@ package com.zergclan.wormhole.api;
  *
  * @param <D> class type of data
  */
-public interface FilterChain<D> {
+public interface FilterChain<D> extends Filter<D> {
 
     /**
      * Do filter.
      *
      * @param data data
+     * @return Is success
      */
-    void doFilter(D data);
+    boolean doFilter(D data);
 }

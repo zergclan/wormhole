@@ -70,7 +70,7 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
     }
 
     private void extract() {
-        dataMaps.addAll(extractor.extractDatum(columns));
+        dataMaps.addAll(extractor.extractData(columns));
     }
 
     private void transform() {

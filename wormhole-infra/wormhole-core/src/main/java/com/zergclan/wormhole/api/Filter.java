@@ -28,6 +28,7 @@ public interface Filter<D> {
      * Do filter.
      *
      * @param data data
+     * @return Is success
      */
-    void doFilter(D data);
+    boolean doFilter(D data);
 }

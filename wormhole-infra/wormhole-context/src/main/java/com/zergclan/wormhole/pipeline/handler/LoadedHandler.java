@@ -31,7 +31,7 @@ public final class LoadedHandler implements Handler<BatchedDataGroup> {
     private final Loader loader;
 
     @Override
-    public void handle(final BatchedDataGroup data) {
+    public void handle(final BatchedDataGroup batchedDataGroup) {
         // TODO loader data
     }
 

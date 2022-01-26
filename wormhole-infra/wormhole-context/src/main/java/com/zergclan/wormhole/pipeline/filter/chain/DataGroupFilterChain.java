@@ -15,24 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.editor;
+package com.zergclan.wormhole.pipeline.filter.chain;
 
 import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.api.FilterChain;
+import com.zergclan.wormhole.core.data.DataGroup;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Objects;
-
+/**
+ * Data group implemented of {@link FilterChain}.
+ */
 @RequiredArgsConstructor
-public class StringNullToDefault implements Filter<DataNode> {
+public final class DataGroupFilterChain implements FilterChain<DataGroup> {
     
-    private final Object defaultValue;
+    private final Filter<DataGroup>[] filters;
     
     @Override
-    public void doFilter(final DataNode data) {
-        Object value = data.getValue();
-        if (Objects.isNull(value)) {
-            data.refresh(defaultValue);
+    public boolean doFilter(final DataGroup dataGroup) {
+        final int length = filters.length;
+        for (int i = 0; i < length; i++) {
+            if (!filters[i].doFilter(dataGroup)) {
+                return false;
+            }
         }
+        return true;
     }
 }

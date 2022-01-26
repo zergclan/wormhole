@@ -72,7 +72,7 @@ public final class MySQLExtractor implements Extractor {
     }
 
     @Override
-    public Collection<Map<String, Object>> extractDatum(final Map<String, ColumnMetadata> columns) {
+    public Collection<Map<String, Object>> extractData(final Map<String, ColumnMetadata> columns) {
         StringJoiner selectColumns = new StringJoiner(", ");
         String tableName = "";
         for (Map.Entry<String, ColumnMetadata> column : columns.entrySet()) {

@@ -51,7 +51,15 @@ public interface DataGroup extends Serializable {
      * Append {@link DataNode}.
      *
      * @param dataNode {@link DataNode}
-     * @return removed {@link DataNode}
+     * @return Is appended or not
      */
     boolean append(DataNode<?> dataNode);
+    
+    /**
+     * Refresh {@link DataNode}.
+     *
+     * @param dataNode {@link DataNode}
+     * @return Is refreshed or not
+     */
+    boolean refresh(DataNode<?> dataNode);
 }

@@ -15,15 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.chain;
+package com.zergclan.wormhole.pipeline.data;
 
-import com.zergclan.wormhole.api.FilterChain;
-import com.zergclan.wormhole.core.data.DataGroup;
+import lombok.RequiredArgsConstructor;
 
-public final class EditedFilterChain implements FilterChain<DataGroup> {
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+@RequiredArgsConstructor
+public final class CodeMapper {
     
-    @Override
-    public void doFilter(final DataGroup dataGroup) {
+    private final String defaultCode;
     
+    private final Map<String, String> sourceTargetCodeMapping;
+    
+    /**
+     * Get target code.
+     *
+     * @param sourceCode source code
+     * @return target code
+     */
+    public Optional<String> getTargetCode(final String sourceCode) {
+        String targetCode = sourceTargetCodeMapping.get(sourceCode);
+        return Objects.isNull(targetCode) ? getDefault() : Optional.of(targetCode);
+    }
+    
+    private Optional<String> getDefault() {
+        return Objects.isNull(defaultCode) ? Optional.empty() : Optional.of(defaultCode);
     }
 }

@@ -17,10 +17,13 @@
 
 package com.zergclan.wormhole.pipeline.handler;
 
+import com.zergclan.wormhole.api.FilterChain;
 import com.zergclan.wormhole.api.Handler;
-import com.zergclan.wormhole.extracter.Extractor;
+import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Iterator;
 
 /**
  * Extract implemented of {@link Handler}.
@@ -28,11 +31,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class ExtractedHandler implements Handler<BatchedDataGroup> {
     
-    private final Extractor extractor;
+    private final FilterChain<DataGroup> filterChain;
+    
+    private final Handler<BatchedDataGroup> nextHandler;
     
     @Override
-    public void handle(final BatchedDataGroup data) {
-        // TODO handle
+    public void handle(final BatchedDataGroup batchedDataGroup) {
+        Iterator<DataGroup> iterator = batchedDataGroup.getSourceDataGroup().iterator();
+        while (iterator.hasNext()) {
+            extract(iterator.next(), batchedDataGroup);
+        }
+        nextHandler.handle(batchedDataGroup);
+    }
+    
+    private void extract(final DataGroup dataGroup, final BatchedDataGroup batchedDataGroup) {
+        if (!filterChain.doFilter(dataGroup)) {
+            batchedDataGroup.clearError(dataGroup);
+        }
     }
     
     @Override

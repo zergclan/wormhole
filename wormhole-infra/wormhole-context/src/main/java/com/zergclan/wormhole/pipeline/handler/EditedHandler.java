@@ -24,6 +24,8 @@ import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Iterator;
+
 /**
  * Edit implemented of {@link Handler}.
  */
@@ -37,10 +39,20 @@ public final class EditedHandler implements Handler<BatchedDataGroup> {
     private final Handler<BatchedDataGroup> nextHandler;
 
     @Override
-    public void handle(final BatchedDataGroup data) {
-        // TODO handle
+    public void handle(final BatchedDataGroup batchedDataGroup) {
+        Iterator<DataGroup> iterator = batchedDataGroup.getSourceDataGroup().iterator();
+        while (iterator.hasNext()) {
+            edit(iterator.next(), batchedDataGroup);
+        }
+        nextHandler.handle(batchedDataGroup);
     }
-
+    
+    private void edit(final DataGroup dataGroup, final BatchedDataGroup batchedDataGroup) {
+        if (!filterChain.doFilter(dataGroup)) {
+            batchedDataGroup.clearError(dataGroup);
+        }
+    }
+    
     @Override
     public int getOrder() {
         return order;

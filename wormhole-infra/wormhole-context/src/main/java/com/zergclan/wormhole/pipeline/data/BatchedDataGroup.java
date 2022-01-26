@@ -39,9 +39,10 @@ public final class BatchedDataGroup {
     private final int batchSize;
     
     @Getter
-    private final Collection<DataGroup> sourceData = new LinkedList<>();
+    private final Collection<DataGroup> sourceDataGroup = new LinkedList<>();
     
-    private final Collection<DataGroup> errorData = new LinkedList<>();
+    @Getter
+    private final Collection<DataGroup> errorDataGroup = new LinkedList<>();
     
     /**
      * Init.
@@ -50,7 +51,7 @@ public final class BatchedDataGroup {
      */
     public void init(final Collection<Map<String, Object>> sourceData) {
         for (Map<String, Object> each : sourceData) {
-            this.sourceData.add(SWAPPER.swapToTarget(each));
+            this.sourceDataGroup.add(SWAPPER.swapToTarget(each));
         }
     }
 
@@ -60,7 +61,7 @@ public final class BatchedDataGroup {
      * @param dataGroup data group
      */
     public void clearError(final DataGroup dataGroup) {
-        sourceData.remove(dataGroup);
-        errorData.add(dataGroup);
+        sourceDataGroup.remove(dataGroup);
+        errorDataGroup.add(dataGroup);
     }
 }
