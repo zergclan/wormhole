@@ -15,29 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.editor;
+package com.zergclan.wormhole.pipeline.filter.convertor;
 
 import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.data.DataNode;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Map;
 
 /**
- * Not blank validate implemented of {@link Filter}.
+ * Business code convert implemented of {@link Filter}
  */
-@RequiredArgsConstructor
-public final class NullToDefaultEditor implements Filter<DataGroup> {
+public final class BusinessCodeConvertor implements Filter<DataGroup> {
     
-    private final Map<String, Object> defaultValue;
-    
-    @SuppressWarnings("all")
     @Override
-    public void doFilter(final DataGroup data) {
-        for (Map.Entry<String, Object> entry : defaultValue.entrySet()) {
-            DataNode dataNode = data.getDataNode(entry.getKey());
-            dataNode.refresh(entry.getValue());
-        }
+    public void doFilter(DataGroup data) {
+    
     }
 }
