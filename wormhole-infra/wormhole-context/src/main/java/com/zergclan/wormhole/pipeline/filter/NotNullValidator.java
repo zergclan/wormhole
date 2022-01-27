@@ -15,43 +15,40 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.convertor;
+package com.zergclan.wormhole.pipeline.filter;
 
 import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
-import com.zergclan.wormhole.pipeline.data.CodeMapper;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-
 /**
- * Business code convert implemented of {@link Filter}.
+ * Not null validate implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class CodeConvertor implements Filter<DataGroup> {
+public final class NotNullValidator implements Filter<DataGroup> {
     
-    private final Map<String, CodeMapper> codeMappers;
+    @Getter
+    private final int order;
+    
+    private final String[] names;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, CodeMapper>> iterator = codeMappers.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, CodeMapper> entry = iterator.next();
-            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
-            Optional<String> targetCode = entry.getValue().getTargetCode(String.valueOf(dataNode.getValue()));
-            if (!targetCode.isPresent()) {
+        final int length = names.length;
+        DataNode<?> dataNode;
+        for (int i = 0; i < length; i++) {
+            dataNode = dataGroup.getDataNode(names[i]);
+            if (dataNode.isNull()) {
                 return false;
             }
-            refreshDataNode(dataGroup, dataNode.getName(), targetCode.get());
         }
         return true;
     }
     
-    private void refreshDataNode(final DataGroup dataGroup, final String name, final String targetCode) {
-        dataGroup.refresh(new StringDataNode(name).refresh(targetCode));
+    @Override
+    public String getType() {
+        return "NOT_NULL_VALIDATOR";
     }
 }

@@ -17,8 +17,9 @@
 
 package com.zergclan.wormhole.pipeline.handler;
 
-import com.zergclan.wormhole.api.FilterChain;
+import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.api.Handler;
+import com.zergclan.wormhole.core.concurrent.ProcessTask;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
@@ -26,34 +27,38 @@ import lombok.RequiredArgsConstructor;
 import java.util.Iterator;
 
 /**
- * Splitting implemented of {@link Handler}.
+ * Implemented {@link ProcessTask} to handle {@link BatchedDataGroup}.
  */
 @RequiredArgsConstructor
-public final class SplittingHandler implements Handler<BatchedDataGroup> {
-
-    private final Integer order;
+public final class ProcessTaskHandler implements ProcessTask {
     
-    private final FilterChain<DataGroup> filterChain;
-
+    private final Filter<DataGroup>[] filters;
+    
     private final Handler<BatchedDataGroup> nextHandler;
     
+    private final BatchedDataGroup batchedDataGroup;
+    
     @Override
-    public void handle(final BatchedDataGroup batchedDataGroup) {
+    public void run() {
         Iterator<DataGroup> iterator = batchedDataGroup.getSourceDataGroup().iterator();
+        DataGroup each;
         while (iterator.hasNext()) {
-            split(iterator.next(), batchedDataGroup);
+            each = iterator.next();
+            if (handleDataGroup(each)) {
+                batchedDataGroup.clearError(each);
+            }
         }
         nextHandler.handle(batchedDataGroup);
     }
     
-    private void split(final DataGroup dataGroup, final BatchedDataGroup batchedDataGroup) {
-        if (!filterChain.doFilter(dataGroup)) {
-            batchedDataGroup.clearError(dataGroup);
+    private boolean handleDataGroup(final DataGroup dataGroup) {
+        final int length = filters.length;
+        for (int i = 0; i < length; i++) {
+            if (!filters[i].doFilter(dataGroup)) {
+                // TODO get filter type and send error event
+                return false;
+            }
         }
-    }
-    
-    @Override
-    public int getOrder() {
-        return order;
+        return true;
     }
 }

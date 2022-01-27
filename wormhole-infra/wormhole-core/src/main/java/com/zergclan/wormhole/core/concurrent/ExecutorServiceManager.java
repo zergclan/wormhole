@@ -15,31 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.validator;
+package com.zergclan.wormhole.core.concurrent;
 
-import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.data.DataNode;
-import lombok.RequiredArgsConstructor;
-
-/**
- * Not null validate implemented of {@link Filter}.
- */
-@RequiredArgsConstructor
-public final class NotNullValidator implements Filter<DataGroup> {
-    
-    private final String[] names;
-    
-    @Override
-    public boolean doFilter(final DataGroup dataGroup) {
-        final int length = names.length;
-        DataNode<?> dataNode;
-        for (int i = 0; i < length; i++) {
-            dataNode = dataGroup.getDataNode(names[i]);
-            if (dataNode.isNull()) {
-                return false;
-            }
-        }
-        return true;
-    }
+public final class ExecutorServiceManager {
 }

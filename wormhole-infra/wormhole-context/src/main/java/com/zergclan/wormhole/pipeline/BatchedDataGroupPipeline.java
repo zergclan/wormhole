@@ -15,29 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.chain;
+package com.zergclan.wormhole.pipeline;
 
-import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.api.FilterChain;
-import com.zergclan.wormhole.core.data.DataGroup;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.api.Pipeline;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
- * Data group implemented of {@link FilterChain}.
+ * Batched {@link com.zergclan.wormhole.core.data.DataGroup} implemented of {@link Pipeline}
  */
-@RequiredArgsConstructor
-public final class DataGroupFilterChain implements FilterChain<DataGroup> {
-    
-    private final Filter<DataGroup>[] filters;
+public final class BatchedDataGroupPipeline implements Pipeline<Collection<Map<String, Object>>> {
     
     @Override
-    public boolean doFilter(final DataGroup dataGroup) {
-        final int length = filters.length;
-        for (int i = 0; i < length; i++) {
-            if (!filters[i].doFilter(dataGroup)) {
-                return false;
-            }
-        }
-        return true;
+    public void handle(final Collection<Map<String, Object>> data) {
+        // TODO protocol convert
+        // TODO batch
+        // TODO create handle
+        //
     }
 }

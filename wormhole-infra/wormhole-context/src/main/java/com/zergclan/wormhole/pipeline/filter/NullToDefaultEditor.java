@@ -15,11 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.editor;
+package com.zergclan.wormhole.pipeline.filter;
 
 import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
@@ -30,6 +31,9 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 public final class NullToDefaultEditor implements Filter<DataGroup> {
+    
+    @Getter
+    private final int order;
     
     private final Map<String, DataNode<?>> defaultValue;
     
@@ -44,5 +48,10 @@ public final class NullToDefaultEditor implements Filter<DataGroup> {
             }
         }
         return true;
+    }
+    
+    @Override
+    public String getType() {
+        return "NULL_TO_DEFAULT_EDITOR";
     }
 }

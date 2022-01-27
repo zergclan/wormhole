@@ -31,4 +31,18 @@ public interface Filter<D> {
      * @return Is success
      */
     boolean doFilter(D data);
+    
+    /**
+     * Get order.
+     *
+     * @return order
+     */
+    int getOrder();
+    
+    /**
+     * Get type.
+     *
+     * @return type
+     */
+    String getType();
 }
