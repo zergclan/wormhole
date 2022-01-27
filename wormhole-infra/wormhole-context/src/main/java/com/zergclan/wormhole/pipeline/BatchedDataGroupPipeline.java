@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Batched {@link com.zergclan.wormhole.core.data.DataGroup} implemented of {@link Pipeline}
+ * Batched {@link com.zergclan.wormhole.core.data.DataGroup} implemented of {@link Pipeline}.
  */
 public final class BatchedDataGroupPipeline implements Pipeline<Collection<Map<String, Object>>> {
     

@@ -21,37 +21,36 @@ import com.zergclan.wormhole.api.Swapper;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.pipeline.swapper.MySQLDataGroupSwapper;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-@RequiredArgsConstructor
 public final class BatchedDataGroup {
     
     private static final Swapper<Map<String, Object>, DataGroup> SWAPPER = new MySQLDataGroupSwapper();
-    
+
+    private final int totalSize;
+
     private final Long planBatchId;
     
     private final Long taskBatchId;
-    
-    private final int batchSize;
-    
+
     @Getter
-    private final Collection<DataGroup> sourceDataGroup = new LinkedList<>();
-    
-    @Getter
-    private final Collection<DataGroup> errorDataGroup = new LinkedList<>();
-    
-    /**
-     * Init.
-     *
-     * @param sourceData source data
-     */
-    public void init(final Collection<Map<String, Object>> sourceData) {
-        for (Map<String, Object> each : sourceData) {
-            this.sourceDataGroup.add(SWAPPER.swapToTarget(each));
+    private final Collection<DataGroup> dataGroups = new LinkedList<>();
+
+    public BatchedDataGroup(final Long planBatchId, final Long taskBatchId, final Collection<Map<String, Object>> data) {
+        this.planBatchId = planBatchId;
+        this.taskBatchId = taskBatchId;
+        this.totalSize = data.size();
+        init(data);
+    }
+
+    private void init(final Collection<Map<String, Object>> data) {
+        Iterator<Map<String, Object>> iterator = data.iterator();
+        while (iterator.hasNext()) {
+            dataGroups.add(SWAPPER.swapToTarget(iterator.next()));
         }
     }
 
@@ -61,7 +60,6 @@ public final class BatchedDataGroup {
      * @param dataGroup data group
      */
     public void clearError(final DataGroup dataGroup) {
-        sourceDataGroup.remove(dataGroup);
-        errorDataGroup.add(dataGroup);
+        dataGroups.remove(dataGroup);
     }
 }

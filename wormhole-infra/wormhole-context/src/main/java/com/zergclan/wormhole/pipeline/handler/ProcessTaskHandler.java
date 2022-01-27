@@ -40,7 +40,7 @@ public final class ProcessTaskHandler implements ProcessTask {
     
     @Override
     public void run() {
-        Iterator<DataGroup> iterator = batchedDataGroup.getSourceDataGroup().iterator();
+        Iterator<DataGroup> iterator = batchedDataGroup.getDataGroups().iterator();
         DataGroup each;
         while (iterator.hasNext()) {
             each = iterator.next();
