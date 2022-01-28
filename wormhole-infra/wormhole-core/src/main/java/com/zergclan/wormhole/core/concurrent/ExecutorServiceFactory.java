@@ -128,6 +128,7 @@ public final class ExecutorServiceFactory {
      * @param namePrefix name prefix of thread in thread pool executor
      * @param workQueueSize work queue size
      * @param keepAliveTime keep alive time
+     * @param threadFactory thread factory
      * @param handler wormhole rejected handler
      * @return wormhole executor service instance
      */

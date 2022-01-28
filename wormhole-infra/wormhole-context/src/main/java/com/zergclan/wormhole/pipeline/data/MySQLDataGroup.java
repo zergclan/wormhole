@@ -24,6 +24,9 @@ import com.zergclan.wormhole.core.data.DataNode;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Implemented {@link DataGroup} for MySQL data source.
+ */
 public final class MySQLDataGroup implements DataGroup {
     
     private static final long serialVersionUID = 4744989988261960181L;

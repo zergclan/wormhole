@@ -15,19 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.common.util;
 
-import com.zergclan.wormhole.common.util.StringUtil;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * Test string tools.
- */
-public final class StringUtilsTest {
-  
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public final class DateUtilTest {
+    
     @Test
-    public void assertIsBlank() {
-        Assertions.assertTrue(StringUtil.isBlank(null));
+    public void assertCurrentTimeMillis() {
+        assertTrue(System.currentTimeMillis() <= DateUtil.currentTimeMillis());
+    }
+
+    @Test
+    public void assertDateFormat() {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        String expectedText = "2021-11-11 11:11:11";
+        Date date = DateUtil.parse(expectedText, pattern);
+        String actualText = DateUtil.format(date, pattern);
+        assertEquals(expectedText, actualText);
     }
 }

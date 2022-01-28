@@ -27,9 +27,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ExecutorServiceManager {
     
-    private final static ExecutorService SCHEDULING_EXECUTOR;
+    private static final ExecutorService SCHEDULING_EXECUTOR;
 
-    private final static ExecutorService COMPUTING_EXECUTOR;
+    private static final ExecutorService COMPUTING_EXECUTOR;
 
     static {
         final int availableProcessors = SystemUtil.getAvailableProcessors();
@@ -40,7 +40,7 @@ public final class ExecutorServiceManager {
     /**
      * Get {@link ExecutorService} for scheduling.
      *
-     * @return
+     * @return {@link ExecutorService}
      */
     public static ExecutorService getSchedulingExecutor() {
         return SCHEDULING_EXECUTOR;
@@ -49,7 +49,7 @@ public final class ExecutorServiceManager {
     /**
      * Get {@link ExecutorService} for computing.
      *
-     * @return
+     * @return {@link ExecutorService}
      */
     public static ExecutorService getComputingExecutor() {
         return COMPUTING_EXECUTOR;

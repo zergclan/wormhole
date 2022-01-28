@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * Util tools for collection.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CollectionUtil {
     
@@ -45,10 +48,10 @@ public final class CollectionUtil {
             return result;
         }
         Iterator<T> iterator = collection.iterator();
-        Collection<T> sizedEach = new LinkedList<>();;
+        Collection<T> sizedEach = new LinkedList<>();
         int count = 0;
         while (iterator.hasNext()) {
-            count ++;
+            count++;
             sizedEach.add(iterator.next());
             if (size == sizedEach.size() || count == collectionSize) {
                 result.add(sizedEach);
@@ -56,29 +59,5 @@ public final class CollectionUtil {
             }
         }
         return result;
-    }
-    
-    public static void main(String[] args) {
-        Collection<String> collection = new LinkedList<>();
-        collection.add("aa");
-        collection.add("aa");
-        collection.add("aa");
-        collection.add("aa");
-        collection.add("aa");
-    
-        collection.add("bb");
-        collection.add("bb");
-        collection.add("bb");
-        collection.add("bb");
-        collection.add("bb");
-    
-        collection.add("cc");
-        collection.add("cc");
-    
-        final Collection<Collection<String>> partition = partition(collection, 5);
-    
-        partition.forEach(each -> {
-            System.out.println(each);
-        });
     }
 }

@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Code mapper.
+ */
 @RequiredArgsConstructor
 public final class CodeMapper {
     
