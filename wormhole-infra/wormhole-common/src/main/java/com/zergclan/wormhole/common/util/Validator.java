@@ -43,15 +43,6 @@ public final class Validator {
     }
     
     /**
-     * Validate not null.
-     *
-     * @param object object
-     * @param message error message
-     * @param args error args
-     * @param <T> class type of object
-     * @return object
-     */
-    /**
      * Validate is true.
      *
      * @param expression expression
