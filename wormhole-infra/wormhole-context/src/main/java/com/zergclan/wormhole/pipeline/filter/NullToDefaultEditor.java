@@ -15,43 +15,43 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.convertor;
+package com.zergclan.wormhole.pipeline.filter;
 
 import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
-import com.zergclan.wormhole.pipeline.data.CodeMapper;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 
 /**
- * Business code convert implemented of {@link Filter}.
+ * Null to default editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class CodeConvertor implements Filter<DataGroup> {
+public final class NullToDefaultEditor implements Filter<DataGroup> {
     
-    private final Map<String, CodeMapper> codeMappers;
+    @Getter
+    private final int order;
+    
+    private final Map<String, DataNode<?>> defaultValue;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, CodeMapper>> iterator = codeMappers.entrySet().iterator();
+        Iterator<Map.Entry<String, DataNode<?>>> iterator = defaultValue.entrySet().iterator();
+        Map.Entry<String, DataNode<?>> entry;
         while (iterator.hasNext()) {
-            Map.Entry<String, CodeMapper> entry = iterator.next();
-            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
-            Optional<String> targetCode = entry.getValue().getTargetCode(String.valueOf(dataNode.getValue()));
-            if (!targetCode.isPresent()) {
-                return false;
+            entry = iterator.next();
+            if (dataGroup.getDataNode(entry.getKey()).isNull()) {
+                dataGroup.refresh(entry.getValue());
             }
-            refreshDataNode(dataGroup, dataNode.getName(), targetCode.get());
         }
         return true;
     }
     
-    private void refreshDataNode(final DataGroup dataGroup, final String name, final String targetCode) {
-        dataGroup.refresh(new StringDataNode(name).refresh(targetCode));
+    @Override
+    public String getType() {
+        return "NULL_TO_DEFAULT_EDITOR";
     }
 }

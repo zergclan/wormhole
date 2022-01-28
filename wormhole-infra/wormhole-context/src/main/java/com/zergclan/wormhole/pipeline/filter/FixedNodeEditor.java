@@ -15,43 +15,41 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.handler;
+package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.api.FilterChain;
-import com.zergclan.wormhole.api.Handler;
+import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import com.zergclan.wormhole.core.data.DataNode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Extract implemented of {@link Handler}.
+ * Fixed node editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class ExtractedHandler implements Handler<BatchedDataGroup> {
+public final class FixedNodeEditor implements Filter<DataGroup> {
     
-    private final FilterChain<DataGroup> filterChain;
+    @Getter
+    private final int order;
     
-    private final Handler<BatchedDataGroup> nextHandler;
+    private final Collection<DataNode<?>> fixedValue;
     
     @Override
-    public void handle(final BatchedDataGroup batchedDataGroup) {
-        Iterator<DataGroup> iterator = batchedDataGroup.getSourceDataGroup().iterator();
+    public boolean doFilter(final DataGroup dataGroup) {
+        Iterator<DataNode<?>> iterator = fixedValue.iterator();
         while (iterator.hasNext()) {
-            extract(iterator.next(), batchedDataGroup);
+            if (!dataGroup.refresh(iterator.next())) {
+                return false;
+            }
         }
-        nextHandler.handle(batchedDataGroup);
-    }
-    
-    private void extract(final DataGroup dataGroup, final BatchedDataGroup batchedDataGroup) {
-        if (!filterChain.doFilter(dataGroup)) {
-            batchedDataGroup.clearError(dataGroup);
-        }
+        return true;
     }
     
     @Override
-    public int getOrder() {
-        return Integer.MIN_VALUE;
+    public String getType() {
+        return "FIXED_NODE_EDITOR";
     }
 }

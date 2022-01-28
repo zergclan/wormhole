@@ -15,19 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.common.util;
 
-import com.zergclan.wormhole.common.util.StringUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * Test string tools.
+ * Util tools for get system parameters.
  */
-public final class StringUtilsTest {
-  
-    @Test
-    public void assertIsBlank() {
-        Assertions.assertTrue(StringUtil.isBlank(null));
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SystemUtil {
+    
+    /**
+     * Get available processors count.
+     *
+     * @return available processors count
+     */
+    public static int getAvailableProcessors() {
+        return Runtime.getRuntime().availableProcessors();
     }
 }

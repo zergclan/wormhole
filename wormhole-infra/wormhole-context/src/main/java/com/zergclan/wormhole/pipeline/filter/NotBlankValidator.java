@@ -15,18 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.validator;
+package com.zergclan.wormhole.pipeline.filter;
 
 import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Not blank validate implemented of {@link Filter}.
+ * Not blank validator implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 public final class NotBlankValidator implements Filter<DataGroup> {
+    
+    @Getter
+    private final int order;
     
     private final String[] names;
     
@@ -41,5 +45,10 @@ public final class NotBlankValidator implements Filter<DataGroup> {
             }
         }
         return true;
+    }
+    
+    @Override
+    public String getType() {
+        return "NOT_BLANK_VALIDATOR";
     }
 }

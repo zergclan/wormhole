@@ -25,7 +25,7 @@ public final class ExecutorServiceTest {
     
     @Test
     public void assertSubmit() {
-        ExecutorService executorService = ExecutorServiceFactory.newSingleThreadExecutor("junit-test", 128, 10 * 1000);
+        ExecutorService executorService = ExecutorServiceFactory.newSingleThreadExecutor("junit-test", 128, 10 * 1000L);
         assertNotNull(executorService);
     }
 }

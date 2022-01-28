@@ -15,29 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.chain;
+package com.zergclan.wormhole.common.util;
 
-import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.api.FilterChain;
-import com.zergclan.wormhole.core.data.DataGroup;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- * Data group implemented of {@link FilterChain}.
+ * Test string tools.
  */
-@RequiredArgsConstructor
-public final class DataGroupFilterChain implements FilterChain<DataGroup> {
-    
-    private final Filter<DataGroup>[] filters;
-    
-    @Override
-    public boolean doFilter(final DataGroup dataGroup) {
-        final int length = filters.length;
-        for (int i = 0; i < length; i++) {
-            if (!filters[i].doFilter(dataGroup)) {
-                return false;
-            }
-        }
-        return true;
+public final class StringUtilsTest {
+  
+    @Test
+    public void assertIsBlank() {
+        Assertions.assertTrue(StringUtil.isBlank(null));
     }
 }

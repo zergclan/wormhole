@@ -17,6 +17,9 @@
 
 package com.zergclan.wormhole.common.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * Util tools for String.
  * <p>
@@ -25,6 +28,7 @@ package com.zergclan.wormhole.common.util;
  *     <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
  * </p>
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringUtil {
     
     /**

@@ -41,4 +41,17 @@ public final class Validator {
     public static <T> T notNull(final T object, final String message, final Object... args) {
         return Objects.requireNonNull(object, () -> String.format(message, args));
     }
+    
+    /**
+     * Validate is true.
+     *
+     * @param expression expression
+     * @param message error message
+     * @param args error args
+     */
+    public static void isTrue(final boolean expression, final String message, final Object... args) {
+        if (!expression) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
+    }
 }

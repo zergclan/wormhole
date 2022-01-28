@@ -15,31 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.validator;
+package com.zergclan.wormhole.common.util;
 
-import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.data.DataNode;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-/**
- * Not null validate implemented of {@link Filter}.
- */
-@RequiredArgsConstructor
-public final class NotNullValidator implements Filter<DataGroup> {
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public final class DateUtilTest {
     
-    private final String[] names;
-    
-    @Override
-    public boolean doFilter(final DataGroup dataGroup) {
-        final int length = names.length;
-        DataNode<?> dataNode;
-        for (int i = 0; i < length; i++) {
-            dataNode = dataGroup.getDataNode(names[i]);
-            if (dataNode.isNull()) {
-                return false;
-            }
-        }
-        return true;
+    @Test
+    public void assertCurrentTimeMillis() {
+        assertTrue(System.currentTimeMillis() <= DateUtil.currentTimeMillis());
+    }
+
+    @Test
+    public void assertDateFormat() {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        String expectedText = "2021-11-11 11:11:11";
+        Date date = DateUtil.parse(expectedText, pattern);
+        String actualText = DateUtil.format(date, pattern);
+        assertEquals(expectedText, actualText);
     }
 }

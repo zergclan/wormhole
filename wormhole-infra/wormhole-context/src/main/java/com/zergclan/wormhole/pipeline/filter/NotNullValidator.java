@@ -15,36 +15,40 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.data;
+package com.zergclan.wormhole.pipeline.filter;
 
+import com.zergclan.wormhole.api.Filter;
+import com.zergclan.wormhole.core.data.DataGroup;
+import com.zergclan.wormhole.core.data.DataNode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
 /**
- * Code mapper.
+ * Not null validator implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class CodeMapper {
+public final class NotNullValidator implements Filter<DataGroup> {
     
-    private final String defaultCode;
+    @Getter
+    private final int order;
     
-    private final Map<String, String> sourceTargetCodeMapping;
+    private final String[] names;
     
-    /**
-     * Get target code.
-     *
-     * @param sourceCode source code
-     * @return target code
-     */
-    public Optional<String> getTargetCode(final String sourceCode) {
-        String targetCode = sourceTargetCodeMapping.get(sourceCode);
-        return Objects.isNull(targetCode) ? getDefault() : Optional.of(targetCode);
+    @Override
+    public boolean doFilter(final DataGroup dataGroup) {
+        final int length = names.length;
+        DataNode<?> dataNode;
+        for (int i = 0; i < length; i++) {
+            dataNode = dataGroup.getDataNode(names[i]);
+            if (dataNode.isNull()) {
+                return false;
+            }
+        }
+        return true;
     }
     
-    private Optional<String> getDefault() {
-        return Objects.isNull(defaultCode) ? Optional.empty() : Optional.of(defaultCode);
+    @Override
+    public String getType() {
+        return "NOT_NULL_VALIDATOR";
     }
 }
