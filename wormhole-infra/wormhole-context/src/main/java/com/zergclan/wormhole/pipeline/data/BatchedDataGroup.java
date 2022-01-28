@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+@Getter
 public final class BatchedDataGroup {
     
     private static final Swapper<Map<String, Object>, DataGroup> SWAPPER = new MySQLDataGroupSwapper();
@@ -36,8 +37,7 @@ public final class BatchedDataGroup {
     private final Long planBatchId;
     
     private final Long taskBatchId;
-
-    @Getter
+    
     private final Collection<DataGroup> dataGroups = new LinkedList<>();
 
     public BatchedDataGroup(final Long planBatchId, final Long taskBatchId, final Collection<Map<String, Object>> data) {

@@ -35,6 +35,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ExecutorServiceFactory {
     
+    private static final long DEFAULT_KEEP_ALIVE_TIME = 30 * 60 * 1000L;
+    
     private static final ExecutorRejectedHandler DEFAULT_REJECTED_HANDLER = task -> {
         throw new WormholeException("error : executor rejected");
     };
@@ -44,10 +46,21 @@ public final class ExecutorServiceFactory {
      *
      * @param namePrefix name prefix of thread in thread pool executor
      * @param workQueueSize work queue size
+     * @return wormhole executor service instance
+     */
+    public static ExecutorService newSingleThreadExecutor(final String namePrefix, final int workQueueSize) {
+        return newSingleThreadExecutor(namePrefix, workQueueSize, DEFAULT_KEEP_ALIVE_TIME, DEFAULT_REJECTED_HANDLER);
+    }
+    
+    /**
+     * The newly created single-threaded {@link ExecutorService}.
+     *
+     * @param namePrefix name prefix of thread in thread pool executor
+     * @param workQueueSize work queue size
      * @param keepAliveTime keep alive time
      * @return wormhole executor service instance
      */
-    public static ExecutorService newSingleThreadExecutor(final String namePrefix, final int workQueueSize, final int keepAliveTime) {
+    public static ExecutorService newSingleThreadExecutor(final String namePrefix, final int workQueueSize, final Long keepAliveTime) {
         return newSingleThreadExecutor(namePrefix, workQueueSize, keepAliveTime, DEFAULT_REJECTED_HANDLER);
     }
     
@@ -60,7 +73,7 @@ public final class ExecutorServiceFactory {
      * @param handler wormhole rejected handler
      * @return wormhole executor service instance
      */
-    public static ExecutorService newSingleThreadExecutor(final String namePrefix, final int workQueueSize, final int keepAliveTime, final ExecutorRejectedHandler handler) {
+    public static ExecutorService newSingleThreadExecutor(final String namePrefix, final int workQueueSize, final Long keepAliveTime, final ExecutorRejectedHandler handler) {
         return new ExecutorBuilder().corePoolSize(1).maxPoolSize(1).namePrefix(namePrefix).keepAliveTime(keepAliveTime).workQueueSize(workQueueSize).handler(handler).build();
     }
     
@@ -74,7 +87,7 @@ public final class ExecutorServiceFactory {
      * @return wormhole executor service instance
      */
     public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize) {
-        return newFixedThreadExecutor(coreSize, maxSize, namePrefix, workQueueSize, DEFAULT_REJECTED_HANDLER);
+        return newFixedThreadExecutor(coreSize, maxSize, namePrefix, workQueueSize, DEFAULT_KEEP_ALIVE_TIME);
     }
     
     /**
@@ -84,11 +97,44 @@ public final class ExecutorServiceFactory {
      * @param maxSize Maximum size of threads
      * @param namePrefix name prefix of thread in thread pool executor
      * @param workQueueSize work queue size
+     * @param keepAliveTime keep alive time
+     * @return wormhole executor service instance
+     */
+    public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize, final long keepAliveTime) {
+        return newFixedThreadExecutor(coreSize, maxSize, namePrefix, workQueueSize, keepAliveTime, DEFAULT_REJECTED_HANDLER);
+    }
+    
+    /**
+     * The newly created fixed-size-threaded WormholeExecutorService.
+     *
+     * @param coreSize core size of threads
+     * @param maxSize Maximum size of threads
+     * @param namePrefix name prefix of thread in thread pool executor
+     * @param workQueueSize work queue size
+     * @param keepAliveTime keep alive time
      * @param handler wormhole rejected handler
      * @return wormhole executor service instance
      */
-    public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize, final ExecutorRejectedHandler handler) {
-        return new ExecutorBuilder().corePoolSize(coreSize).maxPoolSize(maxSize).namePrefix(namePrefix).workQueueSize(workQueueSize).handler(handler).build();
+    public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize, final long keepAliveTime,
+                                                         final ExecutorRejectedHandler handler) {
+        return newFixedThreadExecutor(coreSize, maxSize, namePrefix, workQueueSize, keepAliveTime, new DefaultThreadFactory(namePrefix), handler);
+    }
+    
+    /**
+     * The newly created fixed-size-threaded WormholeExecutorService.
+     *
+     * @param coreSize core size of threads
+     * @param maxSize Maximum size of threads
+     * @param namePrefix name prefix of thread in thread pool executor
+     * @param workQueueSize work queue size
+     * @param keepAliveTime keep alive time
+     * @param handler wormhole rejected handler
+     * @return wormhole executor service instance
+     */
+    public static ExecutorService newFixedThreadExecutor(final int coreSize, final int maxSize, final String namePrefix, final int workQueueSize, final long keepAliveTime,
+                                                         final ThreadFactory threadFactory, final ExecutorRejectedHandler handler) {
+        return new ExecutorBuilder().corePoolSize(coreSize).maxPoolSize(maxSize).namePrefix(namePrefix).workQueueSize(workQueueSize).keepAliveTime(keepAliveTime).threadFactory(threadFactory)
+                .handler(handler).build();
     }
 
     /**
@@ -155,10 +201,6 @@ public final class ExecutorServiceFactory {
          * @return new instance of WormholeExecutorService
          */
         private ExecutorService build() {
-            if (null == keepAliveTime) {
-                // FIXME refer to HikariConfig.MAX_LIFETIME adjustment when test completed.
-                keepAliveTime = 30 * 60 * 1000L;
-            }
             if (null == timeUnit) {
                 timeUnit = TimeUnit.MILLISECONDS;
             }

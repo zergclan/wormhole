@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Not blank validate implemented of {@link Filter}.
+ * Null to default editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 public final class NullToDefaultEditor implements Filter<DataGroup> {

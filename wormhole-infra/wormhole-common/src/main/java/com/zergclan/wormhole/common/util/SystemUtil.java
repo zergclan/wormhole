@@ -15,17 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.common.util;
 
-import org.junit.jupiter.api.Test;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-public final class ExecutorServiceTest {
+/**
+ * Util tools for get system parameters.
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SystemUtil {
     
-    @Test
-    public void assertSubmit() {
-        ExecutorService executorService = ExecutorServiceFactory.newSingleThreadExecutor("junit-test", 128, 10 * 1000L);
-        assertNotNull(executorService);
+    /**
+     * Get available processors count.
+     *
+     * @return available processors count
+     */
+    public static int getAvailableProcessors() {
+        return Runtime.getRuntime().availableProcessors();
     }
 }

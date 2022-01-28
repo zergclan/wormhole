@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Not blank validate implemented of {@link Filter}.
+ * Not blank validator implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 public final class NotBlankValidator implements Filter<DataGroup> {

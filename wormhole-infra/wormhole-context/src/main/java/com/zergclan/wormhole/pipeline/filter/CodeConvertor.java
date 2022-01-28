@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Business code convert implemented of {@link Filter}.
+ * Business code convertor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 public final class CodeConvertor implements Filter<DataGroup> {

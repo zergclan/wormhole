@@ -17,5 +17,41 @@
 
 package com.zergclan.wormhole.core.concurrent;
 
+import com.zergclan.wormhole.common.util.SystemUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+/**
+ * Manager of {@link ExecutorService}.
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ExecutorServiceManager {
+    
+    private final static ExecutorService SCHEDULING_EXECUTOR;
+
+    private final static ExecutorService COMPUTING_EXECUTOR;
+
+    static {
+        final int availableProcessors = SystemUtil.getAvailableProcessors();
+        SCHEDULING_EXECUTOR = ExecutorServiceFactory.newSingleThreadExecutor("plan", 128);
+        COMPUTING_EXECUTOR = ExecutorServiceFactory.newFixedThreadExecutor(availableProcessors, 2 * availableProcessors, "task", 1024);
+    }
+    
+    /**
+     * Get {@link ExecutorService} for scheduling.
+     *
+     * @return
+     */
+    public static ExecutorService getSchedulingExecutor() {
+        return SCHEDULING_EXECUTOR;
+    }
+    
+    /**
+     * Get {@link ExecutorService} for computing.
+     *
+     * @return
+     */
+    public static ExecutorService getComputingExecutor() {
+        return COMPUTING_EXECUTOR;
+    }
 }

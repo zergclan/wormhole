@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Not null validate implemented of {@link Filter}.
+ * Not null validator implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 public final class NotNullValidator implements Filter<DataGroup> {

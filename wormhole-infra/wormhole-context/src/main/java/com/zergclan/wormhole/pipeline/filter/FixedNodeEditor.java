@@ -15,50 +15,41 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.handler;
+package com.zergclan.wormhole.pipeline.filter;
 
 import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.api.Handler;
-import com.zergclan.wormhole.core.concurrent.ProcessTask;
 import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import com.zergclan.wormhole.core.data.DataNode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Implemented {@link ProcessTask} to handle {@link BatchedDataGroup}.
+ * Fixed node editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class ProcessTaskHandler implements ProcessTask {
+public final class FixedNodeEditor implements Filter<DataGroup> {
     
-    private final Collection<Filter<DataGroup>> filters;
+    @Getter
+    private final int order;
     
-    private final Handler<BatchedDataGroup> nextHandler;
-    
-    private final BatchedDataGroup batchedDataGroup;
+    private final Collection<DataNode<?>> fixedValue;
     
     @Override
-    public void run() {
-        Iterator<DataGroup> iterator = batchedDataGroup.getDataGroups().iterator();
-        DataGroup each;
+    public boolean doFilter(final DataGroup dataGroup) {
+        Iterator<DataNode<?>> iterator = fixedValue.iterator();
         while (iterator.hasNext()) {
-            each = iterator.next();
-            if (handleDataGroup(each)) {
-                batchedDataGroup.clearError(each);
-            }
-        }
-        nextHandler.handle(batchedDataGroup);
-    }
-    
-    private boolean handleDataGroup(final DataGroup dataGroup) {
-        Iterator<Filter<DataGroup>> iterator = filters.iterator();
-        while (iterator.hasNext()) {
-            if (!iterator.next().doFilter(dataGroup)) {
+            if (!dataGroup.refresh(iterator.next())) {
                 return false;
             }
         }
         return true;
+    }
+    
+    @Override
+    public String getType() {
+        return "FIXED_NODE_EDITOR";
     }
 }
