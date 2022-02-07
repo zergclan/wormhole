@@ -15,44 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.data;
+package com.zergclan.wormhole.core.data;
 
-import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.data.DataNode;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-
-/**
- * Implemented {@link DataGroup} for MySQL data source.
- */
 @RequiredArgsConstructor
-public final class MySQLDataGroup implements DataGroup {
-    
-    private static final long serialVersionUID = 4744989988261960181L;
+public final class LongDataNode implements DataNode<Long> {
 
-    @Getter
-    private final Map<String, DataNode<?>> dataNodes;
+    private final String name;
+
+    private Long value;
 
     @Override
-    public DataNode<?> getDataNode(final String name) {
-        return dataNodes.get(name);
+    public String getName() {
+        return name;
     }
-    
+
     @Override
-    public boolean append(final DataNode<?> dataNode) {
-        final String name = dataNode.getName();
-        if (dataNodes.containsKey(name)) {
-            return false;
-        }
-        dataNodes.put(name, dataNode);
-        return true;
+    public Long getValue() {
+        return value;
     }
-    
+
     @Override
-    public boolean refresh(final DataNode<?> dataNode) {
-        dataNodes.put(dataNode.getName(), dataNode);
-        return true;
+    public DataNode<Long> refresh(final Long value) {
+        this.value = value;
+        return this;
     }
 }

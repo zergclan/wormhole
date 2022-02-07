@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -37,6 +39,16 @@ public final class DateUtil {
      */
     public static long currentTimeMillis() {
         return System.currentTimeMillis();
+    }
+
+    /**
+     * Swap To {@link LocalDateTime}.
+     *
+     * @param date date
+     * @return {@link LocalDateTime}
+     */
+    public static LocalDateTime swapToLocalDateTime(final Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
     /**

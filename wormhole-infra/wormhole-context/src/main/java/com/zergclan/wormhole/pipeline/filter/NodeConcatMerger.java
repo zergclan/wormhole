@@ -20,39 +20,57 @@ package com.zergclan.wormhole.pipeline.filter;
 import com.zergclan.wormhole.api.Filter;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.data.StringDataNode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 
 /**
- * Null to default editor implemented of {@link Filter}.
+ * Node concat merger implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class NullToDefaultEditor implements Filter<DataGroup> {
+public final class NodeConcatMerger implements Filter<DataGroup> {
     
     @Getter
     private final int order;
+
+    private final String delimiter;
     
-    private final Map<String, DataNode<?>> defaultValue;
+    private final Map<String, Collection<String>> nodeNameMapping;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, DataNode<?>>> iterator = defaultValue.entrySet().iterator();
-        Map.Entry<String, DataNode<?>> entry;
+        Iterator<Map.Entry<String, Collection<String>>> iterator = nodeNameMapping.entrySet().iterator();
         while (iterator.hasNext()) {
-            entry = iterator.next();
-            if (Objects.isNull(dataGroup.getDataNode(entry.getKey()))) {
-                dataGroup.append(entry.getValue());
-            }
+            dataGroup.refresh(mergeNodeValue(iterator.next(), dataGroup));
         }
         return true;
     }
     
+    private DataNode<String> mergeNodeValue(final Map.Entry<String, Collection<String>> nodeNameEntry, final DataGroup dataGroup) {
+        Collection<String> names = nodeNameEntry.getValue();
+        Iterator<String> iterator = names.iterator();
+        DataNode<String> result = new StringDataNode(nodeNameEntry.getKey());
+        StringBuilder stringBuilder = new StringBuilder();
+        DataNode<?> each;
+        int count = 0;
+        int size = names.size();
+        while (iterator.hasNext()) {
+            each = dataGroup.getDataNode(iterator.next());
+            stringBuilder.append(each.getValue());
+            if (count == size) {
+                break;
+            }
+            stringBuilder.append(delimiter);
+        }
+        return result.refresh(stringBuilder.toString());
+    }
+    
     @Override
     public String getType() {
-        return "NULL_TO_DEFAULT_EDITOR";
+        return "CONCAT_MERGER";
     }
 }
