@@ -19,11 +19,9 @@ package com.zergclan.wormhole.scheduling;
 
 import com.zergclan.wormhole.api.Pipeline;
 import com.zergclan.wormhole.core.concurrent.ExecutorService;
-import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.loader.Loader;
-import com.zergclan.wormhole.pipeline.data.MySQLDataGroup;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
@@ -35,7 +33,7 @@ import java.util.Map;
  * Task implemented of {@link SchedulingExecutor}.
  */
 @RequiredArgsConstructor
-public class TaskSchedulingExecutor implements SchedulingExecutor {
+public final class TaskSchedulingExecutor implements SchedulingExecutor {
 
     private final Long planId;
 
@@ -74,17 +72,6 @@ public class TaskSchedulingExecutor implements SchedulingExecutor {
     }
 
     private void transform() {
-        DataGroup dataGroup;
-        for (Map<String, Object> each : dataMaps) {
-            dataGroup = new MySQLDataGroup();
-            dataGroup.init(each);
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    // FIXME
-                }
-            });
-        }
     }
     
     private Map<String, Pipeline<?>> createPipelineMatrix() {

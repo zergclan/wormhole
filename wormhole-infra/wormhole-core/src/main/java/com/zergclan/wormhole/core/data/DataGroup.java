@@ -24,21 +24,14 @@ import java.util.Map;
  * The root interface from which all converted data objects shall be derived in Wormhole.
  */
 public interface DataGroup extends Serializable {
-    
+
     /**
-     * Init {@link DataGroup}.
+     * Get data nodes.
      *
-     * @param dataMap data map
+     * @return data node map
      */
-    void init(Map<String, Object> dataMap);
-    
-    /**
-     * Get data map.
-     *
-     * @return data map
-     */
-    Map<String, Object> getDataMap();
-    
+    Map<String, DataNode<?>> getDataNodes();
+
     /**
      * Get {@link DataNode} by name.
      *

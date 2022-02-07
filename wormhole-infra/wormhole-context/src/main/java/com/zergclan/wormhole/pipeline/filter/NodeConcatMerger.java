@@ -36,6 +36,8 @@ public final class NodeConcatMerger implements Filter<DataGroup> {
     
     @Getter
     private final int order;
+
+    private final String delimiter;
     
     private final Map<String, Collection<String>> nodeNameMapping;
     
@@ -49,13 +51,20 @@ public final class NodeConcatMerger implements Filter<DataGroup> {
     }
     
     private DataNode<String> mergeNodeValue(final Map.Entry<String, Collection<String>> nodeNameEntry, final DataGroup dataGroup) {
-        Iterator<String> iterator = nodeNameEntry.getValue().iterator();
+        Collection<String> names = nodeNameEntry.getValue();
+        Iterator<String> iterator = names.iterator();
         DataNode<String> result = new StringDataNode(nodeNameEntry.getKey());
         StringBuilder stringBuilder = new StringBuilder();
         DataNode<?> each;
+        int count = 0;
+        int size = names.size();
         while (iterator.hasNext()) {
             each = dataGroup.getDataNode(iterator.next());
             stringBuilder.append(each.getValue());
+            if (count == size) {
+                break;
+            }
+            stringBuilder.append(delimiter);
         }
         return result.refresh(stringBuilder.toString());
     }

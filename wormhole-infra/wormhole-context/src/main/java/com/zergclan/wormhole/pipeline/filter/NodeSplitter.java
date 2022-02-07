@@ -37,7 +37,7 @@ public final class NodeSplitter implements Filter<DataGroup> {
     @Getter
     private final int order;
     
-    private final String space;
+    private final String delimiter;
     
     private final Map<String, Collection<String>> nodeNameMapping;
     
@@ -57,7 +57,7 @@ public final class NodeSplitter implements Filter<DataGroup> {
         DataNode<?> dataNode = dataGroup.getDataNode(nodeNameEntry.getKey());
         Collection<String> names = nodeNameEntry.getValue();
         String value = dataNode.getValue().toString();
-        String[] split = value.split(space);
+        String[] split = value.split(delimiter);
         int length = split.length;
         if (length != names.size()) {
             return false;
@@ -75,7 +75,7 @@ public final class NodeSplitter implements Filter<DataGroup> {
                     return false;
                 }
             }
-            index ++;
+            index++;
         }
         return true;
     }

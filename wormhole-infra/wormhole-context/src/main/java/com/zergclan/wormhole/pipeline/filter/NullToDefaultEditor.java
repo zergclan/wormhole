@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Null to default editor implemented of {@link Filter}.
@@ -43,8 +44,8 @@ public final class NullToDefaultEditor implements Filter<DataGroup> {
         Map.Entry<String, DataNode<?>> entry;
         while (iterator.hasNext()) {
             entry = iterator.next();
-            if (dataGroup.getDataNode(entry.getKey()).isNull()) {
-                dataGroup.refresh(entry.getValue());
+            if (Objects.isNull(dataGroup.getDataNode(entry.getKey()))) {
+                dataGroup.append(entry.getValue());
             }
         }
         return true;
