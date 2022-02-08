@@ -47,8 +47,7 @@ public final class WormholeMetadataConfigurationSwapper {
     public static WormholeMetadata swapToMetadata(final WormholeConfiguration wormholeConfiguration) {
         Map<String, DataSourceMetadata> dataSources = createDataSourceMetadata(wormholeConfiguration.getDataSourcesConfigurations());
         Map<String, PlanMetadata> plans = createPlanMetadata(wormholeConfiguration.getPlanConfigurations());
-        Map<String, Pipeline<?>> pipelines = createDataNodePipeline(wormholeConfiguration.getPipelineConfigurations());
-        return new WormholeMetadata(dataSources, plans, pipelines);
+        return new WormholeMetadata(dataSources, plans);
     }
 
     private static Map<String, DataSourceMetadata> createDataSourceMetadata(final Collection<DataSourceConfiguration> dataSourcesConfigurations) {

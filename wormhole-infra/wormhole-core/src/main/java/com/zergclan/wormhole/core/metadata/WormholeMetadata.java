@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.api.Pipeline;
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
@@ -40,12 +39,9 @@ public final class WormholeMetadata implements Metadata {
     
     private final Map<String, PlanMetadata> plans;
     
-    private final Map<String, Pipeline<?>> pipelines;
-    
-    public WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans, final Map<String, Pipeline<?>> pipelines) {
+    public WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans) {
         this.dataSources = dataSources;
         this.plans = plans;
-        this.pipelines = pipelines;
     }
     
     /**
@@ -76,7 +72,7 @@ public final class WormholeMetadata implements Metadata {
         LOCK.writeLock().lock();
         try {
             PlanMetadata planMetadata = plans.get(planIdentifier);
-            return null == planMetadata ? Optional.empty() : Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources, pipelines));
+            return null == planMetadata ? Optional.empty() : Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources));
         } finally {
             LOCK.writeLock().unlock();
         }

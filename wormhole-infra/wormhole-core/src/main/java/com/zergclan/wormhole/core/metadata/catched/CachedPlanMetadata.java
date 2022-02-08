@@ -41,11 +41,10 @@ public final class CachedPlanMetadata implements Metadata {
      *
      * @param planMetadata data sources
      * @param dataSources plan metadata
-     * @param pipelines pipelines
      * @return {@link CachedPlanMetadata}
      */
-    public static CachedPlanMetadata builder(final PlanMetadata planMetadata, final Map<String, DataSourceMetadata> dataSources, final Map<String, Pipeline<?>> pipelines) {
-        return new CachedBuilder(planMetadata, dataSources, pipelines).build();
+    public static CachedPlanMetadata builder(final PlanMetadata planMetadata, final Map<String, DataSourceMetadata> dataSources) {
+        return new CachedBuilder(planMetadata, dataSources).build();
     }
     
     @Override
@@ -59,8 +58,6 @@ public final class CachedPlanMetadata implements Metadata {
         private final PlanMetadata planMetadata;
         
         private final Map<String, DataSourceMetadata> dataSources;
-    
-        private final Map<String, Pipeline<?>> pipelines;
         
         CachedPlanMetadata build() {
             return new CachedPlanMetadata();
