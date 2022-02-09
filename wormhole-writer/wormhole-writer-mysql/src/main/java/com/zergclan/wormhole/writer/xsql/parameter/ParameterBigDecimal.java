@@ -15,10 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+import com.zergclan.wormhole.writer.xsql.convert.Converter;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class ParameterBigDecimal extends Parameter {
+    private Converter<BigDecimal> converter = Converter.getConverter(BigDecimal.class);
+
+    @Override
+    public int set(final PreparedStatement ps, final Object params, final int index) throws SQLException {
+        Object v = getGetter().get(params);
+        ps.setBigDecimal(index, converter.convert(v, BigDecimal.class));
+        return index;
+    }
 }

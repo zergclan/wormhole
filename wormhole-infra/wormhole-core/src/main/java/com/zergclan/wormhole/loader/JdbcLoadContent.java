@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.zergclan.wormhole.loader;
 
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
@@ -21,18 +22,19 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * The load content for Jdbc
+ * The load content for Jdbc.
  */
 @Data
 @RequiredArgsConstructor
 public class JdbcLoadContent implements LoadContent {
 
-    Collection<Map<String, Object>> loadData;
+    private Collection<Map<String, Object>> loadData;
 
-    Map<String, TableMetadata> tables;
+    private Map<String, TableMetadata> tables = new LinkedHashMap<>();
 
     /**
      * Register {@link TableMetadata}.

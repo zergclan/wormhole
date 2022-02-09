@@ -15,10 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+import com.zergclan.wormhole.writer.xsql.convert.Converter;
+
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class ParameterDate extends Parameter {
+    private Converter<Date> converter = Converter.getConverter(Date.class);
+
+    @Override
+    public int set(final PreparedStatement ps, final Object params, final int index) throws SQLException {
+        Object v = getGetter().get(params);
+        ps.setDate(index, converter.convert(v, Date.class));
+        return index;
+    }
 }

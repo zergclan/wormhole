@@ -15,10 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.convert;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+public class DoubleConverter extends Converter<Double> {
+
+    private final boolean nullable;
+
+    public DoubleConverter(final boolean nullable) {
+        this.nullable = nullable;
+    }
+
+    @Override
+    public Double convert(final Object o) {
+        if (o == null) {
+            return nullable ? null : 0.0;
+        }
+        if (o instanceof Number) {
+            return ((Number) o).doubleValue();
+        }
+        return new Double(o.toString());
+    }
 }

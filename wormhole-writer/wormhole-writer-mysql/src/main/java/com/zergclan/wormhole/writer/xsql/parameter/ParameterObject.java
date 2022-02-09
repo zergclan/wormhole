@@ -15,10 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class ParameterObject extends Parameter {
+
+    @Override
+    public int set(final PreparedStatement ps, final Object params, final int index) throws SQLException {
+        Object v = getGetter().get(params);
+        ps.setObject(index, v);
+        return index;
+    }
 }

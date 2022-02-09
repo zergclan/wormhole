@@ -15,10 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+import java.util.Map;
+
+public class FieldGetterMap extends FieldGetter {
+
+    private final String name;
+
+    public FieldGetterMap(final String name) {
+        this.name = name;
+    }
+
+    @Override
+    public Object get(final Object params) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) params;
+        return map.get(name);
+    }
 }

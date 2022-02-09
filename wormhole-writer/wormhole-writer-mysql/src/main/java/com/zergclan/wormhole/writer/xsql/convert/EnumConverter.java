@@ -15,10 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.convert;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+class EnumConverter extends Converter<Enum<?>> {
+    @Override
+    protected Enum<?> convert(final Object o) {
+        return null;
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public Enum<?> convert(final Object o, final Class<?> clazz) {
+        if (o == null) {
+            return null;
+        }
+        if (clazz.isAssignableFrom(o.getClass())) {
+            return (Enum<?>) o;
+        }
+        return Enum.valueOf((Class<Enum>) clazz, o.toString());
+    }
+
 }

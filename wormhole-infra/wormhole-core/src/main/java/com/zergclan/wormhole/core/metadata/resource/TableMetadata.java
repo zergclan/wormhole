@@ -54,6 +54,17 @@ public final class TableMetadata implements Metadata {
     }
 
     /**
+     * Register.
+     * @param key  {@link String}
+     * @param columnMetadata {@link ColumnMetadata}
+     * @return is registered or not.
+     */
+    public boolean registerColumn(final String key, final ColumnMetadata columnMetadata) {
+        columns.put(key, columnMetadata);
+        return true;
+    }
+
+    /**
      * Register {@link IndexMetadata}.
      *
      * @param indexMetadata {@link IndexMetadata}

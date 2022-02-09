@@ -15,10 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+public class FieldGetterArray extends FieldGetter {
+
+    private final int index;
+
+    public FieldGetterArray(final int index) {
+        this.index = index;
+    }
+
+    @Override
+    public Object get(final Object params) {
+        Object[] array = (Object[]) params;
+        return array[index];
+    }
 }

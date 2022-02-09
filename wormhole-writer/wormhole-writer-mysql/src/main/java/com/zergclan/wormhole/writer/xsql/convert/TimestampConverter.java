@@ -15,10 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.convert;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+import java.sql.Timestamp;
+import java.util.Date;
+
+class TimestampConverter extends Converter<Timestamp> {
+    @Override
+    public Timestamp convert(final Object o) {
+        if (o == null) {
+            return null;
+        }
+        if (o instanceof Date) {
+            return new Timestamp(((Date) o).getTime());
+        }
+        return (Timestamp) o;
+    }
 }

@@ -15,10 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.convert;
 
-/**
- * The root interface for load content.
- */
-public interface LoadContent {
+import java.sql.Clob;
+import java.sql.SQLException;
+
+public class StringConverter extends Converter<String> {
+    @Override
+    public String convert(final Object o) {
+        if (o == null) {
+            return null;
+        }
+        if (o instanceof Clob) {
+            Clob clob = (Clob) o;
+            try {
+                return clob.getSubString(1, (int) clob.length());
+            } catch (SQLException e) {
+                throw new RuntimeException("con not trans " + o.getClass().getSimpleName() + " to String");
+            }
+        }
+
+        return o.toString();
+    }
 }

@@ -17,17 +17,17 @@
 
 package com.zergclan.wormhole.writer.mysql;
 
-import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.loader.JdbcLoadContent;
 import com.zergclan.wormhole.loader.LoadContent;
 import com.zergclan.wormhole.loader.Loader;
-import com.zergclan.wormhole.writer.xsql.SqlExecutor;
-import com.zergclan.wormhole.writer.xsql.SqlGenerator;
 import lombok.Setter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Loader for MySQL.
@@ -35,15 +35,10 @@ import java.util.*;
 @Setter
 public class MySQLLoader implements Loader {
 
-    public final static String SELECT_STR = "SELECT-";
-    public final static String INSERT_STR = "INSERT-";
-    public final static String UPDATE_STR = "UPDATE-";
-
-    private final SqlExecutor sqlExecutor;
-    private final Map<String,String> sqlMap = new HashMap<>(8);
+    private final LoadHandler loadHandler;
 
     public MySQLLoader(final JdbcTemplate jdbcTemplate) {
-        this.sqlExecutor =  new SqlExecutor(jdbcTemplate);
+        this.loadHandler = new LoadHandler(jdbcTemplate);
     }
 
     @Override
@@ -54,66 +49,37 @@ public class MySQLLoader implements Loader {
         for (Map.Entry<String, TableMetadata> entry : tables.entrySet()) {
             String table = entry.getKey();
             TableMetadata tableMetadata = entry.getValue();
-            System.out.println("load data into "+table);
-
+            System.out.println("load data into " + table + " start...");
             List<Map<String, Object>> insertData = new LinkedList<>();
             List<Map<String, Object>> updateData = new LinkedList<>();
-            for(Map<String, Object> mapData : listData) {
-                int count = executeSelect(tableMetadata,mapData);
-                if(count > 0) {
+            for (Map<String, Object> mapData : listData) {
+                int count = executeSelect(tableMetadata, mapData);
+                if (count > 0) {
                     updateData.add(mapData);
                 } else {
                     insertData.add(mapData);
                 }
             }
-            executeBatchInsert(tableMetadata,insertData);
-            executeBatchUpdate(tableMetadata,insertData);
+            if (insertData.size() > 0) {
+                executeBatchInsert(tableMetadata, insertData);
+            }
+            if (updateData.size() > 0) {
+                executeBatchUpdate(tableMetadata, updateData);
+            }
+            System.out.println("load data into " + table + " end...");
         }
     }
 
     private int executeSelect(final TableMetadata tableMetadata, final Map<String, Object> mapData) {
-        String selectSql = sqlMap.get(SELECT_STR+tableMetadata.getDataSourceIdentifier());
-        if(StringUtil.isBlank(selectSql)) {
-            selectSql = registerSqlMap(SELECT_STR, tableMetadata);
-        }
-        int count = sqlExecutor.queryCount(selectSql,mapData);
-        return count;
+        return loadHandler.executeSelect(tableMetadata, mapData);
     }
 
     private void executeBatchInsert(final TableMetadata tableMetadata, final List<Map<String, Object>> insertData) {
-        String insertSql = sqlMap.get(INSERT_STR+tableMetadata.getDataSourceIdentifier());
-        if(StringUtil.isBlank(insertSql)) {
-            insertSql = registerSqlMap(INSERT_STR, tableMetadata);
-        }
-        int[] result = sqlExecutor.batchInsert(insertSql,insertData);
+        loadHandler.executeBatchInsert(tableMetadata, insertData);
     }
 
-    private void executeBatchUpdate(final TableMetadata tableMetadata, final List<Map<String, Object>> insertData) {
-        String updateStr = sqlMap.get(UPDATE_STR+tableMetadata.getDataSourceIdentifier());
-        if(StringUtil.isBlank(updateStr)) {
-            updateStr = registerSqlMap(UPDATE_STR, tableMetadata);
-        }
-        int[] result = sqlExecutor.batchUpdate(updateStr,insertData);
+    private void executeBatchUpdate(final TableMetadata tableMetadata, final List<Map<String, Object>> updateData) {
+        loadHandler.executeBatchUpdate(tableMetadata, updateData);
     }
 
-    private String registerSqlMap(final String strType, final TableMetadata tableMetadata) {
-        String sqlStr;
-        switch(strType) {
-            case SELECT_STR : {
-                sqlStr = SqlGenerator.createSelectSql(tableMetadata);
-                break;
-            }
-            case INSERT_STR : {
-                sqlStr = SqlGenerator.createBatchInsertSql(tableMetadata);
-                break;
-            }
-            case UPDATE_STR : {
-                sqlStr = SqlGenerator.createBatchUpdateSql(tableMetadata);
-                break;
-            }
-            default : sqlStr = "";  // TODO throws Exception
-        }
-        sqlMap.put(SELECT_STR+tableMetadata.getDataSourceIdentifier(), sqlStr);
-        return sqlStr;
-    }
 }

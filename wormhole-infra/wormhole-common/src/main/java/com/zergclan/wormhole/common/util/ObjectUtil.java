@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.common.util;
 
 /**
- * The root interface for load content.
+ * objcet utils.
  */
-public interface LoadContent {
+public class ObjectUtil extends org.apache.commons.lang3.ObjectUtils {
 }

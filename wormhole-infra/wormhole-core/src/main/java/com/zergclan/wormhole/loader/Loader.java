@@ -17,8 +17,6 @@
 
 package com.zergclan.wormhole.loader;
 
-import java.util.Map;
-
 /**
  * The root interface from which all loader shall be derived in Wormhole.
  */
@@ -26,8 +24,7 @@ public interface Loader {
 
     /**
      * Loader data.
-     *
-     * @param loadContent
+     * @param loadContent {@link LoadContent}
      */
     void loaderData(LoadContent loadContent);
 }
