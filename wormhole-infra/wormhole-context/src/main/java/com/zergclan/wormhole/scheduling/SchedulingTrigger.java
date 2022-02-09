@@ -30,5 +30,4 @@ public interface SchedulingTrigger extends Delayed {
      * @return identifier
      */
     String getIdentifier();
-    
 }

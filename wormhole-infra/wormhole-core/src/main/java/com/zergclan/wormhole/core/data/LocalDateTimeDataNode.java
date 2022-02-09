@@ -17,42 +17,33 @@
 
 package com.zergclan.wormhole.core.data;
 
-import java.io.Serializable;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * Data node type of {@link LocalDateTime}.
  */
-public interface DataGroup extends Serializable {
+@RequiredArgsConstructor
+public final class LocalDateTimeDataNode implements DataNode<LocalDateTime> {
 
-    /**
-     * Get data nodes.
-     *
-     * @return data node map
-     */
-    Map<String, DataNode<?>> getDataNodes();
+    private final String name;
 
-    /**
-     * Get {@link DataNode} by name.
-     *
-     * @param name name
-     * @return {@link DataNode}
-     */
-    DataNode<?> getDataNode(String name);
-    
-    /**
-     * Append {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return Is appended or not
-     */
-    boolean append(DataNode<?> dataNode);
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return Is refreshed or not
-     */
-    boolean refresh(DataNode<?> dataNode);
+    private LocalDateTime value;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public LocalDateTime getValue() {
+        return value;
+    }
+
+    @Override
+    public DataNode<LocalDateTime> refresh(final LocalDateTime value) {
+        this.value = value;
+        return this;
+    }
 }

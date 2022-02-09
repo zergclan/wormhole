@@ -15,44 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.pipeline.data;
 
-import java.io.Serializable;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * Code mapper.
  */
-public interface DataGroup extends Serializable {
-
-    /**
-     * Get data nodes.
-     *
-     * @return data node map
-     */
-    Map<String, DataNode<?>> getDataNodes();
-
-    /**
-     * Get {@link DataNode} by name.
-     *
-     * @param name name
-     * @return {@link DataNode}
-     */
-    DataNode<?> getDataNode(String name);
+@RequiredArgsConstructor
+public final class CodeMapper {
+    
+    private final String defaultCode;
+    
+    private final Map<String, String> sourceTargetCodeMapping;
     
     /**
-     * Append {@link DataNode}.
+     * Get target code.
      *
-     * @param dataNode {@link DataNode}
-     * @return Is appended or not
+     * @param sourceCode source code
+     * @return target code
      */
-    boolean append(DataNode<?> dataNode);
+    public Optional<String> getTargetCode(final String sourceCode) {
+        String targetCode = sourceTargetCodeMapping.get(sourceCode);
+        return Objects.isNull(targetCode) ? getDefault() : Optional.of(targetCode);
+    }
     
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return Is refreshed or not
-     */
-    boolean refresh(DataNode<?> dataNode);
+    private Optional<String> getDefault() {
+        return Objects.isNull(defaultCode) ? Optional.empty() : Optional.of(defaultCode);
+    }
 }

@@ -15,17 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.swapper;
+
+import com.zergclan.wormhole.core.config.PipelineConfiguration;
 
 /**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
+ * Pipeline metadata configuration swapper.
  */
-public interface ExecutorRejectedHandler {
-    
+public final class PipelineMetadataConfigurationSwapper {
+
     /**
-     * Handle {@link ProcessTask}.
+     * swap to metadata.
      *
-     * @param task {@link ProcessTask}
+     * @param pipelineConfiguration {@link PipelineConfiguration}
      */
-    void handle(ProcessTask task);
+    public static void swapToMetadata(final PipelineConfiguration pipelineConfiguration) {
+        // TODO swap to metadata
+    }
 }

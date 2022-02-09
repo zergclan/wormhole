@@ -15,44 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
-
-import java.io.Serializable;
-import java.util.Map;
+package com.zergclan.wormhole.api;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * The root interface from which all filter objects shall be derived in Wormhole.
+ *
+ * @param <D> class type of data
  */
-public interface DataGroup extends Serializable {
+public interface Filter<D> {
 
     /**
-     * Get data nodes.
+     * Do filter.
      *
-     * @return data node map
+     * @param data data
+     * @return Is success
      */
-    Map<String, DataNode<?>> getDataNodes();
-
-    /**
-     * Get {@link DataNode} by name.
-     *
-     * @param name name
-     * @return {@link DataNode}
-     */
-    DataNode<?> getDataNode(String name);
+    boolean doFilter(D data);
     
     /**
-     * Append {@link DataNode}.
+     * Get order.
      *
-     * @param dataNode {@link DataNode}
-     * @return Is appended or not
+     * @return order
      */
-    boolean append(DataNode<?> dataNode);
+    int getOrder();
     
     /**
-     * Refresh {@link DataNode}.
+     * Get type.
      *
-     * @param dataNode {@link DataNode}
-     * @return Is refreshed or not
+     * @return type
      */
-    boolean refresh(DataNode<?> dataNode);
+    String getType();
 }

@@ -29,8 +29,6 @@ import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetad
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.reader.mysql.MySQLExtractor;
-import com.zergclan.wormhole.scheduling.plan.PlanSchedulingExecutor;
-import com.zergclan.wormhole.scheduling.task.TaskSchedulingExecutor;
 import com.zergclan.wormhole.writer.mysql.MySQLLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

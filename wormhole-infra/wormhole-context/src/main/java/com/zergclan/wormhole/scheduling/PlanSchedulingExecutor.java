@@ -15,17 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.scheduling;
+
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
 
 /**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
+ * Plan implemented of {@link SchedulingExecutor}.
  */
-public interface ExecutorRejectedHandler {
-    
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+@RequiredArgsConstructor
+public final class PlanSchedulingExecutor implements SchedulingExecutor {
+
+    private final Collection<TaskSchedulingExecutor> taskSchedulingExecutors;
+
+    @Override
+    public void execute() {
+        for (TaskSchedulingExecutor each : taskSchedulingExecutors) {
+            each.execute();
+        }
+    }
 }

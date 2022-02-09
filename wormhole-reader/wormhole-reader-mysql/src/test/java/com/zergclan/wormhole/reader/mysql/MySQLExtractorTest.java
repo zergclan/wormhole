@@ -65,7 +65,7 @@ public final class MySQLExtractorTest {
      * Extract datum.
      */
 //    @Test
-    public void extractDatum() {
+    public void extractData() {
         Extractor extractor = initExtractor();
         Map<String, ColumnMetadata> map = new LinkedHashMap<>();
         map.put("id", new ColumnMetadata("12", "source_db", "source_table", "id", null, false));
@@ -75,7 +75,7 @@ public final class MySQLExtractorTest {
         map.put("transDecimal", new ColumnMetadata("12", "source_db", "source_table", "trans_decimal", null, false));
         map.put("transDatetime", new ColumnMetadata("12", "source_db", "source_table", "trans_datetime", "datetime", false));
         map.put("createTime", new ColumnMetadata("12", "source_db", "source_table", "create_time", "datetime", false));
-        Collection<Map<String, Object>> extractDatum = extractor.extractDatum(map);
+        Collection<Map<String, Object>> extractDatum = extractor.extractData(map);
         System.out.println(new Gson().toJson(extractDatum));
         assertNotNull(extractDatum);
     }

@@ -17,6 +17,10 @@
 
 package com.zergclan.wormhole.core.data;
 
+import com.zergclan.wormhole.common.util.StringUtil;
+
+import java.util.Objects;
+
 /**
  * The root interface from which all converted data node objects shall be derived in Wormhole.
  *
@@ -25,11 +29,23 @@ package com.zergclan.wormhole.core.data;
 public interface DataNode<V> {
     
     /**
-     * Get data node value.
+     * Is blank value.
      *
-     * @return data node value
+     * @return is blank or not
      */
-    V getValue();
+    default boolean isBlank() {
+        final V value = getValue();
+        return Objects.isNull(value) || StringUtil.isBlank(value.toString());
+    }
+    
+    /**
+     * Is null value.
+     *
+     * @return is null or not
+     */
+    default boolean isNull() {
+        return Objects.isNull(getValue());
+    }
     
     /**
      * Get data node name.
@@ -37,6 +53,13 @@ public interface DataNode<V> {
      * @return data node name
      */
     String getName();
+    
+    /**
+     * Get data node value.
+     *
+     * @return data node value
+     */
+    V getValue();
     
     /**
      * Refresh {@link DataNode}.

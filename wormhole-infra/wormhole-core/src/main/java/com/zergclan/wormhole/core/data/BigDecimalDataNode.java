@@ -17,42 +17,33 @@
 
 package com.zergclan.wormhole.core.data;
 
-import java.io.Serializable;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
+
+import java.math.BigDecimal;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * Data node type of {@link BigDecimal}.
  */
-public interface DataGroup extends Serializable {
+@RequiredArgsConstructor
+public final class BigDecimalDataNode implements DataNode<BigDecimal> {
 
-    /**
-     * Get data nodes.
-     *
-     * @return data node map
-     */
-    Map<String, DataNode<?>> getDataNodes();
+    private final String name;
 
-    /**
-     * Get {@link DataNode} by name.
-     *
-     * @param name name
-     * @return {@link DataNode}
-     */
-    DataNode<?> getDataNode(String name);
-    
-    /**
-     * Append {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return Is appended or not
-     */
-    boolean append(DataNode<?> dataNode);
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return Is refreshed or not
-     */
-    boolean refresh(DataNode<?> dataNode);
+    private BigDecimal value;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    @Override
+    public DataNode<BigDecimal> refresh(final BigDecimal value) {
+        this.value = value;
+        return this;
+    }
 }

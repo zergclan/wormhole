@@ -18,14 +18,7 @@
 package com.zergclan.wormhole.core.concurrent;
 
 /**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
+ * The root interface from which all executed task shall be derived in Wormhole.
  */
-public interface ExecutorRejectedHandler {
-    
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+public interface ProcessTask extends Runnable {
 }

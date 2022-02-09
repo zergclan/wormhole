@@ -17,42 +17,28 @@
 
 package com.zergclan.wormhole.core.data;
 
-import java.io.Serializable;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-/**
- * The root interface from which all converted data objects shall be derived in Wormhole.
- */
-public interface DataGroup extends Serializable {
-
-    /**
-     * Get data nodes.
-     *
-     * @return data node map
-     */
-    Map<String, DataNode<?>> getDataNodes();
-
-    /**
-     * Get {@link DataNode} by name.
-     *
-     * @param name name
-     * @return {@link DataNode}
-     */
-    DataNode<?> getDataNode(String name);
+@RequiredArgsConstructor
+public final class ObjectDataNode implements DataNode<Object> {
     
-    /**
-     * Append {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return Is appended or not
-     */
-    boolean append(DataNode<?> dataNode);
+    private final String name;
     
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return Is refreshed or not
-     */
-    boolean refresh(DataNode<?> dataNode);
+    private Object value;
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public Object getValue() {
+        return value;
+    }
+    
+    @Override
+    public DataNode<Object> refresh(final Object value) {
+        this.value = value;
+        return this;
+    }
 }

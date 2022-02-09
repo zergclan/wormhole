@@ -15,17 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.scheduling;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
+ * Plan implemented of {@link SchedulingTrigger}.
  */
-public interface ExecutorRejectedHandler {
+@RequiredArgsConstructor
+@Getter
+public final class PlanSchedulingTrigger implements SchedulingTrigger {
+
+    private final String planIdentifier;
     
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+    @Override
+    public String getIdentifier() {
+        return planIdentifier;
+    }
+    
+    @Override
+    public long getDelay(final TimeUnit timeUnit) {
+        return 0;
+    }
+
+    @Override
+    public int compareTo(final Delayed delayed) {
+        return 0;
+    }
 }

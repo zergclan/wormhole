@@ -15,17 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.common.util;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
+ * Test string tools.
  */
-public interface ExecutorRejectedHandler {
-    
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+public final class StringUtilsTest {
+  
+    @Test
+    public void assertIsBlank() {
+        Assertions.assertTrue(StringUtil.isBlank(null));
+    }
 }

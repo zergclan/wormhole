@@ -15,44 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
+package com.zergclan.wormhole.common.util;
 
-import java.io.Serializable;
-import java.util.Map;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * Util tools for get system parameters.
  */
-public interface DataGroup extends Serializable {
-
-    /**
-     * Get data nodes.
-     *
-     * @return data node map
-     */
-    Map<String, DataNode<?>> getDataNodes();
-
-    /**
-     * Get {@link DataNode} by name.
-     *
-     * @param name name
-     * @return {@link DataNode}
-     */
-    DataNode<?> getDataNode(String name);
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SystemUtil {
     
     /**
-     * Append {@link DataNode}.
+     * Get available processors count.
      *
-     * @param dataNode {@link DataNode}
-     * @return Is appended or not
+     * @return available processors count
      */
-    boolean append(DataNode<?> dataNode);
-    
-    /**
-     * Refresh {@link DataNode}.
-     *
-     * @param dataNode {@link DataNode}
-     * @return Is refreshed or not
-     */
-    boolean refresh(DataNode<?> dataNode);
+    public static int getAvailableProcessors() {
+        return Runtime.getRuntime().availableProcessors();
+    }
 }

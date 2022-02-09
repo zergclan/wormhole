@@ -15,17 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.concurrent;
+package com.zergclan.wormhole.pipeline.handler;
+
+import com.zergclan.wormhole.api.Handler;
+import com.zergclan.wormhole.loader.Loader;
+import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
+ * Loaded handler.
  */
-public interface ExecutorRejectedHandler {
-    
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+@RequiredArgsConstructor
+public final class LoadedHandler implements Handler<BatchedDataGroup> {
+
+    private final Loader loader;
+
+    @Override
+    public void handle(final BatchedDataGroup batchedDataGroup) {
+        // TODO loader data
+    }
+
+    @Override
+    public int getOrder() {
+        return Integer.MAX_VALUE;
+    }
 }

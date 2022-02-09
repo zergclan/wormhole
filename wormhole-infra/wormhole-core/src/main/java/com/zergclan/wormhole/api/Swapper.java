@@ -15,44 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.data;
-
-import java.io.Serializable;
-import java.util.Map;
+package com.zergclan.wormhole.api;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * The root interface from which all swapper objects shall be derived in Wormhole.
+ *
+ * @param <S> class type of source
+ * @param <T> class type of target
  */
-public interface DataGroup extends Serializable {
-
-    /**
-     * Get data nodes.
-     *
-     * @return data node map
-     */
-    Map<String, DataNode<?>> getDataNodes();
-
-    /**
-     * Get {@link DataNode} by name.
-     *
-     * @param name name
-     * @return {@link DataNode}
-     */
-    DataNode<?> getDataNode(String name);
+public interface Swapper<S, T> {
     
     /**
-     * Append {@link DataNode}.
+     * Swap source to target.
      *
-     * @param dataNode {@link DataNode}
-     * @return Is appended or not
+     * @param source source
+     * @return target
      */
-    boolean append(DataNode<?> dataNode);
+    T swapToTarget(S source);
     
     /**
-     * Refresh {@link DataNode}.
+     * Swap target to source.
      *
-     * @param dataNode {@link DataNode}
-     * @return Is refreshed or not
+     * @param target target
+     * @return source
      */
-    boolean refresh(DataNode<?> dataNode);
+    S swapToSource(T target);
 }
