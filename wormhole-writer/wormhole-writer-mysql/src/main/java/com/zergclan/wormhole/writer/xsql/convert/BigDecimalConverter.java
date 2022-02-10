@@ -15,16 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.convert;
 
-/**
- * The root interface from which all loader shall be derived in Wormhole.
- */
-public interface Loader {
+import java.math.BigDecimal;
 
-    /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
-     */
-    void loaderData(LoadContent loadContent);
+public class BigDecimalConverter extends Converter<BigDecimal> {
+
+    private final boolean nullable;
+
+    protected BigDecimalConverter(final boolean nullable) {
+        this.nullable = nullable;
+    }
+
+    @Override
+    public BigDecimal convert(final Object o) {
+        if (o == null) {
+            return nullable ? null : new BigDecimal("0");
+        }
+        if (o instanceof BigDecimal) {
+            return (BigDecimal) o;
+        }
+        return new BigDecimal(o.toString());
+    }
 }

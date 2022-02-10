@@ -15,16 +15,13 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface from which all loader shall be derived in Wormhole.
- */
-public interface Loader {
-
+public abstract class FieldGetter {
     /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
+     * get value from bean's field.
+     * @param params {@link Object}
+     * @return Object
      */
-    void loaderData(LoadContent loadContent);
+    public abstract Object get(Object params);
 }

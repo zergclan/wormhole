@@ -15,16 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface from which all loader shall be derived in Wormhole.
- */
-public interface Loader {
+public class FieldGetterArray extends FieldGetter {
 
-    /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
-     */
-    void loaderData(LoadContent loadContent);
+    private final int index;
+
+    public FieldGetterArray(final int index) {
+        this.index = index;
+    }
+
+    @Override
+    public Object get(final Object params) {
+        Object[] array = (Object[]) params;
+        return array[index];
+    }
 }

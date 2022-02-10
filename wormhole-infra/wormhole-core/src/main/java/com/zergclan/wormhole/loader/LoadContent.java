@@ -18,13 +18,7 @@
 package com.zergclan.wormhole.loader;
 
 /**
- * The root interface from which all loader shall be derived in Wormhole.
+ * The root interface for load content.
  */
-public interface Loader {
-
-    /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
-     */
-    void loaderData(LoadContent loadContent);
+public interface LoadContent {
 }

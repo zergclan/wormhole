@@ -15,16 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.convert;
 
-/**
- * The root interface from which all loader shall be derived in Wormhole.
- */
-public interface Loader {
+public class IntegerConverter extends Converter<Integer> {
 
-    /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
-     */
-    void loaderData(LoadContent loadContent);
+    private final boolean nullable;
+
+    public IntegerConverter(final boolean nullable) {
+        this.nullable = nullable;
+    }
+
+    @Override
+    public Integer convert(final Object o) {
+        if (o == null) {
+            return nullable ? null : 0;
+        }
+        if (o instanceof Number) {
+            return ((Number) o).intValue();
+        }
+        if (o instanceof Boolean) {
+            return ((Boolean) o).booleanValue() ? 1 : 0;
+        }
+        return new Integer(o.toString());
+    }
 }

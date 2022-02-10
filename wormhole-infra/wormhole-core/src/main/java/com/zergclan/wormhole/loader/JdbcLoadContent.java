@@ -17,14 +17,33 @@
 
 package com.zergclan.wormhole.loader;
 
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
- * The root interface from which all loader shall be derived in Wormhole.
+ * The load content for Jdbc.
  */
-public interface Loader {
+@Data
+@RequiredArgsConstructor
+public class JdbcLoadContent implements LoadContent {
+
+    private Collection<Map<String, Object>> loadData;
+
+    private Map<String, TableMetadata> tables = new LinkedHashMap<>();
 
     /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
+     * Register {@link TableMetadata}.
+     *
+     * @param tableMetadata {@link TableMetadata}
+     * @return is registered or not.
      */
-    void loaderData(LoadContent loadContent);
+    public boolean registerTable(final TableMetadata tableMetadata) {
+        tables.put(tableMetadata.getIdentifier(), tableMetadata);
+        return true;
+    }
 }

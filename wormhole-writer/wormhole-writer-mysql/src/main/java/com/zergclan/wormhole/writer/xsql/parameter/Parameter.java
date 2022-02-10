@@ -15,16 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface from which all loader shall be derived in Wormhole.
- */
-public interface Loader {
+import lombok.Data;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+@Data
+public abstract class Parameter {
+
+    private String fixed;
+
+    private FieldGetter getter;
 
     /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
+     * use ? in sql.
+     * @param sb {@link StringBuilder}
+     * @param params {@link Object}
      */
-    void loaderData(LoadContent loadContent);
+    public void sql(final StringBuilder sb, final Object params) {
+        sb.append(fixed).append("?");
+    }
+
+    /**
+     * set param value.
+     * @param ps {@link StringBuilder}
+     * @param params {@link Object}
+     * @param index {@link int}
+     * @return int {@link int}
+     * @throws SQLException notNull
+     */
+    public abstract int set(PreparedStatement ps, Object params, int index) throws SQLException;
 }

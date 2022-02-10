@@ -31,7 +31,7 @@ public final class DataSourceModeFactory {
 
     /**
      * get data source by mode.
-     * @param  mode notnull
+     * @param  mode {@link DatabaseType}
      * @return DataSource
      */
     public DataSource getDataSource(final DatabaseType mode) {
@@ -39,6 +39,22 @@ public final class DataSourceModeFactory {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
         String url = "jdbc:h2:file:~/.h2/" + uuid + ";AUTO_SERVER=TRUE;MODE=" + mode.getName();
+        System.out.println(url);
+        dataSource.setUrl(url);
+        dataSource.setUsername("root");
+        dataSource.setPassword("root");
+        return dataSource;
+    }
+
+    /**
+     * get test data source by mode.
+     * @param  mode {@link DatabaseType}
+     * @return DataSource
+     */
+    public DataSource getTestDataSource(final DatabaseType mode) {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.h2.Driver");
+        String url = "jdbc:h2:file:~/.h2/test;AUTO_SERVER=TRUE;MODE=" + mode.getName();
         System.out.println(url);
         dataSource.setUrl(url);
         dataSource.setUsername("root");

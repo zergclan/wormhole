@@ -15,16 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.convert;
 
-/**
- * The root interface from which all loader shall be derived in Wormhole.
- */
-public interface Loader {
+import java.sql.Timestamp;
+import java.util.Date;
 
-    /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
-     */
-    void loaderData(LoadContent loadContent);
+class TimestampConverter extends Converter<Timestamp> {
+    @Override
+    public Timestamp convert(final Object o) {
+        if (o == null) {
+            return null;
+        }
+        if (o instanceof Date) {
+            return new Timestamp(((Date) o).getTime());
+        }
+        return (Timestamp) o;
+    }
 }

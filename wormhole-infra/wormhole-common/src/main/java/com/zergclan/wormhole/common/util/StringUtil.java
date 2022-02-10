@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
  * </p>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class StringUtil {
+public final class StringUtil extends org.apache.commons.lang3.StringUtils {
     
     /**
      * Is blank validation of char sequence.

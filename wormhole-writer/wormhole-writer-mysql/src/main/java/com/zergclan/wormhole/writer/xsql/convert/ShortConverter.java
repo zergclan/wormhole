@@ -15,16 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.convert;
 
-/**
- * The root interface from which all loader shall be derived in Wormhole.
- */
-public interface Loader {
+class ShortConverter extends Converter<Short> {
 
-    /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
-     */
-    void loaderData(LoadContent loadContent);
+    private final boolean nullable;
+
+    ShortConverter(final boolean nullable) {
+        this.nullable = nullable;
+    }
+
+    @Override
+    public Short convert(final Object o) {
+        if (o == null) {
+            return nullable ? null : (short) 0;
+        }
+        if (o instanceof Number) {
+            return ((Number) o).shortValue();
+        }
+        if (o instanceof Boolean) {
+            return ((Boolean) o).booleanValue() ? (short) 1 : (short) 0;
+        }
+        return new Short(o.toString());
+    }
 }

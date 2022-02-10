@@ -15,16 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader;
+package com.zergclan.wormhole.writer.xsql.parameter;
 
-/**
- * The root interface from which all loader shall be derived in Wormhole.
- */
-public interface Loader {
+import com.zergclan.wormhole.writer.xsql.convert.Converter;
 
-    /**
-     * Loader data.
-     * @param loadContent {@link LoadContent}
-     */
-    void loaderData(LoadContent loadContent);
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class ParameterFloat extends Parameter {
+    private Converter<Float> converter = Converter.getConverter(Float.TYPE);
+
+    @Override
+    public int set(final PreparedStatement ps, final Object params, final int index) throws SQLException {
+        Object v = getGetter().get(params);
+        ps.setFloat(index, converter.convert(v, Float.class));
+        return index;
+    }
 }
