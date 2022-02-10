@@ -24,12 +24,12 @@ import java.sql.SQLException;
 
 public class ParameterInteger extends Parameter {
 
-	private Converter<Integer> converter = Converter.getConverter(Integer.TYPE);
+    private Converter<Integer> converter = Converter.getConverter(Integer.TYPE);
 
-	@Override
-	public int set(final PreparedStatement ps, final Object params, final int index) throws SQLException {
-		Object v = getGetter().get(params);
-		ps.setInt(index, converter.convert(v, Integer.class));
-		return index;
-	}
+    @Override
+    public int set(final PreparedStatement ps, final Object params, final int index) throws SQLException {
+        Object v = getGetter().get(params);
+        ps.setInt(index, converter.convert(v, Integer.class));
+        return index;
+    }
 }
