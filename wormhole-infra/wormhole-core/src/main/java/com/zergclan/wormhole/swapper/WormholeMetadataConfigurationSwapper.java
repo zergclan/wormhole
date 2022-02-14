@@ -47,9 +47,10 @@ public final class WormholeMetadataConfigurationSwapper {
     public static WormholeMetadata swapToMetadata(final WormholeConfiguration wormholeConfiguration) {
         Map<String, DataSourceMetadata> dataSources = createDataSourceMetadata(wormholeConfiguration.getDataSourcesConfigurations());
         Map<String, PlanMetadata> plans = createPlanMetadata(wormholeConfiguration.getPlanConfigurations());
-        return new WormholeMetadata(dataSources, plans);
+        Map<String, Pipeline<?>> pipeline = createPipelineMetadata(wormholeConfiguration.getPipelineConfigurations());
+        return new WormholeMetadata(dataSources, plans, pipeline);
     }
-
+    
     private static Map<String, DataSourceMetadata> createDataSourceMetadata(final Collection<DataSourceConfiguration> dataSourcesConfigurations) {
         Map<String, DataSourceMetadata> result = new LinkedHashMap<>();
         for (DataSourceConfiguration each : dataSourcesConfigurations) {
@@ -67,8 +68,8 @@ public final class WormholeMetadataConfigurationSwapper {
         }
         return result;
     }
-
-    private static Map<String, Pipeline<?>> createDataNodePipeline(final Collection<PipelineConfiguration> pipelineConfigurations) {
+    
+    private static Map<String, Pipeline<?>> createPipelineMetadata(final Collection<PipelineConfiguration> pipelineConfigurations) {
         Map<String, Pipeline<?>> result = new LinkedHashMap<>();
         for (PipelineConfiguration each : pipelineConfigurations) {
             PipelineMetadataConfigurationSwapper.swapToMetadata(each);

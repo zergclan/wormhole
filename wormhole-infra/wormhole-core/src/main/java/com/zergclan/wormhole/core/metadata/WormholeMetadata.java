@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.metadata;
 
+import com.zergclan.wormhole.api.Pipeline;
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
@@ -26,6 +27,7 @@ import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -39,9 +41,12 @@ public final class WormholeMetadata implements Metadata {
     
     private final Map<String, PlanMetadata> plans;
     
-    public WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans) {
+    private final Map<String, Pipeline<?>> pipelines;
+    
+    public WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans, final Map<String, Pipeline<?>> pipelines) {
         this.dataSources = dataSources;
         this.plans = plans;
+        this.pipelines = pipelines;
     }
     
     /**
@@ -72,7 +77,10 @@ public final class WormholeMetadata implements Metadata {
         LOCK.writeLock().lock();
         try {
             PlanMetadata planMetadata = plans.get(planIdentifier);
-            return null == planMetadata ? Optional.empty() : Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources));
+            if (null != planMetadata && planMetadata.getEnable().get()) {
+                return Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources, pipelines));
+            }
+            return Optional.empty();
         } finally {
             LOCK.writeLock().unlock();
         }

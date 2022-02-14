@@ -22,6 +22,8 @@ import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -31,25 +33,28 @@ import java.util.Map;
 /**
  * Cached {@link PlanMetadata}.
  */
-@NoArgsConstructor
 public final class CachedPlanMetadata implements Metadata {
     
-    private final Map<String, TaskMetadata> tasks = new LinkedHashMap<>();
+    @Getter
+    private final String identifier;
+    
+    private final Map<String, CachedTaskMetadata> cachedTasks = new LinkedHashMap<>();
+    
+    private CachedPlanMetadata(final String identifier, final Map<String, CachedTaskMetadata> cachedTasks) {
+        this.identifier = identifier;
+        this.cachedTasks.putAll(cachedTasks);
+    }
     
     /**
      * Builder for {@link CachedPlanMetadata}.
      *
      * @param planMetadata data sources
      * @param dataSources plan metadata
+     *
      * @return {@link CachedPlanMetadata}
      */
-    public static CachedPlanMetadata builder(final PlanMetadata planMetadata, final Map<String, DataSourceMetadata> dataSources) {
-        return new CachedBuilder(planMetadata, dataSources).build();
-    }
-    
-    @Override
-    public String getIdentifier() {
-        return "code";
+    public static CachedPlanMetadata builder(final PlanMetadata planMetadata, final Map<String, DataSourceMetadata> dataSources, final Map<String, Pipeline<?>> pipelines) {
+        return new CachedBuilder(planMetadata, dataSources, pipelines).build();
     }
     
     @RequiredArgsConstructor
@@ -58,9 +63,12 @@ public final class CachedPlanMetadata implements Metadata {
         private final PlanMetadata planMetadata;
         
         private final Map<String, DataSourceMetadata> dataSources;
+    
+        private final Map<String, Pipeline<?>> pipelines;
         
         CachedPlanMetadata build() {
-            return new CachedPlanMetadata();
+            CachedPlanMetadata result = new CachedPlanMetadata(planMetadata.getIdentifier(), planMetadata.getTasks());
+            return result;
         }
     }
 }

@@ -18,13 +18,11 @@
 package com.zergclan.wormhole.core.metadata.plan;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.config.ResourceConfiguration;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -38,9 +36,9 @@ public final class TaskMetadata implements Metadata {
     
     private final String code;
     
-    private final String sourceResource;
+    private final ResourceConfiguration source;
     
-    private final String targetResource;
+    private final ResourceConfiguration target;
     
     private final String pipelineIdentifier;
     
