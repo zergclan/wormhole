@@ -17,25 +17,13 @@
 
 package com.zergclan.wormhole.core.metadata.catched;
 
-import com.zergclan.wormhole.core.metadata.plan.FilterMetadata;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.metadata.plan.SourceMetadata;
 
-import java.util.Collection;
+public final class CachedSourceMetadata {
 
-@RequiredArgsConstructor
-@Getter
-public final class CachedTaskMetadata {
-
-    private final String code;
-
-    private final int order;
-
-    private final int batchSize;
-
-    private final CachedSourceMetadata source;
-
-    private final CachedTargetMetadata target;
-
-    private final Collection<FilterMetadata> filters;
+    public static CachedSourceMetadata builder(final SourceMetadata source, final DataSourceMetadata dataSourceMetadata) {
+        // TODO
+        return null;
+    }
 }

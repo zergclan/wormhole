@@ -15,27 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.catched;
+package com.zergclan.wormhole.core.metadata.plan;
 
-import com.zergclan.wormhole.core.metadata.plan.FilterMetadata;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
-
-@RequiredArgsConstructor
-@Getter
-public final class CachedTaskMetadata {
-
-    private final String code;
-
-    private final int order;
-
-    private final int batchSize;
-
-    private final CachedSourceMetadata source;
-
-    private final CachedTargetMetadata target;
-
-    private final Collection<FilterMetadata> filters;
+public final class FilterMetadata {
 }

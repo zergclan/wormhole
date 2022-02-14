@@ -18,12 +18,11 @@
 package com.zergclan.wormhole.core.metadata.plan;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.config.ResourceConfiguration;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Collection;
 
 /**
  * Metadata for task.
@@ -35,15 +34,19 @@ public final class TaskMetadata implements Metadata {
     private final String planIdentifier;
     
     private final String code;
+
+    private final int order;
+
+    private final int batchSize;
     
-    private final ResourceConfiguration source;
+    private final SourceMetadata source;
     
-    private final ResourceConfiguration target;
+    private final TargetMetadata target;
     
-    private final String pipelineIdentifier;
+    private final Collection<FilterMetadata> filters;
     
-    private final AtomicBoolean enable;
-    
+    private final boolean enable;
+
     @Override
     public String getIdentifier() {
         return planIdentifier + MarkConstant.SPACE + code;
