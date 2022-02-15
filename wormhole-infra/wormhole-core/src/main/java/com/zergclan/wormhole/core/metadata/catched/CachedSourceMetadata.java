@@ -19,11 +19,44 @@ package com.zergclan.wormhole.core.metadata.catched;
 
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.plan.SourceMetadata;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 public final class CachedSourceMetadata {
-
-    public static CachedSourceMetadata builder(final SourceMetadata source, final DataSourceMetadata dataSourceMetadata) {
-        // TODO
-        return null;
+    
+    private final String query;
+    
+    private final Map<String, ColumnMetadata> columnMetadata;
+    
+    public CachedSourceMetadata(final String query, final Map<String, ColumnMetadata> columnMetadata) {
+        this.query = query;
+        this.columnMetadata = columnMetadata;
+    }
+    
+    /**
+     * Builder for {@link CachedSourceMetadata}.
+     *
+     * @param source {@link SourceMetadata}
+     * @param dataSource {@link DataSourceMetadata}
+     * @return {@link CachedSourceMetadata}
+     */
+    public static CachedSourceMetadata builder(final SourceMetadata source, final DataSourceMetadata dataSource) {
+        return new CachedBuilder(source, dataSource).build();
+    }
+    
+    @RequiredArgsConstructor
+    private static class CachedBuilder {
+        
+        private final SourceMetadata source;
+        
+        private final DataSourceMetadata dataSource;
+    
+        private CachedSourceMetadata build() {
+            String querySql;
+            Map<String, ColumnMetadata> columnMetadata;
+            return null;
+        }
     }
 }

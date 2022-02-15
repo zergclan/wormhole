@@ -67,7 +67,7 @@ public final class CachedPlanMetadata implements Metadata {
         
         private final Map<String, DataSourceMetadata> dataSources;
         
-        CachedPlanMetadata build() {
+        private CachedPlanMetadata build() {
             Collection<CachedTaskMetadata> taskList = new LinkedList<>();
             Iterator<Map.Entry<String, TaskMetadata>> iterator = planMetadata.getTasks().entrySet().iterator();
             while (iterator.hasNext()) {
@@ -75,8 +75,8 @@ public final class CachedPlanMetadata implements Metadata {
                 TaskMetadata task = next.getValue();
                 SourceMetadata source = task.getSource();
                 TargetMetadata target = task.getTarget();
-                CachedSourceMetadata cachedSourceMetadata = CachedSourceMetadata.builder(source, dataSources.get(source.getIdentifier()));
-                CachedTargetMetadata cachedTargetMetadata = CachedTargetMetadata.builder(target, dataSources.get(target.getIdentifier()));
+                CachedSourceMetadata cachedSourceMetadata = CachedSourceMetadata.builder(source, dataSources.get(source.getDataSourceIdentifier()));
+                CachedTargetMetadata cachedTargetMetadata = CachedTargetMetadata.builder(target, dataSources.get(target.getDataSourceIdentifier()));
                 taskList.add(new CachedTaskMetadata(task.getCode(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters()));
             }
             return new CachedPlanMetadata(planMetadata.getIdentifier(), ordered(taskList));

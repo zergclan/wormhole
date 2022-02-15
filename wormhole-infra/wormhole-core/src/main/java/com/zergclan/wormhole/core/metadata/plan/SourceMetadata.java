@@ -17,11 +17,30 @@
 
 package com.zergclan.wormhole.core.metadata.plan;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
+import java.util.Map;
 
 @Getter
+@RequiredArgsConstructor
 public final class SourceMetadata implements Metadata {
-
-    private String identifier;
+    
+    private final String type;
+    
+    private final String dataSourceIdentifier;
+    
+    private final String schema;
+    
+    private final Map<String, Collection<String>> relatedTables;
+    
+    private final String query;
+    
+    @Override
+    public String getIdentifier() {
+        return dataSourceIdentifier + MarkConstant.SPACE + type;
+    }
 }

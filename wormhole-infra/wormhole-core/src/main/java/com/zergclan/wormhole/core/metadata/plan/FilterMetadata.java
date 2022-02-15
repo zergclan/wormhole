@@ -17,5 +17,19 @@
 
 package com.zergclan.wormhole.core.metadata.plan;
 
-public final class FilterMetadata {
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public final class FilterMetadata implements Metadata {
+    
+    private final String taskIdentifier;
+    
+    private final String type;
+    
+    @Override
+    public String getIdentifier() {
+        return taskIdentifier + MarkConstant.SPACE + type;
+    }
 }
