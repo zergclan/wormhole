@@ -59,4 +59,12 @@ public interface DataSourceMetadata extends Metadata {
      * @return is registered or not
      */
     boolean registerSchema(SchemaMetadata schemaMetaData);
+    
+    /**
+     * Get {@link SchemaMetadata}.
+     *
+     * @param name name
+     * @return {@link SchemaMetadata}
+     */
+    SchemaMetadata getSchema(String name);
 }

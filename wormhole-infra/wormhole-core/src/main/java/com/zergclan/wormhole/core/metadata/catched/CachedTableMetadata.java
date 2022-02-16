@@ -15,42 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.resource;
+package com.zergclan.wormhole.core.metadata.catched;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
-import lombok.Getter;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import lombok.RequiredArgsConstructor;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Collection;
 
-/**
- * Metadata of schema.
- */
-@RequiredArgsConstructor
-@Getter
-public final class SchemaMetadata implements Metadata {
-
-    private final String dataSourceIdentifier;
-
-    private final String name;
-
-    private final Map<String, TableMetadata> tables = new LinkedHashMap<>();
-
+public final class CachedTableMetadata {
+    
     /**
-     * Register {@link TableMetadata}.
+     * Builder for {@link CachedTableMetadata}.
      *
      * @param tableMetadata {@link TableMetadata}
-     * @return is registered or not.
+     * @param columnIdentifiers column identifiers
+     * @return {@link CachedTableMetadata}
      */
-    public boolean registerTable(final TableMetadata tableMetadata) {
-        tables.put(tableMetadata.getIdentifier(), tableMetadata);
-        return true;
+    public static CachedTableMetadata builder(final TableMetadata tableMetadata, final Collection<String> columnIdentifiers) {
+        return new CachedTableMetadata.CachedBuilder(tableMetadata, columnIdentifiers).build();
     }
     
-    @Override
-    public String getIdentifier() {
-        return dataSourceIdentifier + MarkConstant.SPACE + name;
+    @RequiredArgsConstructor
+    private static class CachedBuilder {
+        
+        private final TableMetadata tableMetadata;
+    
+        private final Collection<String> columnIdentifiers;
+        
+        private CachedTableMetadata build() {
+            return new CachedTableMetadata();
+        }
     }
 }

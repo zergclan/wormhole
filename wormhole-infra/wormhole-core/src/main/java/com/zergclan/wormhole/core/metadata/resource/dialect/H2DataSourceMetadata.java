@@ -70,7 +70,12 @@ public final class H2DataSourceMetadata implements DataSourceMetadata {
         schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
         return true;
     }
-
+    
+    @Override
+    public SchemaMetadata getSchema(final String name) {
+        return schemas.get(name);
+    }
+    
     @Override
     public String getIdentifier() {
         return TYPE.getName() + MarkConstant.SPACE + host + MarkConstant.COLON + port + MarkConstant.COLON + catalog + MarkConstant.SPACE + username + MarkConstant.AT + password;

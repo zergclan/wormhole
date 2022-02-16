@@ -23,32 +23,24 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.Map;
 
-/**
- * Metadata for task.
- */
-@RequiredArgsConstructor
 @Getter
-public final class TaskMetadata implements Metadata {
+@RequiredArgsConstructor
+public final class SourceMetadata implements Metadata {
     
-    private final String planIdentifier;
+    private final String type;
     
-    private final String code;
-
-    private final int order;
-
-    private final int batchSize;
+    private final String dataSourceIdentifier;
     
-    private final SourceMetadata source;
+    private final String schema;
     
-    private final TargetMetadata target;
+    private final Map<String, Collection<String>> relatedTables;
     
-    private final Collection<FilterMetadata> filters;
+    private final String query;
     
-    private final boolean enable;
-
     @Override
     public String getIdentifier() {
-        return planIdentifier + MarkConstant.SPACE + code;
+        return dataSourceIdentifier + MarkConstant.SPACE + type;
     }
 }

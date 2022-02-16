@@ -15,40 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
+package com.zergclan.wormhole.core.metadata.catched;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.metadata.plan.FilterMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 
-/**
- * Metadata for task.
- */
 @RequiredArgsConstructor
 @Getter
-public final class TaskMetadata implements Metadata {
-    
-    private final String planIdentifier;
-    
+public final class CachedTaskMetadata {
+
     private final String code;
 
     private final int order;
 
     private final int batchSize;
-    
-    private final SourceMetadata source;
-    
-    private final TargetMetadata target;
-    
-    private final Collection<FilterMetadata> filters;
-    
-    private final boolean enable;
 
-    @Override
-    public String getIdentifier() {
-        return planIdentifier + MarkConstant.SPACE + code;
-    }
+    private final CachedSourceMetadata source;
+
+    private final CachedTargetMetadata target;
+
+    private final Collection<FilterMetadata> filters;
 }

@@ -28,7 +28,6 @@ import com.zergclan.wormhole.pipeline.handler.LoadedHandler;
 import com.zergclan.wormhole.pipeline.handler.ProcessTaskHandler;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -47,7 +46,9 @@ public final class BatchedDataGroupPipeline implements Pipeline<Collection<Map<S
     private final Long taskBatchId;
     
     private final int batchSize;
-    
+
+    private final Collection<Filter<DataGroup>> filters;
+
     private final Loader loader;
     
     @Override
@@ -61,7 +62,7 @@ public final class BatchedDataGroupPipeline implements Pipeline<Collection<Map<S
     }
     
     private ProcessTaskHandler createProcessTaskHandler(final Collection<Map<String, Object>> data) {
-        Collection<Filter<DataGroup>> filters = new ArrayList<>();
+        // TODO init loadedHandler
         Handler<BatchedDataGroup> loadedHandler = new LoadedHandler(loader);
         return new ProcessTaskHandler(filters, loadedHandler, createBatchedDataGroup(data));
     }

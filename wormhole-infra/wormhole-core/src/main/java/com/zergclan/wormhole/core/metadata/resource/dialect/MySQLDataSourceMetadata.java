@@ -65,12 +65,6 @@ public final class MySQLDataSourceMetadata implements DataSourceMetadata {
         return TYPE.getProtocol() + host + MarkConstant.COLON + port + MarkConstant.FORWARD_SLASH + catalog + parseParameter(parameters);
     }
     
-    @Override
-    public boolean registerSchema(final SchemaMetadata schemaMetaData) {
-        schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
-        return true;
-    }
-    
     private String parseParameter(final Properties parameterProperties) {
         StringJoiner stringJoiner = new StringJoiner(MarkConstant.AND);
         for (Map.Entry<Object, Object> entry : parameterProperties.entrySet()) {
@@ -78,6 +72,17 @@ public final class MySQLDataSourceMetadata implements DataSourceMetadata {
         }
         String result = stringJoiner.toString();
         return StringUtil.isBlank(result) ? "" : MarkConstant.QUESTION + result;
+    }
+    
+    @Override
+    public boolean registerSchema(final SchemaMetadata schemaMetaData) {
+        schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
+        return true;
+    }
+    
+    @Override
+    public SchemaMetadata getSchema(final String name) {
+        return schemas.get(name);
     }
     
     @Override

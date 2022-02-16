@@ -17,9 +17,7 @@
 
 package com.zergclan.wormhole.swapper;
 
-import com.zergclan.wormhole.api.Pipeline;
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
-import com.zergclan.wormhole.core.config.PipelineConfiguration;
 import com.zergclan.wormhole.core.config.PlanConfiguration;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
@@ -47,10 +45,9 @@ public final class WormholeMetadataConfigurationSwapper {
     public static WormholeMetadata swapToMetadata(final WormholeConfiguration wormholeConfiguration) {
         Map<String, DataSourceMetadata> dataSources = createDataSourceMetadata(wormholeConfiguration.getDataSourcesConfigurations());
         Map<String, PlanMetadata> plans = createPlanMetadata(wormholeConfiguration.getPlanConfigurations());
-        Map<String, Pipeline<?>> pipelines = createDataNodePipeline(wormholeConfiguration.getPipelineConfigurations());
-        return new WormholeMetadata(dataSources, plans, pipelines);
+        return new WormholeMetadata(dataSources, plans);
     }
-
+    
     private static Map<String, DataSourceMetadata> createDataSourceMetadata(final Collection<DataSourceConfiguration> dataSourcesConfigurations) {
         Map<String, DataSourceMetadata> result = new LinkedHashMap<>();
         for (DataSourceConfiguration each : dataSourcesConfigurations) {
@@ -65,14 +62,6 @@ public final class WormholeMetadataConfigurationSwapper {
         for (PlanConfiguration each : planConfigurations) {
             PlanMetadata planMetadata = PlanMetadataConfigurationSwapper.swapToMetadata(each);
             result.put(planMetadata.getIdentifier(), planMetadata);
-        }
-        return result;
-    }
-
-    private static Map<String, Pipeline<?>> createDataNodePipeline(final Collection<PipelineConfiguration> pipelineConfigurations) {
-        Map<String, Pipeline<?>> result = new LinkedHashMap<>();
-        for (PipelineConfiguration each : pipelineConfigurations) {
-            PipelineMetadataConfigurationSwapper.swapToMetadata(each);
         }
         return result;
     }

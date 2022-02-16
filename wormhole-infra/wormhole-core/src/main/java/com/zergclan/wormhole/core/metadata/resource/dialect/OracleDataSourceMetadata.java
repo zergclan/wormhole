@@ -68,6 +68,11 @@ public final class OracleDataSourceMetadata implements DataSourceMetadata {
         schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
         return true;
     }
+    
+    @Override
+    public SchemaMetadata getSchema(final String name) {
+        return schemas.get(name);
+    }
 
     @Override
     public String getIdentifier() {

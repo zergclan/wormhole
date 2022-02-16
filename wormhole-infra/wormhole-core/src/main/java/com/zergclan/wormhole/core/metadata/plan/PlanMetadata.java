@@ -48,7 +48,7 @@ public final class PlanMetadata implements Metadata, Refreshable<TaskMetadata> {
     private final AtomicBoolean enable;
     
     private final AtomicLong executionCount;
-    
+
     private final Map<String, TaskMetadata> tasks = new LinkedHashMap<>();
     
     @Override
