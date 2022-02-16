@@ -35,6 +35,4 @@ public final class WormholeConfiguration implements Serializable {
     private final Collection<DataSourceConfiguration> dataSourcesConfigurations;
     
     private final Collection<PlanConfiguration> planConfigurations;
-    
-    private final Collection<PipelineConfiguration> pipelineConfigurations;
 }
