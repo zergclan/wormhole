@@ -22,11 +22,7 @@ import com.zergclan.wormhole.core.metadata.Refreshable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Plan metadata.
@@ -35,36 +31,13 @@ import java.util.concurrent.atomic.AtomicLong;
 @Getter
 public final class PlanMetadata implements Metadata, Refreshable<TaskMetadata> {
     
-    private final String code;
+    private final String identifier;
     
-    private final ExecutionMode executionMode;
+    private final ExecutionMode mode;
     
-    private final String executionCorn;
+    private final String corn;
     
-    private final LocalDateTime effectiveDate;
-    
-    private final AtomicBoolean execute;
-    
-    private final AtomicBoolean enable;
-    
-    private final AtomicLong executionCount;
-
-    private final Map<String, TaskMetadata> tasks = new LinkedHashMap<>();
-    
-    @Override
-    public String getIdentifier() {
-        return code;
-    }
-    
-    /**
-     * Register {@link TaskMetadata}.
-     *
-     * @param taskMetadata {@link TaskMetadata}
-     * @return is registered or not
-     */
-    public Metadata register(final TaskMetadata taskMetadata) {
-        return tasks.put(taskMetadata.getIdentifier(), taskMetadata);
-    }
+    private final Map<String, TaskMetadata> tasks;
     
     @Override
     public boolean refresh(final TaskMetadata taskMetadata) {

@@ -21,7 +21,6 @@ import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 
 import java.util.Map;
@@ -72,10 +71,7 @@ public final class WormholeMetadata implements Metadata {
         LOCK.writeLock().lock();
         try {
             PlanMetadata planMetadata = plans.get(planIdentifier);
-            if (null != planMetadata && planMetadata.getEnable().get()) {
-                return Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources));
-            }
-            return Optional.empty();
+            return null == planMetadata ? Optional.empty() : Optional.of(CachedPlanMetadata.builder(planMetadata, dataSources));
         } finally {
             LOCK.writeLock().unlock();
         }
@@ -101,9 +97,6 @@ public final class WormholeMetadata implements Metadata {
             if (metadata instanceof PlanMetadata) {
                 return register((PlanMetadata) metadata);
             }
-            if (metadata instanceof TaskMetadata) {
-                return register((TaskMetadata) metadata);
-            }
             throw new WormholeException("error : register metadata failed [%s] not find", metadata.getIdentifier());
         } finally {
             writeLock.unlock();
@@ -122,11 +115,6 @@ public final class WormholeMetadata implements Metadata {
     
     private boolean register(final PlanMetadata planMetadata) {
         plans.put(planMetadata.getIdentifier(), planMetadata);
-        return true;
-    }
-    
-    private boolean register(final TaskMetadata taskMetadata) {
-        plans.get(taskMetadata.getPlanIdentifier()).register(taskMetadata);
         return true;
     }
     

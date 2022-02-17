@@ -20,18 +20,20 @@ package com.zergclan.wormhole.core.config;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-
 /**
- * Index configuration.
+ * Configuration of data node.
  */
 @RequiredArgsConstructor
 @Getter
-public final class IndexConfiguration {
+public final class DataNodeConfiguration implements Configuration {
+    
+    private static final long serialVersionUID = 5454828648754484053L;
     
     private final String name;
     
-    private final boolean unique;
+    private final String tableName;
     
-    private final Collection<String> columnNames;
+    private final String nodeType;
+    
+    private final String dataType;
 }

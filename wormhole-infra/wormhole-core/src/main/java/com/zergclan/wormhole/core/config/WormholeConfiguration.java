@@ -20,19 +20,18 @@ package com.zergclan.wormhole.core.config;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.io.Serializable;
-import java.util.Collection;
+import java.util.Map;
 
 /**
- * Configuration for wormhole.
+ * Configuration of wormhole.
  */
 @RequiredArgsConstructor
 @Getter
-public final class WormholeConfiguration implements Serializable {
+public final class WormholeConfiguration implements Configuration {
     
     private static final long serialVersionUID = -8160534204609183661L;
     
-    private final Collection<DataSourceConfiguration> dataSourcesConfigurations;
+    private final Map<String, DataSourceConfiguration> dataSourceConfigurations;
     
-    private final Collection<PlanConfiguration> planConfigurations;
+    private final Map<String, PlanConfiguration> planConfigurations;
 }

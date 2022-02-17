@@ -17,20 +17,7 @@
 
 package com.zergclan.wormhole.core.config;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.io.Serializable;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-/**
- * Schema configuration.
- */
-@RequiredArgsConstructor
-@Getter
-public final class SchemaConfiguration {
-
-    private final String name;
-
-    private final Map<String, TableConfiguration> tables = new LinkedHashMap<>();
+public interface Configuration extends Serializable {
 }

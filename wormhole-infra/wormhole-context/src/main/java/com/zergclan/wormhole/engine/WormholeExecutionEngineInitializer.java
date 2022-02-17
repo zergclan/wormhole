@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.engine;
 
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.swapper.WormholeMetadataConfigurationSwapper;
+import com.zergclan.wormhole.creator.WormholeMetadataCreator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -35,6 +35,6 @@ public final class WormholeExecutionEngineInitializer {
      * @return {@link WormholeExecutionEngine}
      */
     public static WormholeExecutionEngine init(final WormholeConfiguration configuration) {
-        return new WormholeExecutionEngine(WormholeMetadataConfigurationSwapper.swapToMetadata(configuration));
+        return new WormholeExecutionEngine(WormholeMetadataCreator.create(configuration));
     }
 }

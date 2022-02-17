@@ -17,12 +17,31 @@
 
 package com.zergclan.wormhole.core.config;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
 
 /**
- * Task configuration.
+ * Configuration of task.
  */
-public final class TaskConfiguration implements Serializable {
+@RequiredArgsConstructor
+@Getter
+public final class TaskConfiguration implements Configuration {
 
     private static final long serialVersionUID = 5125883893404187330L;
+    
+    private final String name;
+    
+    private final int order;
+    
+    private final int batchSize;
+    
+    private final SourceConfiguration source;
+    
+    private final TargetConfiguration target;
+    
+    private final Collection<DataNodeConfiguration> dataNodes;
+    
+    private final Collection<FilterConfiguration> filters;
 }

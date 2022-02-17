@@ -27,7 +27,7 @@ import java.util.Collection;
 @Getter
 public final class CachedTaskMetadata {
 
-    private final String code;
+    private final String identifier;
 
     private final int order;
 

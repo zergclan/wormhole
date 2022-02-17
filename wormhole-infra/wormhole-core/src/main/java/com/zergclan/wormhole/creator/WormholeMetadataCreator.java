@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.swapper;
+package com.zergclan.wormhole.creator;
 
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
 import com.zergclan.wormhole.core.config.PlanConfiguration;
@@ -26,41 +26,46 @@ import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Wormhole metadata configuration swapper.
+ * Metadata creator of {@link WormholeMetadata}.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class WormholeMetadataConfigurationSwapper {
-
+public final class WormholeMetadataCreator {
+    
     /**
-     * Swap to {@link WormholeMetadata}.
+     * Create {@link WormholeMetadata}.
      *
-     * @param wormholeConfiguration {@link WormholeConfiguration}
+     * @param configuration {@link WormholeConfiguration}
      * @return {@link WormholeMetadata}
      */
-    public static WormholeMetadata swapToMetadata(final WormholeConfiguration wormholeConfiguration) {
-        Map<String, DataSourceMetadata> dataSources = createDataSourceMetadata(wormholeConfiguration.getDataSourcesConfigurations());
-        Map<String, PlanMetadata> plans = createPlanMetadata(wormholeConfiguration.getPlanConfigurations());
+    public static WormholeMetadata create(final WormholeConfiguration configuration) {
+        Map<String, DataSourceMetadata> dataSources = createDataSourceMetadata(configuration.getDataSourceConfigurations());
+        Map<String, PlanMetadata> plans = createPlanMetadata(configuration.getPlanConfigurations());
         return new WormholeMetadata(dataSources, plans);
     }
     
-    private static Map<String, DataSourceMetadata> createDataSourceMetadata(final Collection<DataSourceConfiguration> dataSourcesConfigurations) {
+    private static Map<String, DataSourceMetadata> createDataSourceMetadata(final Map<String, DataSourceConfiguration> configurations) {
         Map<String, DataSourceMetadata> result = new LinkedHashMap<>();
-        for (DataSourceConfiguration each : dataSourcesConfigurations) {
-            DataSourceMetadata dataSourceMetadata = DatasourceMetadataConfigurationSwapper.swapToMetadata(each);
-            result.put(dataSourceMetadata.getIdentifier(), dataSourceMetadata);
+        Iterator<Map.Entry<String, DataSourceConfiguration>> iterator = configurations.entrySet().iterator();
+        DataSourceMetadata metadata;
+        while (iterator.hasNext()) {
+            Map.Entry<String, DataSourceConfiguration> entry = iterator.next();
+            metadata = DatasourceMetadataCreator.create(entry.getValue());
+            result.put(metadata.getIdentifier(), metadata);
         }
         return result;
     }
-
-    private static Map<String, PlanMetadata> createPlanMetadata(final Collection<PlanConfiguration> planConfigurations) {
+    
+    private static Map<String, PlanMetadata> createPlanMetadata(final Map<String, PlanConfiguration> configurations) {
         Map<String, PlanMetadata> result = new LinkedHashMap<>();
-        for (PlanConfiguration each : planConfigurations) {
-            PlanMetadata planMetadata = PlanMetadataConfigurationSwapper.swapToMetadata(each);
+        Iterator<Map.Entry<String, PlanConfiguration>> iterator = configurations.entrySet().iterator();
+        PlanMetadata planMetadata;
+        while (iterator.hasNext()) {
+            planMetadata = PlanMetadataCreator.create(iterator.next().getValue());
             result.put(planMetadata.getIdentifier(), planMetadata);
         }
         return result;

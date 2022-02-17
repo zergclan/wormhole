@@ -20,33 +20,23 @@ package com.zergclan.wormhole.core.config;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Plan configuration.
+ * Configuration of plan.
  */
 @RequiredArgsConstructor
 @Getter
-public final class PlanConfiguration implements Serializable {
+public final class PlanConfiguration implements Configuration {
 
     private static final long serialVersionUID = 3170585157651174520L;
 
-    private final String code;
+    private final String name;
+    
+    private final String mode;
 
-    private final int executionMode;
-
-    private final String executionCorn;
-
-    private final LocalDateTime effectiveDate;
-
-    private final boolean execute;
-
-    private final boolean enable;
-
-    private final Long executionCount;
-
+    private final String corn;
+    
     private final Map<String, TaskConfiguration> tasks = new LinkedHashMap<>();
 }

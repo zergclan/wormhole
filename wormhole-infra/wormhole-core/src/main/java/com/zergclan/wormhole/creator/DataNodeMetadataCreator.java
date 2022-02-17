@@ -15,29 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.swapper;
+package com.zergclan.wormhole.creator;
 
-import com.zergclan.wormhole.core.config.ColumnConfiguration;
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.config.DataNodeConfiguration;
+import com.zergclan.wormhole.core.metadata.plan.DataNodeMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Column metadata configuration swapper.
+ * Metadata creator of {@link DataNodeMetadata}.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ColumnMetadataConfigurationSwapper {
-
+public final class DataNodeMetadataCreator {
+    
     /**
-     * Swap to {@link ColumnMetadata}.
+     * Create {@link DataNodeMetadata}.
      *
-     * @param columnConfiguration {@link ColumnConfiguration}
-     * @param dataSourceIdentifier data source identifier
-     * @param schemaName schema name
-     * @param tableName table name
-     * @return {@link ColumnMetadata}
+     * @param configuration {@link DataNodeConfiguration}
+     * @return {@link DataNodeMetadata}
      */
-    public static ColumnMetadata swapToMetadata(final ColumnConfiguration columnConfiguration, final String dataSourceIdentifier, final String schemaName, final String tableName) {
-        return new ColumnMetadata(dataSourceIdentifier, schemaName, tableName, columnConfiguration.getName(), columnConfiguration.getDataType(), columnConfiguration.isNullable());
+    public static DataNodeMetadata create(final DataNodeConfiguration configuration) {
+        return new DataNodeMetadata(configuration.getTableName(), configuration.getName(), configuration.getNodeType(), configuration.getDataType());
     }
 }
