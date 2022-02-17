@@ -15,24 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.swapper;
+package com.zergclan.wormhole.core.config;
 
-import com.zergclan.wormhole.core.config.TaskConfiguration;
-import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 /**
- * Task metadata configuration swapper.
+ * Configuration of source.
  */
-public final class TaskMetadataConfigurationSwapper {
-
-    /**
-     * Swap to {@link TaskMetadata}.
-     *
-     * @param taskConfiguration {@link TaskConfiguration}
-     * @return {@link TaskMetadata}
-     */
-    public static TaskMetadata swapToMetadata(final TaskConfiguration taskConfiguration) {
-        // TODO swap to metadata
-        return null;
-    }
+@RequiredArgsConstructor
+@Getter
+public final class SourceConfiguration implements Configuration {
+    
+    private static final long serialVersionUID = 8569768353614409983L;
+    
+    private final String dataSourceIdentifier;
+    
+    private final String primaryTable;
+    
+    private final String linkTable;
+    
+    private final String linkType;
+    
+    private final String conditionSql;
+    
+    private final String actualSql;
+    
+    private final Map<String, DataNodeConfiguration> dataNodes;
 }

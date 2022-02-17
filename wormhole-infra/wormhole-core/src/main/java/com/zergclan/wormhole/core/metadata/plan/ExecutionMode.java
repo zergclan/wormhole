@@ -22,32 +22,32 @@ import lombok.Getter;
 import java.util.Optional;
 
 /**
- * Execution mode.
+ * Mode of plan execution.
  */
 @Getter
 public enum ExecutionMode {
+    
+    ONE_OFF("oneOff"),
+    
+    SCHEDULED("scheduled");
+    
+    private final String type;
 
-    SINGLE(0),
-
-    CYCLE(1);
-
-    private final Integer code;
-
-    ExecutionMode(final Integer code) {
-        this.code = code;
+    ExecutionMode(final String type) {
+        this.type = type;
     }
 
     /**
-     * Get {@link ExecutionMode} by code.
+     * Get {@link ExecutionMode} by type.
      *
-     * @param code code
+     * @param type type
      * @return {@link ExecutionMode}
      */
-    public static Optional<ExecutionMode> getExecutionMode(final Integer code) {
-        if (SINGLE.code.equals(code)) {
-            return Optional.of(SINGLE);
-        } else if (CYCLE.code.equals(code)) {
-            return Optional.of(CYCLE);
+    public static Optional<ExecutionMode> getExecutionMode(final String type) {
+        if (ONE_OFF.type.equals(type)) {
+            return Optional.of(ONE_OFF);
+        } else if (SCHEDULED.type.equals(type)) {
+            return Optional.of(SCHEDULED);
         }
         return Optional.empty();
     }

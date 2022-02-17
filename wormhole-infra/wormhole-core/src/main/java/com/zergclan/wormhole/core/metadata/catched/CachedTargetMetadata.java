@@ -19,12 +19,9 @@ package com.zergclan.wormhole.core.metadata.catched;
 
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.plan.TargetMetadata;
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -56,15 +53,8 @@ public final class CachedTargetMetadata {
         private final DataSourceMetadata dataSource;
         
         private CachedTargetMetadata build() {
-            Map<String, TableMetadata> sourceTables = dataSource.getSchema(target.getSchema()).getTables();
-            Iterator<Map.Entry<String, Collection<String>>> iterator = target.getRelatedTables().entrySet().iterator();
+            // FIXME create CachedTableMetadata
             Map<String, CachedTableMetadata> tables = new LinkedHashMap<>();
-            while (iterator.hasNext()) {
-                Map.Entry<String, Collection<String>> entry = iterator.next();
-                String tableIdentifier = entry.getKey();
-                TableMetadata tableMetadata = sourceTables.get(tableIdentifier);
-                tables.put(tableIdentifier, CachedTableMetadata.builder(tableMetadata, entry.getValue()));
-            }
             return new CachedTargetMetadata(tables);
         }
     }

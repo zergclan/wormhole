@@ -29,16 +29,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 public final class TargetMetadata implements Metadata {
     
-    private final String type;
-    
     private final String dataSourceIdentifier;
     
-    private final String schema;
+    private final Collection<String> tables;
     
-    private final Map<String, Collection<String>> relatedTables;
+    private final String loadType;
+    
+    private final Map<String, DataNodeMetadata> dataNodes;
     
     @Override
     public String getIdentifier() {
-        return dataSourceIdentifier + MarkConstant.SPACE + type;
+        return dataSourceIdentifier + MarkConstant.SPACE + "target";
     }
 }

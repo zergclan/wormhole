@@ -20,16 +20,23 @@ package com.zergclan.wormhole.core.config;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
- * Column configuration.
+ * Configuration of target.
  */
 @RequiredArgsConstructor
 @Getter
-public final class ColumnConfiguration {
+public final class TargetConfiguration implements Configuration {
     
-    private final String name;
+    private static final long serialVersionUID = -3361482780019688246L;
     
-    private final String dataType;
+    private final String dataSourceIdentifier;
     
-    private final boolean nullable;
+    private final Collection<String> tables;
+    
+    private final String loadType;
+    
+    private final Map<String, DataNodeConfiguration> dataNodes;
 }

@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.swapper;
+package com.zergclan.wormhole.creator;
 
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
-import com.zergclan.wormhole.core.config.SchemaConfiguration;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import com.zergclan.wormhole.core.metadata.resource.dialect.H2DataSourceMetadata;
@@ -30,46 +29,37 @@ import com.zergclan.wormhole.core.metadata.resource.dialect.SQLServerDataSourceM
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
 /**
- * Datasource metadata configuration swapper.
+ * Metadata creator of {@link DataSourceMetadata}.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DatasourceMetadataConfigurationSwapper {
+public final class DatasourceMetadataCreator {
 
     /**
-     * Swap to {@link DataSourceMetadata}.
+     * Create {@link DataSourceMetadata}.
      *
      * @param configuration {@link DataSourceConfiguration}
      * @return {@link DataSourceMetadata}
      */
-    public static DataSourceMetadata swapToMetadata(final DataSourceConfiguration configuration) {
-        DataSourceMetadata result = actualTypeDataSourceMetadata(configuration);
-        registerSchemas(result, configuration);
+    public static DataSourceMetadata create(final DataSourceConfiguration configuration) {
+        DataSourceMetadata result = createActualTypeDataSourceMetadata(configuration);
+        // TODO Load source metadata with metadataLoader
         return result;
     }
 
-    private static void registerSchemas(final DataSourceMetadata dataSourceMetadata, final DataSourceConfiguration configuration) {
-        Map<String, SchemaConfiguration> schemas = configuration.getSchemas();
-        String dataSourceIdentifier = dataSourceMetadata.getIdentifier();
-        for (Map.Entry<String, SchemaConfiguration> entry : schemas.entrySet()) {
-            dataSourceMetadata.registerSchema(SchemaMetadataConfigurationSwapper.swapToMetadata(entry.getValue(), dataSourceIdentifier));
-        }
-    }
-
-    private static DataSourceMetadata actualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
-        Optional<DatabaseType> databaseType = DatabaseType.getDatabaseType(configuration.getDatabaseTypeName());
+    private static DataSourceMetadata createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
+        Optional<DatabaseType> databaseType = DatabaseType.getDatabaseType(configuration.getType());
         if (databaseType.isPresent()) {
             String host = configuration.getHost();
             int port = configuration.getPort();
+            String catalog = configuration.getCatalog();
             String username = configuration.getUsername();
             String password = configuration.getPassword();
-            DatabaseType type = databaseType.get();
             Properties parameters = configuration.getParameters();
-            String catalog = configuration.getCatalog();
+            DatabaseType type = databaseType.get();
             if (DatabaseType.MYSQL == type) {
                 return new MySQLDataSourceMetadata(host, port, username, password, catalog, parameters);
             }
@@ -86,6 +76,6 @@ public final class DatasourceMetadataConfigurationSwapper {
                 return new H2DataSourceMetadata(host, port, username, password, catalog, parameters);
             }
         }
-        throw new WormholeException("error : create data source metadata failed databaseType [%s] not find", configuration.getDatabaseTypeName());
+        throw new WormholeException("error : create data source metadata failed databaseType [%s] not find", configuration.getType());
     }
 }

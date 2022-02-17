@@ -20,22 +20,13 @@ package com.zergclan.wormhole.core.config;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
- * Table configuration.
+ * Configuration of filter.
  */
 @RequiredArgsConstructor
 @Getter
-public final class TableConfiguration implements Serializable {
-
-    private static final long serialVersionUID = 3156948577954133313L;
-
-    private final String name;
+public final class FilterConfiguration implements Configuration {
     
-    private final Map<String, ColumnConfiguration> columns = new LinkedHashMap<>();
-
-    private final Map<String, IndexConfiguration> indexes = new LinkedHashMap<>();
+    // FIXME  Complete the configuration item when the filter object is completed
+    private static final long serialVersionUID = 1807121849952582193L;
 }

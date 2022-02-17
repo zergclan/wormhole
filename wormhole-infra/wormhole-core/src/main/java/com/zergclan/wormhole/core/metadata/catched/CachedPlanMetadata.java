@@ -77,7 +77,7 @@ public final class CachedPlanMetadata implements Metadata {
                 TargetMetadata target = task.getTarget();
                 CachedSourceMetadata cachedSourceMetadata = CachedSourceMetadata.builder(source, dataSources.get(source.getDataSourceIdentifier()));
                 CachedTargetMetadata cachedTargetMetadata = CachedTargetMetadata.builder(target, dataSources.get(target.getDataSourceIdentifier()));
-                taskList.add(new CachedTaskMetadata(task.getCode(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters()));
+                taskList.add(new CachedTaskMetadata(task.getIdentifier(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters()));
             }
             return new CachedPlanMetadata(planMetadata.getIdentifier(), ordered(taskList));
         }
