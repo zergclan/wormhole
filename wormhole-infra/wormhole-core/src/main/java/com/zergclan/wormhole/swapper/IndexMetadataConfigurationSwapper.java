@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
  * Index metadata configuration swapper.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class IndexMetadataConfigurationSwapper {
+public final class IndexMetadataConfigurationSwapper {
     
     /**
      * Swap to {@link IndexMetadata}.
