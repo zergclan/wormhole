@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.writer.xsql;
 
 import com.zergclan.wormhole.common.WormholeException;
-import com.zergclan.wormhole.common.util.SqlUtil;
+import com.zergclan.wormhole.writer.util.SqlUtil;
 import com.zergclan.wormhole.writer.xsql.parameter.ParameterHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 

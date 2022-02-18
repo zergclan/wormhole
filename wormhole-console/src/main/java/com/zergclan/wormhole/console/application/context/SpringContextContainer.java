@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.console.application.context;
 
+import com.zergclan.wormhole.core.config.WormholeConfiguration;
+import com.zergclan.wormhole.engine.WormholeExecutionEngineInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
@@ -33,6 +35,17 @@ public final class SpringContextContainer implements ApplicationContextAware {
     @Override
     public void setApplicationContext(final @Nullable ApplicationContext applicationContext) {
         container = applicationContext;
+        //engineStart();
+    }
+
+    private void engineStart() {
+        WormholeConfiguration wormholeConfiguration = loadWormholeConfiguration();
+        new Thread(WormholeExecutionEngineInitializer.init(wormholeConfiguration)).start();
+    }
+
+    private WormholeConfiguration loadWormholeConfiguration() {
+        // TODO load wormhole configuration
+        return null;
     }
 
     /**

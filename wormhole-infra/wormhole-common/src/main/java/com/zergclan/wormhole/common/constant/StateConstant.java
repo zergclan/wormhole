@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
  * Constant of state.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StateConstant {
+public final class StateConstant {
     
     public static final int TRUE = 1;
     

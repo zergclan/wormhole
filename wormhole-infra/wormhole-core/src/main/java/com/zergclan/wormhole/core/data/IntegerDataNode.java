@@ -17,31 +17,39 @@
 
 package com.zergclan.wormhole.core.data;
 
-import lombok.RequiredArgsConstructor;
-
 /**
  * Data node type of {@link Integer}.
  */
-@RequiredArgsConstructor
 public final class IntegerDataNode implements DataNode<Integer> {
     
-    private final String name;
+    private String name;
     
     private Integer value;
-    
+
+    public IntegerDataNode(final String name, final Integer value) {
+        this.name = name;
+        this.value = value;
+    }
+
     @Override
     public Integer getValue() {
         return value;
     }
-    
+
     @Override
     public String getName() {
         return name;
     }
-    
+
     @Override
-    public DataNode<Integer> refresh(final Integer value) {
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final Integer value) {
         this.value = value;
-        return this;
+        return true;
     }
 }

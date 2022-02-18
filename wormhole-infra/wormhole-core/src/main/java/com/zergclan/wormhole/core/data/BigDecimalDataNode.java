@@ -17,19 +17,21 @@
 
 package com.zergclan.wormhole.core.data;
 
-import lombok.RequiredArgsConstructor;
-
 import java.math.BigDecimal;
 
 /**
  * Data node type of {@link BigDecimal}.
  */
-@RequiredArgsConstructor
 public final class BigDecimalDataNode implements DataNode<BigDecimal> {
 
-    private final String name;
+    private String name;
 
     private BigDecimal value;
+
+    public BigDecimalDataNode(final String name, final BigDecimal value) {
+        this.name = name;
+        this.value = value;
+    }
 
     @Override
     public String getName() {
@@ -42,8 +44,14 @@ public final class BigDecimalDataNode implements DataNode<BigDecimal> {
     }
 
     @Override
-    public DataNode<BigDecimal> refresh(final BigDecimal value) {
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final BigDecimal value) {
         this.value = value;
-        return this;
+        return true;
     }
 }

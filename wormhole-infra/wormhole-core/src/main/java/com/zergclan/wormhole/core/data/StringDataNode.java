@@ -17,31 +17,39 @@
 
 package com.zergclan.wormhole.core.data;
 
-import lombok.RequiredArgsConstructor;
-
 /**
  * Data node type of string.
  */
-@RequiredArgsConstructor
 public final class StringDataNode implements DataNode<String> {
     
-    private final String name;
+    private String name;
 
     private String value;
-    
-    @Override
-    public String getValue() {
-        return value;
+
+    public StringDataNode(final String name, final String value) {
+        this.name = name;
+        this.value = value;
     }
-    
+
     @Override
     public String getName() {
         return name;
     }
-    
+
     @Override
-    public DataNode<String> refresh(final String value) {
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final String value) {
         this.value = value;
-        return this;
+        return true;
     }
 }

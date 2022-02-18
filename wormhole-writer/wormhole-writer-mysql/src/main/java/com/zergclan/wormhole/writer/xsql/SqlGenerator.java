@@ -17,11 +17,11 @@
 
 package com.zergclan.wormhole.writer.xsql;
 
-import com.zergclan.wormhole.common.util.SqlUtil;
 import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import com.zergclan.wormhole.writer.util.SqlUtil;
 
 import java.util.Collection;
 import java.util.Iterator;
