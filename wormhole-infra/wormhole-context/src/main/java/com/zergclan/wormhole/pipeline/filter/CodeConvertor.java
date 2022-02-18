@@ -56,7 +56,7 @@ public final class CodeConvertor implements Filter<DataGroup> {
     }
     
     private void refreshDataNode(final DataGroup dataGroup, final String name, final String targetCode) {
-        dataGroup.refresh(new StringDataNode(name).refresh(targetCode));
+        dataGroup.refresh(new StringDataNode(name, targetCode));
     }
     
     @Override

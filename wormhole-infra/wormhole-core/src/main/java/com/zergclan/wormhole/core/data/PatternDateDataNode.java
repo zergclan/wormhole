@@ -17,31 +17,39 @@
 
 package com.zergclan.wormhole.core.data;
 
-import lombok.RequiredArgsConstructor;
-
 /**
  * Data node type of {@link PatternDate}.
  */
-@RequiredArgsConstructor
 public final class PatternDateDataNode implements DataNode<PatternDate> {
     
-    private final String name;
+    private String name;
     
     private PatternDate patternDate;
-    
+
+    public PatternDateDataNode(final String name, final PatternDate patternDate) {
+        this.name = name;
+        this.patternDate = patternDate;
+    }
+
     @Override
     public PatternDate getValue() {
         return patternDate;
     }
-    
+
     @Override
     public String getName() {
         return name;
     }
-    
+
     @Override
-    public DataNode<PatternDate> refresh(final PatternDate patternDate) {
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final PatternDate patternDate) {
         this.patternDate = patternDate;
-        return this;
+        return true;
     }
 }

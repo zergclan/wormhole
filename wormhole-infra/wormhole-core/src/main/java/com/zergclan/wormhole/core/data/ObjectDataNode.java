@@ -17,15 +17,17 @@
 
 package com.zergclan.wormhole.core.data;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public final class ObjectDataNode implements DataNode<Object> {
     
-    private final String name;
+    private String name;
     
     private Object value;
-    
+
+    public ObjectDataNode(final String name, final Object value) {
+        this.name = name;
+        this.value = value;
+    }
+
     @Override
     public String getName() {
         return name;
@@ -35,10 +37,16 @@ public final class ObjectDataNode implements DataNode<Object> {
     public Object getValue() {
         return value;
     }
-    
+
     @Override
-    public DataNode<Object> refresh(final Object value) {
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final Object value) {
         this.value = value;
-        return this;
+        return true;
     }
 }

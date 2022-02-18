@@ -58,17 +58,17 @@ public final class MySQLDataGroupSwapper implements Swapper<Map<String, Object>,
 
     private DataNode<?> createDataNode(final String name, final Object value) {
         if (value instanceof String) {
-            return new StringDataNode(name).refresh(value.toString());
+            return new StringDataNode(name, value.toString());
         } else if (value instanceof Integer) {
-            return new IntegerDataNode(name).refresh(Integer.parseInt(value.toString()));
+            return new IntegerDataNode(name, Integer.parseInt(value.toString()));
         } else if (value instanceof Long) {
-            return new LongDataNode(name).refresh(Long.parseLong(value.toString()));
+            return new LongDataNode(name, Long.parseLong(value.toString()));
         } else if (value instanceof BigDecimal) {
-            return new BigDecimalDataNode(name).refresh(new BigDecimal(value.toString()));
+            return new BigDecimalDataNode(name, new BigDecimal(value.toString()));
         } else if (value instanceof Date) {
-            return new LocalDateTimeDataNode(name).refresh(DateUtil.swapToLocalDateTime((Date) value));
+            return new LocalDateTimeDataNode(name, DateUtil.swapToLocalDateTime((Date) value));
         } else if (value instanceof LocalDateTime) {
-            return new LocalDateTimeDataNode(name).refresh((LocalDateTime) value);
+            return new LocalDateTimeDataNode(name, (LocalDateTime) value);
         } else {
             throw new WormholeException("error : create data node failed name:[%s], value:[%s]", name, value);
         }

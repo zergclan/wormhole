@@ -53,7 +53,6 @@ public final class NodeConcatMerger implements Filter<DataGroup> {
     private DataNode<String> mergeNodeValue(final Map.Entry<String, Collection<String>> nodeNameEntry, final DataGroup dataGroup) {
         Collection<String> names = nodeNameEntry.getValue();
         Iterator<String> iterator = names.iterator();
-        DataNode<String> result = new StringDataNode(nodeNameEntry.getKey());
         StringBuilder stringBuilder = new StringBuilder();
         DataNode<?> each;
         int count = 0;
@@ -66,7 +65,7 @@ public final class NodeConcatMerger implements Filter<DataGroup> {
             }
             stringBuilder.append(delimiter);
         }
-        return result.refresh(stringBuilder.toString());
+        return new StringDataNode(nodeNameEntry.getKey(), stringBuilder.toString());
     }
     
     @Override

@@ -63,15 +63,13 @@ public final class NodeSplitter implements Filter<DataGroup> {
             return false;
         }
         int index = 0;
-        DataNode<String> each;
         Iterator<String> iterator = names.iterator();
         while (iterator.hasNext()) {
             String eachName = iterator.next();
-            each = new StringDataNode(iterator.next());
             if (name.equals(eachName)) {
-                dataGroup.refresh(each.refresh(split[index]));
+                dataGroup.refresh(new StringDataNode(iterator.next(), split[index]));
             } else {
-                if (!dataGroup.append(each.refresh(split[index]))) {
+                if (!dataGroup.append(new StringDataNode(iterator.next(), split[index]))) {
                     return false;
                 }
             }

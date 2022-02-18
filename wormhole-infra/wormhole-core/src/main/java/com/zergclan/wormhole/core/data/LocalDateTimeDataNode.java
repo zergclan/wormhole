@@ -17,19 +17,21 @@
 
 package com.zergclan.wormhole.core.data;
 
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 
 /**
  * Data node type of {@link LocalDateTime}.
  */
-@RequiredArgsConstructor
 public final class LocalDateTimeDataNode implements DataNode<LocalDateTime> {
 
-    private final String name;
+    private String name;
 
     private LocalDateTime value;
+
+    public LocalDateTimeDataNode(final String name, final LocalDateTime value) {
+        this.name = name;
+        this.value = value;
+    }
 
     @Override
     public String getName() {
@@ -42,8 +44,14 @@ public final class LocalDateTimeDataNode implements DataNode<LocalDateTime> {
     }
 
     @Override
-    public DataNode<LocalDateTime> refresh(final LocalDateTime value) {
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final LocalDateTime value) {
         this.value = value;
-        return this;
+        return true;
     }
 }

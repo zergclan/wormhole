@@ -34,7 +34,7 @@ public final class FixedNodeEditor implements Filter<DataGroup> {
     
     @Getter
     private final int order;
-    
+
     private final Collection<DataNode<?>> fixedValue;
     
     @Override

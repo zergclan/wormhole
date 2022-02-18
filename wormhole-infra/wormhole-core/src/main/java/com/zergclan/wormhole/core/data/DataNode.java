@@ -46,7 +46,7 @@ public interface DataNode<V> {
     default boolean isNull() {
         return Objects.isNull(getValue());
     }
-    
+
     /**
      * Get data node name.
      *
@@ -60,12 +60,20 @@ public interface DataNode<V> {
      * @return data node value
      */
     V getValue();
-    
+
+    /**
+     * Refresh {@link DataNode}.
+     *
+     * @param name data node name
+     * @return is refreshed or not
+     */
+    boolean refreshName(String name);
+
     /**
      * Refresh {@link DataNode}.
      *
      * @param value data node value
-     * @return {@link DataNode}
+     * @return is refreshed or not
      */
-    DataNode<V> refresh(V value);
+    boolean refreshValue(V value);
 }

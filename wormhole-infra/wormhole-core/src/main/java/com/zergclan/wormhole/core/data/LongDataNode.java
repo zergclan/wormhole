@@ -17,14 +17,16 @@
 
 package com.zergclan.wormhole.core.data;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public final class LongDataNode implements DataNode<Long> {
 
-    private final String name;
+    private String name;
 
     private Long value;
+
+    public LongDataNode(final String name, final Long value) {
+        this.name = name;
+        this.value = value;
+    }
 
     @Override
     public String getName() {
@@ -37,8 +39,14 @@ public final class LongDataNode implements DataNode<Long> {
     }
 
     @Override
-    public DataNode<Long> refresh(final Long value) {
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final Long value) {
         this.value = value;
-        return this;
+        return true;
     }
 }

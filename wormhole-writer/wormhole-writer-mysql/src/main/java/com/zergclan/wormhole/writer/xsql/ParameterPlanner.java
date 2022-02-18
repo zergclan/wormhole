@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.writer.xsql;
 
-import com.zergclan.wormhole.common.util.SqlUtil;
+import com.zergclan.wormhole.writer.util.SqlUtil;
 import com.zergclan.wormhole.writer.xsql.parameter.ParameterHandler;
 import com.zergclan.wormhole.writer.xsql.parameter.Parameter;
 import com.zergclan.wormhole.writer.xsql.parameter.ParameterObject;
