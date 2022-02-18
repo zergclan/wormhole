@@ -18,22 +18,12 @@
 package com.zergclan.wormhole.writer.xsql;
 
 import com.zergclan.wormhole.common.util.SqlUtil;
+import com.zergclan.wormhole.writer.xsql.parameter.ParameterHandler;
 import com.zergclan.wormhole.writer.xsql.parameter.Parameter;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterInteger;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterLong;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterString;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterDouble;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterFloat;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterDate;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterBigDecimal;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterTimestamp;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterArrayString;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterArrayInt;
 import com.zergclan.wormhole.writer.xsql.parameter.ParameterObject;
 import com.zergclan.wormhole.writer.xsql.parameter.FieldGetterArray;
-import com.zergclan.wormhole.writer.xsql.parameter.FieldGetterBean;
 import com.zergclan.wormhole.writer.xsql.parameter.FieldGetterMap;
-import com.zergclan.wormhole.writer.xsql.parameter.ParameterHandler;
+import com.zergclan.wormhole.writer.xsql.parameter.FieldGetterBean;
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
@@ -53,16 +43,17 @@ public class ParameterPlanner {
     private static final Map<String, Class<? extends Parameter>> PARAMETER_MAP = new HashMap<>();
 
     static {
-        PARAMETER_MAP.put("S", ParameterString.class);
-        PARAMETER_MAP.put("I", ParameterInteger.class);
-        PARAMETER_MAP.put("L", ParameterLong.class);
-        PARAMETER_MAP.put("D", ParameterDouble.class);
-        PARAMETER_MAP.put("F", ParameterFloat.class);
-        PARAMETER_MAP.put("T", ParameterDate.class);
-        PARAMETER_MAP.put("B", ParameterBigDecimal.class);
-        PARAMETER_MAP.put("P", ParameterTimestamp.class);
-        PARAMETER_MAP.put("M", ParameterArrayString.class);
-        PARAMETER_MAP.put("N", ParameterArrayInt.class);
+        PARAMETER_MAP.put("O", ParameterObject.class);
+//        PARAMETER_MAP.put("S", ParameterString.class);
+//        PARAMETER_MAP.put("I", ParameterInteger.class);
+//        PARAMETER_MAP.put("L", ParameterLong.class);
+//        PARAMETER_MAP.put("D", ParameterDouble.class);
+//        PARAMETER_MAP.put("F", ParameterFloat.class);
+//        PARAMETER_MAP.put("T", ParameterDate.class);
+//        PARAMETER_MAP.put("B", ParameterBigDecimal.class);
+//        PARAMETER_MAP.put("P", ParameterTimestamp.class);
+//        PARAMETER_MAP.put("M", ParameterArrayString.class);
+//        PARAMETER_MAP.put("N", ParameterArrayInt.class);
     }
 
     /**
