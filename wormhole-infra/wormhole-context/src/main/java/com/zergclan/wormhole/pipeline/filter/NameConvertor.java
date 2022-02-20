@@ -1,6 +1,6 @@
 package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.api.Filter;
+import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.core.data.DataNode;
 import lombok.Getter;

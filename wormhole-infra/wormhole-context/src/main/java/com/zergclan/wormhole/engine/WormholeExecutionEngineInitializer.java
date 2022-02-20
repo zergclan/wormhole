@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.engine;
 
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.creator.WormholeMetadataCreator;
+import com.zergclan.wormhole.core.creator.WormholeMetadataCreator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

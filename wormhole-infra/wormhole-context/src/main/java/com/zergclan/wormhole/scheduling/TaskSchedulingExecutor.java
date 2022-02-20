@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.scheduling;
 
-import com.zergclan.wormhole.api.Pipeline;
-import com.zergclan.wormhole.core.concurrent.ExecutorService;
+import com.zergclan.wormhole.common.concurrent.ExecutorService;
+import com.zergclan.wormhole.core.api.Pipeline;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
 import com.zergclan.wormhole.loader.Loader;
