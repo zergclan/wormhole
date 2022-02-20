@@ -19,36 +19,11 @@ package com.zergclan.wormhole.core.metadata.plan;
 
 import lombok.Getter;
 
-import java.util.Optional;
-
 /**
- * Mode of plan execution.
+ * Mode of execution.
  */
 @Getter
 public enum ExecutionMode {
-    
-    ONE_OFF("oneOff"),
-    
-    SCHEDULED("scheduled");
-    
-    private final String type;
 
-    ExecutionMode(final String type) {
-        this.type = type;
-    }
-
-    /**
-     * Get {@link ExecutionMode} by type.
-     *
-     * @param type type
-     * @return {@link ExecutionMode}
-     */
-    public static Optional<ExecutionMode> getExecutionMode(final String type) {
-        if (ONE_OFF.type.equals(type)) {
-            return Optional.of(ONE_OFF);
-        } else if (SCHEDULED.type.equals(type)) {
-            return Optional.of(SCHEDULED);
-        }
-        return Optional.empty();
-    }
+    ONE_OFF, SCHEDULED
 }

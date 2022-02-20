@@ -30,9 +30,9 @@
     <name>${project.artifactId}</name>
 
     <modules>
+        <module>wormhole-context</module>
         <module>wormhole-common</module>
         <module>wormhole-core</module>
-        <module>wormhole-context</module>
         <module>wormhole-jdbc</module>
         <module>wormhole-bus</module>
     </modules>
