@@ -28,12 +28,12 @@ import lombok.RequiredArgsConstructor;
 public final class DataNodeConfiguration implements Configuration {
     
     private static final long serialVersionUID = 5454828648754484053L;
-    
-    private final String name;
-    
+
     private final String tableName;
     
+    private final String name;
+
     private final String nodeType;
-    
+
     private final String dataType;
 }

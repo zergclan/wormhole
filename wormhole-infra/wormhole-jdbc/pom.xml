@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-core</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>

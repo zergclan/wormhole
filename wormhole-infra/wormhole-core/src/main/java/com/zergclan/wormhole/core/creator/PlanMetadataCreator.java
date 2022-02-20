@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.core.creator;
 
-import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.config.PlanConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
 import com.zergclan.wormhole.core.metadata.plan.ExecutionMode;
@@ -29,7 +28,6 @@ import lombok.NoArgsConstructor;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Metadata creator of {@link PlanMetadata}.
@@ -44,12 +42,7 @@ public final class PlanMetadataCreator {
      * @return {@link PlanMetadata}
      */
     public static PlanMetadata create(final PlanConfiguration configuration) {
-        String mode = configuration.getMode();
-        Optional<ExecutionMode> executionMode = ExecutionMode.getExecutionMode(mode);
-        if (executionMode.isPresent()) {
-            return new PlanMetadata(configuration.getName(), executionMode.get(), configuration.getCorn(), createTasks(configuration.getTasks()));
-        }
-        throw new WormholeException("error : execution mode code [%d] not find", mode);
+        return new PlanMetadata(configuration.getName(), ExecutionMode.valueOf(configuration.getMode().trim().toUpperCase()), configuration.getCorn(), createTasks(configuration.getTasks()));
     }
     
     private static Map<String, TaskMetadata> createTasks(final Map<String, TaskConfiguration> configurations) {

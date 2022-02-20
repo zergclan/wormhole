@@ -48,7 +48,7 @@ public final class DatasourceInfoControllerTest {
     
     @Resource
     private MockMvc mvc;
-    
+
     @Test
     public void assertBase() throws Exception {
         DatasourceInfo datasourceInfo = createDatasourceInfo();

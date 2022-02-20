@@ -30,9 +30,9 @@ public final class DataNodeMetadata implements Metadata {
     private final String name;
     
     private final String tableName;
-    
+
     private final String nodeType;
-    
+
     private final String dataType;
     
     @Override
