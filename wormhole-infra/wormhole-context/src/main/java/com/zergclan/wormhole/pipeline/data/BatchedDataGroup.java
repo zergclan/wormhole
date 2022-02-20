@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.data;
 
-import com.zergclan.wormhole.api.Swapper;
+import com.zergclan.wormhole.core.api.Swapper;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.pipeline.swapper.MySQLDataGroupSwapper;
 import lombok.Getter;

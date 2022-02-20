@@ -90,8 +90,7 @@
 
     <modules>
         <module>wormhole-infra</module>
-        <module>wormhole-reader</module>
-        <module>wormhole-writer</module>
+        <module>wormhole-plugin</module>
         <module>wormhole-console</module>
     </modules>
 
@@ -153,6 +152,27 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-nop</artifactId>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

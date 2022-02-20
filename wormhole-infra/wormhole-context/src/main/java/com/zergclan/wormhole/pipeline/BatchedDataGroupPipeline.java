@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.pipeline;
 
-import com.zergclan.wormhole.api.Filter;
-import com.zergclan.wormhole.api.Handler;
-import com.zergclan.wormhole.api.Pipeline;
-import com.zergclan.wormhole.core.concurrent.ExecutorService;
+import com.zergclan.wormhole.common.concurrent.ExecutorService;
+import com.zergclan.wormhole.core.api.Filter;
+import com.zergclan.wormhole.core.api.Handler;
+import com.zergclan.wormhole.core.api.Pipeline;
 import com.zergclan.wormhole.core.data.DataGroup;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
