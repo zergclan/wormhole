@@ -20,6 +20,7 @@ package com.zergclan.wormhole.core.creator;
 import com.zergclan.wormhole.core.config.DataNodeConfiguration;
 import com.zergclan.wormhole.core.config.SourceConfiguration;
 import com.zergclan.wormhole.core.metadata.plan.DataNodeMetadata;
+import com.zergclan.wormhole.core.metadata.plan.LinkType;
 import com.zergclan.wormhole.core.metadata.plan.SourceMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -44,8 +45,7 @@ public final class SourceMetadataCreator {
         String dataSourceIdentifier = configuration.getDataSourceIdentifier();
         String primaryTable = configuration.getPrimaryTable();
         String linkTable = configuration.getLinkTable();
-        // FIXME Refactoring with enums
-        String linkType = configuration.getLinkType();
+        LinkType linkType = LinkType.valueOf(configuration.getLinkType().toUpperCase());
         String conditionSql = configuration.getConditionSql();
         String actualSql = configuration.getActualSql();
         return new SourceMetadata(dataSourceIdentifier, primaryTable, linkTable, linkType, conditionSql, actualSql, createDataNodes(configuration.getDataNodes()));

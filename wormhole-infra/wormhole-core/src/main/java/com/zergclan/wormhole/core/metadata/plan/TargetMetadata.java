@@ -32,8 +32,8 @@ public final class TargetMetadata implements Metadata {
     private final String dataSourceIdentifier;
     
     private final Collection<String> tables;
-    
-    private final String loadType;
+
+    private final LoadType loadType;
     
     private final Map<String, DataNodeMetadata> dataNodes;
     

@@ -17,25 +17,7 @@
 
 package com.zergclan.wormhole.core.metadata.plan;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
-import lombok.RequiredArgsConstructor;
+public enum LoadType {
 
-import java.util.Properties;
-
-@RequiredArgsConstructor
-public final class FilterMetadata implements Metadata {
-    
-    private final String taskIdentifier;
-
-    private final int order;
-
-    private final String type;
-
-    private final Properties properties;
-
-    @Override
-    public String getIdentifier() {
-        return taskIdentifier + MarkConstant.SPACE + type;
-    }
+    CLONE, CLONE_TRANSACTION, SHARDING, SHARDING_TRANSACTION
 }
