@@ -34,7 +34,7 @@ public final class SourceMetadata implements Metadata {
     
     private final String linkTable;
     
-    private final String linkType;
+    private final LinkType linkType;
     
     private final String conditionSql;
     

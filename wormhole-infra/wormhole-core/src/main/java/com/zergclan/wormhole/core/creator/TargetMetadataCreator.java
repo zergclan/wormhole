@@ -20,6 +20,7 @@ package com.zergclan.wormhole.core.creator;
 import com.zergclan.wormhole.core.config.DataNodeConfiguration;
 import com.zergclan.wormhole.core.config.TargetConfiguration;
 import com.zergclan.wormhole.core.metadata.plan.DataNodeMetadata;
+import com.zergclan.wormhole.core.metadata.plan.LoadType;
 import com.zergclan.wormhole.core.metadata.plan.TargetMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -44,8 +45,7 @@ public final class TargetMetadataCreator {
     public static TargetMetadata create(final TargetConfiguration configuration) {
         String dataSourceIdentifier = configuration.getDataSourceIdentifier();
         Collection<String> tables = configuration.getTables();
-        // FIXME Refactoring with enums
-        String loadType = configuration.getLoadType();
+        LoadType loadType = LoadType.valueOf(configuration.getLoadType().toUpperCase());
         return new TargetMetadata(dataSourceIdentifier, tables, loadType, createDataNodes(configuration.getDataNodes()));
     }
     

@@ -27,6 +27,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -44,12 +45,19 @@ public final class TaskMetadataCreator {
     public static TaskMetadata create(final TaskConfiguration configuration) {
         SourceMetadata source = SourceMetadataCreator.create(configuration.getSource());
         TargetMetadata target = TargetMetadataCreator.create(configuration.getTarget());
-        Collection<FilterMetadata> filters = createFilters(configuration.getFilters());
+        String taskIdentifier = configuration.getName();
+        Collection<FilterMetadata> filters = createFilters(taskIdentifier, configuration.getFilters());
+
         return new TaskMetadata(configuration.getName(), configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
-    
-    private static Collection<FilterMetadata> createFilters(final Collection<FilterConfiguration> configurations) {
-        // FIXME create filters by data nodes
-        return new LinkedList<>();
+
+    private static Collection<FilterMetadata> createFilters(final String taskIdentifier, final Collection<FilterConfiguration> configurations) {
+        Collection<FilterMetadata> result = new LinkedList<>();
+        Iterator<FilterConfiguration> iterator = configurations.iterator();
+        while (iterator.hasNext()) {
+            FilterConfiguration each = iterator.next();
+            result.add(new FilterMetadata(taskIdentifier, each.getOrder(), each.getType(), each.getProperties()));
+        }
+        return result;
     }
 }

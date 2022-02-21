@@ -20,17 +20,20 @@ package com.zergclan.wormhole.core.config;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Properties;
+
 /**
  * Configuration of filter.
  */
 @RequiredArgsConstructor
 @Getter
 public final class FilterConfiguration implements Configuration {
-    
-    // FIXME  Complete the configuration item when the filter object is completed
+
     private static final long serialVersionUID = 1807121849952582193L;
 
     private final String type;
 
     private final int order;
+
+    private final Properties properties;
 }
