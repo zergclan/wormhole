@@ -22,6 +22,7 @@ import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import lombok.Getter;
 
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +36,8 @@ public final class WormholeMetadata implements Metadata {
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     
     private final Map<String, DataSourceMetadata> dataSources;
-    
+
+    @Getter
     private final Map<String, PlanMetadata> plans;
 
     public WormholeMetadata(final Map<String, DataSourceMetadata> dataSources, final Map<String, PlanMetadata> plans) {

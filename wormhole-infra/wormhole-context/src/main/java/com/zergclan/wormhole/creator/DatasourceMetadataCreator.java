@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.creator;
+package com.zergclan.wormhole.creator;
 
 import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
@@ -26,9 +26,13 @@ import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetad
 import com.zergclan.wormhole.core.metadata.resource.dialect.OracleDataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.dialect.SQLServerDataSourceMetadata;
+import com.zergclan.wormhole.engine.DataSourceMetadataInitializer;
+import com.zergclan.wormhole.jdbc.DataSourceManger;
+import com.zergclan.wormhole.jdbc.api.MetadataLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -43,11 +47,17 @@ public final class DatasourceMetadataCreator {
      *
      * @param configuration {@link DataSourceConfiguration}
      * @return {@link DataSourceMetadata}
+     * @throws SQLException exception
      */
-    public static DataSourceMetadata create(final DataSourceConfiguration configuration) {
+    public static DataSourceMetadata create(final DataSourceConfiguration configuration) throws SQLException {
         DataSourceMetadata result = createActualTypeDataSourceMetadata(configuration);
-        // TODO Load source metadata with metadataLoader
-        return result;
+        DataSourceMetadataInitializer dataSourceMetadataInitializer = new DataSourceMetadataInitializer(DataSourceManger.get(result).getConnection(), createMetadataLoader());
+        return dataSourceMetadataInitializer.init(result);
+    }
+
+    // TODO create metadata loader
+    private static MetadataLoader createMetadataLoader() {
+        return null;
     }
 
     private static DataSourceMetadata createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {

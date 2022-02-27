@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.core.metadata.catched;
 
-import com.zergclan.wormhole.core.metadata.plan.FilterMetadata;
+import com.zergclan.wormhole.core.api.Filter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -37,5 +37,5 @@ public final class CachedTaskMetadata {
 
     private final CachedTargetMetadata target;
 
-    private final Collection<FilterMetadata> filters;
+    private final Collection<Filter<?>> filters;
 }

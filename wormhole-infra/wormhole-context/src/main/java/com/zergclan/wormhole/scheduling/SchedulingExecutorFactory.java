@@ -24,18 +24,15 @@ import com.zergclan.wormhole.core.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
 import com.zergclan.wormhole.extracter.Extractor;
-import com.zergclan.wormhole.jdbc.api.DataSourceManger;
-import com.zergclan.wormhole.jdbc.core.JdbcDataSourceManger;
+import com.zergclan.wormhole.jdbc.DataSourceManger;
 import com.zergclan.wormhole.loader.Loader;
 import com.zergclan.wormhole.plugin.mysql.reader.MySQLExtractor;
 import com.zergclan.wormhole.plugin.mysql.writer.MySQLLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -43,8 +40,6 @@ import java.util.Properties;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SchedulingExecutorFactory {
-
-    private static final DataSourceManger<DataSource> DATA_SOURCE_MANGER = new JdbcDataSourceManger();
 
     /**
      * The newly created {@link SchedulingExecutor} by {@link Metadata}.
@@ -93,11 +88,7 @@ public final class SchedulingExecutorFactory {
         properties.setProperty("serverTimezone", "UTC");
         properties.setProperty("useSSL", "false");
         MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
-        Optional<DataSource> dataSourceOptional = DATA_SOURCE_MANGER.get(dataSourceMetadata.getIdentifier());
-        if (!dataSourceOptional.isPresent()) {
-            throw new WormholeException("error : create loader error");
-        }
-        return new MySQLExtractor(dataSourceOptional.get());
+        return new MySQLExtractor(DataSourceManger.get(dataSourceMetadata));
     }
 
     private static Loader createLoader() {
@@ -110,10 +101,6 @@ public final class SchedulingExecutorFactory {
         properties.setProperty("serverTimezone", "UTC");
         properties.setProperty("useSSL", "false");
         MySQLDataSourceMetadata dataSourceMetadata = new MySQLDataSourceMetadata(host, port, username, password, catalog, properties);
-        Optional<DataSource> dataSourceOptional = DATA_SOURCE_MANGER.get(dataSourceMetadata.getIdentifier());
-        if (!dataSourceOptional.isPresent()) {
-            throw new WormholeException("error : create loader error");
-        }
-        return new MySQLLoader(dataSourceOptional.get());
+        return new MySQLLoader(DataSourceManger.get(dataSourceMetadata));
     }
 }
