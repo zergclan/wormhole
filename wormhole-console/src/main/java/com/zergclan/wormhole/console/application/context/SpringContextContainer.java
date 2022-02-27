@@ -17,12 +17,15 @@
 
 package com.zergclan.wormhole.console.application.context;
 
+import com.zergclan.wormhole.common.WormholeException;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.engine.WormholeExecutionEngineInitializer;
+import com.zergclan.wormhole.engine.WormholeExecutionEngine;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+
+import java.sql.SQLException;
 
 /**
  * Container of {@link ApplicationContext}.
@@ -35,12 +38,15 @@ public final class SpringContextContainer implements ApplicationContextAware {
     @Override
     public void setApplicationContext(final @Nullable ApplicationContext applicationContext) {
         container = applicationContext;
-        //engineStart();
     }
 
     private void engineStart() {
-        WormholeConfiguration wormholeConfiguration = loadWormholeConfiguration();
-        new Thread(WormholeExecutionEngineInitializer.init(wormholeConfiguration)).start();
+        try {
+            WormholeExecutionEngine wormholeExecutionEngine = WormholeExecutionEngine.newInstance(loadWormholeConfiguration());
+            new Thread(wormholeExecutionEngine).start();
+        } catch (final SQLException ex) {
+            throw new WormholeException("error : wormhole execution engine init failed.", ex);
+        }
     }
 
     private WormholeConfiguration loadWormholeConfiguration() {

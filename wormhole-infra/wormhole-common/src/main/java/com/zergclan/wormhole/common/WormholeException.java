@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.common;
 
 /**
- * Exception of Wormhole.
+ * Base Exception in Wormhole.
  */
 public final class WormholeException extends RuntimeException {
     

@@ -32,11 +32,15 @@ public final class TargetConfiguration implements Configuration {
     
     private static final long serialVersionUID = -3361482780019688246L;
     
-    private final String dataSourceIdentifier;
-    
+    private final String dataSourceName;
+
     private final Collection<String> tables;
-    
+
     private final String loadType;
-    
+
+    private final Collection<String> unique;
+
+    private final Collection<String> compare;
+
     private final Map<String, DataNodeConfiguration> dataNodes;
 }

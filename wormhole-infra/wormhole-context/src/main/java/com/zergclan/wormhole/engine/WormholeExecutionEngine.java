@@ -17,30 +17,63 @@
 
 package com.zergclan.wormhole.engine;
 
+import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.core.config.WormholeConfiguration;
+import com.zergclan.wormhole.creator.WormholeMetadataCreator;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.scheduling.SchedulingExecutorFactory;
 import com.zergclan.wormhole.scheduling.SchedulingTrigger;
 import com.zergclan.wormhole.scheduling.PlanSchedulingTrigger;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.DelayQueue;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeExecutionEngine implements Runnable {
-    
+
     private final WormholeMetadata wormholeMetadata;
-    
+
     private final Queue<SchedulingTrigger> planSchedulingTriggerQueue = new DelayQueue<>();
-    
+
     // FIXME refactoring with cache
     private final Map<String, CachedPlanMetadata> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
-    
+
+    private WormholeExecutionEngine(final WormholeConfiguration configuration) throws SQLException {
+        WormholeMetadata wormholeMetadata = WormholeMetadataCreator.create(configuration);
+        Optional<String> unregistered = registerPlans(wormholeMetadata.getPlans());
+        if (unregistered.isPresent()) {
+            throw new WormholeException("error : wormhole execution engine register plan failed named by [%s]", unregistered.get());
+        }
+        this.wormholeMetadata = wormholeMetadata;
+    }
+
+    /**
+     * New instance.
+     *
+     * @param configuration {@link WormholeConfiguration}
+     * @return {@link WormholeExecutionEngine}
+     * @throws SQLException exception
+     */
+    public static WormholeExecutionEngine newInstance(final WormholeConfiguration configuration) throws SQLException {
+        Validator.notNull(configuration, "error : wormhole execution engine new instance configuration can not be null");
+        return new WormholeExecutionEngine(configuration);
+    }
+
+    private Optional<String> registerPlans(final Map<String, PlanMetadata> plans) {
+        // TODO register plan to scheduling
+        return Optional.empty();
+    }
+
     /**
      * Register {@link Metadata}.
      *
@@ -50,7 +83,7 @@ public final class WormholeExecutionEngine implements Runnable {
     public boolean registerMetadata(final Metadata metadata) {
         return wormholeMetadata.register(metadata);
     }
-    
+
     /**
      * Register plan by plan identifier.
      *
@@ -60,7 +93,7 @@ public final class WormholeExecutionEngine implements Runnable {
     public boolean registerPlan(final String planIdentifier) {
         return wormholeMetadata.get(planIdentifier).filter(metadata -> planSchedulingTriggerQueue.offer(new PlanSchedulingTrigger(metadata.getIdentifier()))).isPresent();
     }
-    
+
     /**
      * Try to execute by plan identifier.
      *
@@ -70,7 +103,7 @@ public final class WormholeExecutionEngine implements Runnable {
     public boolean tryExecute(final String planIdentifier) {
         return !isExecuting(planIdentifier) && execute(planIdentifier);
     }
-    
+
     /**
      * Execute by plan identifier.
      *
@@ -85,16 +118,16 @@ public final class WormholeExecutionEngine implements Runnable {
         }
         return false;
     }
-    
+
     private boolean isExecuting(final String planIdentifier) {
         return null != cachedPlanMetadataContainer.get(planIdentifier);
     }
-    
+
     @Override
     public void run() {
         start();
     }
-    
+
     private void start() {
         for (;;) {
             SchedulingTrigger trigger = planSchedulingTriggerQueue.poll();
@@ -108,7 +141,7 @@ public final class WormholeExecutionEngine implements Runnable {
             }
         }
     }
-    
+
     private void sendEvent(final SchedulingTrigger trigger) {
         // TODO send plan repeated event
         System.out.printf("error : repeated event for plan [%s]", trigger);

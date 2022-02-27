@@ -15,26 +15,5 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.creator;
+package com.zergclan.wormhole.engine;
 
-import com.zergclan.wormhole.core.config.DataNodeConfiguration;
-import com.zergclan.wormhole.core.metadata.plan.DataNodeMetadata;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-/**
- * Metadata creator of {@link DataNodeMetadata}.
- */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DataNodeMetadataCreator {
-    
-    /**
-     * Create {@link DataNodeMetadata}.
-     *
-     * @param configuration {@link DataNodeConfiguration}
-     * @return {@link DataNodeMetadata}
-     */
-    public static DataNodeMetadata create(final DataNodeConfiguration configuration) {
-        return new DataNodeMetadata(configuration.getTableName(), configuration.getName(), configuration.getNodeType(), configuration.getDataType());
-    }
-}

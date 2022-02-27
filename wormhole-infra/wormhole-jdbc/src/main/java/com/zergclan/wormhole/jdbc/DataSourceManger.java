@@ -15,38 +15,51 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.core;
+package com.zergclan.wormhole.jdbc;
 
-import com.zergclan.wormhole.jdbc.api.DataSourceManger;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.jdbc.core.DataSourceCreator;
 
 import javax.sql.DataSource;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public final class JdbcDataSourceManger implements DataSourceManger<DataSource> {
+public final class DataSourceManger {
 
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
 
-    private static final Map<String, DataSource> CONTAINER = new ConcurrentHashMap<>();
+    private static final Map<String, DataSource> CONTAINER = new LinkedHashMap<>();
 
-    @Override
-    public Optional<DataSource> get(final String identifier) {
-        Validator.notNull(identifier, "error : get jdbc data source arg identifier can not be null");
+    /**
+     * Get {@link DataSource}.
+     *
+     * @param metadata {@link DataSourceMetadata}
+     * @return {@link DataSource}
+     */
+    public static DataSource get(final DataSourceMetadata metadata) {
         LOCK.readLock().lock();
         try {
+            String identifier = metadata.getIdentifier();
             DataSource dataSource = CONTAINER.get(identifier);
-            return null == dataSource ? Optional.empty() : Optional.of(dataSource);
+            if (null == dataSource) {
+                dataSource = DataSourceCreator.create(metadata);
+                CONTAINER.put(identifier, dataSource);
+            }
+            return dataSource;
         } finally {
             LOCK.readLock().unlock();
         }
     }
 
-    @Override
-    public boolean register(final DataSourceMetadata metadata) {
+    /**
+     * Register {@link DataSource}.
+     *
+     * @param metadata {@link DataSourceMetadata}
+     * @return is registered or not
+     */
+    public static boolean register(final DataSourceMetadata metadata) {
         Validator.notNull(metadata, "error : register jdbc data source arg metadata can not be null");
         LOCK.writeLock().lock();
         try {
@@ -60,8 +73,13 @@ public final class JdbcDataSourceManger implements DataSourceManger<DataSource> 
         }
     }
 
-    @Override
-    public boolean refresh(final DataSourceMetadata metadata) {
+    /**
+     * Refresh {@link DataSource}.
+     *
+     * @param metadata {@link DataSourceMetadata}
+     * @return is registered or not
+     */
+    public static boolean refresh(final DataSourceMetadata metadata) {
         Validator.notNull(metadata, "error : refresh jdbc data source arg metadata can not be null");
         try {
             CONTAINER.put(metadata.getIdentifier(), DataSourceCreator.create(metadata));

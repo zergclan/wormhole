@@ -17,8 +17,10 @@
 
 package com.zergclan.wormhole.core.metadata.catched;
 
+import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.metadata.plan.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.SourceMetadata;
 import com.zergclan.wormhole.core.metadata.plan.TargetMetadata;
@@ -77,7 +79,8 @@ public final class CachedPlanMetadata implements Metadata {
                 TargetMetadata target = task.getTarget();
                 CachedSourceMetadata cachedSourceMetadata = CachedSourceMetadata.builder(source, dataSources.get(source.getDataSourceIdentifier()));
                 CachedTargetMetadata cachedTargetMetadata = CachedTargetMetadata.builder(target, dataSources.get(target.getDataSourceIdentifier()));
-                taskList.add(new CachedTaskMetadata(task.getIdentifier(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters()));
+                Collection<Filter<?>> filters = initFilters(task.getFilters());
+                taskList.add(new CachedTaskMetadata(task.getIdentifier(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, filters));
             }
             return new CachedPlanMetadata(planMetadata.getIdentifier(), ordered(taskList));
         }
@@ -110,5 +113,12 @@ public final class CachedPlanMetadata implements Metadata {
             }
             return result;
         }
+
+        private Collection<Filter<?>> initFilters(final Collection<FilterMetadata> filters) {
+            Collection<Filter<?>> result = new LinkedList<>();
+
+            return result;
+        }
+
     }
 }
