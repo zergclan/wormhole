@@ -22,50 +22,64 @@ import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 
-public interface MetadataLoader {
+public interface MetaDataLoader {
 
     /**
      * Load Schemas.
      *
-     * @param connection {@link Connection}
      * @return {@link SchemaMetadata}
      * @throws SQLException exception
      */
-    Collection<SchemaMetadata> loadSchemas(Connection connection) throws SQLException;
+    Collection<SchemaMetadata> loadSchemas() throws SQLException;
 
     /**
-     * Load Schemas.
+     * Load tables.
      *
-     * @param connection {@link Connection}
      * @param schema schema name
      * @return {@link TableMetadata}
      * @throws SQLException exception
      */
-    Collection<TableMetadata> loadTables(Connection connection, String schema) throws SQLException;
+    Collection<TableMetadata> loadTables(String schema) throws SQLException;
+
+    /**
+     * Load views.
+     *
+     * @param schema schema name
+     * @return {@link TableMetadata}
+     * @throws SQLException exception
+     */
+    Collection<TableMetadata> loadViews(String schema) throws SQLException;
 
     /**
      * Load Columns.
      *
-     * @param connection {@link Connection}
      * @param schema schema name
      * @param table table name
      * @return {@link ColumnMetadata}
      * @throws SQLException exception
      */
-    Collection<ColumnMetadata> loadColumns(Connection connection, String schema, String table) throws SQLException;
+    Collection<ColumnMetadata> loadColumns(String schema, String table) throws SQLException;
 
     /**
-     * Load Indexes.
+     * Load PrimaryKeys.
      *
-     * @param connection {@link Connection}
      * @param schema schema name
      * @param table table name
      * @return {@link IndexMetadata}
      * @throws SQLException exception
      */
-    Collection<IndexMetadata> loadIndexes(Connection connection, String schema, String table) throws SQLException;
+    Collection<IndexMetadata> getPrimaryKeys(String schema, String table) throws SQLException;
+
+    /**
+     * Load Indexes.
+     *
+     * @param schema schema name
+     * @param table table name
+     * @return {@link IndexMetadata}
+     * @throws SQLException exception
+     */
+    Collection<IndexMetadata> loadIndexes(String schema, String table) throws SQLException;
 }

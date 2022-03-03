@@ -22,7 +22,7 @@ import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
-import com.zergclan.wormhole.jdbc.api.MetadataLoader;
+import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
@@ -34,7 +34,7 @@ public final class DataSourceMetadataInitializer {
 
     private final Connection connection;
 
-    private final MetadataLoader metadataLoader;
+    private final MetaDataLoader metadataLoader;
 
     /**
      * Init.
@@ -44,7 +44,7 @@ public final class DataSourceMetadataInitializer {
      * @throws SQLException exception
      */
     public DataSourceMetadata init(final DataSourceMetadata dataSourceMetadata) throws SQLException {
-        Collection<SchemaMetadata> schemaMetadata = metadataLoader.loadSchemas(connection);
+        Collection<SchemaMetadata> schemaMetadata = metadataLoader.loadSchemas();
         for (SchemaMetadata each : schemaMetadata) {
             dataSourceMetadata.registerSchema(initSchemaMetadata(each));
         }
@@ -52,7 +52,7 @@ public final class DataSourceMetadataInitializer {
     }
 
     private SchemaMetadata initSchemaMetadata(final SchemaMetadata schemaMetadata) throws SQLException {
-        Collection<TableMetadata> tableMetadata = metadataLoader.loadTables(connection, schemaMetadata.getName());
+        Collection<TableMetadata> tableMetadata = metadataLoader.loadTables(schemaMetadata.getName());
         for (TableMetadata each : tableMetadata) {
             schemaMetadata.registerTable(initTableMetadata(each));
         }
@@ -62,11 +62,11 @@ public final class DataSourceMetadataInitializer {
     private TableMetadata initTableMetadata(final TableMetadata tableMetadata) throws SQLException {
         String schema = tableMetadata.getSchema();
         String table = tableMetadata.getName();
-        Collection<ColumnMetadata> columnMetadata = metadataLoader.loadColumns(connection, schema, table);
+        Collection<ColumnMetadata> columnMetadata = metadataLoader.loadColumns(schema, table);
         for (ColumnMetadata each : columnMetadata) {
             tableMetadata.registerColumn(each);
         }
-        Collection<IndexMetadata> indexMetadata = metadataLoader.loadIndexes(connection, schema, table);
+        Collection<IndexMetadata> indexMetadata = metadataLoader.loadIndexes(schema, table);
         for (IndexMetadata each : indexMetadata) {
             tableMetadata.registerIndex(each);
         }

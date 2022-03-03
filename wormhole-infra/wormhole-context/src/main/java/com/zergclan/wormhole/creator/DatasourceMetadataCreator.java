@@ -28,7 +28,7 @@ import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSource
 import com.zergclan.wormhole.core.metadata.resource.dialect.SQLServerDataSourceMetadata;
 import com.zergclan.wormhole.engine.DataSourceMetadataInitializer;
 import com.zergclan.wormhole.jdbc.DataSourceManger;
-import com.zergclan.wormhole.jdbc.api.MetadataLoader;
+import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -56,7 +56,7 @@ public final class DatasourceMetadataCreator {
     }
 
     // TODO create metadata loader
-    private static MetadataLoader createMetadataLoader() {
+    private static MetaDataLoader createMetadataLoader() {
         return null;
     }
 
