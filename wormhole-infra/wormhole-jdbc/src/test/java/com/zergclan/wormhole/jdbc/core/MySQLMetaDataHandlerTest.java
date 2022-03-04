@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.jdbc.core;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import org.junit.Test;
 
@@ -31,16 +33,32 @@ public class MySQLMetaDataHandlerTest {
 
     @Test
     public void assertGetTables() throws SQLException {
-//        HikariConfig config = new HikariConfig();
-//        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//        config.setJdbcUrl("jdbc:mysql://localhost:3306/slzx?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai");
-//        config.setUsername("slzx");
-//        config.setPassword("slzx");
-//        try (Connection connection = (new HikariDataSource(config)).getConnection()) {
-//            System.out.println(MySQLMetaDataHandler.getTables(connection, "slzx"));
-//        }
         try (Connection connection = getDataSource().getConnection()) {
             System.out.println(MySQLMetaDataHandler.getTables(connection, "PUBLIC").size());
+        }
+    }
+
+//    @Test
+    public void assertMysqlGetTables() throws SQLException {
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/slzx?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai");
+        config.setUsername("slzx");
+        config.setPassword("slzx");
+        try (Connection connection = (new HikariDataSource(config)).getConnection()) {
+            System.out.println(MySQLMetaDataHandler.getTables(connection, "slzx".toUpperCase()));
+        }
+    }
+
+//    @Test
+    public void assertOracleGetTables() throws SQLException {
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+        config.setJdbcUrl("jdbc:oracle:thin:@192.168.0.145:1522:shanglian");
+        config.setUsername("shangliantest");
+        config.setPassword("klfh0923147IHlfh");
+        try (Connection connection = (new HikariDataSource(config)).getConnection()) {
+            System.out.println(MySQLMetaDataHandler.getTables(connection, "shangliantest".toUpperCase()));
         }
     }
 
