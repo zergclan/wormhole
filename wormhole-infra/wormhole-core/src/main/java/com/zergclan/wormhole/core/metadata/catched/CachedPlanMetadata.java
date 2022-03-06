@@ -20,11 +20,11 @@ package com.zergclan.wormhole.core.metadata.catched;
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.Metadata;
-import com.zergclan.wormhole.core.metadata.plan.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.core.metadata.plan.SourceMetadata;
-import com.zergclan.wormhole.core.metadata.plan.TargetMetadata;
-import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
+import com.zergclan.wormhole.core.metadata.task.FilterMetadata;
+import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
+import com.zergclan.wormhole.core.metadata.task.TargetMetadata;
+import com.zergclan.wormhole.core.metadata.task.TaskMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -72,8 +72,12 @@ public final class CachedPlanMetadata implements Metadata {
         private CachedPlanMetadata build() {
             Collection<CachedTaskMetadata> taskList = new LinkedList<>();
             Iterator<Map.Entry<String, TaskMetadata>> iterator = planMetadata.getTasks().entrySet().iterator();
+            // Iterator<Map.Entry<String, TaskMetadata>> iterator = planMetadata.getTasks().entrySet().iterator();
             while (iterator.hasNext()) {
+
                 Map.Entry<String, TaskMetadata> next = iterator.next();
+
+                // Map.Entry<String, TaskMetadata> next = iterator.next();
                 TaskMetadata task = next.getValue();
                 SourceMetadata source = task.getSource();
                 TargetMetadata target = task.getTarget();

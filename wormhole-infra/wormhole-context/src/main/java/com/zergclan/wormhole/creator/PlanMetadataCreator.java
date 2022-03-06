@@ -22,7 +22,7 @@ import com.zergclan.wormhole.core.config.TaskConfiguration;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.plan.ExecutionMode;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
+import com.zergclan.wormhole.core.metadata.task.TaskMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

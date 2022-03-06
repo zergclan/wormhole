@@ -15,35 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
+package com.zergclan.wormhole.core.metadata.node;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+/**
+ * Node type of {@link DataNodeMetadata}.
+ */
+public enum NodeType {
 
-import java.util.Map;
-
-@Getter
-@RequiredArgsConstructor
-public final class SourceMetadata implements Metadata {
-    
-    private final String dataSourceIdentifier;
-    
-    private final String primaryTable;
-    
-    private final String linkTable;
-    
-    private final LinkType linkType;
-    
-    private final String conditionSql;
-    
-    private final String actualSql;
-    
-    private final Map<String, DataNodeMetadata> dataNodes;
-    
-    @Override
-    public String getIdentifier() {
-        return dataSourceIdentifier + MarkConstant.SPACE + "source";
-    }
+    STANDARD, REQUIRED, MAPPED, DEFAULT_ABLE, FIXED
 }

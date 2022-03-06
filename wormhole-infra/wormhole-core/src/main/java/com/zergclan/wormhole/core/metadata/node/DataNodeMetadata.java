@@ -15,27 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
+package com.zergclan.wormhole.core.metadata.node;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.core.metadata.Metadata;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Properties;
-
+/**
+ * Data node metadata.
+ */
 @RequiredArgsConstructor
-public final class FilterMetadata implements Metadata {
+public final class DataNodeMetadata implements Metadata {
     
-    private final String taskIdentifier;
+    private final String name;
+    
+    private final String tableName;
 
-    private final int order;
+    private final NodeType nodeType;
 
-    private final String type;
-
-    private final Properties properties;
+    private final DataType dataType;
 
     @Override
     public String getIdentifier() {
-        return taskIdentifier + MarkConstant.SPACE + type;
+        return tableName + MarkConstant.SPACE + name + MarkConstant.SPACE + nodeType.name() + MarkConstant.COLON + dataType.name();
     }
 }

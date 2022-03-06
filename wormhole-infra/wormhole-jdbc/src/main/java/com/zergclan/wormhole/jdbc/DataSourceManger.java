@@ -20,12 +20,15 @@ package com.zergclan.wormhole.jdbc;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.jdbc.core.DataSourceCreator;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DataSourceManger {
 
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
