@@ -38,15 +38,15 @@ public class MySQLMetaDataHandlerTest {
         }
     }
 
-//    @Test
+    @Test
     public void assertMysqlGetTables() throws SQLException {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/slzx?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai");
-        config.setUsername("slzx");
-        config.setPassword("slzx");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai");
+        config.setUsername("root");
+        config.setPassword("123456");
         try (Connection connection = (new HikariDataSource(config)).getConnection()) {
-            System.out.println(MySQLMetaDataHandler.getTables(connection, "slzx".toUpperCase()));
+            System.out.println(MySQLMetaDataHandler.getTables(connection, "test".toUpperCase()));
         }
     }
 

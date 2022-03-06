@@ -71,7 +71,7 @@ public interface MetaDataLoader {
      * @return {@link IndexMetadata}
      * @throws SQLException exception
      */
-    Collection<IndexMetadata> getPrimaryKeys(String schema, String table) throws SQLException;
+    IndexMetadata getPrimaryKeys(String schema, String table) throws SQLException;
 
     /**
      * Load Indexes.
