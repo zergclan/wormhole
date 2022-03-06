@@ -35,5 +35,7 @@ public final class DataNodeConfiguration implements Configuration {
 
     private final String nodeType;
 
+    private final String defaultValue;
+
     private final String dataType;
 }

@@ -32,7 +32,7 @@ import java.util.Collection;
  * proxy metaData.
  */
 public class ProxyMetaDataLoad implements MetaDataLoader {
-
+    
     private final DatabaseMetaData databaseMetaData;
 
     public ProxyMetaDataLoad(final Connection connection) throws SQLException {

@@ -25,7 +25,9 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MarkConstant {
-    
+
+    public static final String POINT = ".";
+
     public static final String SPACE = "#";
     
     public static final String COLON = ":";

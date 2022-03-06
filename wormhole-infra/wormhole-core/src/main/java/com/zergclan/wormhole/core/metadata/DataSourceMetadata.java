@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.core.metadata;
 
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 
 /**
  * The root interface from which all data source metadata objects shall be derived in Wormhole.
@@ -67,4 +68,12 @@ public interface DataSourceMetadata extends Metadata {
      * @return {@link SchemaMetadata}
      */
     SchemaMetadata getSchema(String name);
+
+    /**
+     * Get {@link TableMetadata}.
+     *
+     * @param name name
+     * @return {@link TableMetadata}
+     */
+    TableMetadata getTable(String name);
 }

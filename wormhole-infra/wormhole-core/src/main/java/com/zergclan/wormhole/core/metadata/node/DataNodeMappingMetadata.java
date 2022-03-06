@@ -17,10 +17,22 @@
 
 package com.zergclan.wormhole.core.metadata.node;
 
-/**
- * Node type of {@link DataNodeMetadata}.
- */
-public enum NodeType {
+import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    STANDARD, REQUIRED, MAPPED, DEFAULT_ABLE, FIXED
+import java.util.Collection;
+
+@RequiredArgsConstructor
+@Getter
+public final class DataNodeMappingMetadata implements Metadata {
+
+    private final Collection<String> target;
+
+    private final Collection<FilterMetadata> filters;
+
+    @Override
+    public String getIdentifier() {
+        return null;
+    }
 }
