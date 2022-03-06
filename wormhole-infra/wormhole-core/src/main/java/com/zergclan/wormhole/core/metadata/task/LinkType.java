@@ -15,28 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
-
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
-import lombok.RequiredArgsConstructor;
+package com.zergclan.wormhole.core.metadata.task;
 
 /**
- * Metadata for data node.
+ * Link type of {@link SourceMetadata}.
  */
-@RequiredArgsConstructor
-public final class DataNodeMetadata implements Metadata {
-    
-    private final String name;
-    
-    private final String tableName;
+public enum LinkType {
 
-    private final String nodeType;
-
-    private final String dataType;
-    
-    @Override
-    public String getIdentifier() {
-        return tableName + MarkConstant.SPACE + name + MarkConstant.SPACE + nodeType + MarkConstant.COLON + dataType;
-    }
+    FULL_JOIN, INNER_JOIN, LEFT_JOIN, RIGHT_JOIN, UNION_ALL, UNION
 }

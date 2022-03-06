@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Metadata for Oracle data source.
+ * Data source metadata of Oracle.
  */
 @RequiredArgsConstructor
 public final class OracleDataSourceMetadata implements DataSourceMetadata {

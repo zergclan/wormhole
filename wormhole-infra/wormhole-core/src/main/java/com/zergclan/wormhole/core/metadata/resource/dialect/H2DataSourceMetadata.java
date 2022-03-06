@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Metadata for H2 data source.
+ * Data source metadata of H2.
  */
 @RequiredArgsConstructor
 public final class H2DataSourceMetadata implements DataSourceMetadata {

@@ -35,7 +35,7 @@ public class ProxyMetaDataLoad implements MetaDataLoader {
 
     private final DatabaseMetaData databaseMetaData;
 
-    ProxyMetaDataLoad(final Connection connection) throws SQLException {
+    public ProxyMetaDataLoad(final Connection connection) throws SQLException {
         databaseMetaData = connection.getMetaData();
     }
 

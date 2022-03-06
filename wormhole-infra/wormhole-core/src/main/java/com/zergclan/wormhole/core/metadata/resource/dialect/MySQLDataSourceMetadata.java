@@ -31,7 +31,7 @@ import java.util.Properties;
 import java.util.StringJoiner;
 
 /**
- * Metadata for Oracle data source.
+ * Data source metadata of MySQL.
  */
 @RequiredArgsConstructor
 public final class MySQLDataSourceMetadata implements DataSourceMetadata {

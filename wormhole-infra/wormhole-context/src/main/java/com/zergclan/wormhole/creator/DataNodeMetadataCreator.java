@@ -18,7 +18,9 @@
 package com.zergclan.wormhole.creator;
 
 import com.zergclan.wormhole.core.config.DataNodeConfiguration;
-import com.zergclan.wormhole.core.metadata.plan.DataNodeMetadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
+import com.zergclan.wormhole.core.metadata.node.DataType;
+import com.zergclan.wormhole.core.metadata.node.NodeType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -35,6 +37,6 @@ public final class DataNodeMetadataCreator {
      * @return {@link DataNodeMetadata}
      */
     public static DataNodeMetadata create(final DataNodeConfiguration configuration) {
-        return new DataNodeMetadata(configuration.getTableName(), configuration.getName(), configuration.getNodeType(), configuration.getDataType());
+        return new DataNodeMetadata(configuration.getTableName(), configuration.getName(), NodeType.valueOf(configuration.getNodeType()), DataType.valueOf(configuration.getDataType()));
     }
 }

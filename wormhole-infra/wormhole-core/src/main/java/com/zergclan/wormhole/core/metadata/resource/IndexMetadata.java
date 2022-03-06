@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Collection;
 
 /**
- * Metadata of index.
+ * Index metadata.
  */
 @RequiredArgsConstructor
 @Getter

@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Metadata table.
+ * Table metadata.
  */
 @RequiredArgsConstructor
 @Getter

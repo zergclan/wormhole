@@ -15,5 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.engine;
+package com.zergclan.wormhole.core.metadata.task;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Properties;
+
+/**
+ * Filter metadata.
+ */
+@RequiredArgsConstructor
+public final class FilterMetadata implements Metadata {
+    
+    private final String taskIdentifier;
+
+    private final int order;
+
+    private final String type;
+
+    private final Properties properties;
+
+    @Override
+    public String getIdentifier() {
+        return taskIdentifier + MarkConstant.SPACE + type;
+    }
+}

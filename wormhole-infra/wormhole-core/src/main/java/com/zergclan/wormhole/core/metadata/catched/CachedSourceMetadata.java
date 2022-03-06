@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.core.metadata.catched;
 
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.plan.SourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;

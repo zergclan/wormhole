@@ -15,9 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
+package com.zergclan.wormhole.core.metadata.node;
 
-public enum LoadType {
+/**
+ * Data type of {@link DataNodeMetadata}.
+ */
+public enum DataType {
 
-    CLONE, CLONE_TRANSACTION, SHARDING, SHARDING_TRANSACTION
+    TEXT, CODE, NUMERIC, MONETARY, DATETIME
 }

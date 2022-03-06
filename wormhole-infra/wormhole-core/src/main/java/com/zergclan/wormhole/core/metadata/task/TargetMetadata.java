@@ -15,9 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
+package com.zergclan.wormhole.core.metadata.task;
 
-public enum LinkType {
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    FULL_JOIN, INNER_JOIN, LEFT_JOIN, RIGHT_JOIN, UNION_ALL, UNION
+import java.util.Collection;
+import java.util.Map;
+
+/**
+ * Target metadata.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class TargetMetadata implements Metadata {
+    
+    private final String dataSourceIdentifier;
+    
+    private final Collection<String> tables;
+
+    private final LoadType loadType;
+    
+    private final Map<String, DataNodeMetadata> dataNodes;
+    
+    @Override
+    public String getIdentifier() {
+        return dataSourceIdentifier + MarkConstant.SPACE + "target";
+    }
 }

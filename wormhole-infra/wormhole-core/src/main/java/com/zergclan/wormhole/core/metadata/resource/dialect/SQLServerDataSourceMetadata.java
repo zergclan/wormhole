@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Metadata for SQLServer data source.
+ * Data source metadata of SQLServer.
  */
 @RequiredArgsConstructor
 public final class SQLServerDataSourceMetadata implements DataSourceMetadata {

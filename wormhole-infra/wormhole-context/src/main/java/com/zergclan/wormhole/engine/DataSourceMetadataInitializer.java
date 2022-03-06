@@ -23,18 +23,22 @@ import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.jdbc.core.ProxyMetaDataLoad;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 
-@RequiredArgsConstructor
+/**
+ * Metadata initializer of {@link DataSourceMetadata}.
+ */
 public final class DataSourceMetadataInitializer {
 
-    private final Connection connection;
-
     private final MetaDataLoader metadataLoader;
+
+    public DataSourceMetadataInitializer(final Connection connection) throws SQLException {
+        this.metadataLoader = new ProxyMetaDataLoad(connection);
+    }
 
     /**
      * Init.

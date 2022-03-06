@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Metadata for PostgreSQL data source.
+ * Data source metadata of PostgreSQL.
  */
 @RequiredArgsConstructor
 public final class PostgreSQLDataSourceMetadata implements DataSourceMetadata {

@@ -15,30 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
-
-import com.zergclan.wormhole.core.metadata.Metadata;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
+package com.zergclan.wormhole.core.metadata.task;
 
 /**
- * Metadata for task.
+ * Link type of {@link TargetMetadata}.
  */
-@RequiredArgsConstructor
-@Getter
-public final class TaskMetadata implements Metadata {
-    
-    private final String identifier;
-    
-    private final int order;
-    
-    private final int batchSize;
-    
-    private final SourceMetadata source;
-    
-    private final TargetMetadata target;
-    
-    private final Collection<FilterMetadata> filters;
+public enum LoadType {
+
+    CLONE, CLONE_TRANSACTION, SHARDING, SHARDING_TRANSACTION
 }
