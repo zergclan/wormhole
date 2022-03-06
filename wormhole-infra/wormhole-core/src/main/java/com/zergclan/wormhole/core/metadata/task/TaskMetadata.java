@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.core.metadata.task;
 
 import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeMappingMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +40,6 @@ public final class TaskMetadata implements Metadata {
     private final SourceMetadata source;
     
     private final TargetMetadata target;
-    
-    private final Collection<FilterMetadata> filters;
+
+    private final Collection<DataNodeMappingMetadata> dataNodeMappings;
 }

@@ -48,7 +48,17 @@ public final class SchemaMetadata implements Metadata {
         tables.put(tableMetadata.getIdentifier(), tableMetadata);
         return true;
     }
-    
+
+    /**
+     * Get {@link TableMetadata}.
+     *
+     * @param name name
+     * @return {@link TableMetadata}
+     */
+    public TableMetadata getTable(final String name) {
+        return tables.get(name);
+    }
+
     @Override
     public String getIdentifier() {
         return dataSourceIdentifier + MarkConstant.SPACE + name;

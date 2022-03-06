@@ -20,8 +20,8 @@ package com.zergclan.wormhole.core.metadata.catched;
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeMappingMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.core.metadata.task.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
 import com.zergclan.wormhole.core.metadata.task.TargetMetadata;
 import com.zergclan.wormhole.core.metadata.task.TaskMetadata;
@@ -72,18 +72,14 @@ public final class CachedPlanMetadata implements Metadata {
         private CachedPlanMetadata build() {
             Collection<CachedTaskMetadata> taskList = new LinkedList<>();
             Iterator<Map.Entry<String, TaskMetadata>> iterator = planMetadata.getTasks().entrySet().iterator();
-            // Iterator<Map.Entry<String, TaskMetadata>> iterator = planMetadata.getTasks().entrySet().iterator();
             while (iterator.hasNext()) {
-
                 Map.Entry<String, TaskMetadata> next = iterator.next();
-
-                // Map.Entry<String, TaskMetadata> next = iterator.next();
                 TaskMetadata task = next.getValue();
                 SourceMetadata source = task.getSource();
                 TargetMetadata target = task.getTarget();
                 CachedSourceMetadata cachedSourceMetadata = CachedSourceMetadata.builder(source, dataSources.get(source.getDataSourceIdentifier()));
                 CachedTargetMetadata cachedTargetMetadata = CachedTargetMetadata.builder(target, dataSources.get(target.getDataSourceIdentifier()));
-                Collection<Filter<?>> filters = initFilters(task.getFilters());
+                Collection<Filter<?>> filters = initFilters(task.getDataNodeMappings());
                 taskList.add(new CachedTaskMetadata(task.getIdentifier(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, filters));
             }
             return new CachedPlanMetadata(planMetadata.getIdentifier(), ordered(taskList));
@@ -118,7 +114,8 @@ public final class CachedPlanMetadata implements Metadata {
             return result;
         }
 
-        private Collection<Filter<?>> initFilters(final Collection<FilterMetadata> filters) {
+        // TODO init filters
+        private Collection<Filter<?>> initFilters(final Collection<DataNodeMappingMetadata> dataNodeMappings) {
             Collection<Filter<?>> result = new LinkedList<>();
 
             return result;

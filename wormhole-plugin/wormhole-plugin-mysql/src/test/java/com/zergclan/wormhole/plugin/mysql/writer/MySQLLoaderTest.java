@@ -97,14 +97,14 @@ public class MySQLLoaderTest {
         IndexMetadata indexMetadata = new IndexMetadata(databaseIdentifier, schema, table, index, true, columnNames);
         TableMetadata tableMetadata = new TableMetadata(databaseIdentifier, schema, table);
 
-        tableMetadata.registerColumn("id", new ColumnMetadata("12", "target_db", "target_table", "id", "INT(11)", false));
-        tableMetadata.registerColumn("transInt", new ColumnMetadata("12", "target_db", "target_table", "trans_int", "int(1)", false));
-        tableMetadata.registerColumn("transBigint", new ColumnMetadata("12", "target_db", "target_table", "trans_bigint", "bigint(20)", false));
-        tableMetadata.registerColumn("transVarchar", new ColumnMetadata("12", "target_db", "target_table", "trans_varchar", "varchar(32)", false));
-        tableMetadata.registerColumn("transDecimal", new ColumnMetadata("12", "target_db", "target_table", "trans_decimal", "decimal(18,2)", false));
-        tableMetadata.registerColumn("transDatetime", new ColumnMetadata("12", "target_db", "target_table", "trans_datetime", "datetime", false));
-        tableMetadata.registerColumn("createTime", new ColumnMetadata("12", "target_db", "target_table", "create_time", "datetime", false));
-        tableMetadata.registerColumn("modifyTime", new ColumnMetadata("12", "target_db", "target_table", "modify_time", "datetime", false));
+        tableMetadata.registerColumn("id", new ColumnMetadata("12", "target_db", "target_table", "id", "INT(11)", "", false));
+        tableMetadata.registerColumn("transInt", new ColumnMetadata("12", "target_db", "target_table", "trans_int", "int(1)", "", false));
+        tableMetadata.registerColumn("transBigint", new ColumnMetadata("12", "target_db", "target_table", "trans_bigint", "bigint(20)", "", false));
+        tableMetadata.registerColumn("transVarchar", new ColumnMetadata("12", "target_db", "target_table", "trans_varchar", "varchar(32)", "", false));
+        tableMetadata.registerColumn("transDecimal", new ColumnMetadata("12", "target_db", "target_table", "trans_decimal", "decimal(18,2)", "", false));
+        tableMetadata.registerColumn("transDatetime", new ColumnMetadata("12", "target_db", "target_table", "trans_datetime", "datetime", "", false));
+        tableMetadata.registerColumn("createTime", new ColumnMetadata("12", "target_db", "target_table", "create_time", "datetime", "", false));
+        tableMetadata.registerColumn("modifyTime", new ColumnMetadata("12", "target_db", "target_table", "modify_time", "datetime", "", false));
 
         tableMetadata.registerIndex(indexMetadata);
 

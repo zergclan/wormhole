@@ -38,6 +38,8 @@ public final class TargetConfiguration implements Configuration {
 
     private final String loadType;
 
+    private final boolean transaction;
+
     private final Collection<String> unique;
 
     private final Collection<String> compare;

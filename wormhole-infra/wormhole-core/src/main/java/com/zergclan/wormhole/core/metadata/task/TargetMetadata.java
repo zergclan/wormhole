@@ -34,11 +34,13 @@ import java.util.Map;
 public final class TargetMetadata implements Metadata {
     
     private final String dataSourceIdentifier;
-    
+
     private final Collection<String> tables;
 
     private final LoadType loadType;
-    
+
+    private final boolean transaction;
+
     private final Map<String, DataNodeMetadata> dataNodes;
     
     @Override

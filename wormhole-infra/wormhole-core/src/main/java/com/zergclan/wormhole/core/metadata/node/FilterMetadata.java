@@ -17,10 +17,28 @@
 
 package com.zergclan.wormhole.core.metadata.node;
 
-/**
- * Data type of {@link DataNodeMetadata}.
- */
-public enum DataType {
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.RequiredArgsConstructor;
 
-    TEXT, CODE, NUMERIC, MONETARY, DATETIME
+import java.util.Properties;
+
+/**
+ * Filter metadata.
+ */
+@RequiredArgsConstructor
+public final class FilterMetadata implements Metadata {
+    
+    private final String taskIdentifier;
+
+    private final int order;
+
+    private final String type;
+
+    private final Properties properties;
+
+    @Override
+    public String getIdentifier() {
+        return taskIdentifier + MarkConstant.SPACE + type;
+    }
 }

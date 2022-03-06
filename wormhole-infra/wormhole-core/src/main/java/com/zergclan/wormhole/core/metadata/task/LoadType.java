@@ -22,5 +22,5 @@ package com.zergclan.wormhole.core.metadata.task;
  */
 public enum LoadType {
 
-    CLONE, CLONE_TRANSACTION, SHARDING, SHARDING_TRANSACTION
+    CLONE, SHARDING
 }

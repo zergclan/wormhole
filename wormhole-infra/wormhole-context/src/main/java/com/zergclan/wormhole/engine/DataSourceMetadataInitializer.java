@@ -41,7 +41,7 @@ public final class DataSourceMetadataInitializer {
     }
 
     /**
-     * Init.
+     * Init {@link DataSourceMetadata}.
      *
      * @param dataSourceMetadata {@link DataSourceMetadata}
      * @return {@link DataSourceMetadata}

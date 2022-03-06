@@ -26,17 +26,17 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public final class DataNodeMetadata implements Metadata {
-    
+
     private final String name;
     
     private final String tableName;
 
-    private final NodeType nodeType;
+    private final String defaultValue;
 
-    private final DataType dataType;
+    private final DataNodeTypeMetadata type;
 
     @Override
     public String getIdentifier() {
-        return tableName + MarkConstant.SPACE + name + MarkConstant.SPACE + nodeType.name() + MarkConstant.COLON + dataType.name();
+        return tableName + MarkConstant.SPACE + name + MarkConstant.SPACE + type.getIdentifier();
     }
 }
