@@ -17,17 +17,15 @@
 
 package com.zergclan.wormhole.engine;
 
-import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
 import com.zergclan.wormhole.creator.WormholeMetadataCreator;
-import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.scheduling.SchedulingExecutorFactory;
 import com.zergclan.wormhole.scheduling.SchedulingTrigger;
-import com.zergclan.wormhole.scheduling.PlanSchedulingTrigger;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -91,7 +89,8 @@ public final class WormholeExecutionEngine implements Runnable {
      * @return is registered or not
      */
     public boolean registerPlan(final String planIdentifier) {
-        return wormholeMetadata.get(planIdentifier).filter(metadata -> planSchedulingTriggerQueue.offer(new PlanSchedulingTrigger(metadata.getIdentifier()))).isPresent();
+        // TODO register plan
+        return false;
     }
 
     /**
@@ -113,7 +112,7 @@ public final class WormholeExecutionEngine implements Runnable {
     private boolean execute(final String planIdentifier) {
         Optional<CachedPlanMetadata> cachedPlanMetadata = wormholeMetadata.cachedMetadata(planIdentifier);
         if (cachedPlanMetadata.isPresent()) {
-            SchedulingExecutorFactory.createSchedulingExecutor(cachedPlanMetadata.get()).execute();
+            // fixme create scheduling executor
             return true;
         }
         return false;
@@ -137,7 +136,6 @@ public final class WormholeExecutionEngine implements Runnable {
                     sendEvent(trigger);
                 }
                 // FIXME calculate time for next time create new trigger
-                planSchedulingTriggerQueue.offer(new PlanSchedulingTrigger(identifier));
             }
         }
     }

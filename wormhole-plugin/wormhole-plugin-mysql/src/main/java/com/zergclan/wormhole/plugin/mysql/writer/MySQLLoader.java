@@ -17,69 +17,68 @@
 
 package com.zergclan.wormhole.plugin.mysql.writer;
 
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
-import com.zergclan.wormhole.loader.JdbcLoadContent;
-import com.zergclan.wormhole.loader.LoadContent;
-import com.zergclan.wormhole.loader.Loader;
+import com.zergclan.wormhole.core.api.data.DataGroup;
+import com.zergclan.wormhole.core.metadata.task.TargetMetadata;
+import com.zergclan.wormhole.plugin.api.Loader;
+import com.zergclan.wormhole.plugin.mysql.old.writer.LoadHandler;
 import lombok.Setter;
 
 import javax.sql.DataSource;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Loader for MySQL.
  */
 @Setter
-public final class MySQLLoader implements Loader {
+public final class MySQLLoader implements Loader<DataGroup> {
 
     private final LoadHandler loadHandler;
 
     public MySQLLoader(final DataSource dataSource) {
         this.loadHandler = new LoadHandler(dataSource);
     }
-
+    
     @Override
-    public void loaderData(final LoadContent loadContent) {
-        JdbcLoadContent jdbcLoadContent = (JdbcLoadContent) loadContent;
-        Collection<Map<String, Object>> listData = jdbcLoadContent.getLoadData();
-        Map<String, TableMetadata> tables = jdbcLoadContent.getTables();
-        for (Map.Entry<String, TableMetadata> entry : tables.entrySet()) {
-            String table = entry.getKey();
-            TableMetadata tableMetadata = entry.getValue();
-            System.out.println("load data into " + table + " start...");
-            List<Map<String, Object>> insertData = new LinkedList<>();
-            List<Map<String, Object>> updateData = new LinkedList<>();
-            for (Map<String, Object> mapData : listData) {
-                int count = executeSelect(tableMetadata, mapData);
-                if (count > 0) {
-                    updateData.add(mapData);
-                } else {
-                    insertData.add(mapData);
-                }
-            }
-            if (insertData.size() > 0) {
-                executeBatchInsert(tableMetadata, insertData);
-            }
-            if (updateData.size() > 0) {
-                executeBatchUpdate(tableMetadata, updateData);
-            }
-            System.out.println("load data into " + table + " end...");
-        }
+    public void load(final DataGroup dataGroup, final TargetMetadata target) {
+        // FIXME load implemented
     }
-
-    private int executeSelect(final TableMetadata tableMetadata, final Map<String, Object> mapData) {
-        return loadHandler.executeSelect(tableMetadata, mapData);
-    }
-
-    private void executeBatchInsert(final TableMetadata tableMetadata, final List<Map<String, Object>> insertData) {
-        loadHandler.executeBatchInsert(tableMetadata, insertData);
-    }
-
-    private void executeBatchUpdate(final TableMetadata tableMetadata, final List<Map<String, Object>> updateData) {
-        loadHandler.executeBatchUpdate(tableMetadata, updateData);
-    }
-
+    
+//    private void loaderData() {
+//        JdbcLoadContent jdbcLoadContent = (JdbcLoadContent) loadContent;
+//        Collection<Map<String, Object>> listData = jdbcLoadContent.getLoadData();
+//        Map<String, TableMetadata> tables = jdbcLoadContent.getTables();
+//        for (Map.Entry<String, TableMetadata> entry : tables.entrySet()) {
+//            String table = entry.getKey();
+//            TableMetadata tableMetadata = entry.getValue();
+//            System.out.println("load data into " + table + " start...");
+//            List<Map<String, Object>> insertData = new LinkedList<>();
+//            List<Map<String, Object>> updateData = new LinkedList<>();
+//            for (Map<String, Object> mapData : listData) {
+//                int count = executeSelect(tableMetadata, mapData);
+//                if (count > 0) {
+//                    updateData.add(mapData);
+//                } else {
+//                    insertData.add(mapData);
+//                }
+//            }
+//            if (insertData.size() > 0) {
+//                executeBatchInsert(tableMetadata, insertData);
+//            }
+//            if (updateData.size() > 0) {
+//                executeBatchUpdate(tableMetadata, updateData);
+//            }
+//            System.out.println("load data into " + table + " end...");
+//        }
+//    }
+//
+//    private int executeSelect(final TableMetadata tableMetadata, final Map<String, Object> mapData) {
+//        return loadHandler.executeSelect(tableMetadata, mapData);
+//    }
+//
+//    private void executeBatchInsert(final TableMetadata tableMetadata, final List<Map<String, Object>> insertData) {
+//        loadHandler.executeBatchInsert(tableMetadata, insertData);
+//    }
+//
+//    private void executeBatchUpdate(final TableMetadata tableMetadata, final List<Map<String, Object>> updateData) {
+//        loadHandler.executeBatchUpdate(tableMetadata, updateData);
+//    }
 }

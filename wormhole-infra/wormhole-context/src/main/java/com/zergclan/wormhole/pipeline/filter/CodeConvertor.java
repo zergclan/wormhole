@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.pipeline.filter;
 
 import com.zergclan.wormhole.core.api.Filter;
-import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.core.data.DataNode;
+import com.zergclan.wormhole.core.api.data.DataGroup;
+import com.zergclan.wormhole.core.api.data.DataNode;
 import com.zergclan.wormhole.core.data.StringDataNode;
 import com.zergclan.wormhole.pipeline.data.CodeMapper;
 import lombok.Getter;

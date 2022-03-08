@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.data;
 
+import com.zergclan.wormhole.core.api.data.DataNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;

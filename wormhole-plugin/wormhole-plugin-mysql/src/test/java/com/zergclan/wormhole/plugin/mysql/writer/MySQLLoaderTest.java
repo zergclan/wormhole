@@ -17,13 +17,8 @@
 
 package com.zergclan.wormhole.plugin.mysql.writer;
 
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
-import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.jdbc.core.DataSourceModeFactory;
-import com.zergclan.wormhole.loader.JdbcLoadContent;
-import com.zergclan.wormhole.loader.LoadContent;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -42,7 +37,6 @@ public class MySQLLoaderTest {
 
     @Test
     public void assertMySQLLoader() {
-
         final MySQLLoader loader = new MySQLLoader(getDataSource());
         final Collection<Map<String, Object>> loadData = new ArrayList<>();
         Map<String, Object> map = new HashMap<>(16);
@@ -54,7 +48,6 @@ public class MySQLLoaderTest {
         map.put("createTime", new Date());
         map.put("modifyTime", new Date());
         loadData.add(map);
-        loader.loaderData(createLoadContent(loadData));
     }
 
     /**
@@ -82,33 +75,33 @@ public class MySQLLoaderTest {
 
         return dataSource;
     }
-
-    private LoadContent createLoadContent(final Collection<Map<String, Object>> loadData) {
-        JdbcLoadContent jdbcLoadContent = new JdbcLoadContent();
-        jdbcLoadContent.setLoadData(loadData);
-
-        String databaseIdentifier = "MySQL#127.0.0.1:3306";
-        String schema = "target_db";
-        String table = "target_table";
-        String index = "index";
-        Collection<String> columnNames = new ArrayList<>(8);
-        columnNames.add("trans_int");
-        columnNames.add("trans_varchar");
-        IndexMetadata indexMetadata = new IndexMetadata(databaseIdentifier, schema, table, index, true, columnNames);
-        TableMetadata tableMetadata = new TableMetadata(databaseIdentifier, schema, table);
-
-        tableMetadata.registerColumn("id", new ColumnMetadata("12", "target_db", "target_table", "id", "INT(11)", "", false));
-        tableMetadata.registerColumn("transInt", new ColumnMetadata("12", "target_db", "target_table", "trans_int", "int(1)", "", false));
-        tableMetadata.registerColumn("transBigint", new ColumnMetadata("12", "target_db", "target_table", "trans_bigint", "bigint(20)", "", false));
-        tableMetadata.registerColumn("transVarchar", new ColumnMetadata("12", "target_db", "target_table", "trans_varchar", "varchar(32)", "", false));
-        tableMetadata.registerColumn("transDecimal", new ColumnMetadata("12", "target_db", "target_table", "trans_decimal", "decimal(18,2)", "", false));
-        tableMetadata.registerColumn("transDatetime", new ColumnMetadata("12", "target_db", "target_table", "trans_datetime", "datetime", "", false));
-        tableMetadata.registerColumn("createTime", new ColumnMetadata("12", "target_db", "target_table", "create_time", "datetime", "", false));
-        tableMetadata.registerColumn("modifyTime", new ColumnMetadata("12", "target_db", "target_table", "modify_time", "datetime", "", false));
-
-        tableMetadata.registerIndex(indexMetadata);
-
-        jdbcLoadContent.registerTable(tableMetadata);
-        return jdbcLoadContent;
-    }
+    
+//    private LoadContent createLoadContent(final Collection<Map<String, Object>> loadData) {
+//        JdbcLoadContent jdbcLoadContent = new JdbcLoadContent();
+//        jdbcLoadContent.setLoadData(loadData);
+//
+//        String databaseIdentifier = "MySQL#127.0.0.1:3306";
+//        String schema = "target_db";
+//        String table = "target_table";
+//        String index = "index";
+//        Collection<String> columnNames = new ArrayList<>(8);
+//        columnNames.add("trans_int");
+//        columnNames.add("trans_varchar");
+//        IndexMetadata indexMetadata = new IndexMetadata(databaseIdentifier, schema, table, index, true, columnNames);
+//        TableMetadata tableMetadata = new TableMetadata(databaseIdentifier, schema, table);
+//
+//        tableMetadata.registerColumn("id", new ColumnMetadata("12", "target_db", "target_table", "id", "INT(11)", "", false));
+//        tableMetadata.registerColumn("transInt", new ColumnMetadata("12", "target_db", "target_table", "trans_int", "int(1)", "", false));
+//        tableMetadata.registerColumn("transBigint", new ColumnMetadata("12", "target_db", "target_table", "trans_bigint", "bigint(20)", "", false));
+//        tableMetadata.registerColumn("transVarchar", new ColumnMetadata("12", "target_db", "target_table", "trans_varchar", "varchar(32)", "", false));
+//        tableMetadata.registerColumn("transDecimal", new ColumnMetadata("12", "target_db", "target_table", "trans_decimal", "decimal(18,2)", "", false));
+//        tableMetadata.registerColumn("transDatetime", new ColumnMetadata("12", "target_db", "target_table", "trans_datetime", "datetime", "", false));
+//        tableMetadata.registerColumn("createTime", new ColumnMetadata("12", "target_db", "target_table", "create_time", "datetime", "", false));
+//        tableMetadata.registerColumn("modifyTime", new ColumnMetadata("12", "target_db", "target_table", "modify_time", "datetime", "", false));
+//
+//        tableMetadata.registerIndex(indexMetadata);
+//
+//        jdbcLoadContent.registerTable(tableMetadata);
+//        return jdbcLoadContent;
+//    }
 }

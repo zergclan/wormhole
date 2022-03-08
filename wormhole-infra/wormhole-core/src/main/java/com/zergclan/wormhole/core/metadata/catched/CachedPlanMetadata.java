@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.core.metadata.catched;
 
 import com.zergclan.wormhole.core.api.Filter;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
 import com.zergclan.wormhole.core.metadata.task.TargetMetadata;

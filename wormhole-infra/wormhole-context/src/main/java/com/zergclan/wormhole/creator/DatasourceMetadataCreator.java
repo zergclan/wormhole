@@ -17,9 +17,9 @@
 
 package com.zergclan.wormhole.creator;
 
-import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import com.zergclan.wormhole.core.metadata.resource.dialect.H2DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
