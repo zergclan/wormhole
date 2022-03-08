@@ -44,7 +44,7 @@ public final class DataNodeMetadataCreator {
         String tableName = configuration.getTableName();
         String defaultValue = configuration.getDefaultValue();
         DataNodeTypeMetadata dataNodeTypeMetadata = new DataNodeTypeMetadata(configuration.getNodeType(), configuration.getDataType());
-        return new DataNodeMetadata(name, tableName, defaultValue, dataNodeTypeMetadata);
+        return new DataNodeMetadata(name, tableName, dataNodeTypeMetadata, defaultValue);
     }
 
     /**
@@ -58,6 +58,6 @@ public final class DataNodeMetadataCreator {
         String tableName = columnMetadata.getSchema() + MarkConstant.POINT + columnMetadata.getTable();
         DataNodeTypeMetadata type = new DataNodeTypeMetadata(columnMetadata);
         Optional<String> defaultValue = columnMetadata.getDefaultValue();
-        return defaultValue.map(value -> new DataNodeMetadata(name, tableName, value, type)).orElseGet(() -> new DataNodeMetadata(name, tableName, null, type));
+        return defaultValue.map(value -> new DataNodeMetadata(name, tableName, type, value)).orElseGet(() -> new DataNodeMetadata(name, tableName, type));
     }
 }

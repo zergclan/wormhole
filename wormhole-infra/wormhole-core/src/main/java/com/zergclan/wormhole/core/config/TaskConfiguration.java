@@ -41,5 +41,5 @@ public final class TaskConfiguration implements Configuration {
     
     private final TargetConfiguration target;
 
-    private final Collection<FilterConfiguration> filters;
+    private final Collection<DataNodeMappingConfiguration> dataNodeMappings;
 }

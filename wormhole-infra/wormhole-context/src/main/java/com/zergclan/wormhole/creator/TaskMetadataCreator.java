@@ -22,8 +22,8 @@ import com.zergclan.wormhole.core.config.SourceConfiguration;
 import com.zergclan.wormhole.core.config.TargetConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
 import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.node.DataNodeMappingMetadata;
 import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
+import com.zergclan.wormhole.core.metadata.node.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.core.metadata.task.LinkType;
@@ -57,8 +57,8 @@ public final class TaskMetadataCreator {
         String taskIdentifier = configuration.getName();
         TargetMetadata target = createTarget(configuration.getTarget(), dataSources.get(configuration.getSource().getDataSourceName()));
         SourceMetadata source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSourceName()));
-        Collection<DataNodeMappingMetadata> dataNodeMappings = createDataNodeMappings(target, source);
-        return new TaskMetadata(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, dataNodeMappings);
+        Collection<FilterMetadata> filters = createFilters();
+        return new TaskMetadata(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
 
     private static TargetMetadata createTarget(final TargetConfiguration configuration, final DataSourceMetadata targetDataSource) {
@@ -121,8 +121,8 @@ public final class TaskMetadataCreator {
     }
 
     // TODO create data node mappings
-    private static Collection<DataNodeMappingMetadata> createDataNodeMappings(final TargetMetadata target, final SourceMetadata source) {
-        Collection<DataNodeMappingMetadata> result = new LinkedList<>();
+    private static Collection<FilterMetadata> createFilters() {
+        Collection<FilterMetadata> result = new LinkedList<>();
         return result;
     }
 }

@@ -19,21 +19,27 @@ package com.zergclan.wormhole.core.metadata.node;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.core.metadata.Metadata;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
  * Data node metadata.
  */
 @RequiredArgsConstructor
+@Getter
 public final class DataNodeMetadata implements Metadata {
 
     private final String name;
     
     private final String tableName;
 
+    private final DataNodeTypeMetadata type;
+
     private final String defaultValue;
 
-    private final DataNodeTypeMetadata type;
+    public DataNodeMetadata(final String name, final String tableName, final DataNodeTypeMetadata type) {
+        this(name, tableName, type, null);
+    }
 
     @Override
     public String getIdentifier() {
