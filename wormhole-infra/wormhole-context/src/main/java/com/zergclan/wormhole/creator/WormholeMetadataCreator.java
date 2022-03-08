@@ -45,8 +45,8 @@ public final class WormholeMetadataCreator {
      * @throws SQLException exception
      */
     public static WormholeMetadata create(final WormholeConfiguration configuration) throws SQLException {
-        Map<String, DataSourceMetadata> dataSources = createDataSources(configuration.getDataSourceConfigurations());
-        Map<String, PlanMetadata> plans = createPlans(configuration.getPlanConfigurations(), dataSources);
+        Map<String, DataSourceMetadata> dataSources = createDataSources(configuration.getDataSources());
+        Map<String, PlanMetadata> plans = createPlans(configuration.getPlans(), dataSources);
         return new WormholeMetadata(dataSources, plans);
     }
 

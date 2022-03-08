@@ -41,7 +41,7 @@ public final class DataNodeMetadataCreator {
      */
     public static DataNodeMetadata create(final DataNodeConfiguration configuration) {
         String name = configuration.getName();
-        String tableName = configuration.getTableName();
+        String tableName = configuration.getTable();
         String defaultValue = configuration.getDefaultValue();
         DataNodeTypeMetadata dataNodeTypeMetadata = new DataNodeTypeMetadata(configuration.getNodeType(), configuration.getDataType());
         return new DataNodeMetadata(name, tableName, dataNodeTypeMetadata, defaultValue);

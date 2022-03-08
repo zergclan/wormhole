@@ -61,7 +61,7 @@ public final class DatasourceMetadataCreator {
             String catalog = configuration.getCatalog();
             String username = configuration.getUsername();
             String password = configuration.getPassword();
-            Properties parameters = configuration.getParameters();
+            Properties parameters = configuration.getProps();
             DatabaseType type = databaseType.get();
             if (DatabaseType.MYSQL == type) {
                 return new MySQLDataSourceMetadata(host, port, username, password, catalog, parameters);
