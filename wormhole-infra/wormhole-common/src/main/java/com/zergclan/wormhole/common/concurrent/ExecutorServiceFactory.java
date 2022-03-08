@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.concurrent;
 
-import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

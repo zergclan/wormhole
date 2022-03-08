@@ -19,7 +19,7 @@ package com.zergclan.wormhole.creator;
 
 import com.zergclan.wormhole.core.config.PlanConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.plan.ExecutionMode;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.task.TaskMetadata;

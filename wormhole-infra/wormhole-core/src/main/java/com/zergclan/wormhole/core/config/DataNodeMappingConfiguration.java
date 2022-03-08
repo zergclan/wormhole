@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.config;
 
+import com.zergclan.wormhole.core.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -34,8 +35,6 @@ public final class DataNodeMappingConfiguration implements Configuration {
     private final Collection<String> target;
 
     private final Collection<String> source;
-
-    private final String type;
-
+    
     private final Collection<FilterConfiguration> filters;
 }

@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.core.data;
 
+import com.zergclan.wormhole.core.api.data.DataNode;
+
 public final class ObjectDataNode implements DataNode<Object> {
     
     private String name;

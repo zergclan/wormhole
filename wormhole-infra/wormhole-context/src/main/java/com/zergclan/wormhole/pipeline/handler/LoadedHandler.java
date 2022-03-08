@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.pipeline.handler;
 
 import com.zergclan.wormhole.core.api.Handler;
-import com.zergclan.wormhole.loader.Loader;
-import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import com.zergclan.wormhole.plugin.api.Loader;
+import com.zergclan.wormhole.plugin.core.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class LoadedHandler implements Handler<BatchedDataGroup> {
 
-    private final Loader loader;
+    private final Loader<BatchedDataGroup> loader;
 
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {

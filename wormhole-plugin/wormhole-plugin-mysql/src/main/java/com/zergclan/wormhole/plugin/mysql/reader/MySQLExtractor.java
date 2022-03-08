@@ -17,73 +17,23 @@
 
 package com.zergclan.wormhole.plugin.mysql.reader;
 
-import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
-import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
-import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
-import com.zergclan.wormhole.extracter.Extractor;
-import com.zergclan.wormhole.plugin.mysql.reader.domain.AbsJdbcConcatSqlDOM;
-import com.zergclan.wormhole.plugin.mysql.reader.domain.impl.MysqlConcatSqlDOMImpl;
-import com.zergclan.wormhole.plugin.mysql.reader.mysql.ColumnMetaDataRowMapper;
-import com.zergclan.wormhole.plugin.mysql.reader.mysql.TableMetaDataRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import com.zergclan.wormhole.core.api.data.DataGroup;
+import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
+import com.zergclan.wormhole.plugin.api.Extractor;
+import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * Extractor for MySQL.
  */
-public final class MySQLExtractor implements Extractor {
-
-    private final JdbcTemplate jdbcTemplate;
-
-    private final AbsJdbcConcatSqlDOM jdbcConcatSqlDOM = new MysqlConcatSqlDOMImpl();
-
-    public MySQLExtractor(final DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
+@RequiredArgsConstructor
+public final class MySQLExtractor implements Extractor<DataGroup> {
+    
+    private final DataSource dataSource;
+    
     @Override
-    public Collection<TableMetadata> extractTables(final SchemaMetadata schemaMetaData) {
-        String queryAllTablesSql = jdbcConcatSqlDOM.getQueryAllTablesSql(schemaMetaData.getName());
-        return executeSql(queryAllTablesSql, new TableMetaDataRowMapper(schemaMetaData.getDataSourceIdentifier())).orElseGet(ArrayList::new);
-    }
-
-    private <T> Optional<List<T>> executeSql(final String executeSql, final RowMapper<T> rowMapper) {
-        return Optional.of(jdbcTemplate.query(executeSql, rowMapper));
-    }
-
-    @Override
-    public Collection<ColumnMetadata> extractColumns(final TableMetadata table) {
-        String queryAllColumnsSql = jdbcConcatSqlDOM.getQueryAllColumnsSql(table.getSchema(), table.getName());
-        return executeSql(queryAllColumnsSql, new ColumnMetaDataRowMapper(table.getDataSourceIdentifier())).orElseGet(ArrayList::new);
-    }
-
-    @Override
-    public Collection<IndexMetadata> extractIndexes(final TableMetadata table) {
-        // TODO
+    public DataGroup extract(final SourceMetadata source) {
         return null;
-    }
-
-    @Override
-    public Collection<Map<String, Object>> extractData(final Map<String, ColumnMetadata> columns) {
-        StringJoiner selectColumns = new StringJoiner(", ");
-        String tableName = "";
-        for (Map.Entry<String, ColumnMetadata> column : columns.entrySet()) {
-            if (StringUtil.isBlank(tableName)) {
-                tableName = column.getValue().getSchema() + "." + column.getValue().getTable();
-            }
-            selectColumns.add(column.getValue().getName() + WormholeReaderConstants.SQL_AS + column.getKey());
-        }
-        String queryDataSql = WormholeReaderConstants.SQL_SELECT + selectColumns + WormholeReaderConstants.SQL_FROM + tableName;
-        return jdbcTemplate.queryForList(queryDataSql);
     }
 }

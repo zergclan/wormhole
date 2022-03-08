@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.core.metadata.task;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

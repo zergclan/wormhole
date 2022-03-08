@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.jdbc;
 
 import com.zergclan.wormhole.common.util.Validator;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.jdbc.core.DataSourceCreator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

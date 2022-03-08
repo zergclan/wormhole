@@ -21,7 +21,7 @@ import com.zergclan.wormhole.core.config.DataNodeConfiguration;
 import com.zergclan.wormhole.core.config.SourceConfiguration;
 import com.zergclan.wormhole.core.config.TargetConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
 import com.zergclan.wormhole.core.metadata.node.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;

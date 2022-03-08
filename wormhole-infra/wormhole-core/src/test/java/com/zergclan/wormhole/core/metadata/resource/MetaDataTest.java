@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.core.metadata.resource;
 
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSourceMetadata;
 import org.junit.jupiter.api.Test;
