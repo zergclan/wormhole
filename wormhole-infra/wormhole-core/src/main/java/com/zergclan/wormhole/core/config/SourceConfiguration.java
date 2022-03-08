@@ -32,7 +32,7 @@ public final class SourceConfiguration implements Configuration {
     
     private static final long serialVersionUID = 8569768353614409983L;
     
-    private final String dataSourceName;
+    private final String dataSource;
     
     private final String primaryTable;
     

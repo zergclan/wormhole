@@ -30,13 +30,11 @@ public final class DataNodeConfiguration implements Configuration {
     
     private static final long serialVersionUID = 5454828648754484053L;
 
-    private final String tableName;
+    private final String table;
     
-    private final String name;
-
     private final String nodeType;
-
-    private final String defaultValue;
-
+    
     private final String dataType;
+    
+    private final String defaultValue;
 }
