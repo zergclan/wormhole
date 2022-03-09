@@ -18,13 +18,12 @@
 package com.zergclan.wormhole.creator;
 
 import com.zergclan.wormhole.core.config.DataNodeConfiguration;
-import com.zergclan.wormhole.core.config.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.core.config.SourceConfiguration;
 import com.zergclan.wormhole.core.config.TargetConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
 import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
-import com.zergclan.wormhole.core.metadata.node.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.core.metadata.task.LoadType;
@@ -37,7 +36,6 @@ import lombok.NoArgsConstructor;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -57,7 +55,7 @@ public final class TaskMetadataCreator {
     public static TaskMetadata create(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, DataSourceMetadata> dataSources) {
         TargetMetadata target = createTarget(configuration.getTarget(), dataSources.get(configuration.getSource().getDataSource()));
         SourceMetadata source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSource()));
-        Collection<FilterMetadata> filters = createFilters(configuration.getDataNodeMappings(), target, source);
+        Collection<FilterMetadata> filters = FilterMetadataCreator.create(configuration.getDataNodeMappings(), target, source);
         return new TaskMetadata(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
     
@@ -123,11 +121,5 @@ public final class TaskMetadataCreator {
     private static Map<String, DataNodeMetadata> createSourceDataNodes(final String table, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
                                                                        final DataSourceMetadata sourceDataSource) {
         return createSingleTableDataNodes(sourceDataSource.getTable(table), dataNodeConfigurations);
-    }
-    
-    // TODO create filter metadata
-    private static Collection<FilterMetadata> createFilters(final Collection<DataNodeMappingConfiguration> dataNodeMappings, final TargetMetadata target, final SourceMetadata source) {
-        Collection<FilterMetadata> result = new LinkedList<>();
-        return result;
     }
 }

@@ -15,30 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.node;
+package com.zergclan.wormhole.core.metadata.filter;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.api.metadata.Metadata;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Properties;
+import com.zergclan.wormhole.core.config.FilterConfiguration;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * Filter metadata.
+ * Simple factory for create {@link FilterMetadata}.
  */
-@RequiredArgsConstructor
-public final class FilterMetadata implements Metadata {
-    
-    private final String taskIdentifier;
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class FilterMetadataFactory {
 
-    private final int order;
-
-    private final String type;
-
-    private final Properties properties;
-
-    @Override
-    public String getIdentifier() {
-        return taskIdentifier + MarkConstant.SPACE + type;
+    /**
+     * get instance of {@link FilterMetadata}.
+     *
+     * @param filterConfiguration {@link FilterConfiguration}
+     * @return {@link FilterMetadata}
+     */
+    public static FilterMetadata getInstance(final FilterConfiguration filterConfiguration) {
+        // TODO create filter metadata
+        return null;
     }
 }

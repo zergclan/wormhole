@@ -19,6 +19,9 @@ package com.zergclan.wormhole.core.data;
 
 import com.zergclan.wormhole.core.api.data.DataNode;
 
+/**
+ * Data node type of {@link Long}.
+ */
 public final class LongDataNode implements DataNode<Long> {
 
     private String name;

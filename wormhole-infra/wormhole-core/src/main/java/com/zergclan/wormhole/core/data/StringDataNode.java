@@ -20,7 +20,7 @@ package com.zergclan.wormhole.core.data;
 import com.zergclan.wormhole.core.api.data.DataNode;
 
 /**
- * Data node type of string.
+ * Data node type of {@link String}.
  */
 public final class StringDataNode implements DataNode<String> {
     
