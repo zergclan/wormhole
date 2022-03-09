@@ -21,6 +21,7 @@ import com.zergclan.wormhole.core.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -34,11 +35,7 @@ public final class SourceConfiguration implements Configuration {
     
     private final String dataSource;
     
-    private final String primaryTable;
-    
-    private final String linkTable;
-    
-    private final String linkType;
+    private final Collection<String> tables;
     
     private final String conditionSql;
     
