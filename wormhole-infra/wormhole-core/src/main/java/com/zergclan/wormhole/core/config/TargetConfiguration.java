@@ -33,7 +33,7 @@ public final class TargetConfiguration implements Configuration {
     
     private static final long serialVersionUID = -3361482780019688246L;
     
-    private final String dataSourceName;
+    private final String dataSource;
 
     private final Collection<String> tables;
 

@@ -49,14 +49,14 @@ public final class TaskMetadataCreator {
     /**
      * Create {@link TaskMetadata}.
      *
+     * @param taskIdentifier task identifier
      * @param configuration {@link TaskConfiguration}
      * @param dataSources {@link DataSourceMetadata}
      * @return {@link TaskMetadata}
      */
-    public static TaskMetadata create(final TaskConfiguration configuration, final Map<String, DataSourceMetadata> dataSources) {
-        String taskIdentifier = configuration.getName();
-        TargetMetadata target = createTarget(configuration.getTarget(), dataSources.get(configuration.getSource().getDataSourceName()));
-        SourceMetadata source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSourceName()));
+    public static TaskMetadata create(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, DataSourceMetadata> dataSources) {
+        TargetMetadata target = createTarget(configuration.getTarget(), dataSources.get(configuration.getSource().getDataSource()));
+        SourceMetadata source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSource()));
         Collection<FilterMetadata> filters = createFilters();
         return new TaskMetadata(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
@@ -75,20 +75,21 @@ public final class TaskMetadataCreator {
                                                                         final DataSourceMetadata targetDataSource) {
         return createTargetNodes(targetDataSource.getTable(targetTable), dataNodeConfigurations);
     }
-
+    
     private static Map<String, DataNodeMetadata> createTargetNodes(final TableMetadata table, final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
         Map<String, DataNodeMetadata> result = new LinkedHashMap<>();
         Map<String, ColumnMetadata> columns = table.getColumns();
         Iterator<Map.Entry<String, ColumnMetadata>> iterator = columns.entrySet().iterator();
+        DataNodeConfiguration dataNodeConfiguration;
         while (iterator.hasNext()) {
             Map.Entry<String, ColumnMetadata> entry = iterator.next();
-            String name = entry.getKey();
-            result.put(name, null == dataNodeConfigurations.get(name) ? DataNodeMetadataCreator.createDefaultMetadata(entry.getValue())
-                    : DataNodeMetadataCreator.create(dataNodeConfigurations.get(name)));
+            String nodeName = entry.getKey();
+            dataNodeConfiguration = dataNodeConfigurations.get(nodeName);
+            result.put(nodeName, null == dataNodeConfiguration ? DataNodeMetadataCreator.createDefaultMetadata(entry.getValue()) : DataNodeMetadataCreator.create(nodeName, dataNodeConfiguration));
         }
         return result;
     }
-
+    
     private static Map<String, DataNodeMetadata> createShardingTargetNodes(final Collection<String> tables, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
                                                                            final DataSourceMetadata targetDataSource) {
         Map<String, DataNodeMetadata> result = new LinkedHashMap<>();
@@ -115,11 +116,12 @@ public final class TaskMetadataCreator {
         Iterator<Map.Entry<String, DataNodeConfiguration>> iterator = configurations.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, DataNodeConfiguration> entry = iterator.next();
-            result.put(entry.getKey(), DataNodeMetadataCreator.create(entry.getValue()));
+            String nodeName = entry.getKey();
+            result.put(nodeName, DataNodeMetadataCreator.create(nodeName, entry.getValue()));
         }
         return result;
     }
-
+    
     // TODO create data node mappings
     private static Collection<FilterMetadata> createFilters() {
         Collection<FilterMetadata> result = new LinkedList<>();

@@ -45,8 +45,8 @@ public final class WormholeMetadataCreator {
      * @throws SQLException exception
      */
     public static WormholeMetadata create(final WormholeConfiguration configuration) throws SQLException {
-        Map<String, DataSourceMetadata> dataSources = createDataSources(configuration.getDataSourceConfigurations());
-        Map<String, PlanMetadata> plans = createPlans(configuration.getPlanConfigurations(), dataSources);
+        Map<String, DataSourceMetadata> dataSources = createDataSources(configuration.getDataSources());
+        Map<String, PlanMetadata> plans = createPlans(configuration.getPlans(), dataSources);
         return new WormholeMetadata(dataSources, plans);
     }
 
@@ -54,8 +54,8 @@ public final class WormholeMetadataCreator {
         Map<String, DataSourceMetadata> result = new LinkedHashMap<>();
         Iterator<Map.Entry<String, DataSourceConfiguration>> iterator = configurations.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, DataSourceConfiguration> next = iterator.next();
-            result.put(next.getKey(), DatasourceMetadataCreator.create(next.getValue()));
+            Map.Entry<String, DataSourceConfiguration> entry = iterator.next();
+            result.put(entry.getKey(), DatasourceMetadataCreator.create(entry.getValue()));
         }
         return result;
     }
@@ -65,7 +65,7 @@ public final class WormholeMetadataCreator {
         Map<String, PlanMetadata> result = new LinkedHashMap<>();
         while (iterator.hasNext()) {
             Map.Entry<String, PlanConfiguration> entry = iterator.next();
-            result.put(entry.getKey(), PlanMetadataCreator.create(entry.getValue(), dataSources));
+            result.put(entry.getKey(), PlanMetadataCreator.create(entry.getKey(), entry.getValue(), dataSources));
         }
         return result;
     }

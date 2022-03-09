@@ -46,5 +46,5 @@ public final class DataSourceConfiguration implements Configuration {
     
     private final String catalog;
     
-    private final Properties parameters;
+    private final Properties props;
 }

@@ -36,5 +36,5 @@ public final class FilterConfiguration implements Configuration {
 
     private final int order;
 
-    private final Properties properties;
+    private final Properties props;
 }

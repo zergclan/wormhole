@@ -32,8 +32,6 @@ public final class TaskConfiguration implements Configuration {
 
     private static final long serialVersionUID = 5125883893404187330L;
     
-    private final String name;
-    
     private final int order;
     
     private final int batchSize;
