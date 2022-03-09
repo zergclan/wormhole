@@ -36,15 +36,15 @@ public final class DataNodeMetadataCreator {
     /**
      * Create {@link DataNodeMetadata}.
      *
+     * @param nodeName node name
      * @param configuration {@link DataNodeConfiguration}
      * @return {@link DataNodeMetadata}
      */
-    public static DataNodeMetadata create(final DataNodeConfiguration configuration) {
-        String name = configuration.getName();
+    public static DataNodeMetadata create(final String nodeName, final DataNodeConfiguration configuration) {
         String tableName = configuration.getTable();
         String defaultValue = configuration.getDefaultValue();
         DataNodeTypeMetadata dataNodeTypeMetadata = new DataNodeTypeMetadata(configuration.getNodeType(), configuration.getDataType());
-        return new DataNodeMetadata(name, tableName, dataNodeTypeMetadata, defaultValue);
+        return new DataNodeMetadata(nodeName, tableName, dataNodeTypeMetadata, defaultValue);
     }
 
     /**
