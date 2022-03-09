@@ -15,26 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.config;
+package com.zergclan.wormhole.core.metadata.filter;
 
-import com.zergclan.wormhole.core.api.Configuration;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
+import com.zergclan.wormhole.core.api.metadata.Metadata;
 
 /**
- * Configuration of data node mapping.
+ * The interface from which all filter metadata objects shall be derived in Wormhole.
  */
-@RequiredArgsConstructor
-@Getter
-public final class DataNodeMappingConfiguration implements Configuration {
+public interface FilterMetadata extends Metadata {
 
-    private static final long serialVersionUID = 4464580085768990832L;
+    /**
+     * Get order.
+     *
+     * @return order
+     */
+    int getOrder();
 
-    private final Collection<String> targetNames;
-
-    private final Collection<String> sourceNames;
-    
-    private final Collection<FilterConfiguration> filters;
+    /**
+     * Get type.
+     *
+     * @return type
+     */
+    String getType();
 }
