@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.filter.complex;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
@@ -29,10 +29,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Node splitter implemented of {@link Filter}.
+ * Delimiter splitter implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class NodeSplitter implements Filter<DataGroup> {
+public final class DelimiterSplitter implements Filter<DataGroup> {
     
     @Getter
     private final int order;
@@ -80,6 +80,6 @@ public final class NodeSplitter implements Filter<DataGroup> {
     
     @Override
     public String getType() {
-        return "NODE_SPLITTER";
+        return "DELIMITER_SPLITTER";
     }
 }

@@ -62,7 +62,15 @@ public final class CollectionUtil {
         }
         return result;
     }
-
+    
+    /**
+     * Collection compare.
+     *
+     * @param source source
+     * @param target target
+     * @param <T> class type of collection
+     * @return is same or not
+     */
     public static <T> boolean compare(final Collection<T> source, final Collection<T> target) {
         Validator.notNull(source, "Error : collection compare source collection can not be null");
         Validator.notNull(target, "Error : collection compare target collection can not be null");

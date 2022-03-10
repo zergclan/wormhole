@@ -17,24 +17,10 @@
 
 package com.zergclan.wormhole.core.metadata.filter;
 
-import com.zergclan.wormhole.core.api.metadata.Metadata;
-
 /**
- * The interface from which all filter metadata objects shall be derived in Wormhole.
+ * Type of {@link FilterMetadata}.
  */
-public interface FilterMetadata extends Metadata {
+public enum FilterType {
     
-    /**
-     * Get order.
-     *
-     * @return order
-     */
-    int getOrder();
-    
-    /**
-     * Get {@link FilterType}.
-     *
-     * @return {@link FilterType}
-     */
-    FilterType getType();
+    NOT_NULL, CONCAT_MERGER, DELIMITER_SPLITTER
 }

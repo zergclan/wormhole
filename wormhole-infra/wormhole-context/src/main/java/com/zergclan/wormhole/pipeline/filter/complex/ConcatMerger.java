@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.filter.complex;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
@@ -29,10 +29,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Node concat merger implemented of {@link Filter}.
+ * Concat merger implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class NodeConcatMerger implements Filter<DataGroup> {
+public final class ConcatMerger implements Filter<DataGroup> {
     
     @Getter
     private final int order;
