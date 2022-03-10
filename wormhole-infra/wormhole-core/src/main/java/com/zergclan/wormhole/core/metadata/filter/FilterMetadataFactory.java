@@ -22,7 +22,9 @@ import com.zergclan.wormhole.core.config.FilterConfiguration;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Simple factory for create {@link FilterMetadata}.
@@ -35,16 +37,35 @@ public final class FilterMetadataFactory {
      *
      * @param taskIdentifier task identifier
      * @param filterConfiguration {@link FilterConfiguration}
+     * @param targetNames target names
+     * @param sourceNames source names
      * @return {@link FilterMetadata}
      */
-    public static FilterMetadata getPreciseInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration) {
-        // TODO create filter metadata by type
+    public static FilterMetadata getPreciseInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration, final Collection<String> targetNames,
+                                                    final Collection<String> sourceNames) {
         FilterType filterType = FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT));
         boolean preState = FilterType.CONCAT_MERGER == filterType || FilterType.DELIMITER_SPLITTER == filterType;
         Validator.preState(preState, "error : create precise filter metadata failed filterType can not be: [%s] task identifier: [%s]", filterType.name(), taskIdentifier);
+        return createFilterMetadata(filterType, taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps(), targetNames, sourceNames);
+    }
+
+    private static FilterMetadata createFilterMetadata(final FilterType filterType, final String taskIdentifier, final int order, final Properties props, final Collection<String> targetNames,
+                                                       final Collection<String> sourceNames) {
         switch (filterType) {
             case NOT_NULL:
-                return NotNullValidatorMetadata.builder(taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
+                return NotNullValidatorMetadata.builder(taskIdentifier, order, props);
+            case NOT_BLANK:
+                return NotBlankValidatorMetadata.builder(taskIdentifier, order, props);
+            case NULL_TO_DEFAULT:
+                return NullToDefaultEditorMetadata.builder(taskIdentifier, order, props);
+            case FIXED_NODE:
+                return FixedNodeEditorMetadata.builder(taskIdentifier, order, props);
+            case NAME_CONVERTOR:
+                return NameConvertorMetadata.builder(taskIdentifier, order, targetNames.iterator().next(), sourceNames.iterator().next());
+            case CONCAT_MERGER:
+                return ConcatMergerMetadata.builder(taskIdentifier, order, props, targetNames.iterator().next(), sourceNames);
+            case DELIMITER_SPLITTER:
+                return DelimiterSplitterMetadata.builder(taskIdentifier, order, props, targetNames, sourceNames.iterator().next());
             default:
                 return null;
         }

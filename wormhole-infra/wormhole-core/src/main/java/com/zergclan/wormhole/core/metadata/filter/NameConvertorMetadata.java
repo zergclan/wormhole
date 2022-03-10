@@ -18,67 +18,66 @@
 package com.zergclan.wormhole.core.metadata.filter;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Properties;
-
 /**
- * Not null validator implemented of {@link FilterMetadata}.
+ * Name convertor implemented of {@link FilterMetadata}.
  */
 @RequiredArgsConstructor
-public final class NotNullValidatorMetadata implements FilterMetadata {
-    
-    private static final FilterType FILTER_TYPE = FilterType.NOT_NULL;
-    
+public final class NameConvertorMetadata implements FilterMetadata {
+
+    private static final FilterType FILTER_TYPE = FilterType.NAME_CONVERTOR;
+
     private final String taskIdentifier;
-    
+
     private final int order;
-    
-    @Getter
-    private final String name;
-    
-    @Override
-    public int getOrder() {
-        return order;
-    }
-    
-    @Override
-    public FilterType getType() {
-        return FILTER_TYPE;
-    }
-    
+
+    private final String targetName;
+
+    private final String sourceName;
+
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
     }
-    
+
+    @Override
+    public int getOrder() {
+        return order;
+    }
+
+    @Override
+    public FilterType getType() {
+        return FILTER_TYPE;
+    }
+
     /**
-     * Builder for {@link NotNullValidatorMetadata}.
+     * Builder for {@link NameConvertorMetadata}.
      *
      * @param taskIdentifier task identifier
      * @param order order
-     * @param props props
-     * @return {@link NotNullValidatorMetadata}
+     * @param targetName target name
+     * @param sourceName source name
+     * @return {@link NameConvertorMetadata}
      */
-    public static NotNullValidatorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
-        String name = props.getProperty("name");
-        Validator.notNull(name, "error : build NotNullValidator failed name in props can not be null, task identifier: [%s]", taskIdentifier);
-        return new NotNullValidatorMetadata.FilterBuilder(taskIdentifier, order, name).build();
+    public static NameConvertorMetadata builder(final String taskIdentifier, final int order, final String targetName, final String sourceName) {
+        return new NameConvertorMetadata.FilterBuilder(taskIdentifier, order, targetName, sourceName).build();
     }
-    
+
     @RequiredArgsConstructor
     private static class FilterBuilder {
-        
+
         private final String taskIdentifier;
-    
+
         private final int order;
-        
-        private final String name;
-        
-        private NotNullValidatorMetadata build() {
-            return new NotNullValidatorMetadata(taskIdentifier, order, name);
+
+        private final String targetName;
+
+        private final String sourceName;
+
+        private NameConvertorMetadata build() {
+            return new NameConvertorMetadata(taskIdentifier, order, targetName, sourceName);
         }
     }
+
 }
