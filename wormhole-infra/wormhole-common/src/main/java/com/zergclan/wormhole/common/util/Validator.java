@@ -58,4 +58,17 @@ public final class Validator {
             throw new IllegalArgumentException(String.format(message, args));
         }
     }
+    
+    /**
+     * Validate pre state.
+     *
+     * @param expression expression
+     * @param message error message
+     * @param args error args
+     */
+    public static void preState(final boolean expression, final String message, final Object... args) {
+        if (!expression) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
+    }
 }

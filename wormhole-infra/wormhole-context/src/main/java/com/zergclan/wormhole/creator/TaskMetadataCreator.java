@@ -55,7 +55,7 @@ public final class TaskMetadataCreator {
     public static TaskMetadata create(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, DataSourceMetadata> dataSources) {
         TargetMetadata target = createTarget(configuration.getTarget(), dataSources.get(configuration.getSource().getDataSource()));
         SourceMetadata source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSource()));
-        Collection<FilterMetadata> filters = FilterMetadataCreator.create(configuration.getDataNodeMappings(), target, source);
+        Collection<FilterMetadata> filters = FilterMetadataCreator.create(taskIdentifier, configuration.getDataNodeMappings(), target, source);
         return new TaskMetadata(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
     

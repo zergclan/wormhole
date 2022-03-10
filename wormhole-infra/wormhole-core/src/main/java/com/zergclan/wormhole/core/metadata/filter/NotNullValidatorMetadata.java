@@ -19,45 +19,66 @@ package com.zergclan.wormhole.core.metadata.filter;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
 
 /**
  * Not null validator implemented of {@link FilterMetadata}.
  */
+@RequiredArgsConstructor
 public final class NotNullValidatorMetadata implements FilterMetadata {
-
+    
+    private static final FilterType TYPE = FilterType.NOT_NULL;
+    
     private final String taskIdentifier;
-
+    
     private final int order;
-
-    // FIXME refactoring by enum
-    private final String type;
-
+    
+    @Getter
     private final String name;
-
-    // FIXME refactoring using builder pattern
-    public NotNullValidatorMetadata(final String taskIdentifier, final int order, final String type, final Properties props) {
-        this.taskIdentifier = taskIdentifier;
-        this.order = order;
-        this.type = type;
-        String name = props.getProperty("name");
-        Validator.notNull(name, "error : not null validator sourceName can not be null, task identifier: [%s]", taskIdentifier);
-        this.name = name;
-    }
-
+    
     @Override
     public int getOrder() {
         return order;
     }
-
+    
     @Override
-    public String getType() {
-        return type;
+    public FilterType getType() {
+        return TYPE;
     }
-
+    
     @Override
     public String getIdentifier() {
-        return taskIdentifier + MarkConstant.SPACE + type + MarkConstant.SPACE + order;
+        return taskIdentifier + MarkConstant.SPACE + TYPE + MarkConstant.SPACE + order;
+    }
+    
+    /**
+     * Builder for {@link NotNullValidatorMetadata}.
+     *
+     * @param taskIdentifier task identifier
+     * @param order order
+     * @param props props
+     * @return {@link NotNullValidatorMetadata}
+     */
+    public static NotNullValidatorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
+        String name = props.getProperty("name");
+        Validator.notNull(name, "error : build NotNullValidator failed name in props can not be null, task identifier: [%s]", taskIdentifier);
+        return new NotNullValidatorMetadata.FilterBuilder(taskIdentifier, order, name).build();
+    }
+    
+    @RequiredArgsConstructor
+    private static class FilterBuilder {
+        
+        private final String taskIdentifier;
+    
+        private final int order;
+        
+        private final String name;
+        
+        private NotNullValidatorMetadata build() {
+            return new NotNullValidatorMetadata(taskIdentifier, order, name);
+        }
     }
 }

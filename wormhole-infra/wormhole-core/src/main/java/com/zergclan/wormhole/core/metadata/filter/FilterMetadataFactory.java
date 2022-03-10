@@ -17,9 +17,12 @@
 
 package com.zergclan.wormhole.core.metadata.filter;
 
+import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.config.FilterConfiguration;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.Locale;
 
 /**
  * Simple factory for create {@link FilterMetadata}.
@@ -28,13 +31,22 @@ import lombok.NoArgsConstructor;
 public final class FilterMetadataFactory {
 
     /**
-     * get instance of {@link FilterMetadata}.
+     * Get precise instance of {@link FilterMetadata}.
      *
+     * @param taskIdentifier task identifier
      * @param filterConfiguration {@link FilterConfiguration}
      * @return {@link FilterMetadata}
      */
-    public static FilterMetadata getInstance(final FilterConfiguration filterConfiguration) {
-        // TODO create filter metadata
-        return null;
+    public static FilterMetadata getPreciseInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration) {
+        // TODO create filter metadata by type
+        FilterType filterType = FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT));
+        boolean preState = FilterType.CONCAT_MERGER == filterType || FilterType.DELIMITER_SPLITTER == filterType;
+        Validator.preState(preState, "error : create precise filter metadata failed filterType can not be: [%s] task identifier: [%s]", filterType.name(), taskIdentifier);
+        switch (filterType) {
+            case NOT_NULL:
+                return NotNullValidatorMetadata.builder(taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
+            default:
+                return null;
+        }
     }
 }
