@@ -22,5 +22,6 @@ package com.zergclan.wormhole.core.metadata.filter;
  */
 public enum FilterType {
     
-    NOT_NULL, CONCAT_MERGER, DELIMITER_SPLITTER
+    NOT_NULL, NOT_BLANK, NULL_TO_DEFAULT, FIXED_NODE, NAME_CONVERTOR,
+    CONCAT_MERGER, DELIMITER_SPLITTER
 }

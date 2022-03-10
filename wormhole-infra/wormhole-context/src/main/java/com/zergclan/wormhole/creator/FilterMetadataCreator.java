@@ -59,12 +59,6 @@ public final class FilterMetadataCreator {
         return result;
     }
 
-    private static Collection<FilterMetadata> createFilters(final String taskIdentifier, final TargetMetadata target, final SourceMetadata source, final Set<String> targetNodes,
-                                                            final Set<String> sourceNodes) {
-        Collection<FilterMetadata> result = new LinkedList<>();
-        return result;
-    }
-
     private static Collection<FilterMetadata> createFilters(final String taskIdentifier, final DataNodeMappingConfiguration dataNodeMappingConfiguration, final Set<String> targetNodes,
                                                             final Set<String> sourceNodes) {
         Collection<String> targetNames = dataNodeMappingConfiguration.getTargetNames();
@@ -74,7 +68,7 @@ public final class FilterMetadataCreator {
         if (1 == targetSize && 1 == sourceSize) {
             targetNodes.remove(targetNames.iterator().next());
             sourceNodes.remove(sourceNames.iterator().next());
-            return createPreciseFilters(taskIdentifier, dataNodeMappingConfiguration.getFilters());
+            return createPreciseFilters(taskIdentifier, dataNodeMappingConfiguration.getFilters(), targetNames, sourceNames);
         } else if (1 == targetSize) {
             targetNodes.remove(targetNames.iterator().next());
             sourceNames.forEach(sourceNodes::remove);
@@ -88,11 +82,17 @@ public final class FilterMetadataCreator {
         }
     }
 
-    private static Collection<FilterMetadata> createPreciseFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
+    private static Collection<FilterMetadata> createFilters(final String taskIdentifier, final TargetMetadata target, final SourceMetadata source, final Set<String> targetNodes,
+                                                            final Set<String> sourceNodes) {
+        Collection<FilterMetadata> result = new LinkedList<>();
+        return result;
+    }
+
+    private static Collection<FilterMetadata> createPreciseFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations, final Collection<String> targetNames,
+                                                                   final Collection<String> sourceNames) {
         Collection<FilterMetadata> result = new LinkedList<>();
         for (FilterConfiguration each : filterConfigurations) {
-            // TODO validator precise type
-            result.add(FilterMetadataFactory.getPreciseInstance(taskIdentifier, each));
+            result.add(FilterMetadataFactory.getPreciseInstance(taskIdentifier, each, targetNames, sourceNames));
         }
         return result;
     }

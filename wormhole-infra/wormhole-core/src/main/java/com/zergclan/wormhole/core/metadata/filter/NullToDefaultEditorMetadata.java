@@ -19,66 +19,70 @@ package com.zergclan.wormhole.core.metadata.filter;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
 
 /**
- * Not null validator implemented of {@link FilterMetadata}.
+ * Null to default editor implemented of {@link FilterMetadata}.
  */
 @RequiredArgsConstructor
-public final class NotNullValidatorMetadata implements FilterMetadata {
-    
-    private static final FilterType FILTER_TYPE = FilterType.NOT_NULL;
-    
+public final class NullToDefaultEditorMetadata implements FilterMetadata {
+
+    private static final FilterType FILTER_TYPE = FilterType.NOT_BLANK;
+
     private final String taskIdentifier;
-    
+
     private final int order;
-    
-    @Getter
+
     private final String name;
-    
-    @Override
-    public int getOrder() {
-        return order;
-    }
-    
-    @Override
-    public FilterType getType() {
-        return FILTER_TYPE;
-    }
-    
+
+    private final String value;
+
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
     }
-    
+
+    @Override
+    public int getOrder() {
+        return order;
+    }
+
+    @Override
+    public FilterType getType() {
+        return FILTER_TYPE;
+    }
+
     /**
-     * Builder for {@link NotNullValidatorMetadata}.
+     * Builder for {@link NullToDefaultEditorMetadata}.
      *
      * @param taskIdentifier task identifier
      * @param order order
      * @param props props
-     * @return {@link NotNullValidatorMetadata}
+     * @return {@link NullToDefaultEditorMetadata}
      */
-    public static NotNullValidatorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
+    public static NullToDefaultEditorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
         String name = props.getProperty("name");
-        Validator.notNull(name, "error : build NotNullValidator failed name in props can not be null, task identifier: [%s]", taskIdentifier);
-        return new NotNullValidatorMetadata.FilterBuilder(taskIdentifier, order, name).build();
+        Validator.notNull(name, "error : build NullToDefaultEditorMetadata failed name in props can not be null, task identifier: [%s]", taskIdentifier);
+        String value = props.getProperty("value");
+        Validator.notNull(value, "error : build NullToDefaultEditorMetadata failed value in props can not be null, task identifier: [%s]", taskIdentifier);
+        return new FilterBuilder(taskIdentifier, order, name, value).build();
     }
-    
+
     @RequiredArgsConstructor
     private static class FilterBuilder {
-        
+
         private final String taskIdentifier;
-    
+
         private final int order;
-        
+
         private final String name;
-        
-        private NotNullValidatorMetadata build() {
-            return new NotNullValidatorMetadata(taskIdentifier, order, name);
+
+        private final String value;
+
+        private NullToDefaultEditorMetadata build() {
+            return new NullToDefaultEditorMetadata(taskIdentifier, order, name, value);
         }
     }
 }
