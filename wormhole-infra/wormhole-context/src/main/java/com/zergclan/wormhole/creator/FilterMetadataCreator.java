@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.creator;
 
+import com.zergclan.wormhole.common.exception.WormholeException;
+import com.zergclan.wormhole.common.util.CollectionUtil;
 import com.zergclan.wormhole.core.config.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.core.config.FilterConfiguration;
 import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
@@ -25,6 +27,7 @@ import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
 import com.zergclan.wormhole.core.metadata.task.TargetMetadata;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
@@ -50,6 +53,15 @@ public final class FilterMetadataCreator {
         while (iterator.hasNext()) {
             result.addAll(createFilters(iterator.next(), targetNodes, sourceNodes));
         }
+        if (CollectionUtil.compare(targetNodes, sourceNodes)) {
+            throw new WormholeException("error : create filter metadata failed please check data node mapping configuration");
+        }
+        result.addAll(createFilters(target, source, targetNodes, sourceNodes));
+        return result;
+    }
+
+    private static Collection<FilterMetadata> createFilters(final TargetMetadata target, final SourceMetadata source, final Set<String> targetNodes, final Set<String> sourceNodes) {
+        Collection<FilterMetadata> result = new LinkedList<>();
         return result;
     }
 
@@ -59,10 +71,16 @@ public final class FilterMetadataCreator {
         int targetSize = targetNames.size();
         int sourceSize = sourceNames.size();
         if (1 == targetSize && 1 == sourceSize) {
+            targetNodes.remove(targetNames.iterator().next());
+            sourceNodes.remove(sourceNames.iterator().next());
             return createPreciseFilters(dataNodeMappingConfiguration.getFilters());
         } else if (1 == targetSize) {
+            targetNodes.remove(targetNames.iterator().next());
+            sourceNames.forEach(sourceNodes::remove);
             return createMergedFilters(dataNodeMappingConfiguration.getFilters());
         } else if (1 == sourceSize) {
+            sourceNodes.remove(sourceNames.iterator().next());
+            targetNodes.forEach(targetNames::remove);
             return createSplittedFilters(dataNodeMappingConfiguration.getFilters());
         } else {
             throw new UnsupportedOperationException();
