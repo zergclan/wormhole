@@ -41,7 +41,7 @@ public class ProxyMetaDataLoad extends AbstractMetaDataHandler {
 
     private final String databaseProductName;
 
-    ProxyMetaDataLoad(final Connection connection) throws SQLException {
+    public ProxyMetaDataLoad(final Connection connection) throws SQLException {
         databaseMetaData = connection.getMetaData();
         databaseProductName = connection.getMetaData().getDatabaseProductName().toUpperCase();
     }
@@ -108,7 +108,7 @@ public class ProxyMetaDataLoad extends AbstractMetaDataHandler {
         }
         for (Map<String, String> map : columnsList) {
             ColumnMetadata columnMetadata = new ColumnMetadata(map.get("COLUMN_NAME"), schema, map.get("TABLE_NAME"),
-                    map.get("COLUMN_NAME"), map.get("TYPE_NAME"), "0".equals(map.get("NULLABLE")));
+                    map.get("COLUMN_NAME"), map.get("TYPE_NAME"), map.get("COLUMN_DEF"), "0".equals(map.get("NULLABLE")));
             columns.add(columnMetadata);
         }
         System.out.println(table + " have " + columns.size() + " columns.");
