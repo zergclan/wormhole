@@ -69,6 +69,19 @@ public final class NullToDefaultEditorMetadata implements FilterMetadata {
         Validator.notNull(sourceName, "error : build NullToDefaultEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
         String defaultValue = props.getProperty("defaultValue");
         Validator.notNull(defaultValue, "error : build NullToDefaultEditorMetadata failed defaultValue in props can not be null, task identifier: [%s]", taskIdentifier);
+        return builder(taskIdentifier, order, sourceName, defaultValue);
+    }
+
+    /**
+     * Builder for {@link NullToDefaultEditorMetadata}.
+     *
+     * @param taskIdentifier task identifier
+     * @param order order
+     * @param sourceName source name
+     * @param defaultValue default value
+     * @return {@link NullToDefaultEditorMetadata}
+     */
+    public static NullToDefaultEditorMetadata builder(final String taskIdentifier, final int order, final String sourceName, final String defaultValue) {
         return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue).build();
     }
 

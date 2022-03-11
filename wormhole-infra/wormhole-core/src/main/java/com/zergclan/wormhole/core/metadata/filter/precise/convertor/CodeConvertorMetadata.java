@@ -15,10 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.filter;
+package com.zergclan.wormhole.core.metadata.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
+import com.zergclan.wormhole.core.metadata.filter.FilterType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;

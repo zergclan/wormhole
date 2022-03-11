@@ -21,15 +21,21 @@ import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.config.FilterConfiguration;
 import com.zergclan.wormhole.core.metadata.filter.complex.ConcatMergerMetadata;
 import com.zergclan.wormhole.core.metadata.filter.complex.DelimiterSplitterMetadata;
+import com.zergclan.wormhole.core.metadata.filter.precise.convertor.CodeConvertorMetadata;
+import com.zergclan.wormhole.core.metadata.filter.precise.convertor.DataTypeConvertorMetadata;
 import com.zergclan.wormhole.core.metadata.filter.precise.convertor.NameConvertorMetadata;
 import com.zergclan.wormhole.core.metadata.filter.precise.editor.FixedNodeEditorMetadata;
 import com.zergclan.wormhole.core.metadata.filter.precise.editor.NullToDefaultEditorMetadata;
 import com.zergclan.wormhole.core.metadata.filter.precise.editor.ValueRangeEditorMetadata;
 import com.zergclan.wormhole.core.metadata.filter.precise.validator.NotBlankValidatorMetadata;
 import com.zergclan.wormhole.core.metadata.filter.precise.validator.NotNullValidatorMetadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeTypeMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -38,6 +44,63 @@ import java.util.Properties;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FilterMetadataFactory {
+
+    /**
+     * Get default instance of {@link FilterMetadata}.
+     *
+     * @param taskIdentifier task identifier
+     * @param sourceDataNode {@link DataNodeMetadata}
+     * @param targetDataNode {@link DataNodeMetadata}
+     * @return {@link FilterMetadata}
+     */
+    public static Collection<FilterMetadata> getDefaultInstance(final String taskIdentifier, final DataNodeMetadata sourceDataNode, final DataNodeMetadata targetDataNode) {
+        DataNodeTypeMetadata targetType = targetDataNode.getType();
+        DataNodeTypeMetadata sourceType = sourceDataNode.getType();
+        DataNodeTypeMetadata.NodeType targetNodeType = targetType.getNodeType();
+        String sourceName = sourceDataNode.getName();
+        Collection<FilterMetadata> result = new LinkedList<>();
+        switch (targetNodeType) {
+            case REQUIRED:
+                result.add(NotNullValidatorMetadata.builder(taskIdentifier, Integer.MIN_VALUE, sourceName));
+                break;
+            case DEFAULT_ABLE:
+                String defaultValue = targetDataNode.getDefaultValue();
+                Validator.notNull(defaultValue, "error : create default filter metadata failed defaultValue can not be null task identifier: [%s]", taskIdentifier);
+                result.add(NullToDefaultEditorMetadata.builder(taskIdentifier, Integer.MIN_VALUE, sourceName, targetDataNode.getDefaultValue()));
+                break;
+            case STANDARD:
+                break;
+            case FIXED:
+            case MAPPED:
+                throw new IllegalArgumentException(String.format("error : create default filter metadata failed target NodeType can not be: [%s] task identifier: [%s]",
+                        targetNodeType.name(), taskIdentifier));
+            default:
+                throw new UnsupportedOperationException();
+        }
+        result.addAll(createDataTypeConvertorMetadata(taskIdentifier, 0, targetType.getDataType(), sourceType.getDataType()));
+        return result;
+    }
+
+    private static Collection<FilterMetadata> createDataTypeConvertorMetadata(final String taskIdentifier, final int order, final DataNodeTypeMetadata.DataType targetDataType,
+                                                                              final DataNodeTypeMetadata.DataType sourceDataType) {
+        Collection<FilterMetadata> result = new LinkedList<>();
+        if (targetDataType != sourceDataType) {
+            result.add(DataTypeConvertorMetadata.builder(taskIdentifier, order, targetDataType, sourceDataType));
+        }
+        return result;
+    }
+
+    /**
+     * Get instance of {@link FilterMetadata}.
+     *
+     * @param taskIdentifier task identifier
+     * @param filterConfiguration {@link FilterConfiguration}
+     * @return {@link FilterMetadata}
+     */
+    public static FilterMetadata getInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration) {
+        FilterType filterType = FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT));
+        return createFilterMetadata(filterType, taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
+    }
 
     /**
      * Get precise instance of {@link FilterMetadata}.
@@ -74,7 +137,7 @@ public final class FilterMetadataFactory {
             case DELIMITER_SPLITTER:
                 return DelimiterSplitterMetadata.builder(taskIdentifier, order, props);
             default:
-                return null;
+                throw new UnsupportedOperationException();
         }
     }
 }
