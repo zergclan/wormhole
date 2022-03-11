@@ -24,6 +24,7 @@ import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Optional;
 
 public interface MetaDataLoader {
 
@@ -71,7 +72,7 @@ public interface MetaDataLoader {
      * @return {@link IndexMetadata}
      * @throws SQLException exception
      */
-    Collection<IndexMetadata> getPrimaryKeys(String schema, String table) throws SQLException;
+    Optional<IndexMetadata> getPrimaryKeys(String schema, String table) throws SQLException;
 
     /**
      * Load Indexes.
