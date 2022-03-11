@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.config;
 
+import com.zergclan.wormhole.core.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -31,8 +32,6 @@ import java.util.Map;
 public final class PlanConfiguration implements Configuration {
 
     private static final long serialVersionUID = 3170585157651174520L;
-
-    private final String name;
     
     private final String mode;
 

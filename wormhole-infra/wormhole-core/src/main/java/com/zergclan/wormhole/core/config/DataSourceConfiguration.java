@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.config;
 
+import com.zergclan.wormhole.core.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +32,8 @@ public final class DataSourceConfiguration implements Configuration {
     
     private static final long serialVersionUID = 1663604199838185645L;
     
+    private final String name;
+    
     private final String type;
     
     private final String host;
@@ -43,5 +46,5 @@ public final class DataSourceConfiguration implements Configuration {
     
     private final String catalog;
     
-    private final Properties parameters;
+    private final Properties props;
 }

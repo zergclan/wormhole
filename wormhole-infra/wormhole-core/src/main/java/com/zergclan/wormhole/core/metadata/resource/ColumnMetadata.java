@@ -18,9 +18,11 @@
 package com.zergclan.wormhole.core.metadata.resource;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.api.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
 
 /**
  * Metadata for column.
@@ -39,7 +41,18 @@ public final class ColumnMetadata implements Metadata {
 
     private final String dataType;
 
+    private final String defaultValue;
+
     private final boolean nullable;
+
+    /**
+     * Get default value.
+     *
+     * @return default value
+     */
+    public Optional<String> getDefaultValue() {
+        return Optional.ofNullable(defaultValue);
+    }
 
     @Override
     public String getIdentifier() {

@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.core.data;
 
+import com.zergclan.wormhole.core.api.data.DataNode;
+
 /**
  * Data node type of {@link PatternDate}.
  */

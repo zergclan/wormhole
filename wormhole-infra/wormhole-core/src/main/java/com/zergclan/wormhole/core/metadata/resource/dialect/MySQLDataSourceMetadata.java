@@ -19,9 +19,10 @@ package com.zergclan.wormhole.core.metadata.resource.dialect;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +32,7 @@ import java.util.Properties;
 import java.util.StringJoiner;
 
 /**
- * Metadata for Oracle data source.
+ * Data source metadata of MySQL.
  */
 @RequiredArgsConstructor
 public final class MySQLDataSourceMetadata implements DataSourceMetadata {
@@ -84,7 +85,13 @@ public final class MySQLDataSourceMetadata implements DataSourceMetadata {
     public SchemaMetadata getSchema(final String name) {
         return schemas.get(name);
     }
-    
+
+    @Override
+    public TableMetadata getTable(final String name) {
+        String[] split = name.split(MarkConstant.POINT);
+        return getSchema(split[0]).getTable(split[1]);
+    }
+
     @Override
     public String getIdentifier() {
         return TYPE.getName() + MarkConstant.SPACE + host + MarkConstant.COLON + port + MarkConstant.COLON + catalog + MarkConstant.SPACE + username + MarkConstant.AT + password;

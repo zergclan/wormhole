@@ -17,8 +17,10 @@
 
 package com.zergclan.wormhole.core.metadata;
 
-import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;

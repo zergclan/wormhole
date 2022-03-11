@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.config;
 
+import com.zergclan.wormhole.core.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -35,5 +36,5 @@ public final class FilterConfiguration implements Configuration {
 
     private final int order;
 
-    private final Properties properties;
+    private final Properties props;
 }

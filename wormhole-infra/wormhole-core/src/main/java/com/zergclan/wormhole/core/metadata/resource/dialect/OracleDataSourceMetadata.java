@@ -18,9 +18,10 @@
 package com.zergclan.wormhole.core.metadata.resource.dialect;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Metadata for Oracle data source.
+ * Data source metadata of Oracle.
  */
 @RequiredArgsConstructor
 public final class OracleDataSourceMetadata implements DataSourceMetadata {
@@ -72,6 +73,12 @@ public final class OracleDataSourceMetadata implements DataSourceMetadata {
     @Override
     public SchemaMetadata getSchema(final String name) {
         return schemas.get(name);
+    }
+
+    @Override
+    public TableMetadata getTable(final String name) {
+        String[] split = name.split(MarkConstant.POINT);
+        return getSchema(split[0]).getTable(split[1]);
     }
 
     @Override

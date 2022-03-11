@@ -54,11 +54,13 @@ public class MySQLMetaDataHandler {
                 tableMetadata = new TableMetadata(map.get("TABLE_NAME"), schema, map.get("TABLE_NAME"));
                 tableMap.put(map.get("TABLE_NAME"), tableMetadata);
             }
-            ColumnMetadata columnMetadata = new ColumnMetadata(map.get("COLUMN_NAME"), schema, map.get("TABLE_NAME"),
-                    map.get("COLUMN_NAME"), map.get("TYPE_NAME"), "0".equals(map.get("NULLABLE")));
+            String tableName = map.get("TABLE_NAME");
+            String typeName = map.get("TYPE_NAME");
+            String nullable = map.get("NULLABLE");
+            String defaultValue = "";
+            ColumnMetadata columnMetadata = new ColumnMetadata("", schema, tableName, map.get("COLUMN_NAME"), typeName, defaultValue, "0".equals(nullable));
             tableMetadata.registerColumn(columnMetadata);
         }
-
 //        List<Map<String, String>> indexInfoList = initIndex(databaseMetaData, null, schema, null, false, false);
 //        for (Map<String, String> map : indexInfoList) {
 //            TableMetadata tableMetadata = tableMap.get(map.get("TABLE_NAME"));

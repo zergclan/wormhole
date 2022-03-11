@@ -21,23 +21,20 @@ import com.zergclan.wormhole.common.concurrent.ExecutorService;
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.Handler;
 import com.zergclan.wormhole.core.api.Pipeline;
-import com.zergclan.wormhole.core.data.DataGroup;
-import com.zergclan.wormhole.loader.Loader;
-import com.zergclan.wormhole.pipeline.data.BatchedDataGroup;
+import com.zergclan.wormhole.core.api.data.DataGroup;
 import com.zergclan.wormhole.pipeline.handler.LoadedHandler;
 import com.zergclan.wormhole.pipeline.handler.ProcessTaskHandler;
+import com.zergclan.wormhole.plugin.api.Loader;
+import com.zergclan.wormhole.plugin.core.BatchedDataGroup;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
 
 /**
- * Batched {@link com.zergclan.wormhole.core.data.DataGroup} implemented of {@link Pipeline}.
+ * Batched {@link DataGroup} implemented of {@link Pipeline}.
  */
 @RequiredArgsConstructor
-public final class BatchedDataGroupPipeline implements Pipeline<Collection<Map<String, Object>>> {
+public final class BatchedDataGroupPipeline implements Pipeline<BatchedDataGroup> {
     
     private final ExecutorService schedulingExecutor;
     
@@ -49,39 +46,16 @@ public final class BatchedDataGroupPipeline implements Pipeline<Collection<Map<S
 
     private final Collection<Filter<DataGroup>> filters;
 
-    private final Loader loader;
+    private final Loader<BatchedDataGroup> loader;
     
     @Override
-    public void handle(final Collection<Map<String, Object>> data) {
-        int collectionSize = data.size();
-        if (batchSize >= collectionSize) {
-            schedulingExecutor.submit(createProcessTaskHandler(data));
-            return;
-        }
-        handleBatchedData(data, collectionSize);
+    public void handle(final BatchedDataGroup batchedDataGroup) {
+        schedulingExecutor.submit(createProcessTaskHandler(batchedDataGroup));
     }
     
-    private ProcessTaskHandler createProcessTaskHandler(final Collection<Map<String, Object>> data) {
+    private ProcessTaskHandler createProcessTaskHandler(final BatchedDataGroup batchedDataGroup) {
         // TODO init loadedHandler
         Handler<BatchedDataGroup> loadedHandler = new LoadedHandler(loader);
-        return new ProcessTaskHandler(filters, loadedHandler, createBatchedDataGroup(data));
-    }
-    
-    private BatchedDataGroup createBatchedDataGroup(final Collection<Map<String, Object>> data) {
-        return new BatchedDataGroup(planBatchId, taskBatchId, data);
-    }
-    
-    private void handleBatchedData(final Collection<Map<String, Object>> data, final int totalSize) {
-        Iterator<Map<String, Object>> iterator = data.iterator();
-        Collection<Map<String, Object>> batchedData = new LinkedList<>();
-        int count = 0;
-        while (iterator.hasNext()) {
-            count++;
-            batchedData.add(iterator.next());
-            if (count == batchSize || count == totalSize) {
-                schedulingExecutor.submit(createProcessTaskHandler(batchedData));
-                batchedData = new LinkedList<>();
-            }
-        }
+        return new ProcessTaskHandler(filters, loadedHandler, batchedDataGroup);
     }
 }

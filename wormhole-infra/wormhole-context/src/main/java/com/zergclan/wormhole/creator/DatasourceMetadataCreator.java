@@ -17,9 +17,9 @@
 
 package com.zergclan.wormhole.creator;
 
-import com.zergclan.wormhole.common.WormholeException;
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import com.zergclan.wormhole.core.metadata.resource.dialect.H2DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
@@ -28,7 +28,6 @@ import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSource
 import com.zergclan.wormhole.core.metadata.resource.dialect.SQLServerDataSourceMetadata;
 import com.zergclan.wormhole.engine.DataSourceMetadataInitializer;
 import com.zergclan.wormhole.jdbc.DataSourceManger;
-import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -51,13 +50,7 @@ public final class DatasourceMetadataCreator {
      */
     public static DataSourceMetadata create(final DataSourceConfiguration configuration) throws SQLException {
         DataSourceMetadata result = createActualTypeDataSourceMetadata(configuration);
-        DataSourceMetadataInitializer dataSourceMetadataInitializer = new DataSourceMetadataInitializer(DataSourceManger.get(result).getConnection(), createMetadataLoader());
-        return dataSourceMetadataInitializer.init(result);
-    }
-
-    // TODO create metadata loader
-    private static MetaDataLoader createMetadataLoader() {
-        return null;
+        return new DataSourceMetadataInitializer(DataSourceManger.get(result).getConnection()).init(result);
     }
 
     private static DataSourceMetadata createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
@@ -68,7 +61,7 @@ public final class DatasourceMetadataCreator {
             String catalog = configuration.getCatalog();
             String username = configuration.getUsername();
             String password = configuration.getPassword();
-            Properties parameters = configuration.getParameters();
+            Properties parameters = configuration.getProps();
             DatabaseType type = databaseType.get();
             if (DatabaseType.MYSQL == type) {
                 return new MySQLDataSourceMetadata(host, port, username, password, catalog, parameters);

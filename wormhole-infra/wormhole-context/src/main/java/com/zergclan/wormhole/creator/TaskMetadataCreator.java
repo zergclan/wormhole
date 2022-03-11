@@ -18,25 +18,24 @@
 package com.zergclan.wormhole.creator;
 
 import com.zergclan.wormhole.core.config.DataNodeConfiguration;
-import com.zergclan.wormhole.core.config.FilterConfiguration;
 import com.zergclan.wormhole.core.config.SourceConfiguration;
 import com.zergclan.wormhole.core.config.TargetConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.plan.DataNodeMetadata;
-import com.zergclan.wormhole.core.metadata.plan.FilterMetadata;
-import com.zergclan.wormhole.core.metadata.plan.LinkType;
-import com.zergclan.wormhole.core.metadata.plan.LoadType;
-import com.zergclan.wormhole.core.metadata.plan.SourceMetadata;
-import com.zergclan.wormhole.core.metadata.plan.TargetMetadata;
-import com.zergclan.wormhole.core.metadata.plan.TaskMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import com.zergclan.wormhole.core.metadata.task.LoadType;
+import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
+import com.zergclan.wormhole.core.metadata.task.TargetMetadata;
+import com.zergclan.wormhole.core.metadata.task.TaskMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -48,53 +47,79 @@ public final class TaskMetadataCreator {
     /**
      * Create {@link TaskMetadata}.
      *
+     * @param taskIdentifier task identifier
      * @param configuration {@link TaskConfiguration}
      * @param dataSources {@link DataSourceMetadata}
      * @return {@link TaskMetadata}
      */
-    public static TaskMetadata create(final TaskConfiguration configuration, final Map<String, DataSourceMetadata> dataSources) {
-        SourceMetadata source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSourceName()));
-        TargetMetadata target = createTarget(configuration.getTarget(), dataSources.get(configuration.getSource().getDataSourceName()));
-        String taskIdentifier = configuration.getName();
-        Collection<FilterMetadata> filters = createFilters(taskIdentifier, configuration.getFilters(), source.getDataNodes(), target.getDataNodes());
+    public static TaskMetadata create(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, DataSourceMetadata> dataSources) {
+        TargetMetadata target = createTarget(configuration.getTarget(), dataSources.get(configuration.getSource().getDataSource()));
+        SourceMetadata source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSource()));
+        Collection<FilterMetadata> filters = FilterMetadataCreator.create(taskIdentifier, configuration.getDataNodeMappings(), target, source);
         return new TaskMetadata(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
-
-    private static SourceMetadata createSource(final SourceConfiguration configuration, final DataSourceMetadata sourceDataSource) {
-        String primaryTable = configuration.getPrimaryTable();
-        String linkTable = configuration.getLinkTable();
-        LinkType linkType = LinkType.valueOf(configuration.getLinkType().toUpperCase());
-        String conditionSql = configuration.getConditionSql();
-        String actualSql = configuration.getActualSql();
-        return new SourceMetadata(sourceDataSource.getIdentifier(), primaryTable, linkTable, linkType, conditionSql, actualSql, createDataNodes(configuration.getDataNodes(), sourceDataSource));
+    
+    private static TargetMetadata createTarget(final TargetConfiguration targetConfiguration, final DataSourceMetadata targetDataSource) {
+        Collection<String> tables = targetConfiguration.getTables();
+        Map<String, DataNodeConfiguration> dataNodeConfigurations = targetConfiguration.getDataNodes();
+        boolean transaction = targetConfiguration.isTransaction();
+        LoadType loadType = LoadType.valueOf(targetConfiguration.getLoadType().toUpperCase());
+        Map<String, DataNodeMetadata> dataNodes = createTargetDataNodes(loadType, tables, dataNodeConfigurations, targetDataSource);
+        return new TargetMetadata(targetDataSource.getIdentifier(), tables, loadType, transaction, dataNodes);
     }
-
-    private static TargetMetadata createTarget(final TargetConfiguration configuration, final DataSourceMetadata targetDataSource) {
-        Collection<String> tables = configuration.getTables();
-        LoadType loadType = LoadType.valueOf(configuration.getLoadType().toUpperCase());
-        return new TargetMetadata(targetDataSource.getIdentifier(), tables, loadType, createDataNodes(configuration.getDataNodes(), targetDataSource));
+    
+    private static Map<String, DataNodeMetadata> createTargetDataNodes(final LoadType loadType, final Collection<String> tables, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
+                                                                       final DataSourceMetadata targetDataSource) {
+        switch (loadType) {
+            case SHARDING:
+                return createShardingTargetDataNodes(tables, dataNodeConfigurations, targetDataSource);
+            case CLONE :
+                return createClonedTargetDataNodes(tables.iterator().next(), dataNodeConfigurations, targetDataSource);
+            default :
+                throw new UnsupportedOperationException();
+        }
     }
-
-    // FIXME create data nodes
-    private static Map<String, DataNodeMetadata> createDataNodes(final Map<String, DataNodeConfiguration> configurations, final DataSourceMetadata dataSource) {
+    
+    private static Map<String, DataNodeMetadata> createShardingTargetDataNodes(final Collection<String> tables, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
+                                                                               final DataSourceMetadata targetDataSource) {
         Map<String, DataNodeMetadata> result = new LinkedHashMap<>();
-        Iterator<Map.Entry<String, DataNodeConfiguration>> iterator = configurations.entrySet().iterator();
+        Iterator<String> iterator = tables.iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, DataNodeConfiguration> entry = iterator.next();
-            result.put(entry.getKey(), DataNodeMetadataCreator.create(entry.getValue()));
+            result.putAll(createSingleTableDataNodes(targetDataSource.getTable(iterator.next()), dataNodeConfigurations));
         }
         return result;
     }
-
-    // FIXME create filters
-    private static Collection<FilterMetadata> createFilters(final String taskIdentifier, final Collection<FilterConfiguration> configurations, final Map<String, DataNodeMetadata> sourceDataNodes,
-                                                            final Map<String, DataNodeMetadata> targetDataNodes) {
-        Collection<FilterMetadata> result = new LinkedList<>();
-        Iterator<FilterConfiguration> iterator = configurations.iterator();
+    
+    private static Map<String, DataNodeMetadata> createClonedTargetDataNodes(final String targetTable, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
+                                                                            final DataSourceMetadata targetDataSource) {
+        return createSingleTableDataNodes(targetDataSource.getTable(targetTable), dataNodeConfigurations);
+    }
+    
+    private static Map<String, DataNodeMetadata> createSingleTableDataNodes(final TableMetadata table, final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
+        Map<String, DataNodeMetadata> result = new LinkedHashMap<>();
+        Map<String, ColumnMetadata> columns = table.getColumns();
+        Iterator<Map.Entry<String, ColumnMetadata>> iterator = columns.entrySet().iterator();
+        DataNodeConfiguration dataNodeConfiguration;
         while (iterator.hasNext()) {
-            FilterConfiguration each = iterator.next();
-            result.add(new FilterMetadata(taskIdentifier, each.getOrder(), each.getType(), each.getProperties()));
+            Map.Entry<String, ColumnMetadata> entry = iterator.next();
+            String nodeName = entry.getKey();
+            dataNodeConfiguration = dataNodeConfigurations.get(nodeName);
+            result.put(nodeName, null == dataNodeConfiguration ? DataNodeMetadataCreator.createDefaultMetadata(entry.getValue()) : DataNodeMetadataCreator.create(nodeName, dataNodeConfiguration));
         }
         return result;
+    }
+    
+    private static SourceMetadata createSource(final SourceConfiguration sourceConfiguration, final DataSourceMetadata sourceDataSource) {
+        String identifier = sourceDataSource.getIdentifier();
+        Collection<String> tables = sourceConfiguration.getTables();
+        String conditionSql = sourceConfiguration.getConditionSql();
+        String actualSql = sourceConfiguration.getActualSql();
+        Map<String, DataNodeMetadata> dataNodes = createSourceDataNodes(tables.iterator().next(), sourceConfiguration.getDataNodes(), sourceDataSource);
+        return new SourceMetadata(identifier, tables, conditionSql, actualSql, dataNodes);
+    }
+    
+    private static Map<String, DataNodeMetadata> createSourceDataNodes(final String table, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
+                                                                       final DataSourceMetadata sourceDataSource) {
+        return createSingleTableDataNodes(sourceDataSource.getTable(table), dataNodeConfigurations);
     }
 }

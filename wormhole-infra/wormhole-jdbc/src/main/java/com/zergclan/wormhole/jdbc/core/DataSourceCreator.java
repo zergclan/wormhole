@@ -19,7 +19,7 @@ package com.zergclan.wormhole.jdbc.core;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.core.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 
 import javax.sql.DataSource;
 

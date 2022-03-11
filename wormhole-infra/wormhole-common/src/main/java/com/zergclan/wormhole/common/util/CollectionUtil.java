@@ -21,8 +21,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Util tools for collection.
@@ -39,8 +41,8 @@ public final class CollectionUtil {
      * @return partitioned collection
      */
     public static <T> Collection<Collection<T>> partition(final Collection<T> collection, final int size) {
-        Validator.notNull(collection, "Error : partition input collection can not be null");
-        Validator.isTrue(size > 0, "Error : partition input size [size] less than 0");
+        Validator.notNull(collection, "Error : collection partition input collection can not be null");
+        Validator.isTrue(size > 0, "Error : collection partition input size [size] less than 0");
         Collection<Collection<T>> result = new LinkedList<>();
         int collectionSize = collection.size();
         if (size >= collectionSize) {
@@ -59,5 +61,34 @@ public final class CollectionUtil {
             }
         }
         return result;
+    }
+    
+    /**
+     * Collection compare.
+     *
+     * @param source source
+     * @param target target
+     * @param <T> class type of collection
+     * @return is same or not
+     */
+    public static <T> boolean compare(final Collection<T> source, final Collection<T> target) {
+        Validator.notNull(source, "Error : collection compare source collection can not be null");
+        Validator.notNull(target, "Error : collection compare target collection can not be null");
+        int sourceSize = source.size();
+        int targetSize = target.size();
+        if (0 == targetSize && 0 == sourceSize) {
+            return true;
+        }
+        if (targetSize != sourceSize) {
+            return false;
+        }
+        Map<Integer, T> compareMap = new HashMap<>(targetSize);
+        int index = 0;
+        for (T each : target) {
+            if (source.contains(each)) {
+                compareMap.put(index, each);
+            }
+        }
+        return targetSize == compareMap.size();
     }
 }

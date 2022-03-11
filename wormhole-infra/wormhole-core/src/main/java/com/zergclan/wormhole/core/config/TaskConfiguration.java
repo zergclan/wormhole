@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.core.config;
 
+import com.zergclan.wormhole.core.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -31,8 +32,6 @@ public final class TaskConfiguration implements Configuration {
 
     private static final long serialVersionUID = 5125883893404187330L;
     
-    private final String name;
-    
     private final int order;
     
     private final int batchSize;
@@ -41,5 +40,5 @@ public final class TaskConfiguration implements Configuration {
     
     private final TargetConfiguration target;
 
-    private final Collection<FilterConfiguration> filters;
+    private final Collection<DataNodeMappingConfiguration> dataNodeMappings;
 }

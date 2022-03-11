@@ -20,7 +20,7 @@ package com.zergclan.wormhole.core.metadata.plan;
 import lombok.Getter;
 
 /**
- * Mode of execution.
+ * Execution mode of {@link PlanMetadata}.
  */
 @Getter
 public enum ExecutionMode {

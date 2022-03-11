@@ -22,7 +22,7 @@ import lombok.Getter;
 import java.util.Optional;
 
 /**
- * Type of database.
+ * Database type.
  */
 @Getter
 public enum DatabaseType {

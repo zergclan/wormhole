@@ -18,14 +18,14 @@
 package com.zergclan.wormhole.core.metadata.resource;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.metadata.Metadata;
+import com.zergclan.wormhole.core.api.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 
 /**
- * Metadata of index.
+ * Index metadata.
  */
 @RequiredArgsConstructor
 @Getter

@@ -17,6 +17,9 @@
 
 package com.zergclan.wormhole.common.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 
 /**
@@ -27,6 +30,7 @@ import java.util.Objects;
  *     <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
  * </p>
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Validator {
     
     /**
@@ -50,6 +54,19 @@ public final class Validator {
      * @param args error args
      */
     public static void isTrue(final boolean expression, final String message, final Object... args) {
+        if (!expression) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
+    }
+    
+    /**
+     * Validate pre state.
+     *
+     * @param expression expression
+     * @param message error message
+     * @param args error args
+     */
+    public static void preState(final boolean expression, final String message, final Object... args) {
         if (!expression) {
             throw new IllegalArgumentException(String.format(message, args));
         }
