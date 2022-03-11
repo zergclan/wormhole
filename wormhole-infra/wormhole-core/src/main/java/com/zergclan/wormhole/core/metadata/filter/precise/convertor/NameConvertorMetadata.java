@@ -15,32 +15,32 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.filter;
+package com.zergclan.wormhole.core.metadata.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
+import com.zergclan.wormhole.core.metadata.filter.FilterType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
 
 /**
- * Fixed node editor implemented of {@link FilterMetadata}.
+ * Name convertor implemented of {@link FilterMetadata}.
  */
 @RequiredArgsConstructor
-public final class FixedNodeEditorMetadata implements FilterMetadata {
+public final class NameConvertorMetadata implements FilterMetadata {
 
-    private static final FilterType FILTER_TYPE = FilterType.FIXED_NODE;
+    private static final FilterType FILTER_TYPE = FilterType.NAME_CONVERTOR;
 
     private final String taskIdentifier;
 
     private final int order;
+    
+    private final String sourceName;
 
-    private final String name;
-
-    private final String value;
-
-    private final String type;
-
+    private final String targetName;
+    
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
@@ -57,24 +57,21 @@ public final class FixedNodeEditorMetadata implements FilterMetadata {
     }
 
     /**
-     * Builder for {@link FixedNodeEditorMetadata}.
+     * Builder for {@link NameConvertorMetadata}.
      *
      * @param taskIdentifier task identifier
      * @param order order
      * @param props props
-     * @return {@link FixedNodeEditorMetadata}
+     * @return {@link NameConvertorMetadata}
      */
-    public static FixedNodeEditorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
-        String name = props.getProperty("name");
-        Validator.notNull(name, "error : build FixedNodeEditor failed name in props can not be null, task identifier: [%s]", taskIdentifier);
-        String value = props.getProperty("value");
-        Validator.notNull(value, "error : build FixedNodeEditor failed value in props can not be null, task identifier: [%s]", taskIdentifier);
-        // FIXME Refactoring type with enums
-        String type = props.getProperty("type");
-        Validator.notNull(type, "error : build FixedNodeEditor failed type in props can not be null, task identifier: [%s]", taskIdentifier);
-        return new FixedNodeEditorMetadata.FilterBuilder(taskIdentifier, order, name, value, type).build();
+    public static NameConvertorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
+        String sourceName = props.getProperty("sourceName");
+        Validator.notNull(sourceName, "error : build NameConvertorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
+        String targetName = props.getProperty("targetName");
+        Validator.notNull(targetName, "error : build NameConvertorMetadata failed targetName in props can not be null, task identifier: [%s]", taskIdentifier);
+        return new NameConvertorMetadata.FilterBuilder(taskIdentifier, order, sourceName, targetName).build();
     }
-
+    
     @RequiredArgsConstructor
     private static class FilterBuilder {
 
@@ -82,14 +79,12 @@ public final class FixedNodeEditorMetadata implements FilterMetadata {
 
         private final int order;
 
-        private final String name;
+        private final String targetName;
 
-        private final String value;
+        private final String sourceName;
 
-        private final String type;
-
-        private FixedNodeEditorMetadata build() {
-            return new FixedNodeEditorMetadata(taskIdentifier, order, name, value, type);
+        private NameConvertorMetadata build() {
+            return new NameConvertorMetadata(taskIdentifier, order, targetName, sourceName);
         }
     }
 }

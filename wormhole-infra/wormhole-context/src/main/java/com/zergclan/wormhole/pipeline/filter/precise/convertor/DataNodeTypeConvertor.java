@@ -15,49 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.filter.precise.convertor;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
-import com.zergclan.wormhole.core.api.data.DataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
-import com.zergclan.wormhole.pipeline.data.RangeHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Range node editor implemented of {@link Filter}.
+ * Data node type convertor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class RangeNodeEditor implements Filter<DataGroup> {
-
+public final class DataNodeTypeConvertor implements Filter<DataGroup> {
+    
     @Getter
     private final int order;
-
-    private final Map<String, RangeHelper> rangeHelpers;
-
+    
+    // FIXME refactoring with enums
+    private final Map<String, String> typeMapper;
+    
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, RangeHelper>> iterator = rangeHelpers.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, RangeHelper> entry = iterator.next();
-            String name = entry.getKey();
-            DataNode<?> dataNode = dataGroup.getDataNode(name);
-            String value = dataNode.getValue().toString();
-            RangeHelper rangeHelper = entry.getValue();
-            String sub = rangeHelper.sub(value);
-            if (!dataGroup.refresh(new StringDataNode(name, sub))) {
-                return false;
-            }
-        }
-        return true;
+        // TODO do filter
+        return false;
     }
-
+    
     @Override
     public String getType() {
-        return "RANGE_NODE_EDITOR";
+        return null;
     }
 }

@@ -15,52 +15,49 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.filter.precise.editor;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
 import com.zergclan.wormhole.core.api.data.DataNode;
 import com.zergclan.wormhole.core.data.StringDataNode;
-import com.zergclan.wormhole.pipeline.data.CodeMapper;
+import com.zergclan.wormhole.pipeline.data.RangeHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 
 /**
- * Business code convertor implemented of {@link Filter}.
+ * Data node value range editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class CodeConvertor implements Filter<DataGroup> {
-    
+public final class ValueRangeEditor implements Filter<DataGroup> {
+
     @Getter
     private final int order;
-    
-    private final Map<String, CodeMapper> codeMappers;
-    
+
+    private final Map<String, RangeHelper> rangeHelpers;
+
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, CodeMapper>> iterator = codeMappers.entrySet().iterator();
+        Iterator<Map.Entry<String, RangeHelper>> iterator = rangeHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, CodeMapper> entry = iterator.next();
-            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
-            Optional<String> targetCode = entry.getValue().getTargetCode(String.valueOf(dataNode.getValue()));
-            if (!targetCode.isPresent()) {
+            Map.Entry<String, RangeHelper> entry = iterator.next();
+            String name = entry.getKey();
+            DataNode<?> dataNode = dataGroup.getDataNode(name);
+            String value = dataNode.getValue().toString();
+            RangeHelper rangeHelper = entry.getValue();
+            String sub = rangeHelper.sub(value);
+            if (!dataGroup.refresh(new StringDataNode(name, sub))) {
                 return false;
             }
-            refreshDataNode(dataGroup, dataNode.getName(), targetCode.get());
         }
         return true;
     }
-    
-    private void refreshDataNode(final DataGroup dataGroup, final String name, final String targetCode) {
-        dataGroup.refresh(new StringDataNode(name, targetCode));
-    }
-    
+
     @Override
     public String getType() {
-        return "CODE_CONVERTOR";
+        return "VALUE_RANGE";
     }
 }

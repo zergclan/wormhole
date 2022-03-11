@@ -15,25 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.filter;
+package com.zergclan.wormhole.core.metadata.filter.precise.validator;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
+import com.zergclan.wormhole.core.metadata.filter.FilterType;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
 import java.util.Properties;
 
 /**
- * Concat merger implemented of {@link FilterMetadata}.
+ * Not blank validator implemented of {@link FilterMetadata}.
  */
 @RequiredArgsConstructor
-public final class ConcatMergerMetadata implements FilterMetadata {
+public final class NotBlankValidatorMetadata implements FilterMetadata {
 
-    private static final FilterType FILTER_TYPE = FilterType.CONCAT_MERGER;
+    private static final FilterType FILTER_TYPE = FilterType.NOT_BLANK;
 
     private final String taskIdentifier;
 
     private final int order;
+
+    private final String sourceName;
 
     @Override
     public String getIdentifier() {
@@ -51,16 +55,30 @@ public final class ConcatMergerMetadata implements FilterMetadata {
     }
 
     /**
-     * Builder for {@link ConcatMergerMetadata}.
+     * Builder for {@link NotBlankValidatorMetadata}.
      *
      * @param taskIdentifier task identifier
      * @param order order
      * @param props props
-     * @param targetName target name
-     * @param sourceNames source names
-     * @return {@link ConcatMergerMetadata}
+     * @return {@link NotBlankValidatorMetadata}
      */
-    public static ConcatMergerMetadata builder(final String taskIdentifier, final int order, final Properties props, final String targetName, final Collection<String> sourceNames) {
-        return null;
+    public static NotBlankValidatorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
+        String sourceName = props.getProperty("sourceName");
+        Validator.notNull(sourceName, "error : build NotBlankValidatorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
+        return new NotBlankValidatorMetadata.FilterBuilder(taskIdentifier, order, sourceName).build();
+    }
+
+    @RequiredArgsConstructor
+    private static class FilterBuilder {
+
+        private final String taskIdentifier;
+
+        private final int order;
+
+        private final String sourceName;
+
+        private NotBlankValidatorMetadata build() {
+            return new NotBlankValidatorMetadata(taskIdentifier, order, sourceName);
+        }
     }
 }

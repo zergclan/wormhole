@@ -15,32 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.constant;
-
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+package com.zergclan.wormhole.core.data;
 
 /**
- * Constant of mark.
+ * Patterned data time.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MarkConstant {
-    
-    public static final String POINT = ".";
-    
-    public static final String COMMA = ",";
-
-    public static final String SPACE = "#";
-    
-    public static final String COLON = ":";
-    
-    public static final String FORWARD_SLASH = "/";
-    
-    public static final String QUESTION = "?";
-    
-    public static final String AND = "&";
-    
-    public static final String AT = "@";
-
-    public static final String EQUAL = "=";
+public final class PatternedDataTime {
 }
