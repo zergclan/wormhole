@@ -15,41 +15,32 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.filter.precise.convertor;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
-import com.zergclan.wormhole.core.api.data.DataNode;
+import com.zergclan.wormhole.core.data.PatternedDataTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Iterator;
-import java.util.Map;
-
 /**
- * Name convertor implemented of {@link Filter}.
+ *  {@link PatternedDataTime} convertor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class NameConvertor implements Filter<DataGroup> {
-
+public final class PatternedDataTimeConvertor implements Filter<DataGroup> {
+    
     @Getter
     private final int order;
-
-    private final Map<String, String> names;
-
+    
+    private final PatternedDataTime patternedDataTime;
+    
     @Override
-    public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, String>> iterator = names.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, String> entry = iterator.next();
-            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
-            dataNode.refreshName(entry.getValue());
-        }
-        return true;
+    public boolean doFilter(final DataGroup data) {
+        return false;
     }
-
+    
     @Override
     public String getType() {
-        return "NAME_CONVERTOR";
+        return null;
     }
 }

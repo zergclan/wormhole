@@ -19,10 +19,17 @@ package com.zergclan.wormhole.core.metadata.filter;
 
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.config.FilterConfiguration;
+import com.zergclan.wormhole.core.metadata.filter.complex.ConcatMergerMetadata;
+import com.zergclan.wormhole.core.metadata.filter.complex.DelimiterSplitterMetadata;
+import com.zergclan.wormhole.core.metadata.filter.precise.convertor.NameConvertorMetadata;
+import com.zergclan.wormhole.core.metadata.filter.precise.editor.FixedNodeEditorMetadata;
+import com.zergclan.wormhole.core.metadata.filter.precise.editor.NullToDefaultEditorMetadata;
+import com.zergclan.wormhole.core.metadata.filter.precise.editor.ValueRangeEditorMetadata;
+import com.zergclan.wormhole.core.metadata.filter.precise.validator.NotBlankValidatorMetadata;
+import com.zergclan.wormhole.core.metadata.filter.precise.validator.NotNullValidatorMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -37,20 +44,16 @@ public final class FilterMetadataFactory {
      *
      * @param taskIdentifier task identifier
      * @param filterConfiguration {@link FilterConfiguration}
-     * @param targetNames target names
-     * @param sourceNames source names
      * @return {@link FilterMetadata}
      */
-    public static FilterMetadata getPreciseInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration, final Collection<String> targetNames,
-                                                    final Collection<String> sourceNames) {
+    public static FilterMetadata getPreciseInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration) {
         FilterType filterType = FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT));
         boolean preState = FilterType.CONCAT_MERGER == filterType || FilterType.DELIMITER_SPLITTER == filterType;
         Validator.preState(preState, "error : create precise filter metadata failed filterType can not be: [%s] task identifier: [%s]", filterType.name(), taskIdentifier);
-        return createFilterMetadata(filterType, taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps(), targetNames, sourceNames);
+        return createFilterMetadata(filterType, taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
     }
 
-    private static FilterMetadata createFilterMetadata(final FilterType filterType, final String taskIdentifier, final int order, final Properties props, final Collection<String> targetNames,
-                                                       final Collection<String> sourceNames) {
+    private static FilterMetadata createFilterMetadata(final FilterType filterType, final String taskIdentifier, final int order, final Properties props) {
         switch (filterType) {
             case NOT_NULL:
                 return NotNullValidatorMetadata.builder(taskIdentifier, order, props);
@@ -60,12 +63,16 @@ public final class FilterMetadataFactory {
                 return NullToDefaultEditorMetadata.builder(taskIdentifier, order, props);
             case FIXED_NODE:
                 return FixedNodeEditorMetadata.builder(taskIdentifier, order, props);
+            case VALUE_RANGE:
+                return ValueRangeEditorMetadata.builder(taskIdentifier, order, props);
             case NAME_CONVERTOR:
-                return NameConvertorMetadata.builder(taskIdentifier, order, targetNames.iterator().next(), sourceNames.iterator().next());
+                return NameConvertorMetadata.builder(taskIdentifier, order, props);
+            case CODE_CONVERTOR:
+                return CodeConvertorMetadata.builder(taskIdentifier, order, props);
             case CONCAT_MERGER:
-                return ConcatMergerMetadata.builder(taskIdentifier, order, props, targetNames.iterator().next(), sourceNames);
+                return ConcatMergerMetadata.builder(taskIdentifier, order, props);
             case DELIMITER_SPLITTER:
-                return DelimiterSplitterMetadata.builder(taskIdentifier, order, props, targetNames, sourceNames.iterator().next());
+                return DelimiterSplitterMetadata.builder(taskIdentifier, order, props);
             default:
                 return null;
         }

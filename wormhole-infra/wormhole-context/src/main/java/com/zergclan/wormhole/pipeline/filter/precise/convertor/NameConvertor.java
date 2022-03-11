@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.filter.precise.convertor;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
@@ -23,32 +23,33 @@ import com.zergclan.wormhole.core.api.data.DataNode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Iterator;
+import java.util.Map;
+
 /**
- * Not blank validator implemented of {@link Filter}.
+ * Name convertor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class NotBlankValidator implements Filter<DataGroup> {
-    
+public final class NameConvertor implements Filter<DataGroup> {
+
     @Getter
     private final int order;
-    
-    private final String[] names;
-    
+
+    private final Map<String, String> names;
+
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        final int length = names.length;
-        DataNode<?> dataNode;
-        for (int i = 0; i < length; i++) {
-            dataNode = dataGroup.getDataNode(names[i]);
-            if (dataNode.isBlank()) {
-                return false;
-            }
+        Iterator<Map.Entry<String, String>> iterator = names.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> entry = iterator.next();
+            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
+            dataNode.refreshName(entry.getValue());
         }
         return true;
     }
-    
+
     @Override
     public String getType() {
-        return "NOT_BLANK_VALIDATOR";
+        return "NAME_CONVERTOR";
     }
 }

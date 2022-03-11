@@ -15,68 +15,82 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.filter;
+package com.zergclan.wormhole.core.metadata.filter.precise.editor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
+import com.zergclan.wormhole.core.metadata.filter.FilterType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
 
 /**
- * Not blank validator implemented of {@link FilterMetadata}.
+ * Value range editor implemented of {@link FilterMetadata}.
+ *
  */
 @RequiredArgsConstructor
-public final class NotBlankValidatorMetadata implements FilterMetadata {
-
-    private static final FilterType FILTER_TYPE = FilterType.NOT_BLANK;
-
+public final class ValueRangeEditorMetadata implements FilterMetadata {
+    
+    private static final FilterType FILTER_TYPE = FilterType.VALUE_RANGE;
+    
     private final String taskIdentifier;
-
+    
     private final int order;
-
-    private final String name;
-
+    
+    private final String sourceName;
+    
+    private final int start;
+    
+    private final int end;
+    
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
     }
-
+    
     @Override
     public int getOrder() {
         return order;
     }
-
+    
     @Override
     public FilterType getType() {
         return FILTER_TYPE;
     }
-
+    
     /**
-     * Builder for {@link NotBlankValidatorMetadata}.
+     * Builder for {@link ValueRangeEditorMetadata}.
      *
      * @param taskIdentifier task identifier
      * @param order order
      * @param props props
-     * @return {@link NotBlankValidatorMetadata}
+     * @return {@link ValueRangeEditorMetadata}
      */
-    public static NotBlankValidatorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
-        String name = props.getProperty("name");
-        Validator.notNull(name, "error : build NotBlankValidator failed name in props can not be null, task identifier: [%s]", taskIdentifier);
-        return new NotBlankValidatorMetadata.FilterBuilder(taskIdentifier, order, name).build();
+    public static FilterMetadata builder(final String taskIdentifier, final int order, final Properties props) {
+        String sourceName = props.getProperty("sourceName");
+        Validator.notNull(sourceName, "error : build ValueRangeEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
+        String end = props.getProperty("end");
+        Validator.notNull(end, "error : build ValueRangeEditorMetadata failed end in props can not be null, task identifier: [%s]", taskIdentifier);
+        String start = props.getProperty("start", "0");
+        return new FilterBuilder(taskIdentifier, order, sourceName, Integer.parseInt(start), Integer.parseInt(end)).build();
     }
-
+    
     @RequiredArgsConstructor
     private static class FilterBuilder {
-
+        
         private final String taskIdentifier;
-
+        
         private final int order;
-
-        private final String name;
-
-        private NotBlankValidatorMetadata build() {
-            return new NotBlankValidatorMetadata(taskIdentifier, order, name);
+        
+        private final String sourceName;
+    
+        private final int start;
+    
+        private final int end;
+        
+        private ValueRangeEditorMetadata build() {
+            return new ValueRangeEditorMetadata(taskIdentifier, order, sourceName, start, end);
         }
     }
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter;
+package com.zergclan.wormhole.pipeline.filter.precise.validator;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
@@ -23,29 +23,25 @@ import com.zergclan.wormhole.core.api.data.DataNode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-
 /**
- * Null to default editor implemented of {@link Filter}.
+ * Not null validator implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class NullToDefaultEditor implements Filter<DataGroup> {
+public final class NotNullValidator implements Filter<DataGroup> {
     
     @Getter
     private final int order;
     
-    private final Map<String, DataNode<?>> defaultValue;
+    private final String[] names;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, DataNode<?>>> iterator = defaultValue.entrySet().iterator();
-        Map.Entry<String, DataNode<?>> entry;
-        while (iterator.hasNext()) {
-            entry = iterator.next();
-            if (Objects.isNull(dataGroup.getDataNode(entry.getKey()))) {
-                dataGroup.append(entry.getValue());
+        final int length = names.length;
+        DataNode<?> dataNode;
+        for (int i = 0; i < length; i++) {
+            dataNode = dataGroup.getDataNode(names[i]);
+            if (dataNode.isNull()) {
+                return false;
             }
         }
         return true;
@@ -53,6 +49,6 @@ public final class NullToDefaultEditor implements Filter<DataGroup> {
     
     @Override
     public String getType() {
-        return "NULL_TO_DEFAULT_EDITOR";
+        return "NOT_NULL";
     }
 }

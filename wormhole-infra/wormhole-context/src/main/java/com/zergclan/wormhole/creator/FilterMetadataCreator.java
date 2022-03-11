@@ -68,7 +68,7 @@ public final class FilterMetadataCreator {
         if (1 == targetSize && 1 == sourceSize) {
             targetNodes.remove(targetNames.iterator().next());
             sourceNodes.remove(sourceNames.iterator().next());
-            return createPreciseFilters(taskIdentifier, dataNodeMappingConfiguration.getFilters(), targetNames, sourceNames);
+            return createPreciseFilters(taskIdentifier, dataNodeMappingConfiguration.getFilters());
         } else if (1 == targetSize) {
             targetNodes.remove(targetNames.iterator().next());
             sourceNames.forEach(sourceNodes::remove);
@@ -88,11 +88,10 @@ public final class FilterMetadataCreator {
         return result;
     }
 
-    private static Collection<FilterMetadata> createPreciseFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations, final Collection<String> targetNames,
-                                                                   final Collection<String> sourceNames) {
+    private static Collection<FilterMetadata> createPreciseFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
         Collection<FilterMetadata> result = new LinkedList<>();
         for (FilterConfiguration each : filterConfigurations) {
-            result.add(FilterMetadataFactory.getPreciseInstance(taskIdentifier, each, targetNames, sourceNames));
+            result.add(FilterMetadataFactory.getPreciseInstance(taskIdentifier, each));
         }
         return result;
     }
