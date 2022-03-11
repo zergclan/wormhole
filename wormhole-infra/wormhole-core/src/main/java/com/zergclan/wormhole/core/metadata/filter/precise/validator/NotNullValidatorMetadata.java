@@ -35,16 +35,12 @@ public final class NotNullValidatorMetadata implements FilterMetadata {
     private static final FilterType FILTER_TYPE = FilterType.NOT_NULL;
     
     private final String taskIdentifier;
-    
+
+    @Getter
     private final int order;
     
     @Getter
     private final String sourceName;
-    
-    @Override
-    public int getOrder() {
-        return order;
-    }
     
     @Override
     public FilterType getType() {
@@ -67,9 +63,21 @@ public final class NotNullValidatorMetadata implements FilterMetadata {
     public static NotNullValidatorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build NotNullValidatorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
+        return builder(taskIdentifier, order, sourceName);
+    }
+
+    /**
+     * Builder for {@link NotNullValidatorMetadata}.
+     *
+     * @param taskIdentifier task identifier
+     * @param order order
+     * @param sourceName source name
+     * @return {@link NotNullValidatorMetadata}
+     */
+    public static NotNullValidatorMetadata builder(final String taskIdentifier, final int order, final String sourceName) {
         return new NotNullValidatorMetadata.FilterBuilder(taskIdentifier, order, sourceName).build();
     }
-    
+
     @RequiredArgsConstructor
     private static class FilterBuilder {
         

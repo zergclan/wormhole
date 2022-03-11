@@ -59,16 +59,16 @@ public final class DataNodeTypeMetadata implements Metadata {
     /**
      * Node type.
      */
-    private enum NodeType {
+    public enum NodeType {
 
-        STANDARD, REQUIRED, DEFAULT_ABLE, MAPPED, FIXED
+        REQUIRED, DEFAULT_ABLE, STANDARD, FIXED, MAPPED
     }
 
     /**
      * Data type.
      */
-    private enum DataType {
+    public enum DataType {
 
-        TEXT, CODE, NUMERIC, MONETARY, DATETIME
+        TEXT, NUMERIC, MONETARY, DATETIME, CODE
     }
 }

@@ -25,10 +25,10 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 
 /**
- * Data node type convertor implemented of {@link Filter}.
+ * Node data type convertor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
-public final class DataNodeTypeConvertor implements Filter<DataGroup> {
+public final class DataTypeConvertor implements Filter<DataGroup> {
     
     @Getter
     private final int order;
