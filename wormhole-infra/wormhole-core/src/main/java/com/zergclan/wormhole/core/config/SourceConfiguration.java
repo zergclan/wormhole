@@ -21,7 +21,6 @@ import com.zergclan.wormhole.core.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -32,14 +31,14 @@ import java.util.Map;
 public final class SourceConfiguration implements Configuration {
     
     private static final long serialVersionUID = 8569768353614409983L;
-    
+
     private final String dataSource;
-    
-    private final Collection<String> tables;
-    
-    private final String conditionSql;
-    
+
     private final String actualSql;
     
+    private final String table;
+    
+    private final String conditionSql;
+
     private final Map<String, DataNodeConfiguration> dataNodes;
 }

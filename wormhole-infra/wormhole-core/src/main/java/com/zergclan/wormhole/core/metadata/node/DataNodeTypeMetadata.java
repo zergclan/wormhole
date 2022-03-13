@@ -69,6 +69,6 @@ public final class DataNodeTypeMetadata implements Metadata {
      */
     public enum DataType {
 
-        TEXT, NUMERIC, MONETARY, DATETIME, CODE
+        OBJECT, TEXT, INT, LONG, MONETARY, DATA_TIME, PATTERNED_DATA_TIME, CODE
     }
 }

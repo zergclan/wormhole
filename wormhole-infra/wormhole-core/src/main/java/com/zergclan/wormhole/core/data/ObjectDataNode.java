@@ -18,29 +18,23 @@
 package com.zergclan.wormhole.core.data;
 
 import com.zergclan.wormhole.core.api.data.DataNode;
+import lombok.Getter;
 
 /**
  * Data node type of {@link Object}.
  */
+@Getter
 public final class ObjectDataNode implements DataNode<Object> {
-    
+
+    private static final long serialVersionUID = 8591388461628423130L;
+
     private String name;
-    
+
     private Object value;
 
     public ObjectDataNode(final String name, final Object value) {
         this.name = name;
         this.value = value;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-    
-    @Override
-    public Object getValue() {
-        return value;
     }
 
     @Override

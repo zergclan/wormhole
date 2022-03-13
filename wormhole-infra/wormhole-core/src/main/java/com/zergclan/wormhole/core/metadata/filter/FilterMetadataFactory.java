@@ -54,30 +54,21 @@ public final class FilterMetadataFactory {
      * @return {@link FilterMetadata}
      */
     public static Collection<FilterMetadata> getDefaultInstance(final String taskIdentifier, final DataNodeMetadata sourceDataNode, final DataNodeMetadata targetDataNode) {
-        DataNodeTypeMetadata targetType = targetDataNode.getType();
-        DataNodeTypeMetadata sourceType = sourceDataNode.getType();
-        DataNodeTypeMetadata.NodeType targetNodeType = targetType.getNodeType();
+        DataNodeTypeMetadata.NodeType targetNodeType = targetDataNode.getType().getNodeType();
+        DataNodeTypeMetadata.NodeType sourceNodeType = sourceDataNode.getType().getNodeType();
         String sourceName = sourceDataNode.getName();
         Collection<FilterMetadata> result = new LinkedList<>();
-        switch (targetNodeType) {
-            case REQUIRED:
-                result.add(NotNullValidatorMetadata.builder(taskIdentifier, Integer.MIN_VALUE, sourceName));
-                break;
-            case DEFAULT_ABLE:
-                String defaultValue = targetDataNode.getDefaultValue();
-                Validator.notNull(defaultValue, "error : create default filter metadata failed defaultValue can not be null task identifier: [%s]", taskIdentifier);
-                result.add(NullToDefaultEditorMetadata.builder(taskIdentifier, Integer.MIN_VALUE, sourceName, targetDataNode.getDefaultValue()));
-                break;
-            case STANDARD:
-                break;
-            case FIXED:
-            case MAPPED:
-                throw new IllegalArgumentException(String.format("error : create default filter metadata failed target NodeType can not be: [%s] task identifier: [%s]",
-                        targetNodeType.name(), taskIdentifier));
-            default:
-                throw new UnsupportedOperationException();
+        boolean preState = DataNodeTypeMetadata.NodeType.FIXED != targetNodeType && DataNodeTypeMetadata.NodeType.MAPPED != targetNodeType;
+        Validator.preState(preState, "error : create default filter metadata failed target NodeType can not be: [%s] task identifier: [%s]", targetNodeType.name(), taskIdentifier);
+        if (DataNodeTypeMetadata.NodeType.REQUIRED == targetNodeType && DataNodeTypeMetadata.NodeType.STANDARD == sourceNodeType) {
+            result.add(NotNullValidatorMetadata.builder(taskIdentifier, Integer.MIN_VALUE, sourceName));
         }
-        result.addAll(createDataTypeConvertorMetadata(taskIdentifier, 0, targetType.getDataType(), sourceType.getDataType()));
+        if (DataNodeTypeMetadata.NodeType.DEFAULT_ABLE == targetNodeType && DataNodeTypeMetadata.NodeType.STANDARD == sourceNodeType) {
+            String defaultValue = targetDataNode.getDefaultValue();
+            Validator.notNull(defaultValue, "error : create default filter metadata failed defaultValue can not be null task identifier: [%s]", taskIdentifier);
+            result.add(NullToDefaultEditorMetadata.builder(taskIdentifier, Integer.MIN_VALUE, sourceName, targetDataNode.getDefaultValue()));
+        }
+        result.addAll(createDataTypeConvertorMetadata(taskIdentifier, 0, targetDataNode.getType().getDataType(), sourceDataNode.getType().getDataType()));
         return result;
     }
 
@@ -98,8 +89,7 @@ public final class FilterMetadataFactory {
      * @return {@link FilterMetadata}
      */
     public static FilterMetadata getInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration) {
-        FilterType filterType = FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT));
-        return createFilterMetadata(filterType, taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
+        return createFilterMetadata(FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT)), taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
     }
 
     /**
@@ -132,6 +122,8 @@ public final class FilterMetadataFactory {
                 return NameConvertorMetadata.builder(taskIdentifier, order, props);
             case CODE_CONVERTOR:
                 return CodeConvertorMetadata.builder(taskIdentifier, order, props);
+            case DATA_TYPE_CONVERTOR:
+                return DataTypeConvertorMetadata.builder(taskIdentifier, order, props);
             case CONCAT_MERGER:
                 return ConcatMergerMetadata.builder(taskIdentifier, order, props);
             case DELIMITER_SPLITTER:

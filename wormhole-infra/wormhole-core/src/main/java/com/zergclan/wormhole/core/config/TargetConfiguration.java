@@ -35,15 +35,11 @@ public final class TargetConfiguration implements Configuration {
     
     private final String dataSource;
 
-    private final Collection<String> tables;
+    private final String table;
 
-    private final String loadType;
+    private final Collection<String> uniqueNodes;
 
-    private final boolean transaction;
-
-    private final Collection<String> unique;
-
-    private final Collection<String> compare;
+    private final Collection<String> compareNodes;
 
     private final Map<String, DataNodeConfiguration> dataNodes;
 }

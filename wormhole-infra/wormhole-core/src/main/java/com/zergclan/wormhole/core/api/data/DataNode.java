@@ -19,6 +19,7 @@ package com.zergclan.wormhole.core.api.data;
 
 import com.zergclan.wormhole.common.util.StringUtil;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Objects;
  *
  * @param <V> class type of data node value
  */
-public interface DataNode<V> {
+public interface DataNode<V> extends Serializable {
     
     /**
      * Is blank value.

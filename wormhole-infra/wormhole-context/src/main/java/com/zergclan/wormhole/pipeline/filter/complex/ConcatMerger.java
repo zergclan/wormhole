@@ -20,7 +20,7 @@ package com.zergclan.wormhole.pipeline.filter.complex;
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
 import com.zergclan.wormhole.core.api.data.DataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
+import com.zergclan.wormhole.core.data.TextDataNode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -65,7 +65,7 @@ public final class ConcatMerger implements Filter<DataGroup> {
             }
             stringBuilder.append(delimiter);
         }
-        return new StringDataNode(nodeNameEntry.getKey(), stringBuilder.toString());
+        return new TextDataNode(nodeNameEntry.getKey(), stringBuilder.toString());
     }
     
     @Override

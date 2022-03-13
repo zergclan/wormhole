@@ -20,29 +20,13 @@ package com.zergclan.wormhole.core.data;
 import com.zergclan.wormhole.core.api.data.DataNode;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public final class DataNodeTest {
 
     @Test
-    public void assertStringDataNode() {
-        DataNode<String> dataNode = new StringDataNode("column", "value");
-        assertNotNull(dataNode);
-    }
-
-    @Test
     public void assertIntegerDataNode() {
         DataNode<Integer> integerDataNode = new IntegerDataNode("column", 1);
         assertNotNull(integerDataNode);
-    }
-
-    @Test
-    public void assertDateDataNode() {
-        Date now = new Date();
-        PatternDate patternDate = new PatternDate(now, DatePattern.NATIVE_DATE_TIME);
-        DataNode<PatternDate> dateDataNode = new PatternDateDataNode("column", patternDate);
-        assertNotNull(dateDataNode);
     }
 }

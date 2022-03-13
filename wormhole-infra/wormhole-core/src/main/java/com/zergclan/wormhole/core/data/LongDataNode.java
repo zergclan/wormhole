@@ -18,11 +18,15 @@
 package com.zergclan.wormhole.core.data;
 
 import com.zergclan.wormhole.core.api.data.DataNode;
+import lombok.Getter;
 
 /**
  * Data node type of {@link Long}.
  */
+@Getter
 public final class LongDataNode implements DataNode<Long> {
+
+    private static final long serialVersionUID = -8123807816800654811L;
 
     private String name;
 
@@ -31,16 +35,6 @@ public final class LongDataNode implements DataNode<Long> {
     public LongDataNode(final String name, final Long value) {
         this.name = name;
         this.value = value;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public Long getValue() {
-        return value;
     }
 
     @Override

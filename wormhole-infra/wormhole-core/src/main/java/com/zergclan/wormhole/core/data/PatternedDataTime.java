@@ -17,8 +17,38 @@
 
 package com.zergclan.wormhole.core.data;
 
+import lombok.Getter;
+
+import java.io.Serializable;
+
 /**
  * Patterned data time.
  */
-public final class PatternedDataTime {
+@Getter
+public final class PatternedDataTime implements Serializable {
+
+    private static final long serialVersionUID = 6418454456243094323L;
+
+    private final String value;
+
+    private final DatePattern pattern;
+
+    public PatternedDataTime(final String value, final String pattern) {
+        this.value = value;
+        this.pattern = DatePattern.valueOf(pattern);
+    }
+
+    @Getter
+    public enum DatePattern {
+
+        STANDARD("yyyy-MM-dd HH:mm:ss"),
+        DATE("yyyy-MM-dd"),
+        TIME("HH:mm:ss");
+
+        private final String pattern;
+
+        DatePattern(final String pattern) {
+            this.pattern = pattern;
+        }
+    }
 }

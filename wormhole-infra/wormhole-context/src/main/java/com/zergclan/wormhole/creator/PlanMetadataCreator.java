@@ -18,10 +18,9 @@
 package com.zergclan.wormhole.creator;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.config.PlanConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
-import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.plan.ExecutionMode;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.core.metadata.task.TaskMetadata;
 import lombok.AccessLevel;
@@ -46,9 +45,9 @@ public final class PlanMetadataCreator {
      * @return {@link PlanMetadata}
      */
     public static PlanMetadata create(final String planIdentifier, final PlanConfiguration configuration, final Map<String, DataSourceMetadata> dataSources) {
-        ExecutionMode executionMode = ExecutionMode.valueOf(configuration.getMode().trim().toUpperCase());
+        PlanMetadata.ExecutionMode executionMode = PlanMetadata.ExecutionMode.valueOf(configuration.getMode().trim().toUpperCase());
         Map<String, TaskMetadata> tasks = createTasks(planIdentifier, configuration.getTasks(), dataSources);
-        return new PlanMetadata(planIdentifier, executionMode, configuration.getCorn(), tasks);
+        return new PlanMetadata(planIdentifier, executionMode, configuration.getCorn(), configuration.isAtomic(), tasks);
     }
     
     private static Map<String, TaskMetadata> createTasks(final String planIdentifier, final Map<String, TaskConfiguration> configurations, final Map<String, DataSourceMetadata> dataSources) {

@@ -18,13 +18,16 @@
 package com.zergclan.wormhole.core.metadata.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.filter.FilterType;
 import com.zergclan.wormhole.core.metadata.node.DataNodeTypeMetadata;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Properties;
+
 /**
- * Business code convertor implemented of {@link FilterMetadata}.
+ * Data type convertor implemented of {@link FilterMetadata}.
  */
 @RequiredArgsConstructor
 public final class DataTypeConvertorMetadata implements FilterMetadata {
@@ -34,6 +37,10 @@ public final class DataTypeConvertorMetadata implements FilterMetadata {
     private final String taskIdentifier;
 
     private final int order;
+
+    private final DataNodeTypeMetadata.DataType targetDataType;
+
+    private final DataNodeTypeMetadata.DataType sourceDataType;
 
     @Override
     public String getIdentifier() {
@@ -55,13 +62,44 @@ public final class DataTypeConvertorMetadata implements FilterMetadata {
      *
      * @param taskIdentifier task identifier
      * @param order order
+     * @param props props
+     * @return {@link FilterMetadata}
+     */
+    public static DataTypeConvertorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
+        String targetDataType = props.getProperty("targetDataType");
+        Validator.notNull(targetDataType, "error : build DataTypeConvertorMetadata failed targetDataType in props can not be null, task identifier: [%s]", taskIdentifier);
+        String sourceDataType = props.getProperty("sourceDataType");
+        Validator.notNull(sourceDataType, "error : build DataTypeConvertorMetadata failed sourceDataType in props can not be null, task identifier: [%s]", taskIdentifier);
+        return builder(taskIdentifier, order, DataNodeTypeMetadata.DataType.valueOf(targetDataType), DataNodeTypeMetadata.DataType.valueOf(sourceDataType));
+    }
+
+    /**
+     * Builder for {@link DataTypeConvertorMetadata}.
+     *
+     * @param taskIdentifier task identifier
+     * @param order order
      * @param targetDataType target {@link DataNodeTypeMetadata.DataType}
      * @param sourceDataType source {@link DataNodeTypeMetadata.DataType}
      * @return {@link DataTypeConvertorMetadata}
      */
     public static DataTypeConvertorMetadata builder(final String taskIdentifier, final int order, final DataNodeTypeMetadata.DataType targetDataType,
                                                     final DataNodeTypeMetadata.DataType sourceDataType) {
-        // TODO create by types of TEXT, NUMERIC, MONETARY, DATETIME
-        return null;
+        return new FilterBuilder(taskIdentifier, order, targetDataType, sourceDataType).build();
+    }
+
+    @RequiredArgsConstructor
+    private static class FilterBuilder {
+
+        private final String taskIdentifier;
+
+        private final int order;
+
+        private final DataNodeTypeMetadata.DataType targetDataType;
+
+        private final DataNodeTypeMetadata.DataType sourceDataType;
+
+        private DataTypeConvertorMetadata build() {
+            return new DataTypeConvertorMetadata(taskIdentifier, order, targetDataType, sourceDataType);
+        }
     }
 }
