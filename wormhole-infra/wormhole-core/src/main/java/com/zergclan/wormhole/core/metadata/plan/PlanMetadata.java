@@ -37,6 +37,8 @@ public final class PlanMetadata implements Metadata, Refreshable<TaskMetadata> {
     private final ExecutionMode mode;
     
     private final String corn;
+
+    private final boolean atomic;
     
     private final Map<String, TaskMetadata> tasks;
     
@@ -44,5 +46,10 @@ public final class PlanMetadata implements Metadata, Refreshable<TaskMetadata> {
     public boolean refresh(final TaskMetadata taskMetadata) {
         tasks.put(taskMetadata.getIdentifier(), taskMetadata);
         return true;
+    }
+
+    public enum ExecutionMode {
+
+        ONE_OFF, SCHEDULED
     }
 }

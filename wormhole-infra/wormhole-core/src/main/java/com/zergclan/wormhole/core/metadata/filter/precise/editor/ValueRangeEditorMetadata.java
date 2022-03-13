@@ -40,9 +40,9 @@ public final class ValueRangeEditorMetadata implements FilterMetadata {
     
     private final String sourceName;
     
-    private final int start;
+    private final int startIndex;
     
-    private final int end;
+    private final int endIndex;
     
     @Override
     public String getIdentifier() {
@@ -70,10 +70,10 @@ public final class ValueRangeEditorMetadata implements FilterMetadata {
     public static FilterMetadata builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build ValueRangeEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String end = props.getProperty("end");
-        Validator.notNull(end, "error : build ValueRangeEditorMetadata failed end in props can not be null, task identifier: [%s]", taskIdentifier);
-        String start = props.getProperty("start", "0");
-        return new FilterBuilder(taskIdentifier, order, sourceName, Integer.parseInt(start), Integer.parseInt(end)).build();
+        String endIndex = props.getProperty("endIndex");
+        Validator.notNull(endIndex, "error : build ValueRangeEditorMetadata failed endIndex in props can not be null, task identifier: [%s]", taskIdentifier);
+        String startIndex = props.getProperty("startIndex", "0");
+        return new FilterBuilder(taskIdentifier, order, sourceName, Integer.parseInt(startIndex), Integer.parseInt(endIndex)).build();
     }
     
     @RequiredArgsConstructor
@@ -85,12 +85,12 @@ public final class ValueRangeEditorMetadata implements FilterMetadata {
         
         private final String sourceName;
     
-        private final int start;
+        private final int startIndex;
     
-        private final int end;
+        private final int endIndex;
         
         private ValueRangeEditorMetadata build() {
-            return new ValueRangeEditorMetadata(taskIdentifier, order, sourceName, start, end);
+            return new ValueRangeEditorMetadata(taskIdentifier, order, sourceName, startIndex, endIndex);
         }
     }
 }

@@ -36,6 +36,8 @@ public final class PlanConfiguration implements Configuration {
     private final String mode;
 
     private final String corn;
+
+    private final boolean atomic;
     
     private final Map<String, TaskConfiguration> tasks = new LinkedHashMap<>();
 }

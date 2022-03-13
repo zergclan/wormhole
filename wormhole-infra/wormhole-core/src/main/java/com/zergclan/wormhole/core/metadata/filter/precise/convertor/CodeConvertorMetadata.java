@@ -23,8 +23,9 @@ import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.filter.FilterType;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -40,11 +41,9 @@ public final class CodeConvertorMetadata implements FilterMetadata {
     private final int order;
     
     private final String sourceName;
-    
-    private final Collection<String> sourceCodes;
-    
-    private final String targetCode;
-    
+
+    private final Map<String, String> sourceTargetCodeMappings;
+
     private final String defaultCode;
     
     @Override
@@ -73,39 +72,37 @@ public final class CodeConvertorMetadata implements FilterMetadata {
     public static CodeConvertorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build CodeConvertorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String sourceCodes = props.getProperty("sourceCodes");
-        Validator.notNull(sourceCodes, "error : build CodeConvertorMetadata failed sourceCodes in props can not be null, task identifier: [%s]", taskIdentifier);
-        String targetCode = props.getProperty("targetCode");
-        Validator.notNull(targetCode, "error : build CodeConvertorMetadata failed targetCode in props can not be null, task identifier: [%s]", taskIdentifier);
-        return new FilterBuilder(taskIdentifier, order, sourceName, initSourceCodes(sourceCodes.split(MarkConstant.COMMA)), targetCode, props.getProperty("defaultCode")).build();
+        Map<String, String> sourceTargetCodeMappings = createSourceTargetCodeMappings(props);
+        Validator.preState(sourceTargetCodeMappings.isEmpty(),
+                "error : build CodeConvertorMetadata failed source target code mappings in props can not be empty, task identifier: [%s]", taskIdentifier);
+        return new FilterBuilder(taskIdentifier, order, sourceName, sourceTargetCodeMappings, props.getProperty("defaultCode")).build();
     }
-    
-    private static Collection<String> initSourceCodes(final String[] split) {
-        int length = split.length;
-        Collection<String> result = new ArrayList<>();
-        for (int i = 0; i < length; i++) {
-            result.add(split[i].trim());
+
+    private static Map<String, String> createSourceTargetCodeMappings(final Properties props) {
+        Map<String, String> result = new LinkedHashMap<>();
+        Iterator<Map.Entry<Object, Object>> iterator = props.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Object, Object> entry = iterator.next();
+            result.put(entry.getKey().toString(), entry.getValue().toString());
         }
         return result;
     }
-    
+
     @RequiredArgsConstructor
     private static class FilterBuilder {
     
         private final String taskIdentifier;
     
         private final int order;
-    
+
         private final String sourceName;
-    
-        private final Collection<String> sourceCodes;
-    
-        private final String targetCode;
-    
+
+        private final Map<String, String> sourceTargetCodeMappings;
+
         private final String defaultCode;
         
         private CodeConvertorMetadata build() {
-            return new CodeConvertorMetadata(taskIdentifier, order, sourceName, sourceCodes, targetCode, defaultCode);
+            return new CodeConvertorMetadata(taskIdentifier, order, sourceName, sourceTargetCodeMappings, defaultCode);
         }
     }
 }

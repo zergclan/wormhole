@@ -18,12 +18,16 @@
 package com.zergclan.wormhole.core.data;
 
 import com.zergclan.wormhole.core.api.data.DataNode;
+import lombok.Getter;
 
 /**
  * Data node type of {@link Integer}.
  */
+@Getter
 public final class IntegerDataNode implements DataNode<Integer> {
-    
+
+    private static final long serialVersionUID = -1407715713577362674L;
+
     private String name;
     
     private Integer value;
@@ -31,16 +35,6 @@ public final class IntegerDataNode implements DataNode<Integer> {
     public IntegerDataNode(final String name, final Integer value) {
         this.name = name;
         this.value = value;
-    }
-
-    @Override
-    public Integer getValue() {
-        return value;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override

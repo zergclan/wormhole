@@ -17,16 +17,15 @@
 
 package com.zergclan.wormhole.creator;
 
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.config.DataNodeConfiguration;
 import com.zergclan.wormhole.core.config.SourceConfiguration;
 import com.zergclan.wormhole.core.config.TargetConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
-import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
-import com.zergclan.wormhole.core.metadata.task.LoadType;
 import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
 import com.zergclan.wormhole.core.metadata.task.TargetMetadata;
 import com.zergclan.wormhole.core.metadata.task.TaskMetadata;
@@ -60,41 +59,21 @@ public final class TaskMetadataCreator {
     }
     
     private static TargetMetadata createTarget(final TargetConfiguration targetConfiguration, final DataSourceMetadata targetDataSource) {
-        Collection<String> tables = targetConfiguration.getTables();
-        Map<String, DataNodeConfiguration> dataNodeConfigurations = targetConfiguration.getDataNodes();
-        boolean transaction = targetConfiguration.isTransaction();
-        LoadType loadType = LoadType.valueOf(targetConfiguration.getLoadType().toUpperCase());
-        Map<String, DataNodeMetadata> dataNodes = createTargetDataNodes(loadType, tables, dataNodeConfigurations, targetDataSource);
-        return new TargetMetadata(targetDataSource.getIdentifier(), tables, loadType, transaction, dataNodes);
+        String table = targetConfiguration.getTable();
+        Collection<String> uniqueNodes = targetConfiguration.getUniqueNodes();
+        Collection<String> compareNodes = targetConfiguration.getCompareNodes();
+        Map<String, DataNodeMetadata> dataNodes = createSingleTableDataNodes(targetDataSource.getTable(table), targetConfiguration.getDataNodes());
+        return new TargetMetadata(targetDataSource.getIdentifier(), table, uniqueNodes, compareNodes, dataNodes);
     }
-    
-    private static Map<String, DataNodeMetadata> createTargetDataNodes(final LoadType loadType, final Collection<String> tables, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
-                                                                       final DataSourceMetadata targetDataSource) {
-        switch (loadType) {
-            case SHARDING:
-                return createShardingTargetDataNodes(tables, dataNodeConfigurations, targetDataSource);
-            case CLONE :
-                return createClonedTargetDataNodes(tables.iterator().next(), dataNodeConfigurations, targetDataSource);
-            default :
-                throw new UnsupportedOperationException();
-        }
+
+    private static SourceMetadata createSource(final SourceConfiguration sourceConfiguration, final DataSourceMetadata sourceDataSource) {
+        String actualSql = sourceConfiguration.getActualSql();
+        String table = sourceConfiguration.getTable();
+        String conditionSql = sourceConfiguration.getConditionSql();
+        Map<String, DataNodeMetadata> dataNodes = createSingleTableDataNodes(sourceDataSource.getTable(table), sourceConfiguration.getDataNodes());
+        return new SourceMetadata(sourceDataSource.getIdentifier(), actualSql, table, conditionSql, dataNodes);
     }
-    
-    private static Map<String, DataNodeMetadata> createShardingTargetDataNodes(final Collection<String> tables, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
-                                                                               final DataSourceMetadata targetDataSource) {
-        Map<String, DataNodeMetadata> result = new LinkedHashMap<>();
-        Iterator<String> iterator = tables.iterator();
-        while (iterator.hasNext()) {
-            result.putAll(createSingleTableDataNodes(targetDataSource.getTable(iterator.next()), dataNodeConfigurations));
-        }
-        return result;
-    }
-    
-    private static Map<String, DataNodeMetadata> createClonedTargetDataNodes(final String targetTable, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
-                                                                            final DataSourceMetadata targetDataSource) {
-        return createSingleTableDataNodes(targetDataSource.getTable(targetTable), dataNodeConfigurations);
-    }
-    
+
     private static Map<String, DataNodeMetadata> createSingleTableDataNodes(final TableMetadata table, final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
         Map<String, DataNodeMetadata> result = new LinkedHashMap<>();
         Map<String, ColumnMetadata> columns = table.getColumns();
@@ -107,19 +86,5 @@ public final class TaskMetadataCreator {
             result.put(nodeName, null == dataNodeConfiguration ? DataNodeMetadataCreator.createDefaultMetadata(entry.getValue()) : DataNodeMetadataCreator.create(nodeName, dataNodeConfiguration));
         }
         return result;
-    }
-    
-    private static SourceMetadata createSource(final SourceConfiguration sourceConfiguration, final DataSourceMetadata sourceDataSource) {
-        String identifier = sourceDataSource.getIdentifier();
-        Collection<String> tables = sourceConfiguration.getTables();
-        String conditionSql = sourceConfiguration.getConditionSql();
-        String actualSql = sourceConfiguration.getActualSql();
-        Map<String, DataNodeMetadata> dataNodes = createSourceDataNodes(tables.iterator().next(), sourceConfiguration.getDataNodes(), sourceDataSource);
-        return new SourceMetadata(identifier, tables, conditionSql, actualSql, dataNodes);
-    }
-    
-    private static Map<String, DataNodeMetadata> createSourceDataNodes(final String table, final Map<String, DataNodeConfiguration> dataNodeConfigurations,
-                                                                       final DataSourceMetadata sourceDataSource) {
-        return createSingleTableDataNodes(sourceDataSource.getTable(table), dataNodeConfigurations);
     }
 }

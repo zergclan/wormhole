@@ -35,16 +35,16 @@ public final class TargetMetadata implements Metadata {
     
     private final String dataSourceIdentifier;
 
-    private final Collection<String> tables;
+    private final String table;
 
-    private final LoadType loadType;
+    private final Collection<String> uniqueNodes;
 
-    private final boolean transaction;
+    private final Collection<String> compareNodes;
 
     private final Map<String, DataNodeMetadata> dataNodes;
-    
+
     @Override
     public String getIdentifier() {
-        return dataSourceIdentifier + MarkConstant.SPACE + "target";
+        return dataSourceIdentifier + MarkConstant.SPACE + table;
     }
 }

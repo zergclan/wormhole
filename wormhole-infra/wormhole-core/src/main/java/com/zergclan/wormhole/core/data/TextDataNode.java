@@ -15,12 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.task;
+package com.zergclan.wormhole.core.data;
+
+import com.zergclan.wormhole.core.api.data.DataNode;
+import lombok.Getter;
 
 /**
- * Link type of {@link TargetMetadata}.
+ * Data node type of {@link String}.
  */
-public enum LoadType {
+@Getter
+public final class TextDataNode implements DataNode<String> {
 
-    CLONE, SHARDING
+    private static final long serialVersionUID = 5651707743153264559L;
+
+    private String name;
+
+    private String value;
+
+    public TextDataNode(final String name, final String value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    @Override
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final String value) {
+        this.value = value;
+        return true;
+    }
 }

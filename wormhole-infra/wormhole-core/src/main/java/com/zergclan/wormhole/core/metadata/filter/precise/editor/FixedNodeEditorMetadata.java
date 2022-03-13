@@ -21,6 +21,8 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.filter.FilterMetadata;
 import com.zergclan.wormhole.core.metadata.filter.FilterType;
+import com.zergclan.wormhole.core.metadata.node.DataNodeTypeMetadata;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
@@ -35,22 +37,18 @@ public final class FixedNodeEditorMetadata implements FilterMetadata {
 
     private final String taskIdentifier;
 
+    @Getter
     private final int order;
 
     private final String sourceName;
 
-    private final String value;
+    private final String defaultValue;
 
-    private final String type;
+    private final DataNodeTypeMetadata.DataType dataType;
 
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
-    }
-
-    @Override
-    public int getOrder() {
-        return order;
     }
 
     @Override
@@ -69,12 +67,11 @@ public final class FixedNodeEditorMetadata implements FilterMetadata {
     public static FixedNodeEditorMetadata builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build FixedNodeEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String value = props.getProperty("value");
-        Validator.notNull(value, "error : build FixedNodeEditorMetadata failed value in props can not be null, task identifier: [%s]", taskIdentifier);
-        // FIXME Refactoring type with enums
-        String type = props.getProperty("type");
-        Validator.notNull(type, "error : build FixedNodeEditorMetadata failed type in props can not be null, task identifier: [%s]", taskIdentifier);
-        return new FixedNodeEditorMetadata.FilterBuilder(taskIdentifier, order, sourceName, value, type).build();
+        String defaultValue = props.getProperty("defaultValue");
+        Validator.notNull(defaultValue, "error : build FixedNodeEditorMetadata failed defaultValue in props can not be null, task identifier: [%s]", taskIdentifier);
+        String dataType = props.getProperty("dataType");
+        Validator.notNull(dataType, "error : build FixedNodeEditorMetadata failed dataType in props can not be null, task identifier: [%s]", taskIdentifier);
+        return new FixedNodeEditorMetadata.FilterBuilder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetadata.DataType.valueOf(dataType)).build();
     }
 
     @RequiredArgsConstructor
@@ -86,12 +83,12 @@ public final class FixedNodeEditorMetadata implements FilterMetadata {
 
         private final String sourceName;
 
-        private final String value;
+        private final String defaultValue;
 
-        private final String type;
+        private final DataNodeTypeMetadata.DataType dataType;
 
         private FixedNodeEditorMetadata build() {
-            return new FixedNodeEditorMetadata(taskIdentifier, order, sourceName, value, type);
+            return new FixedNodeEditorMetadata(taskIdentifier, order, sourceName, defaultValue, dataType);
         }
     }
 }

@@ -15,15 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.plan;
+package com.zergclan.wormhole.core.data;
 
+import com.zergclan.wormhole.core.api.data.DataNode;
 import lombok.Getter;
 
 /**
- * Execution mode of {@link PlanMetadata}.
+ * Data node type of {@link PatternedDataTime}.
  */
 @Getter
-public enum ExecutionMode {
+public final class PatternedDataTimeDataNode implements DataNode<PatternedDataTime> {
 
-    ONE_OFF, SCHEDULED
+    private static final long serialVersionUID = -4571978987948014231L;
+
+    private String name;
+
+    private PatternedDataTime value;
+
+    public PatternedDataTimeDataNode(final String name, final PatternedDataTime value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    @Override
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return false;
+    }
+
+    @Override
+    public boolean refreshValue(final PatternedDataTime value) {
+        this.value = value;
+        return false;
+    }
 }

@@ -20,7 +20,7 @@ package com.zergclan.wormhole.pipeline.filter.precise.convertor;
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
 import com.zergclan.wormhole.core.api.data.DataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
+import com.zergclan.wormhole.core.data.TextDataNode;
 import com.zergclan.wormhole.pipeline.data.CodeMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,7 @@ public final class CodeConvertor implements Filter<DataGroup> {
     }
     
     private void refreshDataNode(final DataGroup dataGroup, final String name, final String targetCode) {
-        dataGroup.refresh(new StringDataNode(name, targetCode));
+        dataGroup.refresh(new TextDataNode(name, targetCode));
     }
     
     @Override

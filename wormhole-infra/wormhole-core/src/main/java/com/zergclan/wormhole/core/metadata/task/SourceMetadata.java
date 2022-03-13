@@ -23,7 +23,6 @@ import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -34,17 +33,17 @@ import java.util.Map;
 public final class SourceMetadata implements Metadata {
     
     private final String dataSourceIdentifier;
-    
-    private final Collection<String> tables;
+
+    private final String actualSql;
+
+    private final String table;
     
     private final String conditionSql;
-    
-    private final String actualSql;
-    
+
     private final Map<String, DataNodeMetadata> dataNodes;
-    
+
     @Override
     public String getIdentifier() {
-        return dataSourceIdentifier + MarkConstant.SPACE + "source";
+        return dataSourceIdentifier + MarkConstant.SPACE + table;
     }
 }

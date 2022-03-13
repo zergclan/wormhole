@@ -20,7 +20,7 @@ package com.zergclan.wormhole.pipeline.filter.precise.editor;
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
 import com.zergclan.wormhole.core.api.data.DataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
+import com.zergclan.wormhole.core.data.TextDataNode;
 import com.zergclan.wormhole.pipeline.data.RangeHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,7 @@ public final class ValueRangeEditor implements Filter<DataGroup> {
             String value = dataNode.getValue().toString();
             RangeHelper rangeHelper = entry.getValue();
             String sub = rangeHelper.sub(value);
-            if (!dataGroup.refresh(new StringDataNode(name, sub))) {
+            if (!dataGroup.refresh(new TextDataNode(name, sub))) {
                 return false;
             }
         }

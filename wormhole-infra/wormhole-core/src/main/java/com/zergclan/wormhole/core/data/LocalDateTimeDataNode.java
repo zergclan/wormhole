@@ -18,13 +18,17 @@
 package com.zergclan.wormhole.core.data;
 
 import com.zergclan.wormhole.core.api.data.DataNode;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 /**
  * Data node type of {@link LocalDateTime}.
  */
+@Getter
 public final class LocalDateTimeDataNode implements DataNode<LocalDateTime> {
+
+    private static final long serialVersionUID = 6687234036121922241L;
 
     private String name;
 
@@ -33,16 +37,6 @@ public final class LocalDateTimeDataNode implements DataNode<LocalDateTime> {
     public LocalDateTimeDataNode(final String name, final LocalDateTime value) {
         this.name = name;
         this.value = value;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public LocalDateTime getValue() {
-        return value;
     }
 
     @Override

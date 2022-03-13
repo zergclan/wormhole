@@ -26,7 +26,7 @@ import com.zergclan.wormhole.core.data.BigDecimalDataNode;
 import com.zergclan.wormhole.core.data.IntegerDataNode;
 import com.zergclan.wormhole.core.data.LocalDateTimeDataNode;
 import com.zergclan.wormhole.core.data.LongDataNode;
-import com.zergclan.wormhole.core.data.StringDataNode;
+import com.zergclan.wormhole.core.data.TextDataNode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -57,7 +57,7 @@ public final class MySQLDataGroupSwapper implements Swapper<Map<String, Object>,
 
     private DataNode<?> createDataNode(final String name, final Object value) {
         if (value instanceof String) {
-            return new StringDataNode(name, value.toString());
+            return new TextDataNode(name, value.toString());
         } else if (value instanceof Integer) {
             return new IntegerDataNode(name, Integer.parseInt(value.toString()));
         } else if (value instanceof Long) {
