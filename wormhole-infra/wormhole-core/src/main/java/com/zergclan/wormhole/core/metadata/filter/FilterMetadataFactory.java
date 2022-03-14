@@ -68,15 +68,15 @@ public final class FilterMetadataFactory {
             Validator.notNull(defaultValue, "error : create default filter metadata failed defaultValue can not be null task identifier: [%s]", taskIdentifier);
             result.add(NullToDefaultEditorMetadata.builder(taskIdentifier, Integer.MIN_VALUE, sourceName, targetDataNode.getDefaultValue()));
         }
-        result.addAll(createDataTypeConvertorMetadata(taskIdentifier, 0, targetDataNode.getType().getDataType(), sourceDataNode.getType().getDataType()));
+        result.addAll(createDataTypeConvertorMetadata(taskIdentifier, 0, sourceName, targetDataNode.getType().getDataType(), sourceDataNode.getType().getDataType()));
         return result;
     }
 
-    private static Collection<FilterMetadata> createDataTypeConvertorMetadata(final String taskIdentifier, final int order, final DataNodeTypeMetadata.DataType targetDataType,
+    private static Collection<FilterMetadata> createDataTypeConvertorMetadata(final String taskIdentifier, final int order, final String sourceName, final DataNodeTypeMetadata.DataType targetDataType,
                                                                               final DataNodeTypeMetadata.DataType sourceDataType) {
         Collection<FilterMetadata> result = new LinkedList<>();
         if (targetDataType != sourceDataType) {
-            result.add(DataTypeConvertorMetadata.builder(taskIdentifier, order, targetDataType, sourceDataType));
+            result.add(DataTypeConvertorMetadata.builder(taskIdentifier, order, sourceName, targetDataType, sourceDataType));
         }
         return result;
     }

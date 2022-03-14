@@ -15,36 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.data;
+package com.zergclan.wormhole.context;
 
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Code mapper.
+ * Plan context.
  */
-@RequiredArgsConstructor
-public final class CodeMapper {
+public final class PlanContext {
     
-    private final String defaultCode;
-    
-    private final Map<String, String> sourceTargetCodeMapping;
+    // FIXME refactoring with cache
+    private final Map<String, CachedPlanMetadata> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
     
     /**
-     * Get target code.
+     * Is executing plan.
      *
-     * @param sourceCode source code
-     * @return target code
+     * @param planIdentifier plan identifier
+     * @return is executing or not
      */
-    public Optional<String> getTargetCode(final String sourceCode) {
-        String targetCode = sourceTargetCodeMapping.get(sourceCode);
-        return Objects.isNull(targetCode) ? getDefault() : Optional.of(targetCode);
-    }
-    
-    private Optional<String> getDefault() {
-        return Objects.isNull(defaultCode) ? Optional.empty() : Optional.of(defaultCode);
+    public boolean isExecuting(final String planIdentifier) {
+        return false;
     }
 }

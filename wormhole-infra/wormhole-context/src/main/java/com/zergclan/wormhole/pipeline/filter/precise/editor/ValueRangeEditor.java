@@ -21,7 +21,7 @@ import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
 import com.zergclan.wormhole.core.api.data.DataNode;
 import com.zergclan.wormhole.core.data.TextDataNode;
-import com.zergclan.wormhole.pipeline.data.RangeHelper;
+import com.zergclan.wormhole.pipeline.helper.ValueRangeHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -37,18 +37,18 @@ public final class ValueRangeEditor implements Filter<DataGroup> {
     @Getter
     private final int order;
 
-    private final Map<String, RangeHelper> rangeHelpers;
+    private final Map<String, ValueRangeHelper> rangeHelpers;
 
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, RangeHelper>> iterator = rangeHelpers.entrySet().iterator();
+        Iterator<Map.Entry<String, ValueRangeHelper>> iterator = rangeHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, RangeHelper> entry = iterator.next();
+            Map.Entry<String, ValueRangeHelper> entry = iterator.next();
             String name = entry.getKey();
             DataNode<?> dataNode = dataGroup.getDataNode(name);
             String value = dataNode.getValue().toString();
-            RangeHelper rangeHelper = entry.getValue();
-            String sub = rangeHelper.sub(value);
+            ValueRangeHelper valueRangeHelper = entry.getValue();
+            String sub = valueRangeHelper.sub(value);
             if (!dataGroup.refresh(new TextDataNode(name, sub))) {
                 return false;
             }

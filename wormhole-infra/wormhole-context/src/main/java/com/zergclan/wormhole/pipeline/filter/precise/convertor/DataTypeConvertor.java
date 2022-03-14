@@ -19,10 +19,14 @@ package com.zergclan.wormhole.pipeline.filter.precise.convertor;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
+import com.zergclan.wormhole.core.api.data.DataNode;
+import com.zergclan.wormhole.pipeline.helper.DataTypeConvertorHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Node data type convertor implemented of {@link Filter}.
@@ -33,17 +37,27 @@ public final class DataTypeConvertor implements Filter<DataGroup> {
     @Getter
     private final int order;
     
-    // FIXME refactoring with enums
-    private final Map<String, String> typeMapper;
+    private final Map<String, DataTypeConvertorHelper> dataTypeConvertorHelpers;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        // TODO do filter
-        return false;
+        Iterator<Map.Entry<String, DataTypeConvertorHelper>> iterator = dataTypeConvertorHelpers.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, DataTypeConvertorHelper> entry = iterator.next();
+            String name = entry.getKey();
+            DataTypeConvertorHelper dataTypeConvertorHelper = entry.getValue();
+            DataNode<?> sourceDataNode = dataGroup.getDataNode(name);
+            Optional<DataNode<?>> convertDataNode = dataTypeConvertorHelper.convert(sourceDataNode);
+            if (!convertDataNode.isPresent()) {
+                return false;
+            }
+            dataGroup.refresh(convertDataNode.get());
+        }
+        return true;
     }
     
     @Override
     public String getType() {
-        return null;
+        return "DATA_TYPE_CONVERTOR";
     }
 }
