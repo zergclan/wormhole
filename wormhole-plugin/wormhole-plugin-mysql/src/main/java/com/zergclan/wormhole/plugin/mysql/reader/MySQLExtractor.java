@@ -23,6 +23,7 @@ import com.zergclan.wormhole.plugin.api.Extractor;
 import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
+import java.util.Collection;
 
 /**
  * Extractor for MySQL.
@@ -33,7 +34,7 @@ public final class MySQLExtractor implements Extractor<DataGroup> {
     private final DataSource dataSource;
     
     @Override
-    public DataGroup extract(final SourceMetadata source) {
+    public Collection<DataGroup> extract(final SourceMetadata source) {
         return null;
     }
 }

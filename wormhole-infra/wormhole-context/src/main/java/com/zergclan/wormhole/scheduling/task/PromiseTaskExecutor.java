@@ -15,25 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.reader;
+package com.zergclan.wormhole.scheduling.task;
 
-import com.zergclan.wormhole.core.api.data.DataGroup;
-import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
-import com.zergclan.wormhole.plugin.api.Extractor;
+import com.zergclan.wormhole.common.concurrent.PromiseTask;
+import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetadata;
 import lombok.RequiredArgsConstructor;
 
-import javax.sql.DataSource;
-
-/**
- * Extractor for MySQL.
- */
 @RequiredArgsConstructor
-public final class MySQLExtractor implements Extractor<DataGroup> {
-    
-    private final DataSource dataSource;
-    
+public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult> {
+
+    private final String planIdentifier;
+
+    private final long planBatch;
+
+    private final long taskBatch;
+
+    private final CachedTaskMetadata cachedTaskMetadata;
+
     @Override
-    public DataGroup extract(final SourceMetadata source) {
+    public PromiseTaskResult call() throws Exception {
+        // TODO handle cached task metadata
+        // get Extractor Loader
+        // Extractor get data
+        // create BatchedDataGroup task
         return null;
     }
 }

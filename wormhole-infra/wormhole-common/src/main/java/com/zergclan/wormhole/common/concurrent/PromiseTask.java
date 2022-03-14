@@ -17,26 +17,10 @@
 
 package com.zergclan.wormhole.common.concurrent;
 
-import java.util.concurrent.Future;
+import java.util.concurrent.Callable;
 
 /**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
+ * The root interface from which all promise task shall be derived in Wormhole.
  */
-public interface ExecutorRejectedHandler {
-    
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
-
-    /**
-     * Handle {@link PromiseTask}.
-     *
-     * @param promiseTask {@link PromiseTask}
-     * @param <V> class type of result
-     * @return future result
-     */
-    <V> Future<V> handle(PromiseTask<V> promiseTask);
+public interface PromiseTask<V> extends Callable<V> {
 }

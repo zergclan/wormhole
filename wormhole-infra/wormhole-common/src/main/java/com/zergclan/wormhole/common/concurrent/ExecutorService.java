@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.concurrent.AbstractExecutorService;
-import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -42,13 +42,20 @@ public final class ExecutorService extends AbstractExecutorService {
      * @param processTask {@link ProcessTask}
      */
     public void submit(final ProcessTask processTask) {
-        try {
-            threadPoolExecutor.submit(processTask);
-        } catch (RejectedExecutionException ex) {
-            handler.handle(processTask);
-        }
+        threadPoolExecutor.submit(processTask);
     }
-    
+
+    /**
+     * Submit {@link PromiseTask} to {@link ExecutorService}.
+     *
+     * @param promiseTask {@link ProcessTask}
+     * @param <V> class type of future result
+     * @return future result
+     */
+    public <V> Future<V> submit(final PromiseTask<V> promiseTask) {
+        return threadPoolExecutor.submit(promiseTask);
+    }
+
     @Override
     public void shutdown() {
         threadPoolExecutor.shutdown();

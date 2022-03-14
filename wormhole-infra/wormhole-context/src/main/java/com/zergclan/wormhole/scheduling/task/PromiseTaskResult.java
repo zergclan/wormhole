@@ -15,28 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.concurrent;
+package com.zergclan.wormhole.scheduling.task;
 
-import java.util.concurrent.Future;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-/**
- * Handler for {@link ProcessTask} that cannot be executed by a {@link ExecutorService}.
- */
-public interface ExecutorRejectedHandler {
-    
-    /**
-     * Handle {@link ProcessTask}.
-     *
-     * @param task {@link ProcessTask}
-     */
-    void handle(ProcessTask task);
+import java.io.Serializable;
 
-    /**
-     * Handle {@link PromiseTask}.
-     *
-     * @param promiseTask {@link PromiseTask}
-     * @param <V> class type of result
-     * @return future result
-     */
-    <V> Future<V> handle(PromiseTask<V> promiseTask);
+@RequiredArgsConstructor
+@Getter
+public final class PromiseTaskResult implements Serializable {
+
+    private static final long serialVersionUID = -8354421630803417276L;
+
+    private final boolean success;
+
+    private final long batchSize;
+
+    private final long errorRow;
 }
