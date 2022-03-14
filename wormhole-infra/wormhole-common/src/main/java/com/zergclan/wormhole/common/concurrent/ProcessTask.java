@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.common.concurrent;
 
 /**
- * The root interface from which all executed task shall be derived in Wormhole.
+ * The root interface from which all process task shall be derived in Wormhole.
  */
 public interface ProcessTask extends Runnable {
 }

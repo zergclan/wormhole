@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -37,9 +38,7 @@ public final class ExecutorServiceFactory {
     
     private static final long DEFAULT_KEEP_ALIVE_TIME = 30 * 60 * 1000L;
     
-    private static final ExecutorRejectedHandler DEFAULT_REJECTED_HANDLER = task -> {
-        throw new WormholeException("error : executor rejected");
-    };
+    private static final ExecutorRejectedHandler DEFAULT_REJECTED_HANDLER = new DefaultExecutorRejectedHandler();
     
     /**
      * The newly created single-threaded {@link ExecutorService}.
@@ -219,7 +218,7 @@ public final class ExecutorServiceFactory {
     }
     
     /**
-     * Default thread factory for WormholeExecutorService.
+     * Default implemented of {@link ThreadFactory}.
      */
     private static class DefaultThreadFactory implements ThreadFactory {
         
@@ -250,6 +249,22 @@ public final class ExecutorServiceFactory {
                 result.setPriority(Thread.NORM_PRIORITY);
             }
             return result;
+        }
+    }
+
+    /**
+     * Default implemented of {@link ExecutorRejectedHandler}.
+     */
+    private static class DefaultExecutorRejectedHandler implements ExecutorRejectedHandler {
+
+        @Override
+        public void handle(final ProcessTask task) {
+            throw new WormholeException("error : executor rejected");
+        }
+
+        @Override
+        public <V> Future<V> handle(final PromiseTask<V> promiseTask) {
+            throw new WormholeException("error : executor rejected");
         }
     }
 }

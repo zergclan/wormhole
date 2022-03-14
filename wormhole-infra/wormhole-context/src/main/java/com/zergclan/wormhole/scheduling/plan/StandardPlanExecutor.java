@@ -17,12 +17,53 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
+import com.zergclan.wormhole.common.SequenceGenerator;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetadata;
 import com.zergclan.wormhole.scheduling.SchedulingExecutor;
+import com.zergclan.wormhole.scheduling.task.PromiseTaskExecutor;
+import com.zergclan.wormhole.scheduling.task.PromiseTaskResult;
+import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
+import java.util.concurrent.CompletionService;
+
+/**
+ * Standard plan implemented of {@link SchedulingExecutor}.
+ */
+@RequiredArgsConstructor
 public final class StandardPlanExecutor implements SchedulingExecutor {
-    
+
+    private final CachedPlanMetadata cachedPlanMetadata;
+
+    private final CompletionService<PromiseTaskResult> completionService;
+
     @Override
     public void execute() {
-        // TODO
+        String planIdentifier = cachedPlanMetadata.getIdentifier();
+        final long planBatch = SequenceGenerator.generateId();
+        cachedPlanMetadata.getCachedTasks().forEach(each -> parallelExecute(each, planIdentifier, planBatch));
+    }
+
+    private void parallelExecute(final Map<String, CachedTaskMetadata> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
+        /**
+         *  void solve(Executor e, Collection<Callable<Result>> solvers)
+         *  throws InterruptedException, ExecutionException {
+         *  CompletionService<Result> ecs = new ExecutorCompletionService<Result>(e);
+         *  for (Callable<Result> s : solvers)
+         *  ecs.submit(s);
+         *
+         *  int n = solvers.size();
+         *  for (int i = 0; i < n; ++i) {
+         *  Result r = ecs.take().get();
+         *  if (r != null)
+         *  use(r);
+         *  }
+         *  }
+         */
+        for (Map.Entry<String, CachedTaskMetadata> entry : cachedTaskMetadata.entrySet()) {
+            PromiseTaskExecutor promiseTaskExecutor = new PromiseTaskExecutor(planIdentifier, planBatch, SequenceGenerator.generateId(), entry.getValue());
+            completionService.submit(promiseTaskExecutor);
+        }
     }
 }
