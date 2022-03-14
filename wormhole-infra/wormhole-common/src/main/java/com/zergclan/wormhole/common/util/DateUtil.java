@@ -24,6 +24,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -61,7 +62,18 @@ public final class DateUtil {
     public static String format(final Date date, final String pattern) {
         return new SimpleDateFormat(pattern).format(date);
     }
-
+    
+    /**
+     * Format {@link LocalDateTime}.
+     *
+     * @param localDateTime {@link LocalDateTime}
+     * @param pattern pattern
+     * @return format date text
+     */
+    public static String format(final LocalDateTime localDateTime, final String pattern) {
+        return DateTimeFormatter.ofPattern(pattern).format(localDateTime);
+    }
+    
     /**
      * Parse date text to {@link Date}.
      *

@@ -21,7 +21,7 @@ import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.data.DataGroup;
 import com.zergclan.wormhole.core.api.data.DataNode;
 import com.zergclan.wormhole.core.data.TextDataNode;
-import com.zergclan.wormhole.pipeline.data.CodeMapper;
+import com.zergclan.wormhole.pipeline.helper.CodeConvertorHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -38,15 +38,15 @@ public final class CodeConvertor implements Filter<DataGroup> {
     @Getter
     private final int order;
     
-    private final Map<String, CodeMapper> codeMappers;
+    private final Map<String, CodeConvertorHelper> codeConvertorHelpers;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, CodeMapper>> iterator = codeMappers.entrySet().iterator();
+        Iterator<Map.Entry<String, CodeConvertorHelper>> iterator = codeConvertorHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, CodeMapper> entry = iterator.next();
+            Map.Entry<String, CodeConvertorHelper> entry = iterator.next();
             DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
-            Optional<String> targetCode = entry.getValue().getTargetCode(String.valueOf(dataNode.getValue()));
+            Optional<String> targetCode = entry.getValue().convert(String.valueOf(dataNode.getValue()));
             if (!targetCode.isPresent()) {
                 return false;
             }

@@ -15,39 +15,39 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.data;
+package com.zergclan.wormhole.pipeline.helper;
 
 import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
 /**
- * Range helper.
+ * Code convertor helper.
  */
 @RequiredArgsConstructor
-public final class RangeHelper {
-
-    private final int start;
-
-    private final int end;
-
+public final class CodeConvertorHelper {
+    
+    private final String defaultCode;
+    
+    private final Map<String, String> sourceTargetCodeMapping;
+    
     /**
-     * Sub value.
+     * Get target code.
      *
-     * @param value value
-     * @return sub value
+     * @param sourceCode source code
+     * @return target code
      */
-    public String sub(final String value) {
-        Validator.isTrue(!StringUtil.isBlank(value), "error : range helper arg value can not be blank");
-        int length = value.length();
-        int startIndex = computeIndex(start, length);
-        int endIndex = computeIndex(end, length);
-        return startIndex >= endIndex ? value.substring(endIndex, startIndex) : value.substring(startIndex, endIndex);
+    public Optional<String> convert(final String sourceCode) {
+        Validator.preState(StringUtil.isBlank(sourceCode), "error : range helper arg value can not be blank");
+        String targetCode = sourceTargetCodeMapping.get(sourceCode);
+        return Objects.isNull(targetCode) ? getDefault() : Optional.of(targetCode);
     }
-
-    private int computeIndex(final int input, final int length) {
-        int absInput = Math.abs(input);
-        Validator.isTrue(length > absInput, "error : range helper index out of bounds exception index:[%d] length:[%d]", input, length);
-        return input < 0 ? length - absInput : input;
+    
+    private Optional<String> getDefault() {
+        return Objects.isNull(defaultCode) ? Optional.empty() : Optional.of(defaultCode);
     }
 }

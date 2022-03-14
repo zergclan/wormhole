@@ -17,9 +17,11 @@
 
 package com.zergclan.wormhole.core.data;
 
+import com.zergclan.wormhole.common.util.DateUtil;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * Patterned data time.
@@ -37,7 +39,12 @@ public final class PatternedDataTime implements Serializable {
         this.value = value;
         this.pattern = DatePattern.valueOf(pattern);
     }
-
+    
+    public PatternedDataTime(final LocalDateTime localDateTime, final DatePattern pattern) {
+        this.pattern = pattern;
+        this.value = pattern.format(localDateTime);
+    }
+    
     @Getter
     public enum DatePattern {
 
@@ -46,9 +53,13 @@ public final class PatternedDataTime implements Serializable {
         TIME("HH:mm:ss");
 
         private final String pattern;
-
+        
         DatePattern(final String pattern) {
             this.pattern = pattern;
+        }
+        
+        private String format(final LocalDateTime localDateTime) {
+            return DateUtil.format(localDateTime, pattern);
         }
     }
 }

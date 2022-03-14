@@ -19,6 +19,7 @@ package com.zergclan.wormhole.engine;
 
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.context.PlanContext;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
 import com.zergclan.wormhole.creator.WormholeMetadataCreator;
 import com.zergclan.wormhole.core.api.metadata.Metadata;
@@ -33,7 +34,6 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.DelayQueue;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -42,9 +42,8 @@ public final class WormholeExecutionEngine implements Runnable {
     private final WormholeMetadata wormholeMetadata;
 
     private final Queue<SchedulingTrigger> planSchedulingTriggerQueue = new DelayQueue<>();
-
-    // FIXME refactoring with cache
-    private final Map<String, CachedPlanMetadata> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
+    
+    private final PlanContext planContext = new PlanContext();
 
     private WormholeExecutionEngine(final WormholeConfiguration configuration) throws SQLException {
         WormholeMetadata wormholeMetadata = WormholeMetadataCreator.create(configuration);
@@ -117,11 +116,11 @@ public final class WormholeExecutionEngine implements Runnable {
         }
         return false;
     }
-
+    
     private boolean isExecuting(final String planIdentifier) {
-        return null != cachedPlanMetadataContainer.get(planIdentifier);
+        return planContext.isExecuting(planIdentifier);
     }
-
+    
     @Override
     public void run() {
         start();
