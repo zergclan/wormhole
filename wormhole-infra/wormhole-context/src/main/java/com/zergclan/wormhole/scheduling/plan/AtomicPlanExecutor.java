@@ -17,15 +17,63 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
+import com.zergclan.wormhole.common.SequenceGenerator;
+import com.zergclan.wormhole.common.concurrent.ExecutorServiceManager;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetadata;
 import com.zergclan.wormhole.scheduling.SchedulingExecutor;
+import com.zergclan.wormhole.scheduling.task.PromiseTaskExecutor;
+import com.zergclan.wormhole.scheduling.task.PromiseTaskResult;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
 
 /**
  * Atomic plan executor.
  */
+@RequiredArgsConstructor
 public final class AtomicPlanExecutor implements SchedulingExecutor {
-    
+
+    private final CachedPlanMetadata cachedPlanMetadata;
+
     @Override
     public void execute() {
-        // TODO
+        String planIdentifier = cachedPlanMetadata.getIdentifier();
+        final long planBatch = SequenceGenerator.generateId();
+        for (Map<String, CachedTaskMetadata> each : cachedPlanMetadata.getCachedTasks()) {
+            Optional<String> failedTask = transactionalExecute(each, planIdentifier, planBatch);
+            if (failedTask.isPresent()) {
+                // TODO send plan execute failed event
+                break;
+            }
+        }
+        // TODO send plan execute success event
+    }
+
+    private Optional<String> transactionalExecute(final Map<String, CachedTaskMetadata> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
+        CompletionService<PromiseTaskResult> completionService = new ExecutorCompletionService<>(ExecutorServiceManager.getSchedulingExecutor());
+        for (Map.Entry<String, CachedTaskMetadata> entry : cachedTaskMetadata.entrySet()) {
+            completionService.submit(new PromiseTaskExecutor(planIdentifier, planBatch, SequenceGenerator.generateId(), entry.getValue()));
+        }
+        int size = cachedTaskMetadata.size();
+        PromiseTaskResult promiseTaskResult;
+        for (int i = 0; i < size; i++) {
+            try {
+                promiseTaskResult = completionService.take().get();
+                if (!promiseTaskResult.isSuccess()) {
+                    // TODO send task execute failed event
+                    return Optional.of(promiseTaskResult.getTaskIdentifier());
+                }
+                // TODO send task execute success event
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                // TODO send task execute error event
+            }
+        }
+        return Optional.empty();
     }
 }
