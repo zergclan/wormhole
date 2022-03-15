@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.scheduling.plan;
 
 import com.zergclan.wormhole.common.SequenceGenerator;
+import com.zergclan.wormhole.common.concurrent.ExecutorServiceManager;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetadata;
 import com.zergclan.wormhole.scheduling.SchedulingExecutor;
@@ -27,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
 
 /**
  * Standard plan implemented of {@link SchedulingExecutor}.
@@ -36,34 +39,30 @@ public final class StandardPlanExecutor implements SchedulingExecutor {
 
     private final CachedPlanMetadata cachedPlanMetadata;
 
-    private final CompletionService<PromiseTaskResult> completionService;
-
     @Override
     public void execute() {
         String planIdentifier = cachedPlanMetadata.getIdentifier();
         final long planBatch = SequenceGenerator.generateId();
         cachedPlanMetadata.getCachedTasks().forEach(each -> parallelExecute(each, planIdentifier, planBatch));
+        // TODO send plan execute success event
     }
 
     private void parallelExecute(final Map<String, CachedTaskMetadata> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
-        /**
-         *  void solve(Executor e, Collection<Callable<Result>> solvers)
-         *  throws InterruptedException, ExecutionException {
-         *  CompletionService<Result> ecs = new ExecutorCompletionService<Result>(e);
-         *  for (Callable<Result> s : solvers)
-         *  ecs.submit(s);
-         *
-         *  int n = solvers.size();
-         *  for (int i = 0; i < n; ++i) {
-         *  Result r = ecs.take().get();
-         *  if (r != null)
-         *  use(r);
-         *  }
-         *  }
-         */
+        CompletionService<PromiseTaskResult> completionService = new ExecutorCompletionService<>(ExecutorServiceManager.getSchedulingExecutor());
         for (Map.Entry<String, CachedTaskMetadata> entry : cachedTaskMetadata.entrySet()) {
             PromiseTaskExecutor promiseTaskExecutor = new PromiseTaskExecutor(planIdentifier, planBatch, SequenceGenerator.generateId(), entry.getValue());
             completionService.submit(promiseTaskExecutor);
+        }
+        int size = cachedTaskMetadata.size();
+        PromiseTaskResult promiseTaskResult;
+        for (int i = 0; i < size; i++) {
+            try {
+                promiseTaskResult = completionService.take().get();
+                // TODO send task execute success event
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                // TODO send task execute failed event
+            }
         }
     }
 }
