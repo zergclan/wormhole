@@ -36,7 +36,7 @@ public final class PlanMetadata implements Metadata, Refreshable<TaskMetadata> {
     
     private final ExecutionMode mode;
     
-    private final String corn;
+    private final String expression;
 
     private final boolean atomic;
     
