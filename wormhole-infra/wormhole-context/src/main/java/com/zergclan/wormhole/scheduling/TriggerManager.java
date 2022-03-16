@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.scheduling;
 
+import com.zergclan.wormhole.scheduling.plan.OneOffPlanTrigger;
+import com.zergclan.wormhole.scheduling.plan.ScheduledPlanTrigger;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -24,13 +26,21 @@ import java.util.Optional;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Trigger manager.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TriggerManager {
     
-    private final static int DEFAULT_INTERVAL_MILLISECONDS = 3000;
+    private static final int DEFAULT_INTERVAL_MILLISECONDS = 3000;
     
-    private final static DelayQueue<Trigger> TRIGGERS = new DelayQueue<>();
-    
+    private static final DelayQueue<Trigger> TRIGGERS = new DelayQueue<>();
+
+    /**
+     * Get executable {@link Trigger}.
+     *
+     * @return {@link Trigger}
+     */
     public static Optional<Trigger> getExecutableTrigger() {
         try {
             return Optional.ofNullable(TRIGGERS.poll(DEFAULT_INTERVAL_MILLISECONDS, TimeUnit.MILLISECONDS));
@@ -38,9 +48,21 @@ public final class TriggerManager {
             return Optional.empty();
         }
     }
-    
+
+    /**
+     * Register trigger.
+     *
+     * @param trigger {@link Trigger}
+     * @return is registered or not
+     */
     public static boolean register(final Trigger trigger) {
-        // TODO
-        return TRIGGERS.offer(trigger, DEFAULT_INTERVAL_MILLISECONDS, TimeUnit.MILLISECONDS);
+        if (trigger instanceof OneOffPlanTrigger && trigger.hasNextExecution()) {
+            return TRIGGERS.add(trigger);
+        } else if (trigger instanceof ScheduledPlanTrigger) {
+            ScheduledPlanTrigger scheduledPlanTrigger = (ScheduledPlanTrigger) trigger;
+            return TRIGGERS.add(new ScheduledPlanTrigger(scheduledPlanTrigger.getPlanIdentifier(), scheduledPlanTrigger.getExpression()));
+        } else {
+            throw new UnsupportedOperationException("error: unsupported plan trigger: " + trigger.getIdentifier());
+        }
     }
 }

@@ -17,12 +17,12 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.scheduling.Trigger;
 
-import java.util.Optional;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -31,25 +31,28 @@ import java.util.concurrent.TimeUnit;
  */
 public final class OneOffPlanTrigger implements Trigger {
     
-    private final static String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    
-    private final String expression;
-    
+    private static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+    private static final String PREFIX_IDENTIFIER = PlanMetadata.ExecutionMode.ONE_OFF.name();
+
+    private final String planIdentifier;
+
     private final long nextExecutionTimestamp;
-    
-    public OneOffPlanTrigger(final String expression) {
-        this.expression = expression;
+
+    public OneOffPlanTrigger(final String planIdentifier, final String expression) {
+        this.planIdentifier = planIdentifier;
         this.nextExecutionTimestamp = DateUtil.parse(expression, DEFAULT_PATTERN).getTime();
     }
-    
+
     @Override
     public String getIdentifier() {
-        return "";
+        return PREFIX_IDENTIFIER + MarkConstant.SPACE + planIdentifier;
+
     }
-    
+
     @Override
-    public Optional<Long> nextExecutionTimestamp() {
-        return delayedTime() > 0 ? Optional.of(nextExecutionTimestamp) : Optional.empty();
+    public boolean hasNextExecution() {
+        return delayedTime() > 0;
     }
     
     @Override

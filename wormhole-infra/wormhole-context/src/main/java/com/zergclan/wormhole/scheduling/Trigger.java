@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.scheduling;
 
-import java.util.Optional;
 import java.util.concurrent.Delayed;
 
 /**
@@ -33,9 +32,9 @@ public interface Trigger extends Delayed {
     String getIdentifier();
     
     /**
-     * Next execution timestamp.
+     * Has next execution.
      *
-     * @return next execution timestamp
+     * @return has next execution or not
      */
-    Optional<Long> nextExecutionTimestamp();
+    boolean hasNextExecution();
 }

@@ -43,6 +43,16 @@ public final class DateUtil {
     }
 
     /**
+     * Get time millis.
+     *
+     * @param localDateTime {@link LocalDateTime}
+     * @return time millis
+     */
+    public static long getTimeMillis(final LocalDateTime localDateTime) {
+        return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    /**
      * Swap To {@link LocalDateTime}.
      *
      * @param date date

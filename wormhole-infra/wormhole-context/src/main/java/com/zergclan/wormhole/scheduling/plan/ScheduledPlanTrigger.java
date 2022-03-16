@@ -17,13 +17,14 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.common.util.CronUtil;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.scheduling.Trigger;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
-import java.util.Optional;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -31,30 +32,37 @@ import java.util.concurrent.TimeUnit;
  * Scheduled {@link PlanMetadata.ExecutionMode} plan trigger.
  */
 public final class ScheduledPlanTrigger implements Trigger {
-    
+
+    private static final String PREFIX_IDENTIFIER = PlanMetadata.ExecutionMode.SCHEDULED.name();
+
+    @Getter
+    private final String planIdentifier;
+
+    @Getter
     private final String expression;
-    
+
     private final long nextExecutionTimestamp;
-    
-    public ScheduledPlanTrigger(final String expression) {
+
+    public ScheduledPlanTrigger(final String planIdentifier, final String expression) {
+        this.planIdentifier = planIdentifier;
         this.expression = expression;
-        this.nextExecutionTimestamp = 1L;
+        this.nextExecutionTimestamp = CronUtil.nextTimeMillis(expression).orElse(-1L);
     }
     
     @Override
     public String getIdentifier() {
-        return "";
+        return PREFIX_IDENTIFIER + MarkConstant.SPACE + planIdentifier + MarkConstant.COLON + expression;
     }
-    
+
     @Override
-    public Optional<Long> nextExecutionTimestamp() {
-        return Optional.empty();
+    public boolean hasNextExecution() {
+        return delayedTime() > 0;
     }
-    
+
     @Override
     public long getDelay(final TimeUnit timeUnit) {
         Validator.notNull(timeUnit, "error: OneOffPlanTrigger getDelay arg timeUnit can not be null");
-        return 0;
+        return timeUnit.convert(delayedTime(), TimeUnit.MILLISECONDS);
     }
     
     @Override
@@ -67,5 +75,9 @@ public final class ScheduledPlanTrigger implements Trigger {
         } else {
             return 0;
         }
+    }
+
+    private long delayedTime() {
+        return nextExecutionTimestamp - DateUtil.currentTimeMillis();
     }
 }
