@@ -26,22 +26,19 @@ import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.scheduling.SchedulingTrigger;
+import com.zergclan.wormhole.scheduling.Trigger;
+import com.zergclan.wormhole.scheduling.TriggerManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Queue;
-import java.util.concurrent.DelayQueue;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeExecutionEngine implements Runnable {
 
     private final WormholeMetadata wormholeMetadata;
-
-    private final Queue<SchedulingTrigger> planSchedulingTriggerQueue = new DelayQueue<>();
     
     private final PlanContext planContext = new PlanContext();
 
@@ -128,19 +125,20 @@ public final class WormholeExecutionEngine implements Runnable {
 
     private void start() {
         for (;;) {
-            SchedulingTrigger trigger = planSchedulingTriggerQueue.poll();
-            if (null != trigger) {
-                String identifier = trigger.getIdentifier();
-                if (!tryExecute(trigger.getIdentifier())) {
-                    sendEvent(trigger);
+            Optional<Trigger> trigger = TriggerManager.getExecutableTrigger();
+            if (trigger.isPresent()) {
+                Trigger executableTrigger = trigger.get();
+                if (tryExecute(executableTrigger.getIdentifier())) {
+                    // TODO refresh trigger to next time
+                    continue;
                 }
-                // FIXME calculate time for next time create new trigger
+                sendRepeatedEvent(executableTrigger);
             }
         }
     }
 
-    private void sendEvent(final SchedulingTrigger trigger) {
-        // TODO send plan repeated event
+    private void sendRepeatedEvent(final Trigger trigger) {
+        // TODO send execute plan repeated event
         System.out.printf("error : repeated event for plan [%s]", trigger);
     }
 }
