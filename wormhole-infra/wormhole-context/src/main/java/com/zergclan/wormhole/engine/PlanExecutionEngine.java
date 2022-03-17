@@ -18,21 +18,37 @@
 package com.zergclan.wormhole.engine;
 
 import com.zergclan.wormhole.context.PlanContext;
-import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.core.api.metadata.Metadata;
+import com.zergclan.wormhole.core.metadata.WormholeMetadata;
+import com.zergclan.wormhole.scheduling.plan.PlanTrigger;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+/**
+ * Plan execution engine.
+ */
 @RequiredArgsConstructor
-public final class PlanExecutionEngine  {
-    
-    private final Map<String, CachedPlanMetadata> cachedPlanMetadata = new ConcurrentHashMap<>();
-    
-    
-    private final PlanContext planContext;
-    
-    private boolean tryExecute(final String planIdentifier) {
-        return planContext.isExecuting(planIdentifier);
+public final class PlanExecutionEngine {
+
+    private final WormholeMetadata wormholeMetadata;
+
+    private final PlanContext planContext = new PlanContext();
+
+    /**
+     * Register {@link Metadata}.
+     *
+     * @param metadata {@link Metadata}
+     * @return is register or not
+     */
+    public boolean register(final Metadata metadata) {
+        return wormholeMetadata.register(metadata);
+    }
+
+    /**
+     * Execute by plan trigger.
+     *
+     * @param planTrigger {@link PlanTrigger}
+     */
+    public void execute(final PlanTrigger planTrigger) {
+        // TODO execute plan
     }
 }

@@ -17,9 +17,11 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
+import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.scheduling.Trigger;
 
 import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
 public interface PlanTrigger extends Trigger, Delayed {
     
@@ -29,4 +31,16 @@ public interface PlanTrigger extends Trigger, Delayed {
      * @return identifier
      */
     String getIdentifier();
+
+    @Override
+    default int compareTo(final Delayed delayed) {
+        Validator.notNull(delayed, "error: OneOffPlanTrigger compareTo arg delayed can not be null");
+        if (getDelay(TimeUnit.MILLISECONDS) > delayed.getDelay(TimeUnit.MILLISECONDS)) {
+            return 1;
+        } else if (getDelay(TimeUnit.MILLISECONDS) < delayed.getDelay(TimeUnit.MILLISECONDS)) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }

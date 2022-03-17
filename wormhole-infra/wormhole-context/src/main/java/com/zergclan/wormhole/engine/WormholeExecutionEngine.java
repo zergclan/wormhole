@@ -18,43 +18,39 @@
 package com.zergclan.wormhole.engine;
 
 import com.zergclan.wormhole.common.util.Validator;
-import com.zergclan.wormhole.context.PlanContext;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
 import com.zergclan.wormhole.creator.WormholeMetadataCreator;
 import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
-import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
-import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import com.zergclan.wormhole.scheduling.Trigger;
-import com.zergclan.wormhole.scheduling.TriggerManager;
+import com.zergclan.wormhole.scheduling.plan.PlanTrigger;
+import com.zergclan.wormhole.scheduling.plan.PlanTriggerManager;
+import com.zergclan.wormhole.scheduling.plan.ScheduledPlanTrigger;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
-import java.util.Optional;
 
+/**
+ * Wormhole execution engine.
+ */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class WormholeExecutionEngine implements Runnable {
-    
-    private final WormholeMetadata wormholeMetadata;
-    
+public final class WormholeExecutionEngine {
+
     private final PlanExecutionEngine planExecutionEngine;
-    
-    
-    
-    // private final TriggerManager triggerManager;
+
+    private final PlanTriggerManager planTriggerManager = new PlanTriggerManager();
     
     private WormholeExecutionEngine(final WormholeConfiguration configuration) throws SQLException {
-        this.wormholeMetadata = WormholeMetadataCreator.create(configuration);
         WormholeMetadata wormholeMetadata = WormholeMetadataCreator.create(configuration);
-        new PlanContext();
-        
-        
-        
-        planExecutionEngine = PlanExecutionEngine.init(wormholeMetadata);
-        
+        this.planExecutionEngine = createPlanExecutionEngine(wormholeMetadata);
     }
-    
+
+    private PlanExecutionEngine createPlanExecutionEngine(final WormholeMetadata wormholeMetadata) {
+        // TODO create plan execution engine
+        return new PlanExecutionEngine(wormholeMetadata);
+    }
+
     /**
      * New instance.
      *
@@ -66,86 +62,33 @@ public final class WormholeExecutionEngine implements Runnable {
         Validator.notNull(configuration, "error : wormhole execution engine new instance configuration can not be null");
         return new WormholeExecutionEngine(configuration);
     }
-    
-    @Override
-    public void run() {
-        execute();
-    }
-    
+
+    /**
+     * Execute executable plan.
+     */
     public void execute() {
-        for (;;) {
-            Optional<Trigger> trigger = TriggerManager.getExecutableTrigger();
-            if (trigger.isPresent()) {
-                Trigger executableTrigger = trigger.get();
-                if (tryExecute(executableTrigger.getIdentifier())) {
-                    // TODO refresh trigger to next time
-                    continue;
-                }
-                sendRepeatedEvent(executableTrigger);
-            }
+        planTriggerManager.getExecutableTrigger().ifPresent(this::handleExecutableTrigger);
+    }
+
+    private void handleExecutableTrigger(final PlanTrigger planTrigger) {
+        planExecutionEngine.execute(planTrigger);
+        if (planTrigger instanceof ScheduledPlanTrigger) {
+            planTriggerManager.reRegister((ScheduledPlanTrigger) planTrigger);
         }
     }
-    
-    private void sendRepeatedEvent(final Trigger trigger) {
-        // TODO send execute plan repeated event
-        System.out.printf("error : repeated event for plan [%s]", trigger);
-    }
-    
-    
-    
-    private void registerPlan(final PlanMetadata planMetadata) {
-        if (planContext.isExecuting(planMetadata.getIdentifier())) {
-        
-        }
-    }
-    
+
     /**
      * Register {@link Metadata}.
      *
      * @param metadata {@link Metadata}
      * @return is registered or not
      */
-    public boolean registerMetadata(final Metadata metadata) {
-        return wormholeMetadata.register(metadata);
+    public boolean register(final Metadata metadata) {
+        return planExecutionEngine.register(metadata);
     }
 
-    /**
-     * Register plan by plan identifier.
-     *
-     * @param planIdentifier plan identifier
-     * @return is registered or not
-     */
-    public boolean registerPlan(final String planIdentifier) {
-        // TODO register plan
-        return false;
-    }
-
-    /**
-     * Try to execute by plan identifier.
-     *
-     * @param planIdentifier plan identifier
-     * @return is executing or not
-     */
-    public boolean tryExecute(final String planIdentifier) {
-        return !isExecuting(planIdentifier) && execute(planIdentifier);
-    }
-
-    /**
-     * Execute by plan identifier.
-     *
-     * @param planIdentifier plan identifier
-     * @return is executing or not
-     */
-    private boolean execute(final String planIdentifier) {
-        Optional<CachedPlanMetadata> cachedPlanMetadata = wormholeMetadata.cachedMetadata(planIdentifier);
-        if (cachedPlanMetadata.isPresent()) {
-            // fixme create scheduling executor
-            return true;
-        }
-        return false;
-    }
-    
-    private boolean isExecuting(final String planIdentifier) {
-        return planContext.isExecuting(planIdentifier);
+    private void sendRepeatedEvent(final Trigger trigger) {
+        // TODO send execute plan repeated event
+        System.out.printf("error : repeated event for plan [%s]", trigger);
     }
 }

@@ -22,7 +22,6 @@ import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 
-import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -59,19 +58,7 @@ public final class OneOffPlanTrigger implements PlanTrigger {
         Validator.notNull(timeUnit, "error: OneOffPlanTrigger getDelay arg timeUnit can not be null");
         return timeUnit.convert(delayedTime(), TimeUnit.MILLISECONDS);
     }
-    
-    @Override
-    public int compareTo(final Delayed delayed) {
-        Validator.notNull(delayed, "error: OneOffPlanTrigger compareTo arg delayed can not be null");
-        if (getDelay(TimeUnit.MILLISECONDS) > delayed.getDelay(TimeUnit.MILLISECONDS)) {
-            return 1;
-        } else if (getDelay(TimeUnit.MILLISECONDS) < delayed.getDelay(TimeUnit.MILLISECONDS)) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-    
+
     private long delayedTime() {
         return nextExecutionTimestamp - DateUtil.currentTimeMillis();
     }

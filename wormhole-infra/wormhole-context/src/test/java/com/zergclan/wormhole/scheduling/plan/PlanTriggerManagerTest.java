@@ -15,37 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.scheduling.plan;
 
-import com.zergclan.wormhole.common.util.DateUtil;
-import com.zergclan.wormhole.scheduling.plan.OneOffPlanTrigger;
-import com.zergclan.wormhole.scheduling.plan.ScheduledPlanTrigger;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class TriggerManagerTest {
-    
+public final class PlanTriggerManagerTest {
+
     @Test
     public void assertRegisterTrigger() {
-        TriggerManager.register(createOneOffPlanTrigger());
-        TriggerManager.register(createScheduledPlanTrigger());
-        for (int i = 0; i < 5; i++) {
-            Optional<Trigger> trigger = TriggerManager.getExecutableTrigger();
-            if (trigger.isPresent()) {
-                Trigger executableTrigger = trigger.get();
-                assertEquals("SCHEDULED#test_plan:*/15 * * * * ?", executableTrigger.getIdentifier());
+        PlanTriggerManager planTriggerManager = new PlanTriggerManager();
+        PlanMetadata planMetadata = new PlanMetadata("test_plan", PlanMetadata.ExecutionMode.SCHEDULED, "*/4 * * * * ?", true, new LinkedHashMap<>());
+        planTriggerManager.register(planMetadata);
+        for (int i = 0; i < 2; i++) {
+            Optional<PlanTrigger> executableTrigger = planTriggerManager.getExecutableTrigger();
+            if (executableTrigger.isPresent()) {
+                PlanTrigger planTrigger = executableTrigger.get();
+                assertEquals("SCHEDULED#test_plan:*/4 * * * * ?", planTrigger.getIdentifier());
             }
         }
-    }
-    
-    private ScheduledPlanTrigger createScheduledPlanTrigger() {
-        return new ScheduledPlanTrigger("test_plan", "*/15 * * * * ?");
-    }
-    
-    private OneOffPlanTrigger createOneOffPlanTrigger() {
-        return new OneOffPlanTrigger("test_plan", "2022-03-17 15:39:02");
     }
 }

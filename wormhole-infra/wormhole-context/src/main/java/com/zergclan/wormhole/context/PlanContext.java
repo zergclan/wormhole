@@ -26,11 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Plan context.
  */
 public final class PlanContext {
-    
-    
-    
-    
-    
+
     // FIXME refactoring with cache
     private final Map<String, CachedPlanMetadata> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
     

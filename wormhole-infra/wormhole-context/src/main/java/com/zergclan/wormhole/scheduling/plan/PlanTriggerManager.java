@@ -17,24 +17,25 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
-import com.zergclan.wormhole.scheduling.Trigger;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
 
 import java.util.Optional;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.TimeUnit;
 
-@RequiredArgsConstructor
+/**
+ * Plan trigger manager.
+ */
 public final class PlanTriggerManager {
     
     private static final int DEFAULT_INTERVAL_MILLISECONDS = 3000;
     
-    private final DelayQueue<PlanTrigger> triggers;
-    
+    private final DelayQueue<PlanTrigger> triggers = new DelayQueue<>();
+
     /**
-     * Get executable {@link Trigger}.
+     * Get executable {@link PlanTrigger}.
      *
-     * @return {@link Trigger}
+     * @return {@link PlanTrigger}
      */
     public Optional<PlanTrigger> getExecutableTrigger() {
         try {
@@ -43,31 +44,43 @@ public final class PlanTriggerManager {
             return Optional.empty();
         }
     }
-    
+
     /**
-     * Register trigger.
+     * Register {@link PlanTrigger} by {@link PlanMetadata}.
      *
-     * @param planTrigger {@link PlanTrigger}
+     * @param planMetadata {@link PlanMetadata}
      * @return is registered or not
      */
-    public boolean register(final PlanTrigger planTrigger) {
-        if (planTrigger instanceof OneOffPlanTrigger) {
-            return handleOneOffPlanTrigger((OneOffPlanTrigger) planTrigger);
-        } else if (planTrigger instanceof ScheduledPlanTrigger) {
-            return handleScheduledPlanTrigger((ScheduledPlanTrigger) planTrigger);
-        } else {
-            throw new UnsupportedOperationException("error: unsupported plan trigger: " + planTrigger.getIdentifier());
+    public boolean register(final PlanMetadata planMetadata) {
+        switch (planMetadata.getMode()) {
+            case ONE_OFF:
+                return registerOneOffPlanTrigger(planMetadata);
+            case SCHEDULED:
+                return registerScheduledPlanTrigger(planMetadata);
+            default:
+                throw new UnsupportedOperationException("error: unsupported plan execution mode of planMetadata identifier: " + planMetadata.getIdentifier());
         }
     }
-    
+
+    private boolean registerOneOffPlanTrigger(final PlanMetadata planMetadata) {
+        return triggers.offer(new OneOffPlanTrigger(planMetadata.getIdentifier(), planMetadata.getExpression()));
+    }
+
+    private boolean registerScheduledPlanTrigger(final PlanMetadata planMetadata) {
+        return triggers.offer(new ScheduledPlanTrigger(planMetadata.getIdentifier(), planMetadata.getExpression()));
+    }
+
+    /**
+     * Re-register {@link PlanTrigger}.
+     *
+     * @param planTrigger {@link PlanTrigger}
+     * @return is re-register or not
+     */
+    public boolean reRegister(final ScheduledPlanTrigger planTrigger) {
+        return handleScheduledPlanTrigger(planTrigger);
+    }
+
     private boolean handleScheduledPlanTrigger(final ScheduledPlanTrigger trigger) {
-        return triggers.add(new ScheduledPlanTrigger(trigger.getPlanIdentifier(), trigger.getExpression()));
-    }
-    
-    private boolean handleOneOffPlanTrigger(final OneOffPlanTrigger trigger) {
-        if (trigger.hasNextExecution()) {
-            return triggers.add(trigger);
-        }
-        return false;
+        return triggers.offer(new ScheduledPlanTrigger(trigger.getPlanIdentifier(), trigger.getExpression()));
     }
 }
