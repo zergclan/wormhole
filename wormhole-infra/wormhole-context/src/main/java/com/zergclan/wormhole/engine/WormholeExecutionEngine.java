@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.engine;
 
-import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.context.PlanContext;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
@@ -32,25 +31,30 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeExecutionEngine implements Runnable {
-
+    
     private final WormholeMetadata wormholeMetadata;
     
-    private final PlanContext planContext = new PlanContext();
-
+    private final PlanExecutionEngine planExecutionEngine;
+    
+    
+    
+    // private final TriggerManager triggerManager;
+    
     private WormholeExecutionEngine(final WormholeConfiguration configuration) throws SQLException {
+        this.wormholeMetadata = WormholeMetadataCreator.create(configuration);
         WormholeMetadata wormholeMetadata = WormholeMetadataCreator.create(configuration);
-        Optional<String> unregistered = registerPlans(wormholeMetadata.getPlans());
-        if (unregistered.isPresent()) {
-            throw new WormholeException("error : wormhole execution engine register plan failed named by [%s]", unregistered.get());
-        }
-        this.wormholeMetadata = wormholeMetadata;
+        new PlanContext();
+        
+        
+        
+        planExecutionEngine = PlanExecutionEngine.init(wormholeMetadata);
+        
     }
-
+    
     /**
      * New instance.
      *
@@ -62,12 +66,39 @@ public final class WormholeExecutionEngine implements Runnable {
         Validator.notNull(configuration, "error : wormhole execution engine new instance configuration can not be null");
         return new WormholeExecutionEngine(configuration);
     }
-
-    private Optional<String> registerPlans(final Map<String, PlanMetadata> plans) {
-        // TODO register plan to scheduling
-        return Optional.empty();
+    
+    @Override
+    public void run() {
+        execute();
     }
-
+    
+    public void execute() {
+        for (;;) {
+            Optional<Trigger> trigger = TriggerManager.getExecutableTrigger();
+            if (trigger.isPresent()) {
+                Trigger executableTrigger = trigger.get();
+                if (tryExecute(executableTrigger.getIdentifier())) {
+                    // TODO refresh trigger to next time
+                    continue;
+                }
+                sendRepeatedEvent(executableTrigger);
+            }
+        }
+    }
+    
+    private void sendRepeatedEvent(final Trigger trigger) {
+        // TODO send execute plan repeated event
+        System.out.printf("error : repeated event for plan [%s]", trigger);
+    }
+    
+    
+    
+    private void registerPlan(final PlanMetadata planMetadata) {
+        if (planContext.isExecuting(planMetadata.getIdentifier())) {
+        
+        }
+    }
+    
     /**
      * Register {@link Metadata}.
      *
@@ -116,29 +147,5 @@ public final class WormholeExecutionEngine implements Runnable {
     
     private boolean isExecuting(final String planIdentifier) {
         return planContext.isExecuting(planIdentifier);
-    }
-    
-    @Override
-    public void run() {
-        start();
-    }
-
-    private void start() {
-        for (;;) {
-            Optional<Trigger> trigger = TriggerManager.getExecutableTrigger();
-            if (trigger.isPresent()) {
-                Trigger executableTrigger = trigger.get();
-                if (tryExecute(executableTrigger.getIdentifier())) {
-                    // TODO refresh trigger to next time
-                    continue;
-                }
-                sendRepeatedEvent(executableTrigger);
-            }
-        }
-    }
-
-    private void sendRepeatedEvent(final Trigger trigger) {
-        // TODO send execute plan repeated event
-        System.out.printf("error : repeated event for plan [%s]", trigger);
     }
 }

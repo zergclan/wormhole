@@ -15,32 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context;
+package com.zergclan.wormhole.scheduling.plan;
 
-import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.scheduling.Trigger;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Delayed;
 
-/**
- * Plan context.
- */
-public final class PlanContext {
-    
-    
-    
-    
-    
-    // FIXME refactoring with cache
-    private final Map<String, CachedPlanMetadata> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
+public interface PlanTrigger extends Trigger, Delayed {
     
     /**
-     * Is executing plan.
+     * Get identifier.
      *
-     * @param planIdentifier plan identifier
-     * @return is executing or not
+     * @return identifier
      */
-    public boolean isExecuting(final String planIdentifier) {
-        return false;
-    }
+    String getIdentifier();
 }

@@ -21,7 +21,6 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.scheduling.Trigger;
 
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * One off {@link PlanMetadata.ExecutionMode} plan trigger.
  */
-public final class OneOffPlanTrigger implements Trigger {
+public final class OneOffPlanTrigger implements PlanTrigger {
     
     private static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 

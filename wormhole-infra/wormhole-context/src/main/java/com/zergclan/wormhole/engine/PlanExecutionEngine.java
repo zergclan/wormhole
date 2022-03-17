@@ -15,32 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.context;
+package com.zergclan.wormhole.engine;
 
+import com.zergclan.wormhole.context.PlanContext;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Plan context.
- */
-public final class PlanContext {
+@RequiredArgsConstructor
+public final class PlanExecutionEngine  {
+    
+    private final Map<String, CachedPlanMetadata> cachedPlanMetadata = new ConcurrentHashMap<>();
     
     
+    private final PlanContext planContext;
     
-    
-    
-    // FIXME refactoring with cache
-    private final Map<String, CachedPlanMetadata> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
-    
-    /**
-     * Is executing plan.
-     *
-     * @param planIdentifier plan identifier
-     * @return is executing or not
-     */
-    public boolean isExecuting(final String planIdentifier) {
-        return false;
+    private boolean tryExecute(final String planIdentifier) {
+        return planContext.isExecuting(planIdentifier);
     }
 }

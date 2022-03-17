@@ -17,19 +17,10 @@
 
 package com.zergclan.wormhole.scheduling;
 
-import java.util.concurrent.Delayed;
-
 /**
  * The root interface from which all trigger objects shall be derived in Wormhole.
  */
-public interface Trigger extends Delayed {
-    
-    /**
-     * Get identifier.
-     *
-     * @return identifier
-     */
-    String getIdentifier();
+public interface Trigger {
     
     /**
      * Has next execution.

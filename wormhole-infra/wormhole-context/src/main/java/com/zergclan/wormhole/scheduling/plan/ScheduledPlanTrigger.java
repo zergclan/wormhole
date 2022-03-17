@@ -22,7 +22,6 @@ import com.zergclan.wormhole.common.util.CronUtil;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.scheduling.Trigger;
 import lombok.Getter;
 
 import java.util.concurrent.Delayed;
@@ -31,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Scheduled {@link PlanMetadata.ExecutionMode} plan trigger.
  */
-public final class ScheduledPlanTrigger implements Trigger {
+public final class ScheduledPlanTrigger implements PlanTrigger {
 
     private static final String PREFIX_IDENTIFIER = PlanMetadata.ExecutionMode.SCHEDULED.name();
 
