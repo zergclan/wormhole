@@ -15,25 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.catched;
+package com.zergclan.wormhole.context.catched;
 
 import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.node.DataNodeMetaData;
 import com.zergclan.wormhole.core.metadata.task.TargetMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.LinkedHashMap;
+import java.util.Collection;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Getter
 public final class CachedTargetMetaData {
-    
-    private final Map<String, CachedTableMetaData> relatedTables;
-    
-    public CachedTargetMetaData(final Map<String, CachedTableMetaData> tables) {
-        relatedTables = tables;
-    }
-    
+
+    private final String table;
+
+    private final Collection<String> uniqueNodes;
+
+    private final Collection<String> compareNodes;
+
+    private final Map<String, DataNodeMetaData> dataNodes;
+
     /**
      * Builder for {@link CachedTargetMetaData}.
      *
@@ -54,8 +58,7 @@ public final class CachedTargetMetaData {
         
         private CachedTargetMetaData build() {
             // FIXME create CachedTableMetadata
-            Map<String, CachedTableMetaData> tables = new LinkedHashMap<>();
-            return new CachedTargetMetaData(tables);
+            return new CachedTargetMetaData(target.getTable(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
         }
     }
 }
