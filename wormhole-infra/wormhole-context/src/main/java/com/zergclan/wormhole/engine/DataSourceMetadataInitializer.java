@@ -23,7 +23,7 @@ import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
 import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
-import com.zergclan.wormhole.jdbc.core.ProxyMetaDataLoad;
+import com.zergclan.wormhole.jdbc.core.MySQLMetaDataLoader;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -37,7 +37,7 @@ public final class DataSourceMetadataInitializer {
     private final MetaDataLoader metadataLoader;
 
     public DataSourceMetadataInitializer(final Connection connection) throws SQLException {
-        this.metadataLoader = new ProxyMetaDataLoad(connection);
+        this.metadataLoader = new MySQLMetaDataLoader(connection);
     }
 
     /**
