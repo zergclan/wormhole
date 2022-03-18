@@ -32,6 +32,13 @@ public interface PlanTrigger extends Trigger, Delayed {
      */
     String getIdentifier();
 
+    /**
+     * Get plan identifier.
+     *
+     * @return plan identifier
+     */
+    String getPlanIdentifier();
+
     @Override
     default int compareTo(final Delayed delayed) {
         Validator.notNull(delayed, "error: OneOffPlanTrigger compareTo arg delayed can not be null");

@@ -15,15 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.scheduling.plan;
+
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetaData;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Plan executor factory.
  */
-public interface SchedulingExecutor {
-    
+@RequiredArgsConstructor
+public final class PlanExecutorFactory {
+
     /**
-     * Execute.
+     * Create {@link PlanExecutor}.
+     *
+     * @param cachedPlanMetaData {@link CachedPlanMetaData}
+     * @return {@link PlanExecutor}
      */
-    void execute();
+    public static PlanExecutor create(final CachedPlanMetaData cachedPlanMetaData) {
+        return cachedPlanMetaData.isAtomic() ? new AtomicPlanExecutor(cachedPlanMetaData) : new StandardPlanExecutor(cachedPlanMetaData);
+    }
 }

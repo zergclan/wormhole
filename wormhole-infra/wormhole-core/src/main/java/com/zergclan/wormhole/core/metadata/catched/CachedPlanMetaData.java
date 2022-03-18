@@ -37,18 +37,16 @@ import java.util.TreeMap;
 /**
  * Cached {@link PlanMetaData}.
  */
+@RequiredArgsConstructor
 @Getter
 public final class CachedPlanMetaData implements MetaData {
 
     private final String identifier;
 
+    private final boolean atomic;
+
     private final Collection<Map<String, CachedTaskMetaData>> cachedTasks;
-    
-    private CachedPlanMetaData(final String identifier, final Collection<Map<String, CachedTaskMetaData>> cachedTasks) {
-        this.identifier = identifier;
-        this.cachedTasks = cachedTasks;
-    }
-    
+
     /**
      * Builder for {@link CachedPlanMetaData}.
      *
@@ -81,7 +79,7 @@ public final class CachedPlanMetaData implements MetaData {
                 Collection<Filter<?>> filters = initFilters();
                 taskList.add(new CachedTaskMetaData(task.getIdentifier(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, filters));
             }
-            return new CachedPlanMetaData(planMetadata.getIdentifier(), ordered(taskList));
+            return new CachedPlanMetaData(planMetadata.getIdentifier(), planMetadata.isAtomic(), ordered(taskList));
         }
 
         private Collection<Map<String, CachedTaskMetaData>> ordered(final Collection<CachedTaskMetaData> taskList) {

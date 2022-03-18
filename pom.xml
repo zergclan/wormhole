@@ -63,22 +63,24 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- tools -->
-        <guava.sersion>30.1.1-jre</guava.sersion>
-        <gson.sersion>2.8.9</gson.sersion>
-        <disruptor.version>3.4.4</disruptor.version>
-        <freemarker.version>2.3.31</freemarker.version>
-        <lombok.version>1.18.22</lombok.version>
-        <hibernate.version>6.2.0.Final</hibernate.version>
-        <slf4j.version>1.7.35</slf4j.version>
         <!-- spring -->
         <spring-framework.version>5.3.13</spring-framework.version>
         <spring-boot.version>2.6.1</spring-boot.version>
+        <!-- tools -->
+        <lombok.version>1.18.22</lombok.version>
+        <guava.sersion>30.1.1-jre</guava.sersion>
+        <disruptor.version>3.4.4</disruptor.version>
+        <caffeine.version>2.9.3</caffeine.version>
+        <hibernate.version>6.2.0.Final</hibernate.version>
+        <cron.version>9.1.6</cron.version>
+        <freemarker.version>2.3.31</freemarker.version>
         <!-- databases -->
         <HikariCP.version>4.0.3</HikariCP.version>
-        <h2.version>2.0.206</h2.version>
         <mysql.version>8.0.27</mysql.version>
         <postgresql.version>42.3.2</postgresql.version>
+        <h2.version>2.0.206</h2.version>
+        <!-- log -->
+        <slf4j.version>1.7.35</slf4j.version>
         <!-- test -->
         <junit5.version>5.8.1</junit5.version>
         <mockito.version>4.4.0</mockito.version>
@@ -98,15 +100,15 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.sersion}</version>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.sersion}</version>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.sersion}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -116,21 +118,9 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-nop</artifactId>
-                <version>${slf4j-nop.version}</version>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -140,9 +130,9 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2.version}</version>
+                <groupId>com.cronutils</groupId>
+                <artifactId>cron-utils</artifactId>
+                <version>${cron.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -150,6 +140,18 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -168,16 +170,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
