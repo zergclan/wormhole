@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.creator;
+package com.zergclan.wormhole.initializer;
 
 import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
@@ -23,8 +23,6 @@ import com.zergclan.wormhole.core.config.PlanConfiguration;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -32,40 +30,43 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Metadata creator of {@link WormholeMetadata}.
+ * wormhole metadata initializer.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class WormholeMetadataCreator {
+public final class WormholeMetadataInitializer {
+    
+    private final DataSourceMetadataInitializer dataSourceMetadataInitializer = new DataSourceMetadataInitializer();
+    
+    private final PlanMetadataInitializer planMetadataInitializer = new PlanMetadataInitializer();
     
     /**
-     * Create {@link WormholeMetadata}.
+     * Init {@link WormholeMetadata}.
      *
      * @param configuration {@link WormholeConfiguration}
      * @return {@link WormholeMetadata}
-     * @throws SQLException exception
+     * @throws SQLException SQL Exception
      */
-    public static WormholeMetadata create(final WormholeConfiguration configuration) throws SQLException {
+    public WormholeMetadata init(final WormholeConfiguration configuration) throws SQLException {
         Map<String, DataSourceMetadata> dataSources = createDataSources(configuration.getDataSources());
         Map<String, PlanMetadata> plans = createPlans(configuration.getPlans(), dataSources);
         return new WormholeMetadata(dataSources, plans);
     }
-
-    private static Map<String, DataSourceMetadata> createDataSources(final Map<String, DataSourceConfiguration> configurations) throws SQLException {
+    
+    private Map<String, DataSourceMetadata> createDataSources(final Map<String, DataSourceConfiguration> configurations) throws SQLException {
         Map<String, DataSourceMetadata> result = new LinkedHashMap<>();
         Iterator<Map.Entry<String, DataSourceConfiguration>> iterator = configurations.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, DataSourceConfiguration> entry = iterator.next();
-            result.put(entry.getKey(), DatasourceMetadataCreator.create(entry.getValue()));
+            result.put(entry.getKey(), dataSourceMetadataInitializer.init(entry.getValue()));
         }
         return result;
     }
-
-    private static Map<String, PlanMetadata> createPlans(final Map<String, PlanConfiguration> planConfigurations, final Map<String, DataSourceMetadata> dataSources) {
+    
+    private Map<String, PlanMetadata> createPlans(final Map<String, PlanConfiguration> planConfigurations, final Map<String, DataSourceMetadata> dataSources) {
         Iterator<Map.Entry<String, PlanConfiguration>> iterator = planConfigurations.entrySet().iterator();
         Map<String, PlanMetadata> result = new LinkedHashMap<>();
         while (iterator.hasNext()) {
             Map.Entry<String, PlanConfiguration> entry = iterator.next();
-            result.put(entry.getKey(), PlanMetadataCreator.create(entry.getKey(), entry.getValue(), dataSources));
+            result.put(entry.getKey(), planMetadataInitializer.init(entry.getKey(), entry.getValue(), dataSources));
         }
         return result;
     }

@@ -19,50 +19,55 @@ package com.zergclan.wormhole.engine;
 
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.creator.WormholeMetadataCreator;
 import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
+import com.zergclan.wormhole.initializer.WormholeMetadataInitializer;
 import com.zergclan.wormhole.scheduling.Trigger;
 import com.zergclan.wormhole.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.scheduling.plan.PlanTriggerManager;
 import com.zergclan.wormhole.scheduling.plan.ScheduledPlanTrigger;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.sql.SQLException;
 
 /**
  * Wormhole execution engine.
  */
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeExecutionEngine {
-
-    private final PlanExecutionEngine planExecutionEngine;
-
+    
+    private static final WormholeExecutionEngine INSTANCE = new WormholeExecutionEngine();
+    
+    private final WormholeMetadataInitializer initializer = new WormholeMetadataInitializer();
+    
     private final PlanTriggerManager planTriggerManager = new PlanTriggerManager();
     
-    private WormholeExecutionEngine(final WormholeConfiguration configuration) throws SQLException {
-        WormholeMetadata wormholeMetadata = WormholeMetadataCreator.create(configuration);
-        this.planExecutionEngine = createPlanExecutionEngine(wormholeMetadata);
-    }
-
-    private PlanExecutionEngine createPlanExecutionEngine(final WormholeMetadata wormholeMetadata) {
-        // TODO create plan execution engine
-        return new PlanExecutionEngine(wormholeMetadata);
-    }
-
+    private volatile PlanExecutionEngine planExecutionEngine;
+    
     /**
-     * New instance.
+     * Get instance.
      *
      * @param configuration {@link WormholeConfiguration}
      * @return {@link WormholeExecutionEngine}
      * @throws SQLException exception
      */
-    public static WormholeExecutionEngine newInstance(final WormholeConfiguration configuration) throws SQLException {
+    public static WormholeExecutionEngine getInstance(final WormholeConfiguration configuration) throws SQLException {
         Validator.notNull(configuration, "error : wormhole execution engine new instance configuration can not be null");
-        return new WormholeExecutionEngine(configuration);
+        INSTANCE.init(configuration);
+        return INSTANCE;
     }
-
+    
+    private void init(final WormholeConfiguration configuration) throws SQLException {
+        WormholeMetadata wormholeMetadata = initializer.init(configuration);
+        planExecutionEngine = createPlanExecutionEngine(wormholeMetadata);
+    }
+    
+    private PlanExecutionEngine createPlanExecutionEngine(final WormholeMetadata wormholeMetadata) {
+        // TODO create plan execution engine
+        return new PlanExecutionEngine(wormholeMetadata);
+    }
+    
     /**
      * Execute executable plan.
      */
@@ -76,7 +81,7 @@ public final class WormholeExecutionEngine {
             planTriggerManager.reRegister((ScheduledPlanTrigger) planTrigger);
         }
     }
-
+    
     /**
      * Register {@link Metadata}.
      *
@@ -86,7 +91,7 @@ public final class WormholeExecutionEngine {
     public boolean register(final Metadata metadata) {
         return planExecutionEngine.register(metadata);
     }
-
+    
     private void sendRepeatedEvent(final Trigger trigger) {
         // TODO send execute plan repeated event
         System.out.printf("error : repeated event for plan [%s]", trigger);

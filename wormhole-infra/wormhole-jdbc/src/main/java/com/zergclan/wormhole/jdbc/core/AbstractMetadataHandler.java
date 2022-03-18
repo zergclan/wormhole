@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.jdbc.core;
 
-import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
+import com.zergclan.wormhole.jdbc.api.MetadataLoader;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractMetaDataHandler implements MetaDataLoader {
+public abstract class AbstractMetadataHandler implements MetadataLoader {
 
     /**
      * init catalogs by databaseMetaData.getCatalogs.
