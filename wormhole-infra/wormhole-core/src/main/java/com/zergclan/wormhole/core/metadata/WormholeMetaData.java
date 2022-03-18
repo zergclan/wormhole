@@ -33,13 +33,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Root implemented {@link MetaData} in wormhole project.
  */
+@Getter
 public final class WormholeMetaData implements MetaData {
 
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     
     private final Map<String, DataSourceMetaData> dataSources;
 
-    @Getter
     private final Map<String, PlanMetaData> plans;
 
     public WormholeMetaData(final Map<String, DataSourceMetaData> dataSources, final Map<String, PlanMetaData> plans) {
@@ -53,7 +53,7 @@ public final class WormholeMetaData implements MetaData {
      * @param planIdentifier plan identifier
      * @return {@link PlanMetaData}
      */
-    public Optional<PlanMetaData> get(final String planIdentifier) {
+    public Optional<PlanMetaData> getPlan(final String planIdentifier) {
         Validator.notNull(planIdentifier, "error : get plan metadata plan identifier can not be null");
         LOCK.readLock().lock();
         try {

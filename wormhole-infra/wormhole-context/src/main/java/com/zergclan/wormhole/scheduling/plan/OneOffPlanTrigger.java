@@ -21,6 +21,7 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetaData;
+import lombok.Getter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +34,7 @@ public final class OneOffPlanTrigger implements PlanTrigger {
 
     private static final String PREFIX_IDENTIFIER = PlanMetaData.ExecutionMode.ONE_OFF.name();
 
+    @Getter
     private final String planIdentifier;
 
     private final long nextExecutionTimestamp;

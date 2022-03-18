@@ -21,7 +21,6 @@ import com.zergclan.wormhole.common.SequenceGenerator;
 import com.zergclan.wormhole.common.concurrent.ExecutorServiceManager;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetaData;
-import com.zergclan.wormhole.scheduling.SchedulingExecutor;
 import com.zergclan.wormhole.scheduling.task.PromiseTaskExecutor;
 import com.zergclan.wormhole.scheduling.task.PromiseTaskResult;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +32,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 
 /**
- * Atomic plan executor.
+ * Atomic plan implemented of {@link PlanExecutor}.
  */
 @RequiredArgsConstructor
-public final class AtomicPlanExecutor implements SchedulingExecutor {
+public final class AtomicPlanExecutor implements PlanExecutor {
 
     private final CachedPlanMetaData cachedPlanMetadata;
 

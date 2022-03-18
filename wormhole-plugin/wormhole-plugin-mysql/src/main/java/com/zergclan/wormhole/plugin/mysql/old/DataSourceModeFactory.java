@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.core;
+package com.zergclan.wormhole.plugin.mysql.old;
 
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import org.springframework.jdbc.core.JdbcTemplate;
