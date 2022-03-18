@@ -23,7 +23,7 @@ import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
 import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
 import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
-import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
+import com.zergclan.wormhole.jdbc.api.MetadataLoader;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -36,7 +36,7 @@ public class ProxyMetaDataLoadTest {
     @Test
     public void assertLoadSchemas() throws SQLException {
         try (Connection connection = getConnection()) {
-            MetaDataLoader metaDataLoader = new ProxyMetaDataLoad(connection);
+            MetadataLoader metaDataLoader = new ProxyMetadataLoad(connection);
             Collection<SchemaMetadata> collection = metaDataLoader.loadSchemas();
 
             System.out.println("schemas:");
@@ -50,7 +50,7 @@ public class ProxyMetaDataLoadTest {
     @Test
     public void assertLoadTables() throws SQLException {
         try (Connection connection = getConnection()) {
-            MetaDataLoader metaDataLoader = new ProxyMetaDataLoad(connection);
+            MetadataLoader metaDataLoader = new ProxyMetadataLoad(connection);
             Collection<TableMetadata> collection = metaDataLoader.loadTables("slzx");
 
             System.out.println("tables:");
@@ -63,7 +63,7 @@ public class ProxyMetaDataLoadTest {
     @Test
     public void assertLoadViews() throws SQLException {
         try (Connection connection = getConnection()) {
-            MetaDataLoader metaDataLoader = new ProxyMetaDataLoad(connection);
+            MetadataLoader metaDataLoader = new ProxyMetadataLoad(connection);
             Collection<TableMetadata> collection = metaDataLoader.loadViews("slzx");
 
             System.out.println("views:");
@@ -76,7 +76,7 @@ public class ProxyMetaDataLoadTest {
     @Test
     public void assertLoadColumns() throws SQLException {
         try (Connection connection = getConnection()) {
-            MetaDataLoader metaDataLoader = new ProxyMetaDataLoad(connection);
+            MetadataLoader metaDataLoader = new ProxyMetadataLoad(connection);
             Collection<ColumnMetadata> collection = metaDataLoader.loadColumns("slzx", "source_class");
 
             System.out.println("tables:");
@@ -89,7 +89,7 @@ public class ProxyMetaDataLoadTest {
     @Test
     public void assertGetPrimaryKeys() throws SQLException {
         try (Connection connection = getConnection()) {
-            MetaDataLoader metaDataLoader = new ProxyMetaDataLoad(connection);
+            MetadataLoader metaDataLoader = new ProxyMetadataLoad(connection);
             Optional<IndexMetadata> optional = metaDataLoader.getPrimaryKeys("slzx", "source_class");
 
             System.out.println("PrimaryKey:");
@@ -102,7 +102,7 @@ public class ProxyMetaDataLoadTest {
     @Test
     public void assertLoadIndexes() throws SQLException {
         try (Connection connection = getConnection()) {
-            MetaDataLoader metaDataLoader = new ProxyMetaDataLoad(connection);
+            MetadataLoader metaDataLoader = new ProxyMetadataLoad(connection);
             Collection<IndexMetadata> collection = metaDataLoader.loadIndexes("slzx", "source_class");
 
             System.out.println("index:");

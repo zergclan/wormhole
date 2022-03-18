@@ -15,45 +15,42 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.creator;
+package com.zergclan.wormhole.initializer;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.core.config.DataNodeConfiguration;
 import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
 import com.zergclan.wormhole.core.metadata.node.DataNodeTypeMetadata;
 import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.util.Optional;
 
 /**
- * Metadata creator of {@link DataNodeMetadata}.
+ * Data node metadata initializer.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DataNodeMetadataCreator {
-
+public final class DataNodeMetadataInitializer {
+    
     /**
-     * Create {@link DataNodeMetadata}.
+     * Init {@link DataNodeMetadata}.
      *
      * @param nodeName node name
      * @param configuration {@link DataNodeConfiguration}
      * @return {@link DataNodeMetadata}
      */
-    public static DataNodeMetadata create(final String nodeName, final DataNodeConfiguration configuration) {
+    public DataNodeMetadata init(final String nodeName, final DataNodeConfiguration configuration) {
         String tableName = configuration.getTable();
         String defaultValue = configuration.getDefaultValue();
         DataNodeTypeMetadata dataNodeTypeMetadata = new DataNodeTypeMetadata(configuration.getNodeType(), configuration.getDataType());
         return new DataNodeMetadata(nodeName, tableName, dataNodeTypeMetadata, defaultValue);
     }
-
+    
     /**
-     * Create defaulted {@link DataNodeMetadata}.
+     * Init defaulted {@link DataNodeMetadata}.
      *
      * @param columnMetadata {@link ColumnMetadata}
      * @return {@link DataNodeMetadata}
      */
-    public static DataNodeMetadata createDefaultMetadata(final ColumnMetadata columnMetadata) {
+    public DataNodeMetadata init(final ColumnMetadata columnMetadata) {
         String name = columnMetadata.getName();
         String tableName = columnMetadata.getSchema() + MarkConstant.POINT + columnMetadata.getTable();
         DataNodeTypeMetadata type = new DataNodeTypeMetadata(columnMetadata);

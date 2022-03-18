@@ -35,13 +35,13 @@ import java.util.HashMap;
 /**
  * proxy metaData.
  */
-public class ProxyMetaDataLoad extends AbstractMetaDataHandler {
+public class ProxyMetadataLoad extends AbstractMetadataHandler {
 
     private final DatabaseMetaData databaseMetaData;
 
     private final String databaseProductName;
 
-    public ProxyMetaDataLoad(final Connection connection) throws SQLException {
+    public ProxyMetadataLoad(final Connection connection) throws SQLException {
         databaseMetaData = connection.getMetaData();
         databaseProductName = connection.getMetaData().getDatabaseProductName().toUpperCase();
     }

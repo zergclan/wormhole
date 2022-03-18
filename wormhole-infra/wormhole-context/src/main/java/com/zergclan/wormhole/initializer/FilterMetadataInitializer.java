@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.creator;
+package com.zergclan.wormhole.initializer;
 
 import com.zergclan.wormhole.common.util.CollectionUtil;
 import com.zergclan.wormhole.common.util.Validator;
@@ -33,12 +33,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Metadata creator of {@link FilterMetadata}.
+ * Filter metadata initializer.
  */
-public final class FilterMetadataCreator {
-
+public final class FilterMetadataInitializer {
+    
     /**
-     * Create {@link FilterMetadata}.
+     * Init {@link FilterMetadata}.
      *
      * @param taskIdentifier task identifier
      * @param dataNodeMappings {@link DataNodeMappingConfiguration}
@@ -46,7 +46,7 @@ public final class FilterMetadataCreator {
      * @param source {@link SourceMetadata}
      * @return {@link FilterMetadata}
      */
-    public static Collection<FilterMetadata> create(final String taskIdentifier, final Collection<DataNodeMappingConfiguration> dataNodeMappings, final TargetMetadata target,
+    public Collection<FilterMetadata> init(final String taskIdentifier, final Collection<DataNodeMappingConfiguration> dataNodeMappings, final TargetMetadata target,
                                                     final SourceMetadata source) {
         Collection<FilterMetadata> result = new LinkedList<>();
         Set<String> targetNodes = target.getDataNodes().keySet();
@@ -58,9 +58,9 @@ public final class FilterMetadataCreator {
         result.addAll(createDefaultFilters(taskIdentifier, target, source, targetNodes));
         return result;
     }
-
-    private static Collection<FilterMetadata> createConfigurationFilters(final String taskIdentifier, final DataNodeMappingConfiguration dataNodeMappingConfiguration, final Set<String> targetNodes,
-                                                            final Set<String> sourceNodes) {
+    
+    private Collection<FilterMetadata> createConfigurationFilters(final String taskIdentifier, final DataNodeMappingConfiguration dataNodeMappingConfiguration, final Set<String> targetNodes,
+                                                                         final Set<String> sourceNodes) {
         Collection<String> targetNames = dataNodeMappingConfiguration.getTargetNames();
         Collection<String> sourceNames = dataNodeMappingConfiguration.getSourceNames();
         int targetSize = targetNames.size();
@@ -81,8 +81,8 @@ public final class FilterMetadataCreator {
             throw new UnsupportedOperationException();
         }
     }
-
-    private static Collection<FilterMetadata> createDefaultFilters(final String taskIdentifier, final TargetMetadata target, final SourceMetadata source, final Set<String> nodeNames) {
+    
+    private Collection<FilterMetadata> createDefaultFilters(final String taskIdentifier, final TargetMetadata target, final SourceMetadata source, final Set<String> nodeNames) {
         Collection<FilterMetadata> result = new LinkedList<>();
         Map<String, DataNodeMetadata> sourceDataNodes = source.getDataNodes();
         Map<String, DataNodeMetadata> targetDataNodes = target.getDataNodes();
@@ -93,24 +93,24 @@ public final class FilterMetadataCreator {
         }
         return result;
     }
-
-    private static Collection<FilterMetadata> createPreciseFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
+    
+    private Collection<FilterMetadata> createPreciseFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
         Collection<FilterMetadata> result = new LinkedList<>();
         for (FilterConfiguration each : filterConfigurations) {
             result.add(FilterMetadataFactory.getPreciseInstance(taskIdentifier, each));
         }
         return result;
     }
-
-    private static Collection<FilterMetadata> createMergedFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
+    
+    private Collection<FilterMetadata> createMergedFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
         Collection<FilterMetadata> result = new LinkedList<>();
         for (FilterConfiguration each : filterConfigurations) {
             result.add(FilterMetadataFactory.getInstance(taskIdentifier, each));
         }
         return result;
     }
-
-    private static Collection<FilterMetadata> createSplittedFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
+    
+    private Collection<FilterMetadata> createSplittedFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
         Collection<FilterMetadata> result = new LinkedList<>();
         for (FilterConfiguration each : filterConfigurations) {
             result.add(FilterMetadataFactory.getInstance(taskIdentifier, each));
