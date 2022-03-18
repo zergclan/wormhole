@@ -17,8 +17,10 @@
 
 package com.zergclan.wormhole.jdbc.factory;
 
-import com.zergclan.wormhole.jdbc.api.MetadataLoader;
-import com.zergclan.wormhole.jdbc.core.ProxyMetadataLoad;
+import com.zergclan.wormhole.common.exception.WormholeException;
+import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
+import com.zergclan.wormhole.jdbc.core.MySQLMetaDataLoader;
+import com.zergclan.wormhole.jdbc.core.OracleMetaDataLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -35,10 +37,15 @@ public final class MetaDataLoaderFactory {
      * get instance.
      *
      * @param connection {@link Connection}
-     * @return {@link MetadataLoader}
+     * @return {@link MetaDataLoader}
      * @throws SQLException SQL exception
      */
-    public static MetadataLoader getInstance(final Connection connection) throws SQLException {
-        return new ProxyMetadataLoad(connection);
+    public static MetaDataLoader getInstance(final Connection connection) throws SQLException {
+        String databaseProductName = connection.getMetaData().getDatabaseProductName().toUpperCase();
+        switch (databaseProductName) {
+            case "MYSQL" : return new MySQLMetaDataLoader(connection);
+            case "ORACLE" : return new OracleMetaDataLoader(connection);
+            default : throw new WormholeException("no impl database load:" + databaseProductName);
+        }
     }
 }
