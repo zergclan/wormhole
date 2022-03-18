@@ -45,12 +45,12 @@ public class OracleMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Collection<SchemaMetaData> loadSchemas() throws SQLException {
+    public Collection<SchemaMetaData> loadSchemas(final String dataSourceIdentifier) throws SQLException {
         Collection<SchemaMetaData> collection = new LinkedList<>();
         try (ResultSet catalogs = databaseMetaData.getSchemas()) {
             while (catalogs.next()) {
                 String schema = catalogs.getNString("TABLE_SCHEM");
-                SchemaMetaData schemaMetadata = new SchemaMetaData(schema, schema);
+                SchemaMetaData schemaMetadata = new SchemaMetaData(dataSourceIdentifier, schema);
                 collection.add(schemaMetadata);
             }
         }
@@ -58,12 +58,12 @@ public class OracleMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Collection<TableMetaData> loadTables(final String schema) throws SQLException {
+    public Collection<TableMetaData> loadTables(final String dataSourceIdentifier, final String schema) throws SQLException {
         Collection<TableMetaData> collection = new LinkedList<>();
         try (ResultSet tables = databaseMetaData.getTables(null, schema, null, new String[] {"TABLE"})) {
             while (tables.next()) {
                 String table = tables.getString("TABLE_NAME");
-                TableMetaData tableMetadata = new TableMetaData(table, schema, table);
+                TableMetaData tableMetadata = new TableMetaData(dataSourceIdentifier, schema, table);
                 collection.add(tableMetadata);
             }
         }
@@ -72,12 +72,12 @@ public class OracleMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Collection<TableMetaData> loadViews(final String schema) throws SQLException {
+    public Collection<TableMetaData> loadViews(final String dataSourceIdentifier, final String schema) throws SQLException {
         Collection<TableMetaData> collection = new LinkedList<>();
         try (ResultSet tables = databaseMetaData.getTables(null, schema, null, new String[] {"VIEW"})) {
             while (tables.next()) {
                 String table = tables.getString("TABLE_NAME");
-                TableMetaData tableMetadata = new TableMetaData(table, schema, table);
+                TableMetaData tableMetadata = new TableMetaData(dataSourceIdentifier, schema, table);
                 collection.add(tableMetadata);
             }
         }
@@ -86,15 +86,15 @@ public class OracleMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Collection<ColumnMetaData> loadColumns(final String schema, final String table) throws SQLException {
+    public Collection<ColumnMetaData> loadColumns(final String dataSourceIdentifier, final String schema, final String table) throws SQLException {
         Collection<ColumnMetaData> collection = new LinkedList<>();
         try (ResultSet columns = databaseMetaData.getColumns(null, schema, table, null)) {
             while (columns.next()) {
                 String column = columns.getString("COLUMN_NAME");
                 String type = columns.getString("TYPE_NAME");
                 boolean nullable = "0".equals(columns.getString("NULLABLE"));
-                String def = columns.getString("COLUMN_DEF");
-                ColumnMetaData columnMetadata = new ColumnMetaData(column, schema, table, column, type, def, nullable);
+                String defaultValue = columns.getString("COLUMN_DEF");
+                ColumnMetaData columnMetadata = new ColumnMetaData(dataSourceIdentifier, schema, table, column, type, defaultValue, nullable);
                 collection.add(columnMetadata);
             }
         }
@@ -103,29 +103,30 @@ public class OracleMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Optional<IndexMetaData> getPrimaryKeys(final String schema, final String table) throws SQLException {
+    public Optional<IndexMetaData> getPrimaryKeys(final String dataSourceIdentifier, final String schema, final String table) throws SQLException {
         IndexMetaData indexMetadata;
         try (ResultSet primaryKeys = databaseMetaData.getPrimaryKeys(null, schema, table)) {
             Collection<String> columnNames = new LinkedList<>();
-            String pk = "";
+            String primaryKeyName = "";
             while (primaryKeys.next()) {
                 String column = primaryKeys.getString("COLUMN_NAME");
-                pk = primaryKeys.getString("PK_NAME");
+                primaryKeyName = primaryKeys.getString("PK_NAME");
                 columnNames.add(column);
             }
-            indexMetadata = new IndexMetaData(pk, schema, table, pk, true, columnNames);
+            indexMetadata = new IndexMetaData(dataSourceIdentifier, schema, table, primaryKeyName, true, columnNames);
         }
-        return null == indexMetadata ? Optional.empty() : Optional.of(indexMetadata);
+        return Optional.of(indexMetadata);
     }
 
     @Override
-    public Collection<IndexMetaData> loadIndexes(final String schema, final String table) throws SQLException {
+    public Collection<IndexMetaData> loadIndexes(final String dataSourceIdentifier, final String schema, final String table) throws SQLException {
         Map<String, IndexMetaData> indexMap = new HashMap<>(16);
         try (ResultSet indexInfo = databaseMetaData.getIndexInfo(null, schema, table, false, false)) {
             while (indexInfo.next()) {
                 String index = indexInfo.getString("INDEX_NAME");
                 String column = indexInfo.getString("COLUMN_NAME");
-                boolean unique = !(new Boolean(indexInfo.getString("NON_UNIQUE")));
+                String nonUnique = indexInfo.getString("NON_UNIQUE");
+                boolean unique = null == nonUnique ? Boolean.FALSE : Boolean.valueOf(nonUnique);
                 IndexMetaData indexMetadata = indexMap.get(index);
                 if (null == indexMetadata) {
                     Collection<String> columnNames = new LinkedList<>();

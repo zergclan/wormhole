@@ -90,25 +90,25 @@ public final class DataSourceMetadataInitializer {
     }
     
     private void initDataSource(final DataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {
-        for (SchemaMetaData each : metadataLoader.loadSchemas()) {
+        for (SchemaMetaData each : metadataLoader.loadSchemas(dataSource.getIdentifier())) {
             initSchema(each, metadataLoader);
             dataSource.registerSchema(each);
         }
     }
     
     private void initSchema(final SchemaMetaData schema, final MetaDataLoader metadataLoader) throws SQLException {
-        for (TableMetaData each : metadataLoader.loadTables(schema.getName())) {
+        for (TableMetaData each : metadataLoader.loadTables(schema.getDataSourceIdentifier(), schema.getName())) {
             initTable(each, metadataLoader);
             schema.registerTable(each);
         }
     }
-    
+
     private void initTable(final TableMetaData table, final MetaDataLoader metadataLoader) throws SQLException {
-        Collection<ColumnMetaData> columnMetadata = metadataLoader.loadColumns(table.getSchema(), table.getName());
+        Collection<ColumnMetaData> columnMetadata = metadataLoader.loadColumns(table.getDataSourceIdentifier(), table.getSchema(), table.getName());
         for (ColumnMetaData each : columnMetadata) {
             table.registerColumn(each);
         }
-        Collection<IndexMetaData> indexMetadata = metadataLoader.loadIndexes(table.getSchema(), table.getName());
+        Collection<IndexMetaData> indexMetadata = metadataLoader.loadIndexes(table.getDataSourceIdentifier(), table.getSchema(), table.getName());
         for (IndexMetaData each : indexMetadata) {
             table.registerIndex(each);
         }
