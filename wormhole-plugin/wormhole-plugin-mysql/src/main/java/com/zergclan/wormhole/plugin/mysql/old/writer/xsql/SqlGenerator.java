@@ -18,9 +18,9 @@
 package com.zergclan.wormhole.plugin.mysql.old.writer.xsql;
 
 import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
-import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
 import com.zergclan.wormhole.plugin.mysql.old.writer.util.SqlUtil;
 
 import java.util.Collection;
@@ -57,11 +57,11 @@ public class SqlGenerator {
      * @param tableMetadata {@link String}
      * @return String
      */
-    public static String createSelectSql(final TableMetadata tableMetadata) {
+    public static String createSelectSql(final TableMetaData tableMetadata) {
 
-        Map<String, IndexMetadata> indexes = tableMetadata.getIndexes();
-        Iterator<Map.Entry<String, IndexMetadata>> it = indexes.entrySet().iterator();
-        IndexMetadata indexMetadata = it.next().getValue();
+        Map<String, IndexMetaData> indexes = tableMetadata.getIndexes();
+        Iterator<Map.Entry<String, IndexMetaData>> it = indexes.entrySet().iterator();
+        IndexMetaData indexMetadata = it.next().getValue();
         Collection<String> columnNames = indexMetadata.getColumnNames();
         String selectStr = " select count(" + ((List<String>) columnNames).get(0) + ") count from " + tableMetadata.getName() + " where 1=1 ";
         for (int i = 0; i < columnNames.size(); i++) {
@@ -78,14 +78,14 @@ public class SqlGenerator {
      * @param tableMetadata {@link String}
      * @return String
      */
-    public static String createBatchInsertSql(final TableMetadata tableMetadata) {
+    public static String createBatchInsertSql(final TableMetaData tableMetadata) {
         StringBuilder sb = new StringBuilder();
         sb.append(" insert into ").append(tableMetadata.getName());
 
-        Map<String, ColumnMetadata> columns = tableMetadata.getColumns();
+        Map<String, ColumnMetaData> columns = tableMetadata.getColumns();
         String tableColumn = "";
         String valueColumn = "";
-        for (Map.Entry<String, ColumnMetadata> entry : columns.entrySet()) {
+        for (Map.Entry<String, ColumnMetaData> entry : columns.entrySet()) {
             tableColumn += entry.getValue().getName() + ",";
             valueColumn += getDataTypeFormat(entry.getKey(), entry.getValue()) + ",";
         }
@@ -103,20 +103,20 @@ public class SqlGenerator {
      * @param tableMetadata {@link String}
      * @return String
      */
-    public static String createBatchUpdateSql(final TableMetadata tableMetadata) {
+    public static String createBatchUpdateSql(final TableMetaData tableMetadata) {
         StringBuilder sb = new StringBuilder();
         sb.append(" update ").append(tableMetadata.getName()).append(" set ");
-        Map<String, ColumnMetadata> columns = tableMetadata.getColumns();
-        for (Map.Entry<String, ColumnMetadata> entry : columns.entrySet()) {
+        Map<String, ColumnMetaData> columns = tableMetadata.getColumns();
+        for (Map.Entry<String, ColumnMetaData> entry : columns.entrySet()) {
             sb.append(entry.getValue().getName() + " = ");
             sb.append(getDataTypeFormat(entry.getKey(), entry.getValue()));
             sb.append(",");
         }
         sb.deleteCharAt(sb.length() - 1);
         sb.append(" where 1=1 ");
-        Map<String, IndexMetadata> indexes = tableMetadata.getIndexes();
-        Iterator<Map.Entry<String, IndexMetadata>> it = indexes.entrySet().iterator();
-        IndexMetadata indexMetadata = it.next().getValue();
+        Map<String, IndexMetaData> indexes = tableMetadata.getIndexes();
+        Iterator<Map.Entry<String, IndexMetaData>> it = indexes.entrySet().iterator();
+        IndexMetaData indexMetadata = it.next().getValue();
         Collection<String> columnNames = indexMetadata.getColumnNames();
         for (int i = 0; i < columnNames.size(); i++) {
             String column = ((List<String>) columnNames).get(i);
@@ -133,9 +133,9 @@ public class SqlGenerator {
      * @param columns {@link Map}
      * @return String
      */
-    private static String getDataTypeFormat(final String column, final Map<String, ColumnMetadata> columns) {
+    private static String getDataTypeFormat(final String column, final Map<String, ColumnMetaData> columns) {
         String key = SqlUtil.sqlToJava(column);
-        ColumnMetadata columnMetadata = columns.get(key);
+        ColumnMetaData columnMetadata = columns.get(key);
         String dataType = columnMetadata.getDataType().split("\\(")[0];
         String value = SqlGenerator.dataType.get(dataType.toUpperCase());
         if (StringUtil.isBlank(value)) {
@@ -148,10 +148,10 @@ public class SqlGenerator {
     /**
      * format dataType.
      * @param column         {@link String}
-     * @param columnMetadata {@link ColumnMetadata}
+     * @param columnMetadata {@link ColumnMetaData}
      * @return String
      */
-    private static String getDataTypeFormat(final String column, final ColumnMetadata columnMetadata) {
+    private static String getDataTypeFormat(final String column, final ColumnMetaData columnMetadata) {
         String key = SqlUtil.sqlToJava(column);
         String dataType = columnMetadata.getDataType().split("\\(")[0];
         String value = SqlGenerator.dataType.get(dataType.toUpperCase());

@@ -19,8 +19,8 @@ package com.zergclan.wormhole.engine;
 
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.core.api.metadata.Metadata;
-import com.zergclan.wormhole.core.metadata.WormholeMetadata;
+import com.zergclan.wormhole.core.api.metadata.MetaData;
+import com.zergclan.wormhole.core.metadata.WormholeMetaData;
 import com.zergclan.wormhole.initializer.WormholeMetadataInitializer;
 import com.zergclan.wormhole.scheduling.Trigger;
 import com.zergclan.wormhole.scheduling.plan.PlanTrigger;
@@ -59,11 +59,11 @@ public final class WormholeExecutionEngine {
     }
     
     private void init(final WormholeConfiguration configuration) throws SQLException {
-        WormholeMetadata wormholeMetadata = initializer.init(configuration);
+        WormholeMetaData wormholeMetadata = initializer.init(configuration);
         planExecutionEngine = createPlanExecutionEngine(wormholeMetadata);
     }
     
-    private PlanExecutionEngine createPlanExecutionEngine(final WormholeMetadata wormholeMetadata) {
+    private PlanExecutionEngine createPlanExecutionEngine(final WormholeMetaData wormholeMetadata) {
         // TODO create plan execution engine
         return new PlanExecutionEngine(wormholeMetadata);
     }
@@ -83,12 +83,12 @@ public final class WormholeExecutionEngine {
     }
     
     /**
-     * Register {@link Metadata}.
+     * Register {@link MetaData}.
      *
-     * @param metadata {@link Metadata}
+     * @param metadata {@link MetaData}
      * @return is registered or not
      */
-    public boolean register(final Metadata metadata) {
+    public boolean register(final MetaData metadata) {
         return planExecutionEngine.register(metadata);
     }
     

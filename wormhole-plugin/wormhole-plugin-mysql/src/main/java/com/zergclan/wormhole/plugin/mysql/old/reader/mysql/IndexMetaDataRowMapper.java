@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.plugin.mysql.old.reader.mysql;
 
-import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -27,10 +27,10 @@ import java.util.LinkedList;
 /**
  * ResultSet to entity conversion.
  */
-public final class IndexMetaDataRowMapper implements RowMapper<IndexMetadata> {
+public final class IndexMetaDataRowMapper implements RowMapper<IndexMetaData> {
     @Override
-    public IndexMetadata mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-        IndexMetadata indexMetaData = new IndexMetadata(null, null, rs.getString("Table"),
+    public IndexMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+        IndexMetaData indexMetaData = new IndexMetaData(null, null, rs.getString("Table"),
                 rs.getString("Key_name"), 0 == rs.getInt("Non_unique"), new LinkedList<>());
         return indexMetaData;
     }

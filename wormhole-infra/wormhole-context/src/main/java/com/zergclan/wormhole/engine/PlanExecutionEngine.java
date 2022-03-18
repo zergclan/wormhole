@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.engine;
 
 import com.zergclan.wormhole.context.PlanContext;
-import com.zergclan.wormhole.core.api.metadata.Metadata;
-import com.zergclan.wormhole.core.metadata.WormholeMetadata;
+import com.zergclan.wormhole.core.api.metadata.MetaData;
+import com.zergclan.wormhole.core.metadata.WormholeMetaData;
 import com.zergclan.wormhole.scheduling.plan.PlanTrigger;
 import lombok.RequiredArgsConstructor;
 
@@ -29,17 +29,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class PlanExecutionEngine {
 
-    private final WormholeMetadata wormholeMetadata;
+    private final WormholeMetaData wormholeMetadata;
 
     private final PlanContext planContext = new PlanContext();
 
     /**
-     * Register {@link Metadata}.
+     * Register {@link MetaData}.
      *
-     * @param metadata {@link Metadata}
+     * @param metadata {@link MetaData}
      * @return is register or not
      */
-    public boolean register(final Metadata metadata) {
+    public boolean register(final MetaData metadata) {
         return wormholeMetadata.register(metadata);
     }
 

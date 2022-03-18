@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.plugin.mysql.old.writer;
 
 import com.zergclan.wormhole.core.api.data.DataGroup;
-import com.zergclan.wormhole.core.metadata.task.TargetMetadata;
+import com.zergclan.wormhole.core.metadata.task.TargetMetaData;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.Setter;
 
@@ -37,7 +37,7 @@ public final class MySQLLoader implements Loader<DataGroup> {
     }
     
     @Override
-    public void load(final DataGroup dataGroup, final TargetMetadata target) {
+    public void load(final DataGroup dataGroup, final TargetMetaData target) {
         // FIXME load implemented
     }
     

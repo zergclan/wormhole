@@ -21,17 +21,17 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.CronUtil;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
-import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetaData;
 import lombok.Getter;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Scheduled {@link PlanMetadata.ExecutionMode} plan trigger.
+ * Scheduled {@link PlanMetaData.ExecutionMode} plan trigger.
  */
 public final class ScheduledPlanTrigger implements PlanTrigger {
 
-    private static final String PREFIX_IDENTIFIER = PlanMetadata.ExecutionMode.SCHEDULED.name();
+    private static final String PREFIX_IDENTIFIER = PlanMetaData.ExecutionMode.SCHEDULED.name();
 
     @Getter
     private final String planIdentifier;

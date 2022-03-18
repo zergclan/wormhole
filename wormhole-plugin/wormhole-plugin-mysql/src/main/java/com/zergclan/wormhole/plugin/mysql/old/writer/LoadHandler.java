@@ -19,7 +19,7 @@ package com.zergclan.wormhole.plugin.mysql.old.writer;
 
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
 import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.SqlExecutor;
 import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.SqlGenerator;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -50,11 +50,11 @@ public class LoadHandler {
 
     /**
      * execute select sql.
-     * @param tableMetadata {@link TableMetadata}
+     * @param tableMetadata {@link TableMetaData}
      * @param mapData {@link Map}
      * @return int
      */
-    public int executeSelect(final TableMetadata tableMetadata, final Map<String, Object> mapData) {
+    public int executeSelect(final TableMetaData tableMetadata, final Map<String, Object> mapData) {
         String selectSql = SQL_MAP.get(SELECT_STR + tableMetadata.getDataSourceIdentifier());
         if (StringUtil.isBlank(selectSql)) {
             registerCache(SELECT_STR, tableMetadata);
@@ -67,10 +67,10 @@ public class LoadHandler {
 
     /**
      * execute batch insert sql.
-     * @param tableMetadata {@link TableMetadata}
+     * @param tableMetadata {@link TableMetaData}
      * @param insertData {@link List}
      */
-    public void executeBatchInsert(final TableMetadata tableMetadata, final List<Map<String, Object>> insertData) {
+    public void executeBatchInsert(final TableMetaData tableMetadata, final List<Map<String, Object>> insertData) {
         String insertSql = SQL_MAP.get(INSERT_STR + tableMetadata.getDataSourceIdentifier());
         if (StringUtil.isBlank(insertSql)) {
             registerCache(INSERT_STR, tableMetadata);
@@ -81,10 +81,10 @@ public class LoadHandler {
 
     /**
      * execute batch insert sql.
-     * @param tableMetadata {@link TableMetadata}
+     * @param tableMetadata {@link TableMetaData}
      * @param updateData {@link List}
      */
-    public void executeBatchUpdate(final TableMetadata tableMetadata, final List<Map<String, Object>> updateData) {
+    public void executeBatchUpdate(final TableMetaData tableMetadata, final List<Map<String, Object>> updateData) {
         String updateStr = SQL_MAP.get(UPDATE_STR + tableMetadata.getDataSourceIdentifier());
         if (StringUtil.isBlank(updateStr)) {
             registerCache(UPDATE_STR, tableMetadata);
@@ -96,9 +96,9 @@ public class LoadHandler {
     /**
      * register sql catche.
      * @param strType {@link String}
-     * @param tableMetadata {@link TableMetadata}
+     * @param tableMetadata {@link TableMetaData}
      */
-    private void registerCache(final String strType, final TableMetadata tableMetadata) {
+    private void registerCache(final String strType, final TableMetaData tableMetadata) {
         synchronized (SQL_MAP) {
             String sqlStr;
             switch (strType) {

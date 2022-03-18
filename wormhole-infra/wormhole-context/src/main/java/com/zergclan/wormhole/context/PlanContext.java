@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.context;
 
-import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetaData;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class PlanContext {
 
     // FIXME refactoring with cache
-    private final Map<String, CachedPlanMetadata> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
+    private final Map<String, CachedPlanMetaData> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
     
     /**
      * Is executing plan.

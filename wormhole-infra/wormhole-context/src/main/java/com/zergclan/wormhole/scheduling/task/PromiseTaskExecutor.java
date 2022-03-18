@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.scheduling.task;
 
 import com.zergclan.wormhole.common.concurrent.PromiseTask;
-import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetadata;
+import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetaData;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
 
     private final long taskBatch;
 
-    private final CachedTaskMetadata cachedTaskMetadata;
+    private final CachedTaskMetaData cachedTaskMetadata;
 
     @Override
     public PromiseTaskResult call() throws Exception {

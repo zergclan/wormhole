@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.jdbc;
 
 import com.zergclan.wormhole.common.util.Validator;
-import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
 import com.zergclan.wormhole.jdbc.core.DataSourceCreator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -38,10 +38,10 @@ public final class DataSourceManger {
     /**
      * Get {@link DataSource}.
      *
-     * @param metadata {@link DataSourceMetadata}
+     * @param metadata {@link DataSourceMetaData}
      * @return {@link DataSource}
      */
-    public static DataSource get(final DataSourceMetadata metadata) {
+    public static DataSource get(final DataSourceMetaData metadata) {
         LOCK.readLock().lock();
         try {
             String identifier = metadata.getIdentifier();
@@ -59,10 +59,10 @@ public final class DataSourceManger {
     /**
      * Register {@link DataSource}.
      *
-     * @param metadata {@link DataSourceMetadata}
+     * @param metadata {@link DataSourceMetaData}
      * @return is registered or not
      */
-    public static boolean register(final DataSourceMetadata metadata) {
+    public static boolean register(final DataSourceMetaData metadata) {
         Validator.notNull(metadata, "error : register jdbc data source arg metadata can not be null");
         LOCK.writeLock().lock();
         try {
@@ -79,10 +79,10 @@ public final class DataSourceManger {
     /**
      * Refresh {@link DataSource}.
      *
-     * @param metadata {@link DataSourceMetadata}
+     * @param metadata {@link DataSourceMetaData}
      * @return is registered or not
      */
-    public static boolean refresh(final DataSourceMetadata metadata) {
+    public static boolean refresh(final DataSourceMetaData metadata) {
         Validator.notNull(metadata, "error : refresh jdbc data source arg metadata can not be null");
         try {
             CONTAINER.put(metadata.getIdentifier(), DataSourceCreator.create(metadata));

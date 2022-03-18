@@ -18,11 +18,11 @@
 package com.zergclan.wormhole.initializer;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
 import com.zergclan.wormhole.core.config.PlanConfiguration;
 import com.zergclan.wormhole.core.config.TaskConfiguration;
-import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.core.metadata.task.TaskMetadata;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetaData;
+import com.zergclan.wormhole.core.metadata.task.TaskMetaData;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -36,22 +36,22 @@ public final class PlanMetadataInitializer {
     private final TaskMetadataInitializer taskMetadataInitializer = new TaskMetadataInitializer();
     
     /**
-     * Create {@link PlanMetadata}.
+     * Create {@link PlanMetaData}.
      *
      * @param planIdentifier plan identifier
      * @param configuration {@link PlanConfiguration}
      * @param dataSources data sources metadata
-     * @return {@link PlanMetadata}
+     * @return {@link PlanMetaData}
      */
-    public PlanMetadata init(final String planIdentifier, final PlanConfiguration configuration, final Map<String, DataSourceMetadata> dataSources) {
-        PlanMetadata.ExecutionMode executionMode = PlanMetadata.ExecutionMode.valueOf(configuration.getMode().trim().toUpperCase());
-        Map<String, TaskMetadata> tasks = createTasks(planIdentifier, configuration.getTasks(), dataSources);
-        return new PlanMetadata(planIdentifier, executionMode, configuration.getCorn(), configuration.isAtomic(), tasks);
+    public PlanMetaData init(final String planIdentifier, final PlanConfiguration configuration, final Map<String, DataSourceMetaData> dataSources) {
+        PlanMetaData.ExecutionMode executionMode = PlanMetaData.ExecutionMode.valueOf(configuration.getMode().trim().toUpperCase());
+        Map<String, TaskMetaData> tasks = createTasks(planIdentifier, configuration.getTasks(), dataSources);
+        return new PlanMetaData(planIdentifier, executionMode, configuration.getCorn(), configuration.isAtomic(), tasks);
     }
     
-    private Map<String, TaskMetadata> createTasks(final String planIdentifier, final Map<String, TaskConfiguration> configurations, final Map<String, DataSourceMetadata> dataSources) {
+    private Map<String, TaskMetaData> createTasks(final String planIdentifier, final Map<String, TaskConfiguration> configurations, final Map<String, DataSourceMetaData> dataSources) {
         Iterator<Map.Entry<String, TaskConfiguration>> iterator = configurations.entrySet().iterator();
-        Map<String, TaskMetadata> result = new LinkedHashMap<>();
+        Map<String, TaskMetaData> result = new LinkedHashMap<>();
         while (iterator.hasNext()) {
             Map.Entry<String, TaskConfiguration> entry = iterator.next();
             String taskIdentifier = planIdentifier + MarkConstant.FORWARD_SLASH + entry.getKey();

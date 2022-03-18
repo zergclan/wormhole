@@ -20,18 +20,18 @@ package com.zergclan.wormhole.scheduling.plan;
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
-import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetaData;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * One off {@link PlanMetadata.ExecutionMode} plan trigger.
+ * One off {@link PlanMetaData.ExecutionMode} plan trigger.
  */
 public final class OneOffPlanTrigger implements PlanTrigger {
     
     private static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    private static final String PREFIX_IDENTIFIER = PlanMetadata.ExecutionMode.ONE_OFF.name();
+    private static final String PREFIX_IDENTIFIER = PlanMetaData.ExecutionMode.ONE_OFF.name();
 
     private final String planIdentifier;
 

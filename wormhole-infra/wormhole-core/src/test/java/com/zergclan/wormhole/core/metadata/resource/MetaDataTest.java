@@ -17,9 +17,9 @@
 
 package com.zergclan.wormhole.core.metadata.resource;
 
-import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSourceMetaData;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
@@ -30,7 +30,7 @@ public final class MetaDataTest {
 
     @Test
     public void assertMySQLDataSourceMetadata() {
-        DataSourceMetadata dataSource = new MySQLDataSourceMetadata("127.0.0.1", 3306, "root", "root", "mysql_db", new Properties());
+        DataSourceMetaData dataSource = new MySQLDataSourceMetaData("127.0.0.1", 3306, "root", "root", "mysql_db", new Properties());
         assertEquals("jdbc:mysql://127.0.0.1:3306/mysql_db", dataSource.getJdbcUrl());
         assertEquals("com.mysql.cj.jdbc.Driver", dataSource.getDriverClassName());
         assertEquals("root", dataSource.getUsername());
@@ -40,7 +40,7 @@ public final class MetaDataTest {
 
     @Test
     public void assertPostgreSQLDataSourceMetadata() {
-        DataSourceMetadata dataSource = new PostgreSQLDataSourceMetadata("127.0.0.1", 5432, "root", "root", "pg_db", new Properties());
+        DataSourceMetaData dataSource = new PostgreSQLDataSourceMetaData("127.0.0.1", 5432, "root", "root", "pg_db", new Properties());
         assertEquals("jdbc:postgresql://127.0.0.1:5432/pg_db", dataSource.getJdbcUrl());
         assertEquals("org.postgresql.Driver", dataSource.getDriverClassName());
         assertEquals("root", dataSource.getUsername());
