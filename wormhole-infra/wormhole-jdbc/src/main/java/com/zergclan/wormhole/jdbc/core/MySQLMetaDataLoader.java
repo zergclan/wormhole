@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.jdbc.core;
 
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
-import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
-import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
+import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
 import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
 
 import java.sql.Connection;
@@ -45,12 +45,12 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Collection<SchemaMetadata> loadSchemas() throws SQLException {
-        Collection<SchemaMetadata> collection = new LinkedList<>();
+    public Collection<SchemaMetaData> loadSchemas() throws SQLException {
+        Collection<SchemaMetaData> collection = new LinkedList<>();
         try (ResultSet catalogs = databaseMetaData.getCatalogs()) {
             while (catalogs.next()) {
                 String schema = catalogs.getNString("TABLE_CAT");
-                SchemaMetadata schemaMetadata = new SchemaMetadata(schema, schema);
+                SchemaMetaData schemaMetadata = new SchemaMetaData(schema, schema);
                 collection.add(schemaMetadata);
             }
         }
@@ -58,12 +58,12 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Collection<TableMetadata> loadTables(final String schema) throws SQLException {
-        Collection<TableMetadata> collection = new LinkedList<>();
+    public Collection<TableMetaData> loadTables(final String schema) throws SQLException {
+        Collection<TableMetaData> collection = new LinkedList<>();
         try (ResultSet tables = databaseMetaData.getTables(schema, null, null, new String[] {"TABLE"})) {
             while (tables.next()) {
                 String table = tables.getString("TABLE_NAME");
-                TableMetadata tableMetadata = new TableMetadata(table, schema, table);
+                TableMetaData tableMetadata = new TableMetaData(table, schema, table);
                 collection.add(tableMetadata);
             }
         }
@@ -72,12 +72,12 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Collection<TableMetadata> loadViews(final String schema) throws SQLException {
-        Collection<TableMetadata> collection = new LinkedList<>();
+    public Collection<TableMetaData> loadViews(final String schema) throws SQLException {
+        Collection<TableMetaData> collection = new LinkedList<>();
         try (ResultSet tables = databaseMetaData.getTables(schema, null, null, new String[] {"VIEW"})) {
             while (tables.next()) {
                 String table = tables.getString("TABLE_NAME");
-                TableMetadata tableMetadata = new TableMetadata(table, schema, table);
+                TableMetaData tableMetadata = new TableMetaData(table, schema, table);
                 collection.add(tableMetadata);
             }
         }
@@ -86,15 +86,15 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Collection<ColumnMetadata> loadColumns(final String schema, final String table) throws SQLException {
-        Collection<ColumnMetadata> collection = new LinkedList<>();
+    public Collection<ColumnMetaData> loadColumns(final String schema, final String table) throws SQLException {
+        Collection<ColumnMetaData> collection = new LinkedList<>();
         try (ResultSet columns = databaseMetaData.getColumns(schema, null, table, null)) {
             while (columns.next()) {
                 String column = columns.getString("COLUMN_NAME");
                 String type = columns.getString("TYPE_NAME");
                 boolean nullable = "0".equals(columns.getString("NULLABLE"));
                 String def = columns.getString("COLUMN_DEF");
-                ColumnMetadata columnMetadata = new ColumnMetadata(column, schema, table, column, type, def, nullable);
+                ColumnMetaData columnMetadata = new ColumnMetaData(column, schema, table, column, type, def, nullable);
                 collection.add(columnMetadata);
             }
         }
@@ -103,8 +103,8 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
     }
 
     @Override
-    public Optional<IndexMetadata> getPrimaryKeys(final String schema, final String table) throws SQLException {
-        IndexMetadata indexMetadata;
+    public Optional<IndexMetaData> getPrimaryKeys(final String schema, final String table) throws SQLException {
+        IndexMetaData indexMetadata;
         try (ResultSet primaryKeys = databaseMetaData.getPrimaryKeys(schema, null, table)) {
             Collection<String> columnNames = new LinkedList<>();
             String pk = "";
@@ -113,24 +113,24 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
                 pk = primaryKeys.getString("PK_NAME");
                 columnNames.add(column);
             }
-            indexMetadata = new IndexMetadata(pk, schema, table, pk, true, columnNames);
+            indexMetadata = new IndexMetaData(pk, schema, table, pk, true, columnNames);
         }
         return null == indexMetadata ? Optional.empty() : Optional.of(indexMetadata);
     }
 
     @Override
-    public Collection<IndexMetadata> loadIndexes(final String schema, final String table) throws SQLException {
-        Map<String, IndexMetadata> indexMap = new HashMap<>(16);
+    public Collection<IndexMetaData> loadIndexes(final String schema, final String table) throws SQLException {
+        Map<String, IndexMetaData> indexMap = new HashMap<>(16);
         try (ResultSet indexInfo = databaseMetaData.getIndexInfo(schema, null, table, false, false)) {
             while (indexInfo.next()) {
                 String index = indexInfo.getString("INDEX_NAME");
                 String column = indexInfo.getString("COLUMN_NAME");
                 boolean unique = !(new Boolean(indexInfo.getString("NON_UNIQUE")));
-                IndexMetadata indexMetadata = indexMap.get(index);
+                IndexMetaData indexMetadata = indexMap.get(index);
                 if (null == indexMetadata) {
                     Collection<String> columnNames = new LinkedList<>();
                     columnNames.add(column);
-                    indexMetadata = new IndexMetadata(index, schema, table,
+                    indexMetadata = new IndexMetaData(index, schema, table,
                             index, unique, columnNames);
                     indexMap.put(index, indexMetadata);
                 } else {

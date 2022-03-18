@@ -25,7 +25,7 @@ import com.zergclan.wormhole.core.data.LongDataNode;
 import com.zergclan.wormhole.core.data.PatternedDataTime;
 import com.zergclan.wormhole.core.data.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.core.data.TextDataNode;
-import com.zergclan.wormhole.core.metadata.node.DataNodeTypeMetadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeTypeMetaData;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -41,9 +41,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class DataTypeConvertorHelper {
     
-    private final DataNodeTypeMetadata.DataType targetDataType;
+    private final DataNodeTypeMetaData.DataType targetDataType;
     
-    private final DataNodeTypeMetadata.DataType sourceDataType;
+    private final DataNodeTypeMetaData.DataType sourceDataType;
     
     /**
      * Convert source to target of {@link DataNode} type.
@@ -52,46 +52,46 @@ public final class DataTypeConvertorHelper {
      * @return source data node
      */
     public Optional<DataNode<?>> convert(final DataNode<?> sourceDataNode) {
-        if (DataNodeTypeMetadata.DataType.TEXT == sourceDataType) {
+        if (DataNodeTypeMetaData.DataType.TEXT == sourceDataType) {
             return convertText((TextDataNode) sourceDataNode);
         }
-        if (DataNodeTypeMetadata.DataType.LONG == sourceDataType) {
+        if (DataNodeTypeMetaData.DataType.LONG == sourceDataType) {
             return convertLong((LongDataNode) sourceDataNode);
         }
-        if (DataNodeTypeMetadata.DataType.DATA_TIME == sourceDataType) {
+        if (DataNodeTypeMetaData.DataType.DATA_TIME == sourceDataType) {
             return convertDataTime((LocalDateTimeDataNode) sourceDataNode);
         }
         return Optional.empty();
     }
     
     private Optional<DataNode<?>> convertText(final TextDataNode sourceDataNode) {
-        if (DataNodeTypeMetadata.DataType.INT == targetDataType) {
+        if (DataNodeTypeMetaData.DataType.INT == targetDataType) {
             return Optional.of(new IntegerDataNode(sourceDataNode.getName(), Integer.parseInt(sourceDataNode.getValue())));
         }
-        if (DataNodeTypeMetadata.DataType.LONG == targetDataType) {
+        if (DataNodeTypeMetaData.DataType.LONG == targetDataType) {
             return Optional.of(new LongDataNode(sourceDataNode.getName(), Long.parseLong(sourceDataNode.getValue())));
         }
-        if (DataNodeTypeMetadata.DataType.MONETARY == targetDataType) {
+        if (DataNodeTypeMetaData.DataType.MONETARY == targetDataType) {
             return Optional.of(new BigDecimalDataNode(sourceDataNode.getName(), new BigDecimal(sourceDataNode.getValue())));
         }
         return Optional.empty();
     }
     
     private Optional<DataNode<?>> convertLong(final LongDataNode sourceDataNode) {
-        if (DataNodeTypeMetadata.DataType.DATA_TIME == targetDataType) {
+        if (DataNodeTypeMetaData.DataType.DATA_TIME == targetDataType) {
             return Optional.of(new LocalDateTimeDataNode(sourceDataNode.getName(), LocalDateTime.ofInstant(Instant.ofEpochMilli(sourceDataNode.getValue()), ZoneId.systemDefault())));
         }
-        if (DataNodeTypeMetadata.DataType.TEXT == targetDataType) {
+        if (DataNodeTypeMetaData.DataType.TEXT == targetDataType) {
             return Optional.of(new TextDataNode(sourceDataNode.getName(), sourceDataNode.getValue().toString()));
         }
         return Optional.empty();
     }
     
     private Optional<DataNode<?>> convertDataTime(final LocalDateTimeDataNode sourceDataNode) {
-        if (DataNodeTypeMetadata.DataType.LONG == targetDataType) {
+        if (DataNodeTypeMetaData.DataType.LONG == targetDataType) {
             return Optional.of(new LongDataNode(sourceDataNode.getName(), Timestamp.valueOf(sourceDataNode.getValue()).getTime()));
         }
-        if (DataNodeTypeMetadata.DataType.PATTERNED_DATA_TIME == targetDataType) {
+        if (DataNodeTypeMetaData.DataType.PATTERNED_DATA_TIME == targetDataType) {
             return Optional.of(new PatternedDataTimeDataNode(sourceDataNode.getName(), new PatternedDataTime(sourceDataNode.getValue(), PatternedDataTime.DatePattern.STANDARD)));
         }
         return Optional.empty();

@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.core.metadata.filter;
 
 /**
- * Type of {@link FilterMetadata}.
+ * Type of {@link FilterMetaData}.
  */
 public enum FilterType {
     

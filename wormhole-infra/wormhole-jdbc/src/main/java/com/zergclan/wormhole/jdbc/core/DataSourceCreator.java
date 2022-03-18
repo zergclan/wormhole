@@ -19,7 +19,7 @@ package com.zergclan.wormhole.jdbc.core;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
 
 import javax.sql.DataSource;
 
@@ -34,7 +34,7 @@ public final class DataSourceCreator {
      * @param dataSourceMetadata data source metadata
      * @return {@link DataSource}
      */
-    public static DataSource create(final DataSourceMetadata dataSourceMetadata) {
+    public static DataSource create(final DataSourceMetaData dataSourceMetadata) {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(dataSourceMetadata.getDriverClassName());
         config.setJdbcUrl(dataSourceMetadata.getJdbcUrl());

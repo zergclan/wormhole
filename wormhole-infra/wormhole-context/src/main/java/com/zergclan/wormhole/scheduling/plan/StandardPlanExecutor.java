@@ -19,8 +19,8 @@ package com.zergclan.wormhole.scheduling.plan;
 
 import com.zergclan.wormhole.common.SequenceGenerator;
 import com.zergclan.wormhole.common.concurrent.ExecutorServiceManager;
-import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
-import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetadata;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetaData;
+import com.zergclan.wormhole.core.metadata.catched.CachedTaskMetaData;
 import com.zergclan.wormhole.scheduling.SchedulingExecutor;
 import com.zergclan.wormhole.scheduling.task.PromiseTaskExecutor;
 import com.zergclan.wormhole.scheduling.task.PromiseTaskResult;
@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutorCompletionService;
 @RequiredArgsConstructor
 public final class StandardPlanExecutor implements SchedulingExecutor {
 
-    private final CachedPlanMetadata cachedPlanMetadata;
+    private final CachedPlanMetaData cachedPlanMetadata;
 
     @Override
     public void execute() {
@@ -47,9 +47,9 @@ public final class StandardPlanExecutor implements SchedulingExecutor {
         // TODO send plan execute success event
     }
 
-    private void parallelExecute(final Map<String, CachedTaskMetadata> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
+    private void parallelExecute(final Map<String, CachedTaskMetaData> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
         CompletionService<PromiseTaskResult> completionService = new ExecutorCompletionService<>(ExecutorServiceManager.getSchedulingExecutor());
-        for (Map.Entry<String, CachedTaskMetadata> entry : cachedTaskMetadata.entrySet()) {
+        for (Map.Entry<String, CachedTaskMetaData> entry : cachedTaskMetadata.entrySet()) {
             PromiseTaskExecutor promiseTaskExecutor = new PromiseTaskExecutor(planIdentifier, planBatch, SequenceGenerator.generateId(), entry.getValue());
             completionService.submit(promiseTaskExecutor);
         }

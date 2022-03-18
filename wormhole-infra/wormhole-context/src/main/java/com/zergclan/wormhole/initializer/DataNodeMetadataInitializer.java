@@ -19,9 +19,9 @@ package com.zergclan.wormhole.initializer;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.core.config.DataNodeConfiguration;
-import com.zergclan.wormhole.core.metadata.node.DataNodeMetadata;
-import com.zergclan.wormhole.core.metadata.node.DataNodeTypeMetadata;
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.metadata.node.DataNodeMetaData;
+import com.zergclan.wormhole.core.metadata.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetaData;
 
 import java.util.Optional;
 
@@ -31,30 +31,30 @@ import java.util.Optional;
 public final class DataNodeMetadataInitializer {
     
     /**
-     * Init {@link DataNodeMetadata}.
+     * Init {@link DataNodeMetaData}.
      *
      * @param nodeName node name
      * @param configuration {@link DataNodeConfiguration}
-     * @return {@link DataNodeMetadata}
+     * @return {@link DataNodeMetaData}
      */
-    public DataNodeMetadata init(final String nodeName, final DataNodeConfiguration configuration) {
+    public DataNodeMetaData init(final String nodeName, final DataNodeConfiguration configuration) {
         String tableName = configuration.getTable();
         String defaultValue = configuration.getDefaultValue();
-        DataNodeTypeMetadata dataNodeTypeMetadata = new DataNodeTypeMetadata(configuration.getNodeType(), configuration.getDataType());
-        return new DataNodeMetadata(nodeName, tableName, dataNodeTypeMetadata, defaultValue);
+        DataNodeTypeMetaData dataNodeTypeMetadata = new DataNodeTypeMetaData(configuration.getNodeType(), configuration.getDataType());
+        return new DataNodeMetaData(nodeName, tableName, dataNodeTypeMetadata, defaultValue);
     }
     
     /**
-     * Init defaulted {@link DataNodeMetadata}.
+     * Init defaulted {@link DataNodeMetaData}.
      *
-     * @param columnMetadata {@link ColumnMetadata}
-     * @return {@link DataNodeMetadata}
+     * @param columnMetadata {@link ColumnMetaData}
+     * @return {@link DataNodeMetaData}
      */
-    public DataNodeMetadata init(final ColumnMetadata columnMetadata) {
+    public DataNodeMetaData init(final ColumnMetaData columnMetadata) {
         String name = columnMetadata.getName();
         String tableName = columnMetadata.getSchema() + MarkConstant.POINT + columnMetadata.getTable();
-        DataNodeTypeMetadata type = new DataNodeTypeMetadata(columnMetadata);
+        DataNodeTypeMetaData type = new DataNodeTypeMetaData(columnMetadata);
         Optional<String> defaultValue = columnMetadata.getDefaultValue();
-        return defaultValue.map(value -> new DataNodeMetadata(name, tableName, type, value)).orElseGet(() -> new DataNodeMetadata(name, tableName, type));
+        return defaultValue.map(value -> new DataNodeMetaData(name, tableName, type, value)).orElseGet(() -> new DataNodeMetaData(name, tableName, type));
     }
 }

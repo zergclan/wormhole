@@ -17,12 +17,12 @@
 
 package com.zergclan.wormhole.initializer;
 
-import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
 import com.zergclan.wormhole.core.config.PlanConfiguration;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.core.metadata.WormholeMetadata;
-import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.core.metadata.WormholeMetaData;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetaData;
 
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -39,20 +39,20 @@ public final class WormholeMetadataInitializer {
     private final PlanMetadataInitializer planMetadataInitializer = new PlanMetadataInitializer();
     
     /**
-     * Init {@link WormholeMetadata}.
+     * Init {@link WormholeMetaData}.
      *
      * @param configuration {@link WormholeConfiguration}
-     * @return {@link WormholeMetadata}
+     * @return {@link WormholeMetaData}
      * @throws SQLException SQL Exception
      */
-    public WormholeMetadata init(final WormholeConfiguration configuration) throws SQLException {
-        Map<String, DataSourceMetadata> dataSources = createDataSources(configuration.getDataSources());
-        Map<String, PlanMetadata> plans = createPlans(configuration.getPlans(), dataSources);
-        return new WormholeMetadata(dataSources, plans);
+    public WormholeMetaData init(final WormholeConfiguration configuration) throws SQLException {
+        Map<String, DataSourceMetaData> dataSources = createDataSources(configuration.getDataSources());
+        Map<String, PlanMetaData> plans = createPlans(configuration.getPlans(), dataSources);
+        return new WormholeMetaData(dataSources, plans);
     }
     
-    private Map<String, DataSourceMetadata> createDataSources(final Map<String, DataSourceConfiguration> configurations) throws SQLException {
-        Map<String, DataSourceMetadata> result = new LinkedHashMap<>();
+    private Map<String, DataSourceMetaData> createDataSources(final Map<String, DataSourceConfiguration> configurations) throws SQLException {
+        Map<String, DataSourceMetaData> result = new LinkedHashMap<>();
         Iterator<Map.Entry<String, DataSourceConfiguration>> iterator = configurations.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, DataSourceConfiguration> entry = iterator.next();
@@ -61,9 +61,9 @@ public final class WormholeMetadataInitializer {
         return result;
     }
     
-    private Map<String, PlanMetadata> createPlans(final Map<String, PlanConfiguration> planConfigurations, final Map<String, DataSourceMetadata> dataSources) {
+    private Map<String, PlanMetaData> createPlans(final Map<String, PlanConfiguration> planConfigurations, final Map<String, DataSourceMetaData> dataSources) {
         Iterator<Map.Entry<String, PlanConfiguration>> iterator = planConfigurations.entrySet().iterator();
-        Map<String, PlanMetadata> result = new LinkedHashMap<>();
+        Map<String, PlanMetaData> result = new LinkedHashMap<>();
         while (iterator.hasNext()) {
             Map.Entry<String, PlanConfiguration> entry = iterator.next();
             result.put(entry.getKey(), planMetadataInitializer.init(entry.getKey(), entry.getValue(), dataSources));

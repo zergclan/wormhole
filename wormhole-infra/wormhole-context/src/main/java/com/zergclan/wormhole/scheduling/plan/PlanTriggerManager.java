@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
-import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetaData;
 
 import java.util.Optional;
 import java.util.concurrent.DelayQueue;
@@ -46,12 +46,12 @@ public final class PlanTriggerManager {
     }
 
     /**
-     * Register {@link PlanTrigger} by {@link PlanMetadata}.
+     * Register {@link PlanTrigger} by {@link PlanMetaData}.
      *
-     * @param planMetadata {@link PlanMetadata}
+     * @param planMetadata {@link PlanMetaData}
      * @return is registered or not
      */
-    public boolean register(final PlanMetadata planMetadata) {
+    public boolean register(final PlanMetaData planMetadata) {
         switch (planMetadata.getMode()) {
             case ONE_OFF:
                 return registerOneOffPlanTrigger(planMetadata);
@@ -62,11 +62,11 @@ public final class PlanTriggerManager {
         }
     }
 
-    private boolean registerOneOffPlanTrigger(final PlanMetadata planMetadata) {
+    private boolean registerOneOffPlanTrigger(final PlanMetaData planMetadata) {
         return triggers.offer(new OneOffPlanTrigger(planMetadata.getIdentifier(), planMetadata.getExpression()));
     }
 
-    private boolean registerScheduledPlanTrigger(final PlanMetadata planMetadata) {
+    private boolean registerScheduledPlanTrigger(final PlanMetaData planMetadata) {
         return triggers.offer(new ScheduledPlanTrigger(planMetadata.getIdentifier(), planMetadata.getExpression()));
     }
 

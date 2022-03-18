@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.plugin.mysql.reader;
 
 import com.zergclan.wormhole.core.api.data.DataGroup;
-import com.zergclan.wormhole.core.metadata.task.SourceMetadata;
+import com.zergclan.wormhole.core.metadata.task.SourceMetaData;
 import com.zergclan.wormhole.plugin.api.Extractor;
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public final class MySQLExtractor implements Extractor<DataGroup> {
     private final DataSource dataSource;
     
     @Override
-    public Collection<DataGroup> extract(final SourceMetadata source) {
+    public Collection<DataGroup> extract(final SourceMetaData source) {
         return null;
     }
 }

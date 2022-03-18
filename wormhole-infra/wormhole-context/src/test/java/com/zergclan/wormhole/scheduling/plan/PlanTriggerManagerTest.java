@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
-import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetaData;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
@@ -30,7 +30,7 @@ public final class PlanTriggerManagerTest {
     @Test
     public void assertRegisterTrigger() {
         PlanTriggerManager planTriggerManager = new PlanTriggerManager();
-        PlanMetadata planMetadata = new PlanMetadata("test_plan", PlanMetadata.ExecutionMode.SCHEDULED, "*/4 * * * * ?", true, new LinkedHashMap<>());
+        PlanMetaData planMetadata = new PlanMetaData("test_plan", PlanMetaData.ExecutionMode.SCHEDULED, "*/4 * * * * ?", true, new LinkedHashMap<>());
         planTriggerManager.register(planMetadata);
         for (int i = 0; i < 2; i++) {
             Optional<PlanTrigger> executableTrigger = planTriggerManager.getExecutableTrigger();

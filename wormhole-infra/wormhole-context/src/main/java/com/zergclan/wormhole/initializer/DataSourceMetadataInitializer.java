@@ -18,18 +18,18 @@
 package com.zergclan.wormhole.initializer;
 
 import com.zergclan.wormhole.common.exception.WormholeException;
-import com.zergclan.wormhole.core.api.metadata.DataSourceMetadata;
+import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
 import com.zergclan.wormhole.core.config.DataSourceConfiguration;
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetaData;
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
-import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
-import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
-import com.zergclan.wormhole.core.metadata.resource.dialect.H2DataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.resource.dialect.OracleDataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSourceMetadata;
-import com.zergclan.wormhole.core.metadata.resource.dialect.SQLServerDataSourceMetadata;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
+import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
+import com.zergclan.wormhole.core.metadata.resource.dialect.H2DataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.resource.dialect.MySQLDataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.resource.dialect.OracleDataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSourceMetaData;
+import com.zergclan.wormhole.core.metadata.resource.dialect.SQLServerDataSourceMetaData;
 import com.zergclan.wormhole.jdbc.DataSourceManger;
 import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
 import com.zergclan.wormhole.jdbc.factory.MetaDataLoaderFactory;
@@ -46,21 +46,21 @@ import java.util.Properties;
 public final class DataSourceMetadataInitializer {
     
     /**
-     * Init {@link DataSourceMetadata}.
+     * Init {@link DataSourceMetaData}.
      *
      * @param dataSourceConfiguration {@link DataSourceConfiguration}
-     * @return {@link DataSourceMetadata}
+     * @return {@link DataSourceMetaData}
      * @throws SQLException SQL Exception
      */
-    public DataSourceMetadata init(final DataSourceConfiguration dataSourceConfiguration) throws SQLException {
-        DataSourceMetadata result = createActualTypeDataSourceMetadata(dataSourceConfiguration);
+    public DataSourceMetaData init(final DataSourceConfiguration dataSourceConfiguration) throws SQLException {
+        DataSourceMetaData result = createActualTypeDataSourceMetadata(dataSourceConfiguration);
         Connection connection = DataSourceManger.get(result).getConnection();
         MetaDataLoader metadataLoader = MetaDataLoaderFactory.getInstance(connection);
         initDataSource(result, metadataLoader);
         return result;
     }
     
-    private static DataSourceMetadata createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
+    private static DataSourceMetaData createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
         Optional<DatabaseType> databaseType = DatabaseType.getDatabaseType(configuration.getType());
         if (databaseType.isPresent()) {
             String host = configuration.getHost();
@@ -71,45 +71,45 @@ public final class DataSourceMetadataInitializer {
             Properties parameters = configuration.getProps();
             DatabaseType type = databaseType.get();
             if (DatabaseType.MYSQL == type) {
-                return new MySQLDataSourceMetadata(host, port, username, password, catalog, parameters);
+                return new MySQLDataSourceMetaData(host, port, username, password, catalog, parameters);
             }
             if (DatabaseType.ORACLE == type) {
-                return new OracleDataSourceMetadata(host, port, username, password, catalog, parameters);
+                return new OracleDataSourceMetaData(host, port, username, password, catalog, parameters);
             }
             if (DatabaseType.SQL_SERVER == type) {
-                return new SQLServerDataSourceMetadata(host, port, username, password, catalog, parameters);
+                return new SQLServerDataSourceMetaData(host, port, username, password, catalog, parameters);
             }
             if (DatabaseType.POSTGRESQL == type) {
-                return new PostgreSQLDataSourceMetadata(host, port, username, password, catalog, parameters);
+                return new PostgreSQLDataSourceMetaData(host, port, username, password, catalog, parameters);
             }
             if (DatabaseType.H2 == type) {
-                return new H2DataSourceMetadata(host, port, username, password, catalog, parameters);
+                return new H2DataSourceMetaData(host, port, username, password, catalog, parameters);
             }
         }
         throw new WormholeException("error : create data source metadata failed databaseType [%s] not find", configuration.getType());
     }
     
-    private void initDataSource(final DataSourceMetadata dataSource, final MetaDataLoader metadataLoader) throws SQLException {
-        for (SchemaMetadata each : metadataLoader.loadSchemas()) {
+    private void initDataSource(final DataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {
+        for (SchemaMetaData each : metadataLoader.loadSchemas()) {
             initSchema(each, metadataLoader);
             dataSource.registerSchema(each);
         }
     }
     
-    private void initSchema(final SchemaMetadata schema, final MetaDataLoader metadataLoader) throws SQLException {
-        for (TableMetadata each : metadataLoader.loadTables(schema.getName())) {
+    private void initSchema(final SchemaMetaData schema, final MetaDataLoader metadataLoader) throws SQLException {
+        for (TableMetaData each : metadataLoader.loadTables(schema.getName())) {
             initTable(each, metadataLoader);
             schema.registerTable(each);
         }
     }
     
-    private void initTable(final TableMetadata table, final MetaDataLoader metadataLoader) throws SQLException {
-        Collection<ColumnMetadata> columnMetadata = metadataLoader.loadColumns(table.getSchema(), table.getName());
-        for (ColumnMetadata each : columnMetadata) {
+    private void initTable(final TableMetaData table, final MetaDataLoader metadataLoader) throws SQLException {
+        Collection<ColumnMetaData> columnMetadata = metadataLoader.loadColumns(table.getSchema(), table.getName());
+        for (ColumnMetaData each : columnMetadata) {
             table.registerColumn(each);
         }
-        Collection<IndexMetadata> indexMetadata = metadataLoader.loadIndexes(table.getSchema(), table.getName());
-        for (IndexMetadata each : indexMetadata) {
+        Collection<IndexMetaData> indexMetadata = metadataLoader.loadIndexes(table.getSchema(), table.getName());
+        for (IndexMetaData each : indexMetadata) {
             table.registerIndex(each);
         }
     }

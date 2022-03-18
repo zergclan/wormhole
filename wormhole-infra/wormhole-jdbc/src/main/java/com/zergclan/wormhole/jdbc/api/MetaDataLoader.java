@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.jdbc.api;
 
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetadata;
-import com.zergclan.wormhole.core.metadata.resource.IndexMetadata;
-import com.zergclan.wormhole.core.metadata.resource.SchemaMetadata;
-import com.zergclan.wormhole.core.metadata.resource.TableMetadata;
+import com.zergclan.wormhole.core.metadata.resource.ColumnMetaData;
+import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
+import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
+import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -31,56 +31,56 @@ public interface MetaDataLoader {
     /**
      * Load Schemas.
      *
-     * @return {@link SchemaMetadata}
+     * @return {@link SchemaMetaData}
      * @throws SQLException exception
      */
-    Collection<SchemaMetadata> loadSchemas() throws SQLException;
+    Collection<SchemaMetaData> loadSchemas() throws SQLException;
 
     /**
      * Load tables.
      *
      * @param schema schema name
-     * @return {@link TableMetadata}
+     * @return {@link TableMetaData}
      * @throws SQLException exception
      */
-    Collection<TableMetadata> loadTables(String schema) throws SQLException;
+    Collection<TableMetaData> loadTables(String schema) throws SQLException;
 
     /**
      * Load views.
      *
      * @param schema schema name
-     * @return {@link TableMetadata}
+     * @return {@link TableMetaData}
      * @throws SQLException exception
      */
-    Collection<TableMetadata> loadViews(String schema) throws SQLException;
+    Collection<TableMetaData> loadViews(String schema) throws SQLException;
 
     /**
      * Load Columns.
      *
      * @param schema schema name
      * @param table table name
-     * @return {@link ColumnMetadata}
+     * @return {@link ColumnMetaData}
      * @throws SQLException exception
      */
-    Collection<ColumnMetadata> loadColumns(String schema, String table) throws SQLException;
+    Collection<ColumnMetaData> loadColumns(String schema, String table) throws SQLException;
 
     /**
      * Load PrimaryKeys.
      *
      * @param schema schema name
      * @param table table name
-     * @return {@link IndexMetadata}
+     * @return {@link IndexMetaData}
      * @throws SQLException exception
      */
-    Optional<IndexMetadata> getPrimaryKeys(String schema, String table) throws SQLException;
+    Optional<IndexMetaData> getPrimaryKeys(String schema, String table) throws SQLException;
 
     /**
      * Load Indexes.
      *
      * @param schema schema name
      * @param table table name
-     * @return {@link IndexMetadata}
+     * @return {@link IndexMetaData}
      * @throws SQLException exception
      */
-    Collection<IndexMetadata> loadIndexes(String schema, String table) throws SQLException;
+    Collection<IndexMetaData> loadIndexes(String schema, String table) throws SQLException;
 }
