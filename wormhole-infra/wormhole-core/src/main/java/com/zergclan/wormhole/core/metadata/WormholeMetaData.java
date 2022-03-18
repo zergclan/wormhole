@@ -21,7 +21,6 @@ import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
 import com.zergclan.wormhole.core.api.metadata.MetaData;
-import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.core.metadata.resource.SchemaMetaData;
 import lombok.Getter;
@@ -63,24 +62,7 @@ public final class WormholeMetaData implements MetaData {
             LOCK.readLock().unlock();
         }
     }
-    
-    /**
-     * Get {@link CachedPlanMetaData} by plan identifier.
-     *
-     * @param planIdentifier plan identifier
-     * @return {@link CachedPlanMetaData}
-     */
-    public Optional<CachedPlanMetaData> cachedMetadata(final String planIdentifier) {
-        Validator.notNull(planIdentifier, "error : cached plan metadata plan identifier can not be null");
-        LOCK.writeLock().lock();
-        try {
-            PlanMetaData planMetadata = plans.get(planIdentifier);
-            return null == planMetadata ? Optional.empty() : Optional.of(CachedPlanMetaData.builder(planMetadata, dataSources));
-        } finally {
-            LOCK.writeLock().unlock();
-        }
-    }
-    
+
     /**
      * Register {@link MetaData}.
      *

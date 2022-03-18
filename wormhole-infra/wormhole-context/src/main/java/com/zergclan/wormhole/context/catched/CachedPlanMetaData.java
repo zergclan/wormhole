@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.core.metadata.catched;
+package com.zergclan.wormhole.context.catched;
 
 import com.zergclan.wormhole.core.api.Filter;
 import com.zergclan.wormhole.core.api.metadata.DataSourceMetaData;
@@ -111,12 +111,10 @@ public final class CachedPlanMetaData implements MetaData {
             return result;
         }
 
-        // TODO init filters
         private Collection<Filter<?>> initFilters() {
             Collection<Filter<?>> result = new LinkedList<>();
-
+            // TODO init filters
             return result;
         }
-
     }
 }
