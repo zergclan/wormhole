@@ -26,61 +26,70 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Meta data loader.
+ */
 public interface MetaDataLoader {
 
     /**
-     * Load Schemas.
+     * Load {@link SchemaMetaData}.
      *
+     * @param dataSourceIdentifier data source identifier
      * @return {@link SchemaMetaData}
      * @throws SQLException exception
      */
-    Collection<SchemaMetaData> loadSchemas() throws SQLException;
+    Collection<SchemaMetaData> loadSchemas(String dataSourceIdentifier) throws SQLException;
 
     /**
-     * Load tables.
+     * Load table as {@link TableMetaData}.
      *
+     * @param dataSourceIdentifier data source identifier
      * @param schema schema name
      * @return {@link TableMetaData}
      * @throws SQLException exception
      */
-    Collection<TableMetaData> loadTables(String schema) throws SQLException;
+    Collection<TableMetaData> loadTables(String dataSourceIdentifier, String schema) throws SQLException;
 
     /**
-     * Load views.
+     * Load view as  {@link TableMetaData}.
      *
+     * @param dataSourceIdentifier data source identifier
      * @param schema schema name
      * @return {@link TableMetaData}
      * @throws SQLException exception
      */
-    Collection<TableMetaData> loadViews(String schema) throws SQLException;
+    Collection<TableMetaData> loadViews(String dataSourceIdentifier, String schema) throws SQLException;
 
     /**
-     * Load Columns.
+     * Load {@link ColumnMetaData}.
      *
+     * @param dataSourceIdentifier data source identifier
      * @param schema schema name
      * @param table table name
      * @return {@link ColumnMetaData}
      * @throws SQLException exception
      */
-    Collection<ColumnMetaData> loadColumns(String schema, String table) throws SQLException;
+    Collection<ColumnMetaData> loadColumns(String dataSourceIdentifier, String schema, String table) throws SQLException;
 
     /**
-     * Load PrimaryKeys.
+     * Load primary key as {@link IndexMetaData}.
      *
+     * @param dataSourceIdentifier data source identifier
      * @param schema schema name
      * @param table table name
      * @return {@link IndexMetaData}
      * @throws SQLException exception
      */
-    Optional<IndexMetaData> getPrimaryKeys(String schema, String table) throws SQLException;
+    Optional<IndexMetaData> getPrimaryKeys(String dataSourceIdentifier, String schema, String table) throws SQLException;
 
     /**
-     * Load Indexes.
+     * Load index as {@link IndexMetaData}.
      *
+     * @param dataSourceIdentifier data source identifier
      * @param schema schema name
      * @param table table name
      * @return {@link IndexMetaData}
      * @throws SQLException exception
      */
-    Collection<IndexMetaData> loadIndexes(String schema, String table) throws SQLException;
+    Collection<IndexMetaData> loadIndexes(String dataSourceIdentifier, String schema, String table) throws SQLException;
 }
