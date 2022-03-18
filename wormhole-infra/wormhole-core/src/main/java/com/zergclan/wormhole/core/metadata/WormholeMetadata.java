@@ -37,6 +37,7 @@ public final class WormholeMetadata implements Metadata {
 
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     
+    @Getter
     private final Map<String, DataSourceMetadata> dataSources;
 
     @Getter
@@ -53,7 +54,7 @@ public final class WormholeMetadata implements Metadata {
      * @param planIdentifier plan identifier
      * @return {@link PlanMetadata}
      */
-    public Optional<PlanMetadata> get(final String planIdentifier) {
+    public Optional<PlanMetadata> getPlan(final String planIdentifier) {
         Validator.notNull(planIdentifier, "error : get plan metadata plan identifier can not be null");
         LOCK.readLock().lock();
         try {

@@ -20,8 +20,12 @@ package com.zergclan.wormhole.engine;
 import com.zergclan.wormhole.context.PlanContext;
 import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.scheduling.plan.PlanExecutorFactory;
 import com.zergclan.wormhole.scheduling.plan.PlanTrigger;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
 
 /**
  * Plan execution engine.
@@ -32,7 +36,7 @@ public final class PlanExecutionEngine {
     private final WormholeMetadata wormholeMetadata;
 
     private final PlanContext planContext = new PlanContext();
-
+    
     /**
      * Register {@link Metadata}.
      *
@@ -42,13 +46,14 @@ public final class PlanExecutionEngine {
     public boolean register(final Metadata metadata) {
         return wormholeMetadata.register(metadata);
     }
-
+    
     /**
      * Execute by plan trigger.
      *
      * @param planTrigger {@link PlanTrigger}
      */
     public void execute(final PlanTrigger planTrigger) {
-        // TODO execute plan
+        Optional<CachedPlanMetadata> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
+        cachedPlanMetadata.ifPresent(planMetadata -> PlanExecutorFactory.create(planMetadata).execute());
     }
 }

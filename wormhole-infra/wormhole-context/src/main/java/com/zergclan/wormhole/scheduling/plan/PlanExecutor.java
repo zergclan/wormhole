@@ -15,15 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.scheduling.plan;
+
+import com.zergclan.wormhole.scheduling.Executor;
 
 /**
- * The root interface from which all scheduling executor objects shall be derived in Wormhole.
+ * Plan executor.
  */
-public interface SchedulingExecutor {
-    
-    /**
-     * Execute.
-     */
-    void execute();
+public interface PlanExecutor extends Executor {
 }

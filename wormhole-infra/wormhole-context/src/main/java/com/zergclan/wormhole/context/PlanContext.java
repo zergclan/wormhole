@@ -17,18 +17,22 @@
 
 package com.zergclan.wormhole.context;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.zergclan.wormhole.core.metadata.WormholeMetadata;
 import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.scheduling.plan.PlanTrigger;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Plan context.
  */
 public final class PlanContext {
-
-    // FIXME refactoring with cache
-    private final Map<String, CachedPlanMetadata> cachedPlanMetadataContainer = new ConcurrentHashMap<>();
+    
+    private final Cache<String, CachedPlanMetadata> cachedMetadata = Caffeine.newBuilder().initialCapacity(1).maximumSize(100).expireAfterWrite(1, TimeUnit.DAYS).build();
     
     /**
      * Is executing plan.
@@ -38,5 +42,28 @@ public final class PlanContext {
      */
     public boolean isExecuting(final String planIdentifier) {
         return false;
+    }
+    
+    /**
+     * Cached plan metadata.
+     *
+     * @param wormholeMetadata {@link WormholeMetadata}
+     * @param planTrigger {@link PlanTrigger}
+     * @return {@link CachedPlanMetadata}
+     */
+    public Optional<CachedPlanMetadata> cachedMetadata(final WormholeMetadata wormholeMetadata, final PlanTrigger planTrigger) {
+        String planIdentifier = planTrigger.getPlanIdentifier();
+        if (isExecuting(planIdentifier)) {
+            // TODO send event
+            return Optional.empty();
+        }
+        Optional<PlanMetadata> plan = wormholeMetadata.getPlan(planIdentifier);
+        if (plan.isPresent()) {
+            CachedPlanMetadata planMetadata = CachedPlanMetadata.builder(plan.get(), wormholeMetadata.getDataSources());
+            cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
+            return Optional.of(planMetadata);
+        }
+        // TODO send event
+        return Optional.empty();
     }
 }

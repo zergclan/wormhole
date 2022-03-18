@@ -17,40 +17,22 @@
 
 package com.zergclan.wormhole.scheduling.plan;
 
-import com.zergclan.wormhole.common.util.Validator;
-import com.zergclan.wormhole.scheduling.Trigger;
-
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
+import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Plan trigger.
+ * Plan executor factory.
  */
-public interface PlanTrigger extends Trigger, Delayed {
+@RequiredArgsConstructor
+public final class PlanExecutorFactory {
     
     /**
-     * Get identifier.
+     * Create {@link PlanExecutor}.
      *
-     * @return identifier
+     * @param cachedPlanMetadata {@link CachedPlanMetadata}
+     * @return {@link PlanExecutor}
      */
-    String getIdentifier();
-    
-    /**
-     * Get plan identifier.
-     *
-     * @return plan identifier
-     */
-    String getPlanIdentifier();
-
-    @Override
-    default int compareTo(final Delayed delayed) {
-        Validator.notNull(delayed, "error: OneOffPlanTrigger compareTo arg delayed can not be null");
-        if (getDelay(TimeUnit.MILLISECONDS) > delayed.getDelay(TimeUnit.MILLISECONDS)) {
-            return 1;
-        } else if (getDelay(TimeUnit.MILLISECONDS) < delayed.getDelay(TimeUnit.MILLISECONDS)) {
-            return -1;
-        } else {
-            return 0;
-        }
+    public static PlanExecutor create(final CachedPlanMetadata cachedPlanMetadata) {
+        return cachedPlanMetadata.isAtomic() ? new AtomicPlanExecutor(cachedPlanMetadata) : new StandardPlanExecutor(cachedPlanMetadata);
     }
 }

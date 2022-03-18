@@ -19,7 +19,7 @@ package com.zergclan.wormhole.plugin.mysql.writer;
 
 import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
 import com.zergclan.wormhole.jdbc.core.DataSourceModeFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -34,7 +34,7 @@ import java.util.Date;
  * write data into mysql.
  */
 public class MySQLLoaderTest {
-
+    
     @Test
     public void assertMySQLLoader() {
         final MySQLLoader loader = new MySQLLoader(getDataSource());
