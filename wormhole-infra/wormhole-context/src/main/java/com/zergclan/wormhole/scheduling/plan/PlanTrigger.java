@@ -15,17 +15,32 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.scheduling.plan;
 
-/**
- * The root interface from which all trigger objects shall be derived in Wormhole.
- */
-public interface Trigger {
+import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.scheduling.Trigger;
+
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
+
+public interface PlanTrigger extends Trigger, Delayed {
     
     /**
-     * Has next execution.
+     * Get identifier.
      *
-     * @return has next execution or not
+     * @return identifier
      */
-    boolean hasNextExecution();
+    String getIdentifier();
+
+    @Override
+    default int compareTo(final Delayed delayed) {
+        Validator.notNull(delayed, "error: OneOffPlanTrigger compareTo arg delayed can not be null");
+        if (getDelay(TimeUnit.MILLISECONDS) > delayed.getDelay(TimeUnit.MILLISECONDS)) {
+            return 1;
+        } else if (getDelay(TimeUnit.MILLISECONDS) < delayed.getDelay(TimeUnit.MILLISECONDS)) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }

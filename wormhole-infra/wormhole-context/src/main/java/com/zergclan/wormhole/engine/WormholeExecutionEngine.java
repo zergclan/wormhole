@@ -17,126 +17,81 @@
 
 package com.zergclan.wormhole.engine;
 
-import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
-import com.zergclan.wormhole.context.PlanContext;
 import com.zergclan.wormhole.core.config.WormholeConfiguration;
-import com.zergclan.wormhole.creator.WormholeMetadataCreator;
 import com.zergclan.wormhole.core.api.metadata.Metadata;
 import com.zergclan.wormhole.core.metadata.WormholeMetadata;
-import com.zergclan.wormhole.core.metadata.catched.CachedPlanMetadata;
-import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
+import com.zergclan.wormhole.initializer.WormholeMetadataInitializer;
 import com.zergclan.wormhole.scheduling.Trigger;
-import com.zergclan.wormhole.scheduling.TriggerManager;
+import com.zergclan.wormhole.scheduling.plan.PlanTrigger;
+import com.zergclan.wormhole.scheduling.plan.PlanTriggerManager;
+import com.zergclan.wormhole.scheduling.plan.ScheduledPlanTrigger;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Optional;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class WormholeExecutionEngine implements Runnable {
-
-    private final WormholeMetadata wormholeMetadata;
+/**
+ * Wormhole execution engine.
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class WormholeExecutionEngine {
     
-    private final PlanContext planContext = new PlanContext();
-
-    private WormholeExecutionEngine(final WormholeConfiguration configuration) throws SQLException {
-        WormholeMetadata wormholeMetadata = WormholeMetadataCreator.create(configuration);
-        Optional<String> unregistered = registerPlans(wormholeMetadata.getPlans());
-        if (unregistered.isPresent()) {
-            throw new WormholeException("error : wormhole execution engine register plan failed named by [%s]", unregistered.get());
-        }
-        this.wormholeMetadata = wormholeMetadata;
-    }
-
+    private static final WormholeExecutionEngine INSTANCE = new WormholeExecutionEngine();
+    
+    private final WormholeMetadataInitializer initializer = new WormholeMetadataInitializer();
+    
+    private final PlanTriggerManager planTriggerManager = new PlanTriggerManager();
+    
+    private volatile PlanExecutionEngine planExecutionEngine;
+    
     /**
-     * New instance.
+     * Get instance.
      *
      * @param configuration {@link WormholeConfiguration}
      * @return {@link WormholeExecutionEngine}
      * @throws SQLException exception
      */
-    public static WormholeExecutionEngine newInstance(final WormholeConfiguration configuration) throws SQLException {
+    public static WormholeExecutionEngine getInstance(final WormholeConfiguration configuration) throws SQLException {
         Validator.notNull(configuration, "error : wormhole execution engine new instance configuration can not be null");
-        return new WormholeExecutionEngine(configuration);
+        INSTANCE.init(configuration);
+        return INSTANCE;
+    }
+    
+    private void init(final WormholeConfiguration configuration) throws SQLException {
+        WormholeMetadata wormholeMetadata = initializer.init(configuration);
+        planExecutionEngine = createPlanExecutionEngine(wormholeMetadata);
+    }
+    
+    private PlanExecutionEngine createPlanExecutionEngine(final WormholeMetadata wormholeMetadata) {
+        // TODO create plan execution engine
+        return new PlanExecutionEngine(wormholeMetadata);
+    }
+    
+    /**
+     * Execute executable plan.
+     */
+    public void execute() {
+        planTriggerManager.getExecutableTrigger().ifPresent(this::handleExecutableTrigger);
     }
 
-    private Optional<String> registerPlans(final Map<String, PlanMetadata> plans) {
-        // TODO register plan to scheduling
-        return Optional.empty();
+    private void handleExecutableTrigger(final PlanTrigger planTrigger) {
+        planExecutionEngine.execute(planTrigger);
+        if (planTrigger instanceof ScheduledPlanTrigger) {
+            planTriggerManager.reRegister((ScheduledPlanTrigger) planTrigger);
+        }
     }
-
+    
     /**
      * Register {@link Metadata}.
      *
      * @param metadata {@link Metadata}
      * @return is registered or not
      */
-    public boolean registerMetadata(final Metadata metadata) {
-        return wormholeMetadata.register(metadata);
-    }
-
-    /**
-     * Register plan by plan identifier.
-     *
-     * @param planIdentifier plan identifier
-     * @return is registered or not
-     */
-    public boolean registerPlan(final String planIdentifier) {
-        // TODO register plan
-        return false;
-    }
-
-    /**
-     * Try to execute by plan identifier.
-     *
-     * @param planIdentifier plan identifier
-     * @return is executing or not
-     */
-    public boolean tryExecute(final String planIdentifier) {
-        return !isExecuting(planIdentifier) && execute(planIdentifier);
-    }
-
-    /**
-     * Execute by plan identifier.
-     *
-     * @param planIdentifier plan identifier
-     * @return is executing or not
-     */
-    private boolean execute(final String planIdentifier) {
-        Optional<CachedPlanMetadata> cachedPlanMetadata = wormholeMetadata.cachedMetadata(planIdentifier);
-        if (cachedPlanMetadata.isPresent()) {
-            // fixme create scheduling executor
-            return true;
-        }
-        return false;
+    public boolean register(final Metadata metadata) {
+        return planExecutionEngine.register(metadata);
     }
     
-    private boolean isExecuting(final String planIdentifier) {
-        return planContext.isExecuting(planIdentifier);
-    }
-    
-    @Override
-    public void run() {
-        start();
-    }
-
-    private void start() {
-        for (;;) {
-            Optional<Trigger> trigger = TriggerManager.getExecutableTrigger();
-            if (trigger.isPresent()) {
-                Trigger executableTrigger = trigger.get();
-                if (tryExecute(executableTrigger.getIdentifier())) {
-                    // TODO refresh trigger to next time
-                    continue;
-                }
-                sendRepeatedEvent(executableTrigger);
-            }
-        }
-    }
-
     private void sendRepeatedEvent(final Trigger trigger) {
         // TODO send execute plan repeated event
         System.out.printf("error : repeated event for plan [%s]", trigger);

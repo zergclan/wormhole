@@ -15,17 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.scheduling;
+package com.zergclan.wormhole.jdbc.factory;
+
+import com.zergclan.wormhole.jdbc.api.MetadataLoader;
+import com.zergclan.wormhole.jdbc.core.ProxyMetadataLoad;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
- * The root interface from which all trigger objects shall be derived in Wormhole.
+ * MetaData loader factory.
  */
-public interface Trigger {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class MetaDataLoaderFactory {
     
     /**
-     * Has next execution.
+     * get instance.
      *
-     * @return has next execution or not
+     * @param connection {@link Connection}
+     * @return {@link MetadataLoader}
+     * @throws SQLException SQL exception
      */
-    boolean hasNextExecution();
+    public static MetadataLoader getInstance(final Connection connection) throws SQLException {
+        return new ProxyMetadataLoad(connection);
+    }
 }

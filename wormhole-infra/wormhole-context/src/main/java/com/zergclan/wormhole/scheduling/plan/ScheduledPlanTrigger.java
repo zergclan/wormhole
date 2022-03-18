@@ -22,16 +22,14 @@ import com.zergclan.wormhole.common.util.CronUtil;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.scheduling.Trigger;
 import lombok.Getter;
 
-import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Scheduled {@link PlanMetadata.ExecutionMode} plan trigger.
  */
-public final class ScheduledPlanTrigger implements Trigger {
+public final class ScheduledPlanTrigger implements PlanTrigger {
 
     private static final String PREFIX_IDENTIFIER = PlanMetadata.ExecutionMode.SCHEDULED.name();
 
@@ -41,6 +39,7 @@ public final class ScheduledPlanTrigger implements Trigger {
     @Getter
     private final String expression;
 
+    @Getter
     private final long nextExecutionTimestamp;
 
     public ScheduledPlanTrigger(final String planIdentifier, final String expression) {
@@ -63,18 +62,6 @@ public final class ScheduledPlanTrigger implements Trigger {
     public long getDelay(final TimeUnit timeUnit) {
         Validator.notNull(timeUnit, "error: OneOffPlanTrigger getDelay arg timeUnit can not be null");
         return timeUnit.convert(delayedTime(), TimeUnit.MILLISECONDS);
-    }
-    
-    @Override
-    public int compareTo(final Delayed delayed) {
-        Validator.notNull(delayed, "error: OneOffPlanTrigger compareTo arg delayed can not be null");
-        if (getDelay(TimeUnit.MILLISECONDS) > delayed.getDelay(TimeUnit.MILLISECONDS)) {
-            return 1;
-        } else if (getDelay(TimeUnit.MILLISECONDS) < delayed.getDelay(TimeUnit.MILLISECONDS)) {
-            return -1;
-        } else {
-            return 0;
-        }
     }
 
     private long delayedTime() {

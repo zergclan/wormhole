@@ -21,15 +21,13 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.core.metadata.plan.PlanMetadata;
-import com.zergclan.wormhole.scheduling.Trigger;
 
-import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
  * One off {@link PlanMetadata.ExecutionMode} plan trigger.
  */
-public final class OneOffPlanTrigger implements Trigger {
+public final class OneOffPlanTrigger implements PlanTrigger {
     
     private static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
@@ -60,19 +58,7 @@ public final class OneOffPlanTrigger implements Trigger {
         Validator.notNull(timeUnit, "error: OneOffPlanTrigger getDelay arg timeUnit can not be null");
         return timeUnit.convert(delayedTime(), TimeUnit.MILLISECONDS);
     }
-    
-    @Override
-    public int compareTo(final Delayed delayed) {
-        Validator.notNull(delayed, "error: OneOffPlanTrigger compareTo arg delayed can not be null");
-        if (getDelay(TimeUnit.MILLISECONDS) > delayed.getDelay(TimeUnit.MILLISECONDS)) {
-            return 1;
-        } else if (getDelay(TimeUnit.MILLISECONDS) < delayed.getDelay(TimeUnit.MILLISECONDS)) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-    
+
     private long delayedTime() {
         return nextExecutionTimestamp - DateUtil.currentTimeMillis();
     }
