@@ -31,7 +31,7 @@ import com.zergclan.wormhole.core.metadata.resource.dialect.OracleDataSourceMeta
 import com.zergclan.wormhole.core.metadata.resource.dialect.PostgreSQLDataSourceMetadata;
 import com.zergclan.wormhole.core.metadata.resource.dialect.SQLServerDataSourceMetadata;
 import com.zergclan.wormhole.jdbc.DataSourceManger;
-import com.zergclan.wormhole.jdbc.api.MetadataLoader;
+import com.zergclan.wormhole.jdbc.api.MetaDataLoader;
 import com.zergclan.wormhole.jdbc.factory.MetaDataLoaderFactory;
 
 import java.sql.Connection;
@@ -55,7 +55,7 @@ public final class DataSourceMetadataInitializer {
     public DataSourceMetadata init(final DataSourceConfiguration dataSourceConfiguration) throws SQLException {
         DataSourceMetadata result = createActualTypeDataSourceMetadata(dataSourceConfiguration);
         Connection connection = DataSourceManger.get(result).getConnection();
-        MetadataLoader metadataLoader = MetaDataLoaderFactory.getInstance(connection);
+        MetaDataLoader metadataLoader = MetaDataLoaderFactory.getInstance(connection);
         initDataSource(result, metadataLoader);
         return result;
     }
@@ -89,21 +89,21 @@ public final class DataSourceMetadataInitializer {
         throw new WormholeException("error : create data source metadata failed databaseType [%s] not find", configuration.getType());
     }
     
-    private void initDataSource(final DataSourceMetadata dataSource, final MetadataLoader metadataLoader) throws SQLException {
+    private void initDataSource(final DataSourceMetadata dataSource, final MetaDataLoader metadataLoader) throws SQLException {
         for (SchemaMetadata each : metadataLoader.loadSchemas()) {
             initSchema(each, metadataLoader);
             dataSource.registerSchema(each);
         }
     }
     
-    private void initSchema(final SchemaMetadata schema, final MetadataLoader metadataLoader) throws SQLException {
+    private void initSchema(final SchemaMetadata schema, final MetaDataLoader metadataLoader) throws SQLException {
         for (TableMetadata each : metadataLoader.loadTables(schema.getName())) {
             initTable(each, metadataLoader);
             schema.registerTable(each);
         }
     }
     
-    private void initTable(final TableMetadata table, final MetadataLoader metadataLoader) throws SQLException {
+    private void initTable(final TableMetadata table, final MetaDataLoader metadataLoader) throws SQLException {
         Collection<ColumnMetadata> columnMetadata = metadataLoader.loadColumns(table.getSchema(), table.getName());
         for (ColumnMetadata each : columnMetadata) {
             table.registerColumn(each);
