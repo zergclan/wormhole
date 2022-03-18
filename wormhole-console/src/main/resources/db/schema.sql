@@ -152,23 +152,37 @@ CREATE TABLE plan_execution_log (
     `operator` INT(11) NOT NULL COMMENT '操作员ID',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `uk_plan_batch` (`plan_batch`)
+    PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '方案执行日志表';
+
+DROP TABLE IF EXISTS `task_execution_log`;
+CREATE TABLE task_execution_log (
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `plan_batch` bigint(20) NOT NULL COMMENT '方案批次号',
+    `plan_id` INT(11) NOT NULL COMMENT '关联方案ID',
+    `status` INT(11) NOT NULL COMMENT '执行状态',
+    `description` VARCHAR(255) NOT NULL COMMENT '执行描述',
+    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
+    `task_id` INT(11) NOT NULL COMMENT '所属任务ID',
+    `trans_data_num` INT(11) DEFAULT 0 COMMENT '转换数据条数',
+    `error_data_num` INT(11) DEFAULT 0 COMMENT '错误数据条数',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '任务执行日志表';
 
 DROP TABLE IF EXISTS `error_date_log`;
 CREATE TABLE error_date_log (
     `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `plan_id` INT(11) NOT NULL COMMENT '关联方案ID',
     `plan_batch` bigint(20) NOT NULL COMMENT '所属方案批次号',
     `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
     `task_id` INT(11) NOT NULL COMMENT '所属任务ID',
-    `source_date_owner` VARCHAR(255) NOT NULL COMMENT '源数据持有者',
     `error_code` VARCHAR(32) NOT NULL COMMENT '异常编码',
     `error_date` VARCHAR(1024) NOT NULL COMMENT '异常数据',
     `description` VARCHAR(1024) NOT NULL COMMENT '异常描述',
-    `operator` INT(11) NOT NULL COMMENT '操作员ID',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `uk_task_batch`(`task_batch`)
+    PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '异常数据日志表';
