@@ -18,9 +18,9 @@
 package com.zergclan.wormhole.plugin.mysql.old.writer.xsql;
 
 import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.core.metadata.resource.ColumnMetaData;
-import com.zergclan.wormhole.core.metadata.resource.IndexMetaData;
-import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
+import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
+import com.zergclan.wormhole.metadata.core.resource.IndexMetaData;
+import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 import com.zergclan.wormhole.plugin.mysql.old.writer.util.SqlUtil;
 
 import java.util.Collection;

@@ -29,5 +29,4 @@ public final class WormholeReaderConstants {
     public static final String SQL_WHERE = " WHERE ";
 
     public static final String SQL_AS = " AS ";
-
 }

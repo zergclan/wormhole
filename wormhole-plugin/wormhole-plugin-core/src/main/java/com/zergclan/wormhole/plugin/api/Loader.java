@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.plugin.api;
 
-import com.zergclan.wormhole.core.metadata.task.TargetMetaData;
+import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
 
 /**
  * The root interface from which all loader shall be derived in Wormhole.

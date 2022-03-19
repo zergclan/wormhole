@@ -19,7 +19,7 @@ package com.zergclan.wormhole.plugin.mysql.old.writer;
 
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.core.metadata.resource.TableMetaData;
+import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.SqlExecutor;
 import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.SqlGenerator;
 import org.springframework.jdbc.core.JdbcTemplate;

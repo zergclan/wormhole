@@ -92,6 +92,9 @@
     </properties>
 
     <modules>
+        <module>wormhole-bootstrap</module>
+        <module>wormhole-features</module>
+        <module>wormhole-kernel</module>
         <module>wormhole-infra</module>
         <module>wormhole-plugin</module>
         <module>wormhole-console</module>

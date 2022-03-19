@@ -25,6 +25,8 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SnowflakeIdWorker {
+
+    private static final SnowflakeIdWorker WORKER = new SnowflakeIdWorker();
     
     private static final long START_TIMESTAMP = 1489111610226L;
     
@@ -33,12 +35,10 @@ public final class SnowflakeIdWorker {
     private static final long DATA_CENTER_ID_BITS = 5L;
     
     private static final long SEQUENCE_BITS = 12L;
+
+    private volatile long sequence;
     
-    private static final SnowflakeIdWorker WORKER = new SnowflakeIdWorker();
-    
-    private long sequence;
-    
-    private long lastTimestamp = -1L;
+    private volatile long lastTimestamp = -1L;
     
     /**
      * Generate long id.
