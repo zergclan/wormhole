@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.plugin.mysql.old.writer;
 
-import com.zergclan.wormhole.core.api.data.DataGroup;
-import com.zergclan.wormhole.core.metadata.task.TargetMetaData;
+import com.zergclan.wormhole.data.api.DataGroup;
+import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.Setter;
 

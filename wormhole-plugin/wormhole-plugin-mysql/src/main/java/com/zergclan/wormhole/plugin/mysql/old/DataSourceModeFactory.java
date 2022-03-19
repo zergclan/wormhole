@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.plugin.mysql.old;
 
-import com.zergclan.wormhole.core.metadata.resource.DatabaseType;
+import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 

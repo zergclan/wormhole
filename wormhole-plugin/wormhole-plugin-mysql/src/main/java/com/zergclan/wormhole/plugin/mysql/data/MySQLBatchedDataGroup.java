@@ -17,9 +17,9 @@
 
 package com.zergclan.wormhole.plugin.mysql.data;
 
-import com.zergclan.wormhole.core.api.Swapper;
-import com.zergclan.wormhole.core.api.data.DataGroup;
-import com.zergclan.wormhole.plugin.core.BatchedDataGroup;
+import com.zergclan.wormhole.config.api.Swapper;
+import com.zergclan.wormhole.data.api.BatchedDataGroup;
+import com.zergclan.wormhole.data.api.DataGroup;
 
 import java.util.Collection;
 import java.util.Iterator;

@@ -28,5 +28,7 @@ public final class StringUtilsTest {
     @Test
     public void assertIsBlank() {
         Assertions.assertTrue(StringUtil.isBlank(null));
+        Assertions.assertTrue(StringUtil.isBlank(""));
+        Assertions.assertFalse(StringUtil.isBlank("a"));
     }
 }

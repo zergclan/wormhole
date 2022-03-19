@@ -31,7 +31,12 @@
     <dependencies>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-core</artifactId>
+            <artifactId>wormhole-metadata</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-data</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

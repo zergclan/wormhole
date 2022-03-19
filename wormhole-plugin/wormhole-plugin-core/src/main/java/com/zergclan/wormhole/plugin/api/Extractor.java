@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.plugin.api;
 
-import com.zergclan.wormhole.core.metadata.task.SourceMetaData;
+import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
 
 import java.util.Collection;
 
