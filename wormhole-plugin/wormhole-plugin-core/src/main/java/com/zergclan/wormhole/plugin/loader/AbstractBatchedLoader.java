@@ -15,24 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.api;
+package com.zergclan.wormhole.plugin.loader;
 
+import com.zergclan.wormhole.data.api.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.plugin.api.Loader;
 
 /**
- * The root interface from which all loader shall be derived in Wormhole.
- *
- * @param <D> class type of data
- * @param <V> class type of result
+ * Abstract loader of {@link BatchedDataGroup}.
  */
-public interface Loader<D, V> {
+public abstract class AbstractBatchedLoader implements Loader<BatchedDataGroup, BatchedLoadResult> {
 
-    /**
-     * Load.
-     *
-     * @param data data
-     * @param cachedTarget {@link CachedTargetMetaData}
-     * @return result
-     */
-    V load(D data, CachedTargetMetaData cachedTarget);
+    @Override
+    public BatchedLoadResult load(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
+        return cachedTarget.isTransaction() ? transactionLoad(data, cachedTarget) : standardLoad(data, cachedTarget);
+    }
+
+    protected abstract BatchedLoadResult standardLoad(BatchedDataGroup data, CachedTargetMetaData cachedTarget);
+
+    protected abstract BatchedLoadResult transactionLoad(BatchedDataGroup data, CachedTargetMetaData cachedTarget);
 }

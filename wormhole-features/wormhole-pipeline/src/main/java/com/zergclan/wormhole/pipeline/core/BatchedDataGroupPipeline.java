@@ -46,7 +46,7 @@ public final class BatchedDataGroupPipeline implements Pipeline<BatchedDataGroup
 
     private final Collection<Filter<DataGroup>> filters;
 
-    private final Loader<BatchedDataGroup> loader;
+    private final Loader<BatchedDataGroup, Integer> loader;
     
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {

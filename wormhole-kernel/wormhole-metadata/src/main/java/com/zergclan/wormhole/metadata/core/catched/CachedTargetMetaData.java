@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bootstrap.context.catched;
+package com.zergclan.wormhole.metadata.core.catched;
 
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
@@ -30,7 +30,11 @@ import java.util.Map;
 @Getter
 public final class CachedTargetMetaData {
 
+    private final DataSourceMetaData source;
+
     private final String table;
+
+    private final boolean transaction;
 
     private final Collection<String> uniqueNodes;
 
@@ -58,7 +62,7 @@ public final class CachedTargetMetaData {
         
         private CachedTargetMetaData build() {
             // FIXME create CachedTableMetadata
-            return new CachedTargetMetaData(target.getTable(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
+            return new CachedTargetMetaData(dataSource, target.getTable(), target.isTransaction(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
         }
     }
 }

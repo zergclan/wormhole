@@ -15,24 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.core;
+package com.zergclan.wormhole.data.core.node;
 
-import com.zergclan.wormhole.data.api.DataNode;
+import com.zergclan.wormhole.data.api.node.DataNode;
 import lombok.Getter;
 
 /**
- * Data node type of {@link PatternedDataTime}.
+ * Data node type of {@link Integer}.
  */
 @Getter
-public final class PatternedDataTimeDataNode implements DataNode<PatternedDataTime> {
+public final class IntegerDataNode implements DataNode<Integer> {
 
-    private static final long serialVersionUID = -4571978987948014231L;
+    private static final long serialVersionUID = -1407715713577362674L;
 
     private String name;
+    
+    private Integer value;
 
-    private PatternedDataTime value;
-
-    public PatternedDataTimeDataNode(final String name, final PatternedDataTime value) {
+    public IntegerDataNode(final String name, final Integer value) {
         this.name = name;
         this.value = value;
     }
@@ -40,12 +40,12 @@ public final class PatternedDataTimeDataNode implements DataNode<PatternedDataTi
     @Override
     public boolean refreshName(final String name) {
         this.name = name;
-        return false;
+        return true;
     }
 
     @Override
-    public boolean refreshValue(final PatternedDataTime value) {
+    public boolean refreshValue(final Integer value) {
         this.value = value;
-        return false;
+        return true;
     }
 }

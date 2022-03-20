@@ -15,26 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.reader;
+package com.zergclan.wormhole.metadata.core.catched;
 
-import com.zergclan.wormhole.data.api.DataGroup;
-import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
-import com.zergclan.wormhole.plugin.api.Extractor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import javax.sql.DataSource;
 import java.util.Collection;
 
-/**
- * Extractor for MySQL.
- */
 @RequiredArgsConstructor
-public final class MySQLExtractor implements Extractor<DataGroup> {
-    
-    private final DataSource dataSource;
-    
-    @Override
-    public Collection<DataGroup> extract(final SourceMetaData source) {
-        return null;
-    }
+@Getter
+public final class CachedTaskMetaData {
+
+    private final String identifier;
+
+    private final int order;
+
+    private final int batchSize;
+
+    private final CachedSourceMetaData source;
+
+    private final CachedTargetMetaData target;
+
+    private final Collection<String> filters;
 }

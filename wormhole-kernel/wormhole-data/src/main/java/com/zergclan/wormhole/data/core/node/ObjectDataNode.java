@@ -15,33 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core;
+package com.zergclan.wormhole.data.core.node;
 
-import com.zergclan.wormhole.config.api.Configuration;
+import com.zergclan.wormhole.data.api.node.DataNode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
-import java.util.Map;
 
 /**
- * Configuration of target.
+ * Data node type of {@link Object}.
  */
-@RequiredArgsConstructor
 @Getter
-public final class TargetConfiguration implements Configuration {
-    
-    private static final long serialVersionUID = -3361482780019688246L;
-    
-    private final String dataSource;
+public final class ObjectDataNode implements DataNode<Object> {
 
-    private final String table;
+    private static final long serialVersionUID = 8591388461628423130L;
 
-    private final boolean transaction;
+    private String name;
 
-    private final Collection<String> uniqueNodes;
+    private Object value;
 
-    private final Collection<String> compareNodes;
+    public ObjectDataNode(final String name, final Object value) {
+        this.name = name;
+        this.value = value;
+    }
 
-    private final Map<String, DataNodeConfiguration> dataNodes;
+    @Override
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final Object value) {
+        this.value = value;
+        return true;
+    }
 }

@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.core;
+package com.zergclan.wormhole.data.core.node;
 
-import com.zergclan.wormhole.data.api.DataNode;
+import com.zergclan.wormhole.data.api.node.DataNode;
 import lombok.Getter;
 
 import java.math.BigDecimal;

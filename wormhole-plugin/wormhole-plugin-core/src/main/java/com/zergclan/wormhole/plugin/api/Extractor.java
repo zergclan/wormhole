@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.plugin.api;
 
+import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
 
 import java.util.Collection;
@@ -25,12 +26,12 @@ import java.util.Collection;
  * The root interface from which all extractor shall be derived in Wormhole.
  */
 public interface Extractor<D> {
-    
+
     /**
      * Extract.
      *
-     * @param source {@link SourceMetaData}
+     * @param cachedSource {@link SourceMetaData}
      * @return data
      */
-    Collection<D> extract(SourceMetaData source);
+    Collection<D> extract(CachedSourceMetaData cachedSource);
 }

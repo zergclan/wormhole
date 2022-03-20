@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.plan;
 
-import com.zergclan.wormhole.bootstrap.context.catched.CachedPlanMetaData;
+import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
 import lombok.RequiredArgsConstructor;
 
 /**

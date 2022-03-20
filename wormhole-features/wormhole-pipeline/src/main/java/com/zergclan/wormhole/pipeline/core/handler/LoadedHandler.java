@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class LoadedHandler implements Handler<BatchedDataGroup> {
 
-    private final Loader<BatchedDataGroup> loader;
+    private final Loader<BatchedDataGroup, Integer> loader;
 
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {

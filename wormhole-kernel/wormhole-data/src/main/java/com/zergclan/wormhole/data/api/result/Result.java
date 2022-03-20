@@ -15,39 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.core;
-
-import com.zergclan.wormhole.data.api.DataNode;
-import lombok.Getter;
-
-import java.time.LocalDateTime;
+package com.zergclan.wormhole.data.api.result;
 
 /**
- * Data node type of {@link LocalDateTime}.
+ * The root interface from which all {@link Result} shall be derived in Wormhole.
+ *
+ * @param <T> class type of result
  */
-@Getter
-public final class LocalDateTimeDataNode implements DataNode<LocalDateTime> {
+public interface Result<T> {
 
-    private static final long serialVersionUID = 6687234036121922241L;
+    /**
+     * Is success.
+     *
+     * @return Is success or not
+     */
+    boolean isSuccess();
 
-    private String name;
-
-    private LocalDateTime value;
-
-    public LocalDateTimeDataNode(final String name, final LocalDateTime value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    @Override
-    public boolean refreshName(final String name) {
-        this.name = name;
-        return true;
-    }
-
-    @Override
-    public boolean refreshValue(final LocalDateTime value) {
-        this.value = value;
-        return true;
-    }
+    /**
+     * Get result.
+     *
+     * @return result
+     */
+    T getResult();
 }

@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.task;
 
-import com.zergclan.wormhole.bootstrap.context.catched.CachedTaskMetaData;
 import com.zergclan.wormhole.common.concurrent.PromiseTask;
+import com.zergclan.wormhole.metadata.core.catched.CachedTaskMetaData;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -15,32 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
+package com.zergclan.wormhole.plugin.mysql.extractor;
 
 import com.zergclan.wormhole.data.api.DataGroup;
-import com.zergclan.wormhole.data.core.node.PatternedDataTime;
-import com.zergclan.wormhole.pipeline.api.Filter;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
+import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
- *  {@link PatternedDataTime} convertor implemented of {@link Filter}.
+ * Completed extractor of MySQL.
  */
-@RequiredArgsConstructor
-public final class PatternedDataTimeConvertor implements Filter<DataGroup> {
-    
-    @Getter
-    private final int order;
-    
-    private final PatternedDataTime patternedDataTime;
-    
+public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
+
     @Override
-    public boolean doFilter(final DataGroup data) {
-        return false;
+    protected String generatorExtractSQl(final String table, final String conditionSql, final Map<String, DataNodeMetaData> dataNodes) {
+        // TODO generator extract SQl for MySQL
+        return null;
     }
-    
+
     @Override
-    public String getType() {
+    protected Collection<DataGroup> doExtract(final DataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) {
+        // TODO do extract of MySQL
         return null;
     }
 }

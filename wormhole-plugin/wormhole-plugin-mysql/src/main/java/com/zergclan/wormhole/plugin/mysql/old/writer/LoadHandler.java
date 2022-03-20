@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * load handlers.
  */
-public class LoadHandler {
+public final class LoadHandler {
 
     public static final String SELECT_STR = "SELECT-";
 

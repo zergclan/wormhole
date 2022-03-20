@@ -17,14 +17,14 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
-import com.zergclan.wormhole.data.api.DataNode;
-import com.zergclan.wormhole.data.core.BigDecimalDataNode;
-import com.zergclan.wormhole.data.core.IntegerDataNode;
-import com.zergclan.wormhole.data.core.LocalDateTimeDataNode;
-import com.zergclan.wormhole.data.core.LongDataNode;
-import com.zergclan.wormhole.data.core.PatternedDataTime;
-import com.zergclan.wormhole.data.core.PatternedDataTimeDataNode;
-import com.zergclan.wormhole.data.core.TextDataNode;
+import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.node.BigDecimalDataNode;
+import com.zergclan.wormhole.data.core.node.IntegerDataNode;
+import com.zergclan.wormhole.data.core.node.LocalDateTimeDataNode;
+import com.zergclan.wormhole.data.core.node.LongDataNode;
+import com.zergclan.wormhole.data.core.node.PatternedDataTime;
+import com.zergclan.wormhole.data.core.node.PatternedDataTimeDataNode;
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
 import lombok.RequiredArgsConstructor;
 

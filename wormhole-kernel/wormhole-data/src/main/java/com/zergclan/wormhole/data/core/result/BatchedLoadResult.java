@@ -15,26 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bootstrap.context.catched;
+package com.zergclan.wormhole.data.core.result;
 
+import com.zergclan.wormhole.data.api.result.Result;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-
+/**
+ * Result value of batched loader.
+ */
 @RequiredArgsConstructor
 @Getter
-public final class CachedTaskMetaData {
+public final class BatchedLoadResult implements Result<Integer> {
 
-    private final String identifier;
+    private final boolean success;
 
-    private final int order;
-
-    private final int batchSize;
-
-    private final CachedSourceMetaData source;
-
-    private final CachedTargetMetaData target;
-
-    private final Collection<String> filters;
+    private final Integer result;
 }
