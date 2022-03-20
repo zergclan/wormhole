@@ -30,7 +30,7 @@ import java.util.Map;
  * Util tools for collection.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class CollectionUtil {
+public final class Collections {
     
     /**
      * Partition collection.
@@ -62,7 +62,7 @@ public final class CollectionUtil {
         }
         return result;
     }
-    
+
     /**
      * Collection compare.
      *

@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.metadata.core.initializer;
 
-import com.zergclan.wormhole.common.util.CollectionUtil;
+import com.zergclan.wormhole.common.util.Collections;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.config.core.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.config.core.FilterConfiguration;
@@ -54,7 +54,7 @@ public final class FilterMetadataInitializer {
         for (DataNodeMappingConfiguration each : dataNodeMappings) {
             result.addAll(createConfigurationFilters(taskIdentifier, each, targetNodes, sourceNodes));
         }
-        Validator.preState(CollectionUtil.compare(targetNodes, sourceNodes), "error : create filter metadata failed please check data node mapping configuration");
+        Validator.preState(Collections.compare(targetNodes, sourceNodes), "error : create filter metadata failed please check data node mapping configuration");
         result.addAll(createDefaultFilters(taskIdentifier, target, source, targetNodes));
         return result;
     }
