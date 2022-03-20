@@ -17,13 +17,13 @@
 
 package com.zergclan.wormhole.console.infra.apo;
 
+import com.zergclan.wormhole.common.util.Arrays;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 import com.zergclan.wormhole.console.infra.exception.WormholeWebException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -85,7 +85,7 @@ public final class ApiAspect {
     
     private void markTrace(final HttpServletRequest request) {
         String uri = request.getRequestURI();
-        if (ArrayUtils.contains(NO_TRACE_URL, uri)) {
+        if (Arrays.contains(NO_TRACE_URL, uri)) {
             return;
         }
         String trace = request.getHeader(REQUEST_HEAD_TRACE);

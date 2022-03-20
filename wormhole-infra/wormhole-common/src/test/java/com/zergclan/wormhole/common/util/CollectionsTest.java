@@ -25,7 +25,7 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class CollectionUtilTest {
+public final class CollectionsTest {
     
     @Test
     public void assertPartition() {
@@ -35,7 +35,7 @@ public final class CollectionUtilTest {
         collection.add("bb");
         collection.add("bb");
         collection.add("cc");
-        Collection<Collection<String>> actual = CollectionUtil.partition(collection, 2);
+        Collection<Collection<String>> actual = Collections.partition(collection, 2);
         assertEquals(3, actual.size());
         int count = 0;
         for (Collection<String> each : actual) {
