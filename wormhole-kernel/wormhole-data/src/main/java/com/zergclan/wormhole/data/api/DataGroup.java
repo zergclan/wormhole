@@ -17,11 +17,13 @@
 
 package com.zergclan.wormhole.data.api;
 
+import com.zergclan.wormhole.data.api.node.DataNode;
+
 import java.io.Serializable;
 import java.util.Map;
 
 /**
- * The root interface from which all converted data objects shall be derived in Wormhole.
+ * The root interface from which all grouped {@link DataNode} shall be derived in Wormhole.
  */
 public interface DataGroup extends Serializable {
 

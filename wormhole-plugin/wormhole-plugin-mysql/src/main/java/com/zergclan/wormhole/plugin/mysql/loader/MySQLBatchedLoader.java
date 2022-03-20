@@ -15,37 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.core;
+package com.zergclan.wormhole.plugin.mysql.loader;
 
-import com.zergclan.wormhole.data.api.DataNode;
-import lombok.Getter;
+import com.zergclan.wormhole.data.api.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
+import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
 
 /**
- * Data node type of {@link Integer}.
+ * Batched loader of MySQL.
  */
-@Getter
-public final class IntegerDataNode implements DataNode<Integer> {
+public final class MySQLBatchedLoader extends AbstractBatchedLoader {
 
-    private static final long serialVersionUID = -1407715713577362674L;
-
-    private String name;
-    
-    private Integer value;
-
-    public IntegerDataNode(final String name, final Integer value) {
-        this.name = name;
-        this.value = value;
+    @Override
+    protected BatchedLoadResult standardLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
+        return null;
     }
 
     @Override
-    public boolean refreshName(final String name) {
-        this.name = name;
-        return true;
-    }
-
-    @Override
-    public boolean refreshValue(final Integer value) {
-        this.value = value;
-        return true;
+    protected BatchedLoadResult transactionLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
+        return null;
     }
 }

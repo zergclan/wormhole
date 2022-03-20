@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.plugin.mysql.data;
 
 import com.zergclan.wormhole.data.api.DataGroup;
-import com.zergclan.wormhole.data.api.DataNode;
+import com.zergclan.wormhole.data.api.node.DataNode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

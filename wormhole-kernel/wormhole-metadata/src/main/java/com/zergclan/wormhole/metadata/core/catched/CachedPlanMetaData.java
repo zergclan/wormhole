@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bootstrap.context.catched;
+package com.zergclan.wormhole.metadata.core.catched;
 
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;

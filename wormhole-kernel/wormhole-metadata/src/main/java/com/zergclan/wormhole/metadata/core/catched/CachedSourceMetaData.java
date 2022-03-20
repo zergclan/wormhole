@@ -15,19 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bootstrap.context.catched;
+package com.zergclan.wormhole.metadata.core.catched;
 
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
 @RequiredArgsConstructor
+@Getter
 public final class CachedSourceMetaData {
 
+    private final DataSourceMetaData dataSource;
+
     private final String actualSql;
+
+    private final String table;
+
+    private final String conditionSql;
 
     private final Map<String, DataNodeMetaData> dataNodes;
 
@@ -41,7 +49,7 @@ public final class CachedSourceMetaData {
     public static CachedSourceMetaData builder(final SourceMetaData source, final DataSourceMetaData dataSource) {
         return new CachedBuilder(source, dataSource).build();
     }
-    
+
     @RequiredArgsConstructor
     private static class CachedBuilder {
         
@@ -50,7 +58,7 @@ public final class CachedSourceMetaData {
         private final DataSourceMetaData dataSource;
     
         private CachedSourceMetaData build() {
-            return new CachedSourceMetaData(source.getActualSql(), source.getDataNodes());
+            return new CachedSourceMetaData(dataSource, source.getActualSql(), source.getTable(), source.getConditionSql(), source.getDataNodes());
         }
     }
 }

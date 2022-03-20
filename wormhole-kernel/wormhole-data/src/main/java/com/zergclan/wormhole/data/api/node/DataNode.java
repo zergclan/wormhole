@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.api;
+package com.zergclan.wormhole.data.api.node;
 
 import com.zergclan.wormhole.common.util.StringUtil;
 
@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * The root interface from which all converted data node objects shall be derived in Wormhole.
+ * The root interface from which all {@link DataNode} shall be derived in Wormhole.
  *
  * @param <V> class type of data node value
  */

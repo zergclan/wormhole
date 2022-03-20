@@ -15,33 +15,39 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core;
+package com.zergclan.wormhole.data.core.node;
 
-import com.zergclan.wormhole.config.api.Configuration;
+import com.zergclan.wormhole.data.api.node.DataNode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.Map;
+import java.time.LocalDateTime;
 
 /**
- * Configuration of target.
+ * Data node type of {@link LocalDateTime}.
  */
-@RequiredArgsConstructor
 @Getter
-public final class TargetConfiguration implements Configuration {
-    
-    private static final long serialVersionUID = -3361482780019688246L;
-    
-    private final String dataSource;
+public final class LocalDateTimeDataNode implements DataNode<LocalDateTime> {
 
-    private final String table;
+    private static final long serialVersionUID = 6687234036121922241L;
 
-    private final boolean transaction;
+    private String name;
 
-    private final Collection<String> uniqueNodes;
+    private LocalDateTime value;
 
-    private final Collection<String> compareNodes;
+    public LocalDateTimeDataNode(final String name, final LocalDateTime value) {
+        this.name = name;
+        this.value = value;
+    }
 
-    private final Map<String, DataNodeConfiguration> dataNodes;
+    @Override
+    public boolean refreshName(final String name) {
+        this.name = name;
+        return true;
+    }
+
+    @Override
+    public boolean refreshValue(final LocalDateTime value) {
+        this.value = value;
+        return true;
+    }
 }

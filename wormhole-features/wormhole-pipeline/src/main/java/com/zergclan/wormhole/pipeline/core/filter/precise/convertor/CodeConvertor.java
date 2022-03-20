@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
 
 import com.zergclan.wormhole.data.api.DataGroup;
-import com.zergclan.wormhole.data.api.DataNode;
-import com.zergclan.wormhole.data.core.TextDataNode;
+import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.core.helper.CodeConvertorHelper;
 import lombok.Getter;
