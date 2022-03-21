@@ -54,7 +54,7 @@ public final class FilterMetadataInitializer {
         for (DataNodeMappingConfiguration each : dataNodeMappings) {
             result.addAll(createConfigurationFilters(taskIdentifier, each, targetNodes, sourceNodes));
         }
-        Validator.preState(Collections.compare(targetNodes, sourceNodes), "error : create filter metadata failed please check data node mapping configuration");
+        Validator.preState(Collections.isSame(targetNodes, sourceNodes), "error : create filter metadata failed please check data node mapping configuration");
         result.addAll(createDefaultFilters(taskIdentifier, target, source, targetNodes));
         return result;
     }
