@@ -21,10 +21,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * Util tools for collection.
@@ -62,18 +61,18 @@ public final class Collections {
         }
         return result;
     }
-
+    
     /**
-     * Collection compare.
+     * Is same collection.
      *
      * @param source source
      * @param target target
      * @param <T> class type of collection
      * @return is same or not
      */
-    public static <T> boolean compare(final Collection<T> source, final Collection<T> target) {
-        Validator.notNull(source, "Error : collection compare source collection can not be null");
-        Validator.notNull(target, "Error : collection compare target collection can not be null");
+    public static <T> boolean isSame(final Collection<T> source, final Collection<T> target) {
+        Validator.notNull(source, "Error : collections is same source collection can not be null");
+        Validator.notNull(target, "Error : collections is same target collection can not be null");
         int sourceSize = source.size();
         int targetSize = target.size();
         if (0 == targetSize && 0 == sourceSize) {
@@ -82,13 +81,34 @@ public final class Collections {
         if (targetSize != sourceSize) {
             return false;
         }
-        Map<Integer, T> compareMap = new HashMap<>(targetSize);
-        int index = 0;
-        for (T each : target) {
-            if (source.contains(each)) {
-                compareMap.put(index, each);
+        Iterator<T> targetIterator = target.iterator();
+        Iterator<T> sourceIterator = source.iterator();
+        while (targetIterator.hasNext()) {
+            T targetElement = targetIterator.next();
+            T sourceElement = sourceIterator.next();
+            if (!targetElement.equals(sourceElement)) {
+                return false;
             }
         }
-        return targetSize == compareMap.size();
+        return true;
+    }
+    
+    /**
+     * Has same element.
+     *
+     * @param source source
+     * @param target target
+     * @param <T> class type of collection
+     * @return Has same element or not
+     */
+    public static <T> boolean hasSameElement(final Collection<T> source, final Collection<T> target) {
+        Validator.notNull(source, "Error : collection compare source collection can not be null");
+        Validator.notNull(target, "Error : collection compare target collection can not be null");
+        int sourceSize = source.size();
+        int targetSize = target.size();
+        if (0 == targetSize && 0 == sourceSize) {
+            return true;
+        }
+        return new LinkedHashSet<>(target).equals(new LinkedHashSet<>(source));
     }
 }

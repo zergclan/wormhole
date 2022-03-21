@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class CollectionsTest {
     
@@ -55,5 +57,55 @@ public final class CollectionsTest {
             }
             count++;
         }
+    }
+    
+    @Test
+    public void assertIsSame() {
+        Collection<String> sourceCollection = new LinkedList<>();
+        sourceCollection.add("aaa");
+        sourceCollection.add("bbb");
+        Collection<String> targetCollection1 = new LinkedList<>();
+        targetCollection1.add("aaa");
+        targetCollection1.add("bbb");
+        assertTrue(Collections.isSame(sourceCollection, targetCollection1));
+        Collection<String> targetCollection2 = new LinkedList<>();
+        targetCollection2.add("bbb");
+        targetCollection2.add("aaa");
+        assertFalse(Collections.isSame(sourceCollection, targetCollection2));
+        Collection<String> targetCollection3 = new LinkedList<>();
+        targetCollection3.add("aaa");
+        targetCollection3.add("bbb");
+        targetCollection3.add("bbb");
+        assertFalse(Collections.isSame(sourceCollection, targetCollection3));
+    }
+    
+    @Test
+    public void assertHasSameElement() {
+        Collection<String> sourceCollection = new LinkedList<>();
+        sourceCollection.add("aaa");
+        sourceCollection.add("bbb");
+        sourceCollection.add("ccc");
+        Collection<String> targetCollection1 = new LinkedList<>();
+        targetCollection1.add("aaa");
+        targetCollection1.add("bbb");
+        targetCollection1.add("ccc");
+        assertTrue(Collections.hasSameElement(sourceCollection, targetCollection1));
+        Collection<String> targetCollection2 = new LinkedList<>();
+        targetCollection2.add("aaa");
+        targetCollection2.add("ccc");
+        targetCollection2.add("bbb");
+        assertTrue(Collections.hasSameElement(sourceCollection, targetCollection2));
+        Collection<String> targetCollection3 = new LinkedList<>();
+        targetCollection3.add("aaa");
+        targetCollection3.add("bbb");
+        targetCollection3.add("bbb");
+        targetCollection3.add("ccc");
+        assertTrue(Collections.hasSameElement(sourceCollection, targetCollection3));
+        Collection<String> targetCollection4 = new LinkedList<>();
+        targetCollection4.add("aaa");
+        targetCollection4.add("bbb");
+        targetCollection4.add("ccc");
+        targetCollection4.add("ddd");
+        assertFalse(Collections.hasSameElement(sourceCollection, targetCollection4));
     }
 }

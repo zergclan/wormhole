@@ -51,7 +51,7 @@ public final class DateUtil {
     public static long getTimeMillis(final LocalDateTime localDateTime) {
         return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
-
+    
     /**
      * Swap To {@link LocalDateTime}.
      *
@@ -91,7 +91,19 @@ public final class DateUtil {
      * @param pattern pattern
      * @return {@link Date}
      */
-    public static Date parse(final String text, final String pattern) {
+    public static Date parseDate(final String text, final String pattern) {
         return new SimpleDateFormat(pattern).parse(text, new ParsePosition(0));
+    }
+    
+    /**
+     * Parse date text to {@link LocalDateTime}.
+     *
+     * @param text date text
+     * @param pattern pattern
+     * @return {@link Date}
+     */
+    public static LocalDateTime parseLocalDateTime(final String text, final String pattern) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(pattern);
+        return LocalDateTime.parse(text, df);
     }
 }

@@ -17,22 +17,30 @@
 
 package com.zergclan.wormhole.common.util;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public final class DateUtilTest {
+public final class CronUtilTest {
     
     @Test
-    public void assertCurrentTimeMillis() {
-        assertTrue(System.currentTimeMillis() <= DateUtil.currentTimeMillis());
+    public void assertValidate() {
+        CronUtil.validate("*/5 * * * * *");
     }
     
     @Test
-    public void assertDateFormat() {
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        String expectedText = "2021-11-11 11:11:11";
-        assertEquals(expectedText, DateUtil.format(DateUtil.parseDate(expectedText, pattern), pattern));
+    public void assertValidateException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> CronUtil.validate("aaa"));
+    }
+    
+    @Test
+    public void assertNextTimeMillis() {
+        long start = DateUtil.currentTimeMillis();
+        Optional<Long> result = CronUtil.nextTimeMillis("*/1 * * * * *");
+        assertTrue(result.isPresent());
+        assertTrue(result.get() > start);
     }
 }

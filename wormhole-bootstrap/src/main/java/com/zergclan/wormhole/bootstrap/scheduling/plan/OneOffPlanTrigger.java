@@ -41,7 +41,7 @@ public final class OneOffPlanTrigger implements PlanTrigger {
 
     public OneOffPlanTrigger(final String planIdentifier, final String expression) {
         this.planIdentifier = planIdentifier;
-        this.nextExecutionTimestamp = DateUtil.parse(expression, DEFAULT_PATTERN).getTime();
+        this.nextExecutionTimestamp = DateUtil.getTimeMillis(DateUtil.parseLocalDateTime(expression, DEFAULT_PATTERN));
     }
 
     @Override

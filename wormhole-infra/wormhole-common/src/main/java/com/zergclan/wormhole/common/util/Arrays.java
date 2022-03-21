@@ -33,10 +33,9 @@ public final class Arrays {
      *
      * @param array array
      * @param toFind to find
-     * @param <T> class type of array elements
      * @return contains or not
      */
-    public static <T> boolean contains(final T[] array, final T toFind) {
+    public static boolean contains(final Object[] array, final Object toFind) {
         return -1 != indexOf(array, toFind, DEFAULT_START_INDEX);
     }
 
