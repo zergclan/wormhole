@@ -24,14 +24,11 @@ import com.zergclan.wormhole.config.core.TaskConfiguration;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
-import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
-import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
 import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
 import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -58,35 +55,28 @@ public final class TaskMetadataInitializer {
         Collection<FilterMetaData> filters = filterMetadataInitializer.init(taskIdentifier, configuration.getDataNodeMappings(), target, source);
         return new TaskMetaData(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
-    
+
+    private SourceMetaData createSource(final SourceConfiguration sourceConfiguration, final DataSourceMetaData sourceDataSource) {
+        String actualSql = sourceConfiguration.getActualSql();
+        String table = sourceConfiguration.getTable();
+        String conditionSql = sourceConfiguration.getConditionSql();
+        Map<String, DataNodeMetaData> dataNodes = createConfiguredDataNodes(sourceConfiguration.getDataNodes());
+        return new SourceMetaData(sourceDataSource.getIdentifier(), actualSql, table, conditionSql, dataNodes);
+    }
+
     private TargetMetaData createTarget(final TargetConfiguration targetConfiguration, final DataSourceMetaData targetDataSource) {
         String table = targetConfiguration.getTable();
         boolean transaction = targetConfiguration.isTransaction();
         Collection<String> uniqueNodes = targetConfiguration.getUniqueNodes();
         Collection<String> compareNodes = targetConfiguration.getCompareNodes();
-        Map<String, DataNodeMetaData> dataNodes = createSingleTableDataNodes(targetDataSource.getTable(table), targetConfiguration.getDataNodes());
-        return new TargetMetaData(targetDataSource.getIdentifier(), table, transaction, uniqueNodes, compareNodes, dataNodes);
+        Collection<String> ignoreNodes = targetConfiguration.getIgnoreNodes();
+        Map<String, DataNodeMetaData> dataNodes = createConfiguredDataNodes(targetConfiguration.getDataNodes());
+        return new TargetMetaData(targetDataSource.getIdentifier(), table, transaction, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
     }
-    
-    private SourceMetaData createSource(final SourceConfiguration sourceConfiguration, final DataSourceMetaData sourceDataSource) {
-        String actualSql = sourceConfiguration.getActualSql();
-        String table = sourceConfiguration.getTable();
-        String conditionSql = sourceConfiguration.getConditionSql();
-        Map<String, DataNodeMetaData> dataNodes = createSingleTableDataNodes(sourceDataSource.getTable(table), sourceConfiguration.getDataNodes());
-        return new SourceMetaData(sourceDataSource.getIdentifier(), actualSql, table, conditionSql, dataNodes);
-    }
-    
-    private Map<String, DataNodeMetaData> createSingleTableDataNodes(final TableMetaData table, final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
+
+    private Map<String, DataNodeMetaData> createConfiguredDataNodes(final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
         Map<String, DataNodeMetaData> result = new LinkedHashMap<>();
-        Map<String, ColumnMetaData> columns = table.getColumns();
-        Iterator<Map.Entry<String, ColumnMetaData>> iterator = columns.entrySet().iterator();
-        DataNodeConfiguration dataNodeConfiguration;
-        while (iterator.hasNext()) {
-            Map.Entry<String, ColumnMetaData> entry = iterator.next();
-            String nodeName = entry.getKey();
-            dataNodeConfiguration = dataNodeConfigurations.get(nodeName);
-            result.put(nodeName, null == dataNodeConfiguration ? dataNodeMetadataInitializer.init(entry.getValue()) : dataNodeMetadataInitializer.init(nodeName, dataNodeConfiguration));
-        }
+        dataNodeConfigurations.forEach((key, value) -> result.put(key, dataNodeMetadataInitializer.init(key, value)));
         return result;
     }
 }

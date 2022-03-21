@@ -43,6 +43,8 @@ public final class TargetMetaData implements MetaData {
 
     private final Collection<String> compareNodes;
 
+    private final Collection<String> ignoreNodes;
+
     private final Map<String, DataNodeMetaData> dataNodes;
 
     @Override
