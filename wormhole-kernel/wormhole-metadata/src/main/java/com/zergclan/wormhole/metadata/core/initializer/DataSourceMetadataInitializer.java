@@ -19,14 +19,7 @@ package com.zergclan.wormhole.metadata.core.initializer;
 
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.config.core.DataSourceConfiguration;
-import com.zergclan.wormhole.metadata.core.loader.DataSourceManger;
-import com.zergclan.wormhole.metadata.core.loader.MetaDataLoader;
-import com.zergclan.wormhole.metadata.core.loader.MetaDataLoaderFactory;
-import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
 import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
-import com.zergclan.wormhole.metadata.core.resource.IndexMetaData;
-import com.zergclan.wormhole.metadata.core.resource.SchemaMetaData;
-import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.H2DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.MySQLDataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.OracleDataSourceMetaData;
@@ -34,9 +27,7 @@ import com.zergclan.wormhole.metadata.core.resource.dialect.PostgreSQLDataSource
 import com.zergclan.wormhole.metadata.core.resource.dialect.SQLServerDataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -53,11 +44,7 @@ public final class DataSourceMetadataInitializer {
      * @throws SQLException SQL Exception
      */
     public DataSourceMetaData init(final DataSourceConfiguration dataSourceConfiguration) throws SQLException {
-        DataSourceMetaData result = createActualTypeDataSourceMetadata(dataSourceConfiguration);
-        Connection connection = DataSourceManger.get(result).getConnection();
-        MetaDataLoader metadataLoader = MetaDataLoaderFactory.getInstance(connection);
-        initDataSource(result, metadataLoader);
-        return result;
+        return createActualTypeDataSourceMetadata(dataSourceConfiguration);
     }
     
     private static DataSourceMetaData createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
@@ -87,30 +74,5 @@ public final class DataSourceMetadataInitializer {
             }
         }
         throw new WormholeException("error : create data source metadata failed databaseType [%s] not find", configuration.getType());
-    }
-    
-    private void initDataSource(final DataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {
-        for (SchemaMetaData each : metadataLoader.loadSchemas(dataSource.getIdentifier())) {
-            initSchema(each, metadataLoader);
-            dataSource.registerSchema(each);
-        }
-    }
-    
-    private void initSchema(final SchemaMetaData schema, final MetaDataLoader metadataLoader) throws SQLException {
-        for (TableMetaData each : metadataLoader.loadTables(schema.getDataSourceIdentifier(), schema.getName())) {
-            initTable(each, metadataLoader);
-            schema.registerTable(each);
-        }
-    }
-
-    private void initTable(final TableMetaData table, final MetaDataLoader metadataLoader) throws SQLException {
-        Collection<ColumnMetaData> columnMetadata = metadataLoader.loadColumns(table.getDataSourceIdentifier(), table.getSchema(), table.getName());
-        for (ColumnMetaData each : columnMetadata) {
-            table.registerColumn(each);
-        }
-        Collection<IndexMetaData> indexMetadata = metadataLoader.loadIndexes(table.getDataSourceIdentifier(), table.getSchema(), table.getName());
-        for (IndexMetaData each : indexMetadata) {
-            table.registerIndex(each);
-        }
     }
 }

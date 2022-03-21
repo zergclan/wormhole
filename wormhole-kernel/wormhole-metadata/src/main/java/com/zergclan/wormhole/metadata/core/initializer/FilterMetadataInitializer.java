@@ -17,19 +17,17 @@
 
 package com.zergclan.wormhole.metadata.core.initializer;
 
-import com.zergclan.wormhole.common.util.Collections;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.config.core.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.config.core.FilterConfiguration;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetadataFactory;
-import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
 import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,50 +46,34 @@ public final class FilterMetadataInitializer {
      */
     public Collection<FilterMetaData> init(final String taskIdentifier, final Collection<DataNodeMappingConfiguration> dataNodeMappings, final TargetMetaData target,
                                            final SourceMetaData source) {
+        Validator.preState(checkDataNodeMapped(dataNodeMappings, target, source), "error : create filter metadata failed please check data node mapping configuration");
         Collection<FilterMetaData> result = new LinkedList<>();
-        Set<String> targetNodes = target.getDataNodes().keySet();
-        Set<String> sourceNodes = source.getDataNodes().keySet();
-        for (DataNodeMappingConfiguration each : dataNodeMappings) {
-            result.addAll(createConfigurationFilters(taskIdentifier, each, targetNodes, sourceNodes));
-        }
-        Validator.preState(Collections.isSame(targetNodes, sourceNodes), "error : create filter metadata failed please check data node mapping configuration");
-        result.addAll(createDefaultFilters(taskIdentifier, target, source, targetNodes));
+        dataNodeMappings.forEach(each -> result.addAll(createConfiguredFilters(taskIdentifier, each)));
         return result;
     }
     
-    private Collection<FilterMetaData> createConfigurationFilters(final String taskIdentifier, final DataNodeMappingConfiguration dataNodeMappingConfiguration, final Set<String> targetNodes,
-                                                                  final Set<String> sourceNodes) {
-        Collection<String> targetNames = dataNodeMappingConfiguration.getTargetNames();
-        Collection<String> sourceNames = dataNodeMappingConfiguration.getSourceNames();
-        int targetSize = targetNames.size();
-        int sourceSize = sourceNames.size();
+    private boolean checkDataNodeMapped(final Collection<DataNodeMappingConfiguration> dataNodeMappings, final TargetMetaData target, final SourceMetaData source) {
+        Set<String> sourceMappedNodes = new LinkedHashSet<>();
+        Set<String> targetMappedNodes = new LinkedHashSet<>();
+        dataNodeMappings.forEach(each -> {
+            sourceMappedNodes.addAll(each.getSourceNames());
+            targetMappedNodes.addAll(each.getTargetNames());
+        });
+        return sourceMappedNodes.equals(source.getDataNodes().keySet()) && targetMappedNodes.equals(target.getDataNodes().keySet());
+    }
+
+    private Collection<FilterMetaData> createConfiguredFilters(final String taskIdentifier, final DataNodeMappingConfiguration dataNodeMappingConfiguration) {
+        int targetSize = dataNodeMappingConfiguration.getTargetNames().size();
+        int sourceSize = dataNodeMappingConfiguration.getSourceNames().size();
         if (1 == targetSize && 1 == sourceSize) {
-            targetNodes.remove(targetNames.iterator().next());
-            sourceNodes.remove(sourceNames.iterator().next());
             return createPreciseFilters(taskIdentifier, dataNodeMappingConfiguration.getFilters());
         } else if (1 == targetSize) {
-            targetNodes.remove(targetNames.iterator().next());
-            sourceNames.forEach(sourceNodes::remove);
             return createMergedFilters(taskIdentifier, dataNodeMappingConfiguration.getFilters());
         } else if (1 == sourceSize) {
-            sourceNodes.remove(sourceNames.iterator().next());
-            targetNodes.forEach(targetNames::remove);
             return createSplittedFilters(taskIdentifier, dataNodeMappingConfiguration.getFilters());
         } else {
             throw new UnsupportedOperationException();
         }
-    }
-    
-    private Collection<FilterMetaData> createDefaultFilters(final String taskIdentifier, final TargetMetaData target, final SourceMetaData source, final Set<String> nodeNames) {
-        Collection<FilterMetaData> result = new LinkedList<>();
-        Map<String, DataNodeMetaData> sourceDataNodes = source.getDataNodes();
-        Map<String, DataNodeMetaData> targetDataNodes = target.getDataNodes();
-        for (String each : nodeNames) {
-            DataNodeMetaData sourceDataNodeMetadata = sourceDataNodes.get(each);
-            DataNodeMetaData targetDataNodeMetadata = targetDataNodes.get(each);
-            result.addAll(FilterMetadataFactory.getDefaultInstance(taskIdentifier, sourceDataNodeMetadata, targetDataNodeMetadata));
-        }
-        return result;
     }
     
     private Collection<FilterMetaData> createPreciseFilters(final String taskIdentifier, final Collection<FilterConfiguration> filterConfigurations) {
