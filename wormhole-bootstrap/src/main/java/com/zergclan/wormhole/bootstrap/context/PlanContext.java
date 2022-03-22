@@ -19,10 +19,13 @@ package com.zergclan.wormhole.bootstrap.context;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
+import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -47,21 +50,26 @@ public final class PlanContext {
      * Create {@link CachedPlanMetaData}.
      *
      * @param wormholeMetaData {@link WormholeMetaData}
-     * @param planIdentifier plan identifier
+     * @param planTrigger plan identifier
      * @return {@link CachedPlanMetaData}
      */
-    public Optional<CachedPlanMetaData> cachedMetadata(final WormholeMetaData wormholeMetaData, final String planIdentifier) {
+    public Optional<CachedPlanMetaData> cachedMetadata(final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) {
+        String planIdentifier = planTrigger.getPlanIdentifier();
         if (isExecuting(planIdentifier)) {
-            // TODO send event
+            // TODO send plan is executing event
             return Optional.empty();
         }
         Optional<PlanMetaData> plan = wormholeMetaData.getPlan(planIdentifier);
-        if (plan.isPresent()) {
-            CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(plan.get(), wormholeMetaData.getDataSources());
-            cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
-            return Optional.of(planMetadata);
+        if (!plan.isPresent()) {
+            // TODO send plan not exist event
+            return Optional.empty();
         }
-        // TODO send event
-        return Optional.empty();
+        return cachedMetaData(plan.get(), wormholeMetaData.getDataSources());
+    }
+    
+    private Optional<CachedPlanMetaData> cachedMetaData(final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) {
+        CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planMetaData, dataSources);
+        cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
+        return Optional.of(planMetadata);
     }
 }

@@ -27,12 +27,12 @@ import java.io.Serializable;
 public final class PromiseTaskResult implements Serializable {
 
     private static final long serialVersionUID = -8354421630803417276L;
-
+    
     private final String taskIdentifier;
-
-    private final boolean success;
-
+    
     private final long batchSize;
 
+    private final boolean success;
+    
     private final long errorRow;
 }

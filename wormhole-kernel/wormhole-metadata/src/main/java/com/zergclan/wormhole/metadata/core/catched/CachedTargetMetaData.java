@@ -26,6 +26,9 @@ import lombok.RequiredArgsConstructor;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * Cached {@link TargetMetaData}.
+ */
 @RequiredArgsConstructor
 @Getter
 public final class CachedTargetMetaData {
@@ -61,7 +64,6 @@ public final class CachedTargetMetaData {
         private final DataSourceMetaData dataSource;
         
         private CachedTargetMetaData build() {
-            // FIXME create CachedTableMetadata
             return new CachedTargetMetaData(dataSource, target.getTable(), target.isTransaction(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
         }
     }

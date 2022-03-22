@@ -36,9 +36,9 @@ import java.util.concurrent.ExecutorCompletionService;
  */
 @RequiredArgsConstructor
 public final class AtomicPlanExecutor implements PlanExecutor {
-
+    
     private final CachedPlanMetaData cachedPlanMetadata;
-
+    
     @Override
     public void execute() {
         String planIdentifier = cachedPlanMetadata.getIdentifier();
@@ -52,7 +52,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
         }
         // TODO send plan execute success event
     }
-
+    
     private Optional<String> transactionalExecute(final Map<String, CachedTaskMetaData> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
         CompletionService<PromiseTaskResult> completionService = new ExecutorCompletionService<>(ExecutorServiceManager.getSchedulingExecutor());
         for (Map.Entry<String, CachedTaskMetaData> entry : cachedTaskMetadata.entrySet()) {
