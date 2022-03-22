@@ -25,6 +25,9 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
+/**
+ * Cached {@link SourceMetaData}.
+ */
 @RequiredArgsConstructor
 @Getter
 public final class CachedSourceMetaData {

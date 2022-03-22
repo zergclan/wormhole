@@ -29,17 +29,15 @@ import java.util.concurrent.TimeUnit;
 /**
  * Scheduled {@link PlanMetaData.ExecutionMode} plan trigger.
  */
+@Getter
 public final class ScheduledPlanTrigger implements PlanTrigger {
 
     private static final String PREFIX_IDENTIFIER = PlanMetaData.ExecutionMode.SCHEDULED.name();
-
-    @Getter
+    
     private final String planIdentifier;
-
-    @Getter
+    
     private final String expression;
-
-    @Getter
+    
     private final long nextExecutionTimestamp;
 
     public ScheduledPlanTrigger(final String planIdentifier, final String expression) {

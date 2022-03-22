@@ -20,8 +20,6 @@ package com.zergclan.wormhole.metadata.core.catched;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
-import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
-import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
 import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -49,8 +47,8 @@ public final class CachedPlanMetaData implements MetaData {
     /**
      * Builder for {@link CachedPlanMetaData}.
      *
-     * @param planMetadata data sources
-     * @param dataSources plan metadata
+     * @param planMetadata {@link PlanMetaData}
+     * @param dataSources data sources {@link DataSourceMetaData}
      *
      * @return {@link CachedPlanMetaData}
      */
@@ -66,21 +64,18 @@ public final class CachedPlanMetaData implements MetaData {
         private final Map<String, DataSourceMetaData> dataSources;
         
         private CachedPlanMetaData build() {
-            Collection<CachedTaskMetaData> taskList = new LinkedList<>();
+            return new CachedPlanMetaData(planMetadata.getIdentifier(), planMetadata.isAtomic(), ordered(createCachedTasks()));
+        }
+        
+        private Collection<CachedTaskMetaData> createCachedTasks() {
+            Collection<CachedTaskMetaData> result = new LinkedList<>();
             Iterator<Map.Entry<String, TaskMetaData>> iterator = planMetadata.getTasks().entrySet().iterator();
             while (iterator.hasNext()) {
-                Map.Entry<String, TaskMetaData> next = iterator.next();
-                TaskMetaData task = next.getValue();
-                SourceMetaData source = task.getSource();
-                TargetMetaData target = task.getTarget();
-                CachedSourceMetaData cachedSourceMetadata = CachedSourceMetaData.builder(source, dataSources.get(source.getDataSourceIdentifier()));
-                CachedTargetMetaData cachedTargetMetadata = CachedTargetMetaData.builder(target, dataSources.get(target.getDataSourceIdentifier()));
-                // Collection<Filter<?>> filters = initFilters();
-                taskList.add(new CachedTaskMetaData(task.getIdentifier(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, new LinkedList<>()));
+                result.add(CachedTaskMetaData.builder(iterator.next().getValue(), dataSources));
             }
-            return new CachedPlanMetaData(planMetadata.getIdentifier(), planMetadata.isAtomic(), ordered(taskList));
+            return result;
         }
-
+        
         private Collection<Map<String, CachedTaskMetaData>> ordered(final Collection<CachedTaskMetaData> taskList) {
             Map<String, Map<String, CachedTaskMetaData>> result = new TreeMap<>();
             Iterator<CachedTaskMetaData> iterator = taskList.iterator();
@@ -99,21 +94,14 @@ public final class CachedPlanMetaData implements MetaData {
             }
             return converter(result);
         }
-
+        
         private Collection<Map<String, CachedTaskMetaData>> converter(final Map<String, Map<String, CachedTaskMetaData>> map) {
             Collection<Map<String, CachedTaskMetaData>> result = new LinkedList<>();
             Iterator<Map.Entry<String, Map<String, CachedTaskMetaData>>> iterator = map.entrySet().iterator();
             while (iterator.hasNext()) {
-                Map.Entry<String, Map<String, CachedTaskMetaData>> next = iterator.next();
-                result.add(next.getValue());
+                result.add(iterator.next().getValue());
             }
             return result;
         }
-
-//        private Collection<Filter<?>> initFilters() {
-//            Collection<Filter<?>> result = new LinkedList<>();
-//            // TODO init filters
-//            return result;
-//        }
     }
 }

@@ -32,11 +32,11 @@ import java.util.Optional;
  */
 @RequiredArgsConstructor
 public final class PlanExecutionEngine {
-
-    private final WormholeMetaData wormholeMetadata;
-
+    
     private final PlanContext planContext = new PlanContext();
-
+    
+    private final WormholeMetaData wormholeMetadata;
+    
     /**
      * Register {@link MetaData}.
      *
@@ -54,8 +54,11 @@ public final class PlanExecutionEngine {
      * @param planTrigger {@link PlanTrigger}
      */
     public void execute(final PlanTrigger planTrigger) {
-        // TODO execute plan
-        Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger.getPlanIdentifier());
-        cachedPlanMetadata.ifPresent(planMetadata -> PlanExecutorFactory.create(planMetadata).execute());
+        Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
+        if (!cachedPlanMetadata.isPresent()) {
+            
+            return;
+        }
+        PlanExecutorFactory.create(cachedPlanMetadata.get()).execute();
     }
 }

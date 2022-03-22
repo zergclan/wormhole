@@ -28,28 +28,28 @@ import java.util.concurrent.TimeUnit;
 /**
  * One off {@link PlanMetaData.ExecutionMode} plan trigger.
  */
+@Getter
 public final class OneOffPlanTrigger implements PlanTrigger {
     
     private static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private static final String PREFIX_IDENTIFIER = PlanMetaData.ExecutionMode.ONE_OFF.name();
-
-    @Getter
+    
     private final String planIdentifier;
-
+    
     private final long nextExecutionTimestamp;
-
+    
     public OneOffPlanTrigger(final String planIdentifier, final String expression) {
         this.planIdentifier = planIdentifier;
         this.nextExecutionTimestamp = DateUtil.getTimeMillis(DateUtil.parseLocalDateTime(expression, DEFAULT_PATTERN));
     }
-
+    
     @Override
     public String getIdentifier() {
         return PREFIX_IDENTIFIER + MarkConstant.SPACE + planIdentifier;
 
     }
-
+    
     @Override
     public boolean hasNextExecution() {
         return delayedTime() > 0;
@@ -60,7 +60,7 @@ public final class OneOffPlanTrigger implements PlanTrigger {
         Validator.notNull(timeUnit, "error: OneOffPlanTrigger getDelay arg timeUnit can not be null");
         return timeUnit.convert(delayedTime(), TimeUnit.MILLISECONDS);
     }
-
+    
     private long delayedTime() {
         return nextExecutionTimestamp - DateUtil.currentTimeMillis();
     }

@@ -23,6 +23,9 @@ import com.zergclan.wormhole.common.util.Validator;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Plan trigger.
+ */
 public interface PlanTrigger extends Trigger, Delayed {
     
     /**
