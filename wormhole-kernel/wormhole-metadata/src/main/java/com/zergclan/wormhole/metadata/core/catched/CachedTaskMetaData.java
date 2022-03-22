@@ -22,6 +22,7 @@ import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetadataFactory;
 import com.zergclan.wormhole.metadata.core.initializer.DataNodeMetadataInitializer;
+import com.zergclan.wormhole.metadata.core.initializer.DataSourceMetadataInitializer;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
 import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
@@ -31,6 +32,7 @@ import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -60,10 +62,10 @@ public final class CachedTaskMetaData {
      *
      * @param taskMetaData {@link TaskMetaData}
      * @param dataSources data sources {@link DataSourceMetaData}
-     *
      * @return {@link CachedTaskMetaData}
+     * @throws SQLException SQL exception
      */
-    public static CachedTaskMetaData builder(final TaskMetaData taskMetaData, final Map<String, DataSourceMetaData> dataSources) {
+    public static CachedTaskMetaData builder(final TaskMetaData taskMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
         return new CachedBuilder(taskMetaData, dataSources).build();
     }
     
@@ -76,7 +78,7 @@ public final class CachedTaskMetaData {
     
         private final Map<String, DataSourceMetaData> dataSources;
     
-        private CachedTaskMetaData build() {
+        private CachedTaskMetaData build() throws SQLException {
             TargetMetaData target = task.getTarget();
             Map<String, DataNodeMetaData> defaultTargetDataNodes = createDefaultTargetDataNodes(target);
             SourceMetaData source = task.getSource();
@@ -90,18 +92,14 @@ public final class CachedTaskMetaData {
             return new CachedTaskMetaData(task.getIdentifier(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters());
         }
     
-        private Map<String, DataNodeMetaData> createDefaultTargetDataNodes(final TargetMetaData target) {
+        private Map<String, DataNodeMetaData> createDefaultTargetDataNodes(final TargetMetaData target) throws SQLException {
             Map<String, DataNodeMetaData> result = new LinkedHashMap<>();
             DataSourceMetaData dataSourceMetaData = dataSources.get(target.getDataSourceIdentifier());
-            initDataSourceMetaData(dataSourceMetaData);
+            DataSourceMetadataInitializer.init(dataSourceMetaData);
             TableMetaData targetTable = dataSourceMetaData.getTable(target.getTable());
             Map<String, ColumnMetaData> defaultColumns = createRelatedTargetDefaultColumn(target, targetTable);
             defaultColumns.forEach((key, value) -> result.put(key, dataNodeMetadataInitializer.init(value)));
             return result;
-        }
-        
-        private void initDataSourceMetaData(final DataSourceMetaData dataSourceMetaData) {
-            // TODO init data source metaData
         }
         
         private Map<String, ColumnMetaData> createRelatedTargetDefaultColumn(final TargetMetaData target, final TableMetaData table) {
@@ -119,10 +117,10 @@ public final class CachedTaskMetaData {
             return result;
         }
         
-        private Map<String, DataNodeMetaData> createDefaultSourceDataNodes(final Map<String, DataNodeMetaData> defaultTargetDataNodes, final SourceMetaData source) {
+        private Map<String, DataNodeMetaData> createDefaultSourceDataNodes(final Map<String, DataNodeMetaData> defaultTargetDataNodes, final SourceMetaData source) throws SQLException {
             Map<String, DataNodeMetaData> result = new LinkedHashMap<>();
             DataSourceMetaData dataSourceMetaData = dataSources.get(source.getDataSourceIdentifier());
-            initDataSourceMetaData(dataSourceMetaData);
+            DataSourceMetadataInitializer.init(dataSourceMetaData);
             Map<String, ColumnMetaData> columns = dataSourceMetaData.getTable(source.getTable()).getColumns();
             for (Map.Entry<String, DataNodeMetaData> entry : defaultTargetDataNodes.entrySet()) {
                 String columnName = entry.getKey();

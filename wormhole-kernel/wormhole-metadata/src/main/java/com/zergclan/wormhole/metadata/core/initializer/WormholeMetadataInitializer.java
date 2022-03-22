@@ -34,8 +34,6 @@ import java.util.Map;
  */
 public final class WormholeMetadataInitializer {
     
-    private final DataSourceMetadataInitializer dataSourceMetadataInitializer = new DataSourceMetadataInitializer();
-    
     private final PlanMetadataInitializer planMetadataInitializer = new PlanMetadataInitializer();
     
     /**
@@ -56,7 +54,7 @@ public final class WormholeMetadataInitializer {
         Iterator<Map.Entry<String, DataSourceConfiguration>> iterator = configurations.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, DataSourceConfiguration> entry = iterator.next();
-            result.put(entry.getKey(), dataSourceMetadataInitializer.init(entry.getValue()));
+            result.put(entry.getKey(), DataSourceMetadataInitializer.createActualTypeDataSourceMetadata(entry.getValue()));
         }
         return result;
     }

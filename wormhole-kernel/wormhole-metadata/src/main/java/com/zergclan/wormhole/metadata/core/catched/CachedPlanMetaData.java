@@ -24,6 +24,7 @@ import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -49,10 +50,10 @@ public final class CachedPlanMetaData implements MetaData {
      *
      * @param planMetadata {@link PlanMetaData}
      * @param dataSources data sources {@link DataSourceMetaData}
-     *
      * @return {@link CachedPlanMetaData}
+     * @throws SQLException SQL exception
      */
-    public static CachedPlanMetaData builder(final PlanMetaData planMetadata, final Map<String, DataSourceMetaData> dataSources) {
+    public static CachedPlanMetaData builder(final PlanMetaData planMetadata, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
         return new CachedBuilder(planMetadata, dataSources).build();
     }
     
@@ -63,11 +64,11 @@ public final class CachedPlanMetaData implements MetaData {
         
         private final Map<String, DataSourceMetaData> dataSources;
         
-        private CachedPlanMetaData build() {
+        private CachedPlanMetaData build() throws SQLException {
             return new CachedPlanMetaData(planMetadata.getIdentifier(), planMetadata.isAtomic(), ordered(createCachedTasks()));
         }
         
-        private Collection<CachedTaskMetaData> createCachedTasks() {
+        private Collection<CachedTaskMetaData> createCachedTasks() throws SQLException {
             Collection<CachedTaskMetaData> result = new LinkedList<>();
             Iterator<Map.Entry<String, TaskMetaData>> iterator = planMetadata.getTasks().entrySet().iterator();
             while (iterator.hasNext()) {
