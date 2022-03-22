@@ -17,9 +17,14 @@
 
 package com.zergclan.wormhole.metadata.core.catched;
 
+import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
+import com.zergclan.wormhole.metadata.core.filter.FilterMetadataFactory;
+import com.zergclan.wormhole.metadata.core.initializer.DataNodeMetadataInitializer;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
+import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
 import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
 import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
@@ -65,6 +70,8 @@ public final class CachedTaskMetaData {
     @RequiredArgsConstructor
     private static class CachedBuilder {
         
+        private final DataNodeMetadataInitializer dataNodeMetadataInitializer = new DataNodeMetadataInitializer();
+        
         private final TaskMetaData task;
     
         private final Map<String, DataSourceMetaData> dataSources;
@@ -85,19 +92,55 @@ public final class CachedTaskMetaData {
     
         private Map<String, DataNodeMetaData> createDefaultTargetDataNodes(final TargetMetaData target) {
             Map<String, DataNodeMetaData> result = new LinkedHashMap<>();
-            // TODO create default target data nodes
+            DataSourceMetaData dataSourceMetaData = dataSources.get(target.getDataSourceIdentifier());
+            initDataSourceMetaData(dataSourceMetaData);
+            TableMetaData targetTable = dataSourceMetaData.getTable(target.getTable());
+            Map<String, ColumnMetaData> defaultColumns = createRelatedTargetDefaultColumn(target, targetTable);
+            defaultColumns.forEach((key, value) -> result.put(key, dataNodeMetadataInitializer.init(value)));
             return result;
         }
-    
+        
+        private void initDataSourceMetaData(final DataSourceMetaData dataSourceMetaData) {
+            // TODO init data source metaData
+        }
+        
+        private Map<String, ColumnMetaData> createRelatedTargetDefaultColumn(final TargetMetaData target, final TableMetaData table) {
+            Map<String, ColumnMetaData> result = new LinkedHashMap<>();
+            Map<String, ColumnMetaData> targetColumns = table.getColumns();
+            Map<String, DataNodeMetaData> initializationDataNodes = target.getDataNodes();
+            Collection<String> ignoreNodes = target.getIgnoreNodes();
+            for (Map.Entry<String, ColumnMetaData> entry : targetColumns.entrySet()) {
+                String columnName = entry.getKey();
+                if (!initializationDataNodes.containsKey(columnName) && !ignoreNodes.contains(columnName)) {
+                    
+                    result.put(columnName, entry.getValue());
+                }
+            }
+            return result;
+        }
+        
         private Map<String, DataNodeMetaData> createDefaultSourceDataNodes(final Map<String, DataNodeMetaData> defaultTargetDataNodes, final SourceMetaData source) {
             Map<String, DataNodeMetaData> result = new LinkedHashMap<>();
-            // TODO create default source data nodes
+            DataSourceMetaData dataSourceMetaData = dataSources.get(source.getDataSourceIdentifier());
+            initDataSourceMetaData(dataSourceMetaData);
+            Map<String, ColumnMetaData> columns = dataSourceMetaData.getTable(source.getTable()).getColumns();
+            for (Map.Entry<String, DataNodeMetaData> entry : defaultTargetDataNodes.entrySet()) {
+                String columnName = entry.getKey();
+                ColumnMetaData columnMetaData = columns.get(columnName);
+                Validator.notNull(columnMetaData, "error: create default source data node failed, columnName: [%s]", columnName);
+                result.put(columnName, dataNodeMetadataInitializer.init(columnMetaData));
+            }
             return result;
         }
-    
+        
         private Collection<FilterMetaData> createDefaultFilters(final Map<String, DataNodeMetaData> defaultTarget, final Map<String, DataNodeMetaData> defaultSource) {
             Collection<FilterMetaData> result = new LinkedList<>();
-            // TODO create filter by default data node meta data
+            for (Map.Entry<String, DataNodeMetaData> entry : defaultTarget.entrySet()) {
+                String nodeName = entry.getKey();
+                DataNodeMetaData targetDataNode = entry.getValue();
+                DataNodeMetaData sourceDataNode = defaultSource.get(nodeName);
+                result.addAll(FilterMetadataFactory.getDefaultInstance(task.getIdentifier(), sourceDataNode, targetDataNode));
+            }
             return result;
         }
     }
