@@ -25,6 +25,7 @@ import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -68,8 +69,12 @@ public final class PlanContext {
     }
     
     private Optional<CachedPlanMetaData> cachedMetaData(final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) {
-        CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planMetaData, dataSources);
-        cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
-        return Optional.of(planMetadata);
+        try {
+            CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planMetaData, dataSources);
+            cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
+            return Optional.of(planMetadata);
+        } catch (final SQLException ex) {
+            return Optional.empty();
+        }
     }
 }
