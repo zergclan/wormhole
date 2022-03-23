@@ -20,27 +20,28 @@ package com.zergclan.wormhole.plugin.factory;
 import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.common.spi.typed.TypedSPIRegistry;
 import com.zergclan.wormhole.plugin.api.Extractor;
+import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Optional;
 
 /**
- * Extractor factory.
+ * Loader factory.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ExtractorFactory {
+public final class LoaderFactory {
     
     static {
-        WormholeServiceLoader.register(Extractor.class);
+        WormholeServiceLoader.register(Loader.class);
     }
     
     /**
-     * Get extractor.
+     * Get loader.
      *
-     * @return {@link Extractor}
+     * @return {@link Loader}
      */
-    public static Optional<Extractor> getExtractor() {
-        return TypedSPIRegistry.findRegisteredService(Extractor.class, "MySQL");
+    public static Optional<Loader> getLoader() {
+        return TypedSPIRegistry.findRegisteredService(Loader.class, "MySQL");
     }
 }
