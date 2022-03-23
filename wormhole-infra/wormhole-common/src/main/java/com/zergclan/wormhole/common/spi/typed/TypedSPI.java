@@ -15,24 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.api;
-
-import com.zergclan.wormhole.common.spi.typed.TypedSPI;
-import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
-
-import java.util.Collection;
+package com.zergclan.wormhole.common.spi.typed;
 
 /**
- * The root interface from which all extractor shall be derived in Wormhole.
+ * Typed SPI.
  */
-public interface Extractor<D> extends TypedSPI {
+public interface TypedSPI {
     
     /**
-     * Extract.
+     * Get type.
      *
-     * @param cachedSource {@link SourceMetaData}
-     * @return data
+     * @return type
      */
-    Collection<D> extract(CachedSourceMetaData cachedSource);
+    String getType();
 }

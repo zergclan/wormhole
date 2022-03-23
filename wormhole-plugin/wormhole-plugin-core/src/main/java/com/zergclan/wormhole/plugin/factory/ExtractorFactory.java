@@ -15,24 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.api;
+package com.zergclan.wormhole.plugin.factory;
 
-import com.zergclan.wormhole.common.spi.typed.TypedSPI;
-import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
+import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
+import com.zergclan.wormhole.common.spi.typed.TypedSPIRegistry;
+import com.zergclan.wormhole.plugin.api.Extractor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import java.util.Collection;
+import java.util.Optional;
 
-/**
- * The root interface from which all extractor shall be derived in Wormhole.
- */
-public interface Extractor<D> extends TypedSPI {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class ExtractorFactory {
+    
+    static {
+        WormholeServiceLoader.register(Extractor.class);
+    }
     
     /**
-     * Extract.
+     * Get extractor.
      *
-     * @param cachedSource {@link SourceMetaData}
-     * @return data
+     * @return {@link Extractor}
      */
-    Collection<D> extract(CachedSourceMetaData cachedSource);
+    public static Optional<Extractor> getExtractor() {
+        return TypedSPIRegistry.findRegisteredService(Extractor.class, "MySQL");
+    }
 }
