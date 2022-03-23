@@ -41,4 +41,9 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
         // TODO do extract of MySQL
         return null;
     }
+    
+    @Override
+    public String getType() {
+        return "MySQL";
+    }
 }

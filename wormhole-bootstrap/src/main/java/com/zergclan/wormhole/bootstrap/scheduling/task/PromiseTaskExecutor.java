@@ -18,8 +18,15 @@
 package com.zergclan.wormhole.bootstrap.scheduling.task;
 
 import com.zergclan.wormhole.common.concurrent.PromiseTask;
+import com.zergclan.wormhole.data.api.DataGroup;
+import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTaskMetaData;
+import com.zergclan.wormhole.plugin.api.Extractor;
+import com.zergclan.wormhole.plugin.factory.ExtractorFactory;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult> {
@@ -31,9 +38,15 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
     private final long taskBatch;
 
     private final CachedTaskMetaData cachedTaskMetadata;
-
+    
     @Override
     public PromiseTaskResult call() throws Exception {
+        CachedSourceMetaData source = cachedTaskMetadata.getSource();
+        Optional<Extractor> extractor = ExtractorFactory.getExtractor();
+        if (!extractor.isPresent()) {
+            return new PromiseTaskResult(cachedTaskMetadata.getIdentifier(), cachedTaskMetadata.getBatchSize(), false, cachedTaskMetadata.getBatchSize());
+        }
+        Collection<DataGroup> sourceDataGroup = extractor.get().extract(source);
         // TODO handle cached task metadata
         // get Extractor Loader
         // Extractor get data

@@ -15,24 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.api;
+package com.zergclan.wormhole.common.spi.typed;
 
-import com.zergclan.wormhole.common.spi.typed.TypedSPI;
-import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
+import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import java.util.Collection;
+import java.util.Optional;
 
-/**
- * The root interface from which all extractor shall be derived in Wormhole.
- */
-public interface Extractor<D> extends TypedSPI {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class TypedSPIRegistry {
     
     /**
-     * Extract.
+     * Find registered service.
      *
-     * @param cachedSource {@link SourceMetaData}
-     * @return data
+     * @param typedSPIClass typed SPI class
+     * @param type type
+     * @param <T> type
+     * @return registered service
      */
-    Collection<D> extract(CachedSourceMetaData cachedSource);
+    public static <T extends TypedSPI> Optional<T> findRegisteredService(final Class<T> typedSPIClass, final String type) {
+        for (T each : WormholeServiceLoader.newServiceInstances(typedSPIClass)) {
+            if (each.getType().equalsIgnoreCase(type)) {
+                return Optional.of(each);
+            }
+        }
+        return Optional.empty();
+    }
 }
