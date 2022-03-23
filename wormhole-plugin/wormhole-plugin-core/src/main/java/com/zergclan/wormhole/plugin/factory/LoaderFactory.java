@@ -19,7 +19,6 @@ package com.zergclan.wormhole.plugin.factory;
 
 import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.common.spi.typed.TypedSPIRegistry;
-import com.zergclan.wormhole.plugin.api.Extractor;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
