@@ -36,4 +36,9 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
     protected BatchedLoadResult transactionLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
         return null;
     }
+    
+    @Override
+    public String getType() {
+        return "MySQL";
+    }
 }

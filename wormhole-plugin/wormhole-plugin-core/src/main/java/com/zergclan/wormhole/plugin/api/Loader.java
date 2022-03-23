@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.plugin.api;
 
+import com.zergclan.wormhole.common.spi.typed.TypedSPI;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 
 /**
@@ -25,7 +26,7 @@ import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
  * @param <D> class type of data
  * @param <V> class type of result
  */
-public interface Loader<D, V> {
+public interface Loader<D, V> extends TypedSPI {
 
     /**
      * Load.
