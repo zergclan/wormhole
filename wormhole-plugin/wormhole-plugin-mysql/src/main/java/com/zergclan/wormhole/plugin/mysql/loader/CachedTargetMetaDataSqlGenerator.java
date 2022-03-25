@@ -15,20 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.core.result;
+package com.zergclan.wormhole.plugin.mysql.loader;
 
-import com.zergclan.wormhole.data.api.result.Result;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 
 /**
- * Result value of batched loader.
+ * generate sql statement.
  */
-@RequiredArgsConstructor
-@Getter
-public final class BatchedLoadResult<T> implements Result<T> {
+public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
 
-    private final boolean success;
+    private CachedTargetMetaData cachedTargetMetaData;
 
-    private final T result;
+    public CachedTargetMetaDataSqlGenerator(final CachedTargetMetaData cachedTargetMetaData) {
+        this.cachedTargetMetaData = cachedTargetMetaData;
+    }
+
+    @Override
+    public String createSelectSql() {
+        return null;
+    }
+
+    @Override
+    public String createInsertSql() {
+        return null;
+    }
+
+    @Override
+    public String createUpdateSql() {
+        return null;
+    }
 }
