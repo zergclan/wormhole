@@ -15,20 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.core.result;
+package com.zergclan.wormhole.plugin.mysql.loader;
 
-import com.zergclan.wormhole.data.api.result.Result;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+public interface SqlGenerator {
 
-/**
- * Result value of batched loader.
- */
-@RequiredArgsConstructor
-@Getter
-public final class BatchedLoadResult<T> implements Result<T> {
+    /**
+     * create select sql.
+     * @return String
+     */
+    String createSelectSql();
 
-    private final boolean success;
+    /**
+     * create batch insert sql.
+     * @return String
+     */
+    String createInsertSql();
 
-    private final T result;
+    /**
+     * create batch update sql.
+     * @return String
+     */
+    String createUpdateSql();
 }

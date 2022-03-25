@@ -17,18 +17,26 @@
 
 package com.zergclan.wormhole.data.core.result;
 
-import com.zergclan.wormhole.data.api.result.Result;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.data.api.DataGroup;
+import lombok.Data;
+
+import java.util.Collection;
 
 /**
- * Result value of batched loader.
+ * Result value of database loader.
  */
-@RequiredArgsConstructor
-@Getter
-public final class BatchedLoadResult<T> implements Result<T> {
+@Data
+public final class MysqlLoadResult {
 
-    private final boolean success;
+    private Integer dataNum;
 
-    private final T result;
+    private Integer addNum;
+
+    private Integer updateNum;
+
+    private Boolean loadFlag;
+
+    private Collection<DataGroup> errData;
+
+    private Collection<String> errInfo;
 }
