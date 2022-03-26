@@ -49,7 +49,7 @@ public final class StandardPlanExecutor implements PlanExecutor {
     private void parallelExecute(final Map<String, CachedTaskMetaData> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
         CompletionService<PromiseTaskResult> completionService = new ExecutorCompletionService<>(ExecutorServiceManager.getSchedulingExecutor());
         for (Map.Entry<String, CachedTaskMetaData> entry : cachedTaskMetadata.entrySet()) {
-            PromiseTaskExecutor promiseTaskExecutor = new PromiseTaskExecutor(planIdentifier, planBatch, SequenceGenerator.generateId(), entry.getValue());
+            PromiseTaskExecutor promiseTaskExecutor = new PromiseTaskExecutor(planIdentifier, planBatch, entry.getValue());
             completionService.submit(promiseTaskExecutor);
         }
         int size = cachedTaskMetadata.size();

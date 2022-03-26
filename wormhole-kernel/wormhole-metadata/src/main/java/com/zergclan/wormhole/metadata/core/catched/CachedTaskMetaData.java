@@ -17,8 +17,11 @@
 
 package com.zergclan.wormhole.metadata.core.catched;
 
+import com.zergclan.wormhole.common.SequenceGenerator;
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetadataFactory;
 import com.zergclan.wormhole.metadata.core.initializer.DataNodeMetadataInitializer;
@@ -43,9 +46,11 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Getter
-public final class CachedTaskMetaData {
+public final class CachedTaskMetaData implements MetaData {
 
     private final String identifier;
+    
+    private final long taskBatch;
 
     private final int order;
 
@@ -66,7 +71,7 @@ public final class CachedTaskMetaData {
      * @throws SQLException SQL exception
      */
     public static CachedTaskMetaData builder(final TaskMetaData taskMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
-        return new CachedBuilder(taskMetaData, dataSources).build();
+        return new CachedBuilder(taskMetaData, SequenceGenerator.generateId(), dataSources).build();
     }
     
     @RequiredArgsConstructor
@@ -75,6 +80,8 @@ public final class CachedTaskMetaData {
         private final DataNodeMetadataInitializer dataNodeMetadataInitializer = new DataNodeMetadataInitializer();
         
         private final TaskMetaData task;
+        
+        private final long taskBatch;
     
         private final Map<String, DataSourceMetaData> dataSources;
     
@@ -86,10 +93,10 @@ public final class CachedTaskMetaData {
             Collection<FilterMetaData> defaultFilters = createDefaultFilters(defaultTargetDataNodes, defaultSourceDataNodes);
             target.getDataNodes().putAll(defaultTargetDataNodes);
             source.getDataNodes().putAll(defaultSourceDataNodes);
-            CachedTargetMetaData cachedTargetMetadata = CachedTargetMetaData.builder(target, dataSources.get(target.getDataSourceIdentifier()));
-            CachedSourceMetaData cachedSourceMetadata = CachedSourceMetaData.builder(source, dataSources.get(source.getDataSourceIdentifier()));
+            CachedTargetMetaData cachedTargetMetadata = CachedTargetMetaData.builder(generateIdentifier(), target, dataSources.get(target.getDataSourceIdentifier()));
+            CachedSourceMetaData cachedSourceMetadata = CachedSourceMetaData.builder(generateIdentifier(), source, dataSources.get(source.getDataSourceIdentifier()));
             task.getFilters().addAll(defaultFilters);
-            return new CachedTaskMetaData(task.getIdentifier(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters());
+            return new CachedTaskMetaData(task.getIdentifier(), SequenceGenerator.generateId(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters());
         }
     
         private Map<String, DataNodeMetaData> createDefaultTargetDataNodes(final TargetMetaData target) throws SQLException {
@@ -140,6 +147,10 @@ public final class CachedTaskMetaData {
                 result.addAll(FilterMetadataFactory.getDefaultInstance(task.getIdentifier(), sourceDataNode, targetDataNode));
             }
             return result;
+        }
+    
+        private String generateIdentifier() {
+            return task.getIdentifier() + MarkConstant.SPACE + taskBatch;
         }
     }
 }

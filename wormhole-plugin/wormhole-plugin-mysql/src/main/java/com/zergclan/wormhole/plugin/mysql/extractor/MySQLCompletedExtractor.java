@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.plugin.mysql.extractor;
 
-import com.zergclan.wormhole.data.api.DataGroup;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;

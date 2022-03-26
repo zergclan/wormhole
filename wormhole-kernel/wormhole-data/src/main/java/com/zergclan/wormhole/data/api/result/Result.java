@@ -17,12 +17,14 @@
 
 package com.zergclan.wormhole.data.api.result;
 
+import java.io.Serializable;
+
 /**
  * The root interface from which all {@link Result} shall be derived in Wormhole.
  *
  * @param <T> class type of result
  */
-public interface Result<T> {
+public interface Result<T> extends Serializable {
 
     /**
      * Is success.

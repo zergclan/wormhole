@@ -19,6 +19,7 @@ package com.zergclan.wormhole.plugin.factory;
 
 import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.common.spi.typed.TypedSPIRegistry;
+import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -38,9 +39,10 @@ public final class LoaderFactory {
     /**
      * Get loader.
      *
+     * @param dataSource {@link DataSourceMetaData}
      * @return {@link Loader}
      */
-    public static Optional<Loader> getLoader() {
-        return TypedSPIRegistry.findRegisteredService(Loader.class, "MySQL");
+    public static Optional<Loader> getLoader(final DataSourceMetaData dataSource) {
+        return TypedSPIRegistry.findRegisteredService(Loader.class, dataSource.getDataSourceType());
     }
 }

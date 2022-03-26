@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.plugin.loader;
 
-import com.zergclan.wormhole.data.api.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.plugin.api.Loader;

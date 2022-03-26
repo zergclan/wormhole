@@ -17,15 +17,15 @@
 
 package com.zergclan.wormhole.plugin.mysql.data;
 
-import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.config.api.Swapper;
-import com.zergclan.wormhole.data.api.DataGroup;
 import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.BigDecimalDataNode;
 import com.zergclan.wormhole.data.core.node.IntegerDataNode;
 import com.zergclan.wormhole.data.core.node.LocalDateTimeDataNode;
 import com.zergclan.wormhole.data.core.node.LongDataNode;
+import com.zergclan.wormhole.data.core.node.ObjectDataNode;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
 
 import java.math.BigDecimal;
@@ -43,16 +43,17 @@ public final class MySQLDataGroupSwapper implements Swapper<Map<String, Object>,
     
     @Override
     public DataGroup swapToTarget(final Map<String, Object> dataMap) {
-        Map<String, DataNode<?>> dataNodes = new LinkedHashMap<>();
+        DataGroup result = new DataGroup();
         Iterator<Map.Entry<String, Object>> iterator = dataMap.entrySet().iterator();
         Map.Entry<String, Object> entry;
         while (iterator.hasNext()) {
             entry = iterator.next();
-            String name = entry.getKey();
             Object value = entry.getValue();
-            dataNodes.put(name, Objects.isNull(value) ? null : createDataNode(name, value));
+            if (!Objects.isNull(value)) {
+                result.register(createDataNode(entry.getKey(), value));
+            }
         }
-        return new MySQLDataGroup(dataNodes);
+        return result;
     }
 
     private DataNode<?> createDataNode(final String name, final Object value) {
@@ -69,7 +70,7 @@ public final class MySQLDataGroupSwapper implements Swapper<Map<String, Object>,
         } else if (value instanceof LocalDateTime) {
             return new LocalDateTimeDataNode(name, (LocalDateTime) value);
         } else {
-            throw new WormholeException("error : create data node failed name:[%s], value:[%s]", name, value);
+            return new ObjectDataNode(name, value);
         }
     }
 

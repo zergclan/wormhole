@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.metadata.core.catched;
 
+import com.zergclan.wormhole.common.SequenceGenerator;
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
@@ -38,13 +40,20 @@ import java.util.TreeMap;
 @RequiredArgsConstructor
 @Getter
 public final class CachedPlanMetaData implements MetaData {
-
-    private final String identifier;
-
+    
+    private final String planIdentifier;
+    
+    private final long planBatch;
+    
     private final boolean atomic;
 
     private final Collection<Map<String, CachedTaskMetaData>> cachedTasks;
-
+    
+    @Override
+    public String getIdentifier() {
+        return planIdentifier + MarkConstant.SPACE + planBatch;
+    }
+    
     /**
      * Builder for {@link CachedPlanMetaData}.
      *
@@ -65,7 +74,7 @@ public final class CachedPlanMetaData implements MetaData {
         private final Map<String, DataSourceMetaData> dataSources;
         
         private CachedPlanMetaData build() throws SQLException {
-            return new CachedPlanMetaData(planMetadata.getIdentifier(), planMetadata.isAtomic(), ordered(createCachedTasks()));
+            return new CachedPlanMetaData(planMetadata.getIdentifier(), SequenceGenerator.generateId(), planMetadata.isAtomic(), ordered(createCachedTasks()));
         }
         
         private Collection<CachedTaskMetaData> createCachedTasks() throws SQLException {

@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.pipeline.core;
 
 import com.zergclan.wormhole.common.concurrent.ExecutorService;
-import com.zergclan.wormhole.data.api.BatchedDataGroup;
-import com.zergclan.wormhole.data.api.DataGroup;
+import com.zergclan.wormhole.data.core.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.api.Handler;
 import com.zergclan.wormhole.pipeline.api.Pipeline;
