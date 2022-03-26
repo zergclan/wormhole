@@ -53,13 +53,18 @@ public final class H2DataSourceMetaData implements DataSourceMetaData {
 
     @Getter
     private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
-
+    
+    @Override
+    public String getDataSourceType() {
+        return TYPE.getName();
+    }
+    
     @Override
     public String getDriverClassName() {
         // TODO driver class name
         return "";
     }
-
+    
     @Override
     public String getJdbcUrl() {
         // TODO init jdbc url

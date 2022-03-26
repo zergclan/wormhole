@@ -24,7 +24,14 @@ import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
  * The root interface from which all data source metadata objects shall be derived in Wormhole.
  */
 public interface DataSourceMetaData extends MetaData {
-
+    
+    /**
+     * Get data source type.
+     *
+     * @return data source type
+     */
+    String getDataSourceType();
+    
     /**
      * Get driver class name.
      *

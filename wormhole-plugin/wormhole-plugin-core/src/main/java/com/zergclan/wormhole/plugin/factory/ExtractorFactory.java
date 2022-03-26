@@ -19,6 +19,7 @@ package com.zergclan.wormhole.plugin.factory;
 
 import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.common.spi.typed.TypedSPIRegistry;
+import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.plugin.api.Extractor;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -38,9 +39,11 @@ public final class ExtractorFactory {
     /**
      * Get extractor.
      *
+     * @param dataSource {@link DataSourceMetaData}
      * @return {@link Extractor}
+     *
      */
-    public static Optional<Extractor> getExtractor() {
-        return TypedSPIRegistry.findRegisteredService(Extractor.class, "MySQL");
+    public static Optional<Extractor> getExtractor(final DataSourceMetaData dataSource) {
+        return TypedSPIRegistry.findRegisteredService(Extractor.class, dataSource.getDataSourceType());
     }
 }

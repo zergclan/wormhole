@@ -15,26 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.api;
+package com.zergclan.wormhole.data.core;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 
 /**
  * Batched of {@link DataGroup}.
  */
-public interface BatchedDataGroup {
+@RequiredArgsConstructor
+@Getter
+public final class BatchedDataGroup {
+    
+    private final Long planBatchId;
+    
+    private final Long taskBatchId;
+    
+    private final int batchSize;
+    
+    private final Collection<DataGroup> dataGroups;
     
     /**
-     * Get all {@link DataGroup}.
+     * Remove {@link DataGroup}.
      *
-     * @return {@link DataGroup}
+     * @param dataGroup {@link DataGroup}
+     * @return is removed or not
      */
-    Collection<DataGroup> getAllDataGroups();
-    
-    /**
-     * Clear error {@link DataGroup}.
-     *
-     * @param error {@link DataGroup}
-     */
-    void clearError(DataGroup error);
+    public boolean remove(final DataGroup dataGroup) {
+        return dataGroups.remove(dataGroup);
+    }
 }

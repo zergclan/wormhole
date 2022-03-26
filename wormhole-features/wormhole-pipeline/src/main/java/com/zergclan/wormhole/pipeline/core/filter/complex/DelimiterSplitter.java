@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.core.filter.complex;
 
-import com.zergclan.wormhole.data.api.DataGroup;
 import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import lombok.Getter;
@@ -69,7 +69,7 @@ public final class DelimiterSplitter implements Filter<DataGroup> {
             if (name.equals(eachName)) {
                 dataGroup.refresh(new TextDataNode(iterator.next(), split[index]));
             } else {
-                if (!dataGroup.append(new TextDataNode(iterator.next(), split[index]))) {
+                if (!dataGroup.register(new TextDataNode(iterator.next(), split[index]))) {
                     return false;
                 }
             }

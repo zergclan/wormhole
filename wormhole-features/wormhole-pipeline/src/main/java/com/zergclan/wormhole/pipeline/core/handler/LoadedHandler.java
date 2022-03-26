@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.core.handler;
 
-import com.zergclan.wormhole.data.api.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.pipeline.api.Handler;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.RequiredArgsConstructor;

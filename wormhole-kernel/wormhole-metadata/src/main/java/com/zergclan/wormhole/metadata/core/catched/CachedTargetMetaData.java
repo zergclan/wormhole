@@ -17,7 +17,9 @@
 
 package com.zergclan.wormhole.metadata.core.catched;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
 import lombok.Getter;
@@ -31,9 +33,11 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Getter
-public final class CachedTargetMetaData {
+public final class CachedTargetMetaData implements MetaData {
+    
+    private final String identifier;
 
-    private final DataSourceMetaData source;
+    private final DataSourceMetaData dataSource;
 
     private final String table;
 
@@ -44,27 +48,34 @@ public final class CachedTargetMetaData {
     private final Collection<String> compareNodes;
 
     private final Map<String, DataNodeMetaData> dataNodes;
-
+    
     /**
      * Builder for {@link CachedTargetMetaData}.
      *
+     * @param cachedTaskIdentifier cached task identifier
      * @param target {@link TargetMetaData}
      * @param dataSource {@link DataSourceMetaData}
      * @return {@link CachedTargetMetaData}
      */
-    public static CachedTargetMetaData builder(final TargetMetaData target, final DataSourceMetaData dataSource) {
-        return new CachedBuilder(target, dataSource).build();
+    public static CachedTargetMetaData builder(final String cachedTaskIdentifier, final TargetMetaData target, final DataSourceMetaData dataSource) {
+        return new CachedBuilder(cachedTaskIdentifier, target, dataSource).build();
     }
     
     @RequiredArgsConstructor
     private static class CachedBuilder {
+        
+        private final String cachedTaskIdentifier;
         
         private final TargetMetaData target;
         
         private final DataSourceMetaData dataSource;
         
         private CachedTargetMetaData build() {
-            return new CachedTargetMetaData(dataSource, target.getTable(), target.isTransaction(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
+            return new CachedTargetMetaData(generateIdentifier(), dataSource, target.getTable(), target.isTransaction(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
+        }
+        
+        private String generateIdentifier() {
+            return cachedTaskIdentifier + MarkConstant.SPACE + dataSource.getIdentifier();
         }
     }
 }

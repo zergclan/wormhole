@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.plugin.mysql.loader;
 
-import com.zergclan.wormhole.data.api.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
 import com.zergclan.wormhole.data.core.result.MysqlLoadResult;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
@@ -37,14 +37,14 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
     @Override
     protected BatchedLoadResult standardLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
         //1.new JdbcTemplate
-        DataSourceMetaData dataSourceMetaData = cachedTarget.getSource();
+        DataSourceMetaData dataSourceMetaData = cachedTarget.getDataSource();
         JdbcTemplate jdbcTemplate = JdbcTemplateCreator.create(dataSourceMetaData);
         //2.generate sql
         SqlGenerator sqlGenerator = new CachedTargetMetaDataSqlGenerator(cachedTarget);
         //3.compare date
         SqlHelper sqlHelper = new SqlHelper(jdbcTemplate, sqlGenerator);
-        List<Map<String, String>> targetData = sqlHelper.executeSelect(data.getAllDataGroups());
-        Map<String, List<Map<String, String>>> incrementalData = compareData(data.getAllDataGroups(),
+        List<Map<String, String>> targetData = sqlHelper.executeSelect(data.getDataGroups());
+        Map<String, List<Map<String, String>>> incrementalData = compareData(data.getDataGroups(),
                 targetData, cachedTarget.getUniqueNodes(), cachedTarget.getCompareNodes());
         //4.handle Incremental data  insert or update
         sqlHelper.executeBatchInsert(incrementalData.get("add"));
@@ -54,7 +54,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
         //5.return
         MysqlLoadResult mysqlLoadResult = new MysqlLoadResult();
         mysqlLoadResult.setLoadFlag(Boolean.TRUE);
-        mysqlLoadResult.setDataNum(data.getAllDataGroups().size());
+        mysqlLoadResult.setDataNum(data.getDataGroups().size());
         mysqlLoadResult.setAddNum(incrementalData.get("add").size());
         mysqlLoadResult.setUpdateNum(incrementalData.get("update").size());
         return new BatchedLoadResult(true, mysqlLoadResult);

@@ -55,6 +55,11 @@ public final class SQLServerDataSourceMetaData implements DataSourceMetaData {
     private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
     
     @Override
+    public String getDataSourceType() {
+        return TYPE.getName();
+    }
+    
+    @Override
     public String getDriverClassName() {
         return TYPE.getDefaultDriverClassName();
     }
