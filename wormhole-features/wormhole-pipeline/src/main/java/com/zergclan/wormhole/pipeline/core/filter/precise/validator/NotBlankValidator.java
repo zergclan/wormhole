@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.core.filter.precise.validator;
 
-import com.zergclan.wormhole.data.api.DataGroup;
 import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

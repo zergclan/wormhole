@@ -17,7 +17,9 @@
 
 package com.zergclan.wormhole.metadata.core.catched;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
 import lombok.Getter;
@@ -30,8 +32,10 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Getter
-public final class CachedSourceMetaData {
-
+public final class CachedSourceMetaData implements MetaData {
+    
+    private final String identifier;
+    
     private final DataSourceMetaData dataSource;
 
     private final String actualSql;
@@ -41,27 +45,34 @@ public final class CachedSourceMetaData {
     private final String conditionSql;
 
     private final Map<String, DataNodeMetaData> dataNodes;
-
+    
     /**
      * Builder for {@link CachedSourceMetaData}.
      *
+     * @param cachedTaskIdentifier cached task identifier
      * @param source {@link SourceMetaData}
      * @param dataSource {@link DataSourceMetaData}
      * @return {@link CachedSourceMetaData}
      */
-    public static CachedSourceMetaData builder(final SourceMetaData source, final DataSourceMetaData dataSource) {
-        return new CachedBuilder(source, dataSource).build();
+    public static CachedSourceMetaData builder(final String cachedTaskIdentifier, final SourceMetaData source, final DataSourceMetaData dataSource) {
+        return new CachedBuilder(cachedTaskIdentifier, source, dataSource).build();
     }
-
+    
     @RequiredArgsConstructor
     private static class CachedBuilder {
+    
+        private final String cachedTaskIdentifier;
         
         private final SourceMetaData source;
         
         private final DataSourceMetaData dataSource;
     
         private CachedSourceMetaData build() {
-            return new CachedSourceMetaData(dataSource, source.getActualSql(), source.getTable(), source.getConditionSql(), source.getDataNodes());
+            return new CachedSourceMetaData(generateIdentifier(), dataSource, source.getActualSql(), source.getTable(), source.getConditionSql(), source.getDataNodes());
+        }
+        
+        private String generateIdentifier() {
+            return cachedTaskIdentifier + MarkConstant.SPACE + dataSource.getIdentifier();
         }
     }
 }

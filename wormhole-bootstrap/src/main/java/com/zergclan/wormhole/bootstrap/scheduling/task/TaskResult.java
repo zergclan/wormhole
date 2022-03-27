@@ -15,28 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.data.core.result;
+package com.zergclan.wormhole.bootstrap.scheduling.task;
 
-import com.zergclan.wormhole.data.core.DataGroup;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-
-/**
- * Result value of database loader.
- */
-@Data
-public final class MysqlLoadResult {
-
-    private Integer dataNum;
-
-    private Integer addNum;
-
-    private Integer updateNum;
-
-    private Boolean loadFlag;
-
-    private Collection<DataGroup> errData;
-
-    private Collection<String> errInfo;
+@RequiredArgsConstructor
+@Getter
+public final class TaskResult {
+    
+    private final String cachedTaskIdentifier;
 }

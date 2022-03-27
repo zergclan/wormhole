@@ -53,12 +53,17 @@ public final class OracleDataSourceMetaData implements DataSourceMetaData {
 
     @Getter
     private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
-
+    
+    @Override
+    public String getDataSourceType() {
+        return TYPE.getName();
+    }
+    
     @Override
     public String getDriverClassName() {
         return TYPE.getDefaultDriverClassName();
     }
-
+    
     @Override
     public String getJdbcUrl() {
         return TYPE.getProtocol() + host + MarkConstant.COLON + port + MarkConstant.FORWARD_SLASH + catalog;

@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
 
-import com.zergclan.wormhole.data.api.DataGroup;
 import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public final class NullToDefaultEditor implements Filter<DataGroup> {
         while (iterator.hasNext()) {
             entry = iterator.next();
             if (Objects.isNull(dataGroup.getDataNode(entry.getKey()))) {
-                dataGroup.append(entry.getValue());
+                dataGroup.register(entry.getValue());
             }
         }
         return true;

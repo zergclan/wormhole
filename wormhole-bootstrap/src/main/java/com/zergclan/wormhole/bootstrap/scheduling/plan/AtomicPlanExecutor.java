@@ -56,7 +56,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
     private Optional<String> transactionalExecute(final Map<String, CachedTaskMetaData> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
         CompletionService<PromiseTaskResult> completionService = new ExecutorCompletionService<>(ExecutorServiceManager.getSchedulingExecutor());
         for (Map.Entry<String, CachedTaskMetaData> entry : cachedTaskMetadata.entrySet()) {
-            completionService.submit(new PromiseTaskExecutor(planIdentifier, planBatch, SequenceGenerator.generateId(), entry.getValue()));
+            completionService.submit(new PromiseTaskExecutor(planIdentifier, planBatch, entry.getValue()));
         }
         int size = cachedTaskMetadata.size();
         PromiseTaskResult promiseTaskResult;
@@ -65,7 +65,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
                 promiseTaskResult = completionService.take().get();
                 if (!promiseTaskResult.isSuccess()) {
                     // TODO send task execute failed event
-                    return Optional.of(promiseTaskResult.getTaskIdentifier());
+                    return Optional.of(promiseTaskResult.getResult().getCachedTaskIdentifier());
                 }
                 // TODO send task execute success event
             } catch (InterruptedException | ExecutionException e) {

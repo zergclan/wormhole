@@ -17,22 +17,46 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.task;
 
+import com.zergclan.wormhole.data.api.result.Result;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.io.Serializable;
-
+/**
+ * PromiseTaskResult implemented of {@link Result}.
+ */
 @RequiredArgsConstructor
 @Getter
-public final class PromiseTaskResult implements Serializable {
+public final class PromiseTaskResult implements Result<TaskResult> {
 
     private static final long serialVersionUID = -8354421630803417276L;
     
-    private final String taskIdentifier;
-    
-    private final long batchSize;
-
     private final boolean success;
     
-    private final long errorRow;
+    private final TaskResult result;
+    
+    @Override
+    public TaskResult getResult() {
+        return result;
+    }
+    
+    /**
+     * New success {@link PromiseTaskResult}.
+     *
+     * @param result {@link TaskResult}
+     * @return {@link PromiseTaskResult}
+     */
+    public static PromiseTaskResult newSuccess(final TaskResult result) {
+        
+        return new PromiseTaskResult(true, result);
+    }
+    
+    /**
+     * New error {@link PromiseTaskResult}.
+     *
+     * @param result {@link TaskResult}
+     * @return {@link PromiseTaskResult}
+     */
+    public static PromiseTaskResult newError(final TaskResult result) {
+        return new PromiseTaskResult(false, result);
+    }
 }

@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.pipeline.core.handler;
 
 import com.zergclan.wormhole.common.concurrent.ProcessTask;
-import com.zergclan.wormhole.data.api.BatchedDataGroup;
-import com.zergclan.wormhole.data.api.DataGroup;
+import com.zergclan.wormhole.data.core.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.api.Handler;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +41,12 @@ public final class ProcessTaskHandler implements ProcessTask {
     
     @Override
     public void run() {
-        Iterator<DataGroup> iterator = batchedDataGroup.getAllDataGroups().iterator();
+        Iterator<DataGroup> iterator = batchedDataGroup.getDataGroups().iterator();
         DataGroup each;
         while (iterator.hasNext()) {
             each = iterator.next();
             if (handleDataGroup(each)) {
-                batchedDataGroup.clearError(each);
+                batchedDataGroup.remove(each);
             }
         }
         nextHandler.handle(batchedDataGroup);
