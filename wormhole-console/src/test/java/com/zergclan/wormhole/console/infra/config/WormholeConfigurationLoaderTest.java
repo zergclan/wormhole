@@ -15,29 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core;
+package com.zergclan.wormhole.console.infra.config;
 
-import com.zergclan.wormhole.config.api.Configuration;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.config.core.WormholeConfiguration;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.Test;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.IOException;
 
-/**
- * Configuration of plan.
- */
-@RequiredArgsConstructor
-@Getter
-public final class PlanConfiguration implements Configuration {
-
-    private static final long serialVersionUID = 3170585157651174520L;
+public final class WormholeConfigurationLoaderTest {
     
-    private final String mode;
-
-    private final String expression;
-
-    private final boolean atomic;
-    
-    private final Map<String, TaskConfiguration> tasks = new LinkedHashMap<>();
+    @Test
+    @SneakyThrows(IOException.class)
+    public void assertLoad() {
+        WormholeConfiguration wormholeConfiguration = WormholeConfigurationLoader.load();
+    }
 }

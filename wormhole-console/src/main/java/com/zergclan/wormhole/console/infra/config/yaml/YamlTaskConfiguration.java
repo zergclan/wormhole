@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * YAML task configuration.
@@ -37,5 +38,5 @@ public final class YamlTaskConfiguration implements YamlConfiguration {
     
     private YamlTargetConfiguration target;
     
-    private Collection<YamlDataNodeMappingConfiguration> dataNodeMappings;
+    private Collection<YamlDataNodeMappingConfiguration> dataNodeMappings = new LinkedList<>();
 }

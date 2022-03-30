@@ -27,6 +27,8 @@ import lombok.Setter;
 @Setter
 public final class YamlDataSourceConfiguration implements YamlConfiguration {
     
+    private String dataSourceName;
+    
     private String type;
     
     private String host;
@@ -38,4 +40,16 @@ public final class YamlDataSourceConfiguration implements YamlConfiguration {
     private String password;
     
     private String catalog;
+    
+    private String poolName;
+    
+    private int minPoolSize = 5;
+    
+    private int maxPoolSize = 20;
+    
+    private int connectionTimeoutMilliseconds = 30000;
+    
+    private int idleTimeoutMilliseconds = 60000;
+    
+    private int maxLifetimeMilliseconds = 1800000;
 }
