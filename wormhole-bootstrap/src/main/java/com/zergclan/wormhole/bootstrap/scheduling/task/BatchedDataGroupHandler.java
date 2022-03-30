@@ -15,47 +15,58 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core;
+package com.zergclan.wormhole.bootstrap.scheduling.task;
 
-import com.zergclan.wormhole.common.concurrent.ExecutorService;
+import com.zergclan.wormhole.common.concurrent.ProcessTask;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.api.Handler;
-import com.zergclan.wormhole.pipeline.api.Pipeline;
-import com.zergclan.wormhole.pipeline.core.handler.LoadedHandler;
-import com.zergclan.wormhole.pipeline.core.handler.ProcessTaskHandler;
-import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
- * Batched {@link DataGroup} implemented of {@link Pipeline}.
+ * Implemented {@link ProcessTask} to handle {@link BatchedDataGroup}.
  */
 @RequiredArgsConstructor
-public final class BatchedDataGroupPipeline implements Pipeline<BatchedDataGroup> {
+public final class BatchedDataGroupHandler implements ProcessTask {
     
-    private final ExecutorService schedulingExecutor;
+    private final String planIdentifier;
     
-    private final Long planBatchId;
+    private final long planBatch;
     
-    private final Long taskBatchId;
+    private final String taskIdentifier;
     
-    private final int batchSize;
-
+    private final long taskBatchId;
+    
+    private final BatchedDataGroup batchedDataGroup;
+    
     private final Collection<Filter<DataGroup>> filters;
-
-    private final Loader<BatchedDataGroup, Integer> loader;
+    
+    private final Handler<BatchedDataGroup> loadedHandler;
     
     @Override
-    public void handle(final BatchedDataGroup batchedDataGroup) {
-        schedulingExecutor.submit(createProcessTaskHandler(batchedDataGroup));
+    public void run() {
+        Iterator<DataGroup> iterator = batchedDataGroup.getDataGroups().iterator();
+        DataGroup each;
+        while (iterator.hasNext()) {
+            each = iterator.next();
+            if (handleDataGroup(each)) {
+                batchedDataGroup.remove(each);
+            }
+        }
+        loadedHandler.handle(batchedDataGroup);
     }
     
-    private ProcessTaskHandler createProcessTaskHandler(final BatchedDataGroup batchedDataGroup) {
-        // TODO init loadedHandler
-        Handler<BatchedDataGroup> loadedHandler = new LoadedHandler(loader);
-        return new ProcessTaskHandler(filters, loadedHandler, batchedDataGroup);
+    private boolean handleDataGroup(final DataGroup dataGroup) {
+        Iterator<Filter<DataGroup>> iterator = filters.iterator();
+        while (iterator.hasNext()) {
+            if (!iterator.next().doFilter(dataGroup)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

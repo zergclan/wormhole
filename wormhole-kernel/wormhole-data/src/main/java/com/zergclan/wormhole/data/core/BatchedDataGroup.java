@@ -29,10 +29,6 @@ import java.util.Collection;
 @Getter
 public final class BatchedDataGroup {
     
-    private final Long planBatchId;
-    
-    private final Long taskBatchId;
-    
     private final int batchSize;
     
     private final Collection<DataGroup> dataGroups;

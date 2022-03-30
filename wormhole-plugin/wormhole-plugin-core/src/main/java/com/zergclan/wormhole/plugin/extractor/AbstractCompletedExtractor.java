@@ -31,13 +31,20 @@ import java.util.Map;
  * Abstract completed extractor.
  */
 public abstract class AbstractCompletedExtractor implements Extractor<DataGroup> {
-
+    
+    private volatile CachedSourceMetaData cachedSource;
+    
     @Override
-    public Collection<DataGroup> extract(final CachedSourceMetaData cachedSource) {
+    public void init(final CachedSourceMetaData cachedSource) {
+        this.cachedSource = cachedSource;
+    }
+    
+    @Override
+    public Collection<DataGroup> extract() {
         String extractSQl = getExtractSQl(cachedSource);
         return doExtract(cachedSource.getDataSource(), cachedSource.getDataNodes(), extractSQl);
     }
-
+    
     private String getExtractSQl(final CachedSourceMetaData cachedSource) {
         String result = cachedSource.getActualSql();
         if (StringUtil.isBlank(result)) {
@@ -45,7 +52,7 @@ public abstract class AbstractCompletedExtractor implements Extractor<DataGroup>
         }
         return result;
     }
-
+    
     /**
      * Generator extract SQl.
      *
@@ -55,7 +62,7 @@ public abstract class AbstractCompletedExtractor implements Extractor<DataGroup>
      * @return extract SQl
      */
     protected abstract String generatorExtractSQl(String table, String conditionSql, Map<String, DataNodeMetaData> dataNodes);
-
+    
     /**
      * Do extract {@link DataGroup}.
      *

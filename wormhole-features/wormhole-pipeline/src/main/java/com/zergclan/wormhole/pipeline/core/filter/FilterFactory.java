@@ -15,29 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.api;
+package com.zergclan.wormhole.pipeline.core.filter;
 
-import com.zergclan.wormhole.common.spi.typed.TypedSPI;
-import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
-
-import java.util.Collection;
+import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
+import com.zergclan.wormhole.pipeline.api.Filter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * The root interface from which all extractor shall be derived in Wormhole.
+ * Simple factory for create {@link Filter}.
  */
-public interface Extractor<D> extends TypedSPI {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class FilterFactory {
     
     /**
-     * Init.
+     * Create {@link Filter} of {@link DataGroup}.
      *
-     * @param cachedSource {@link CachedSourceMetaData}
+     * @param filterMetaData {@link FilterMetaData}
+     * @return {@link Filter}
      */
-    void init(CachedSourceMetaData cachedSource);
-    
-    /**
-     * Extract.
-     *
-     * @return data
-     */
-    Collection<D> extract();
+    public static Filter<DataGroup> createDataGroupFilter(final FilterMetaData filterMetaData) {
+        // TODO create filter for data group
+        return null;
+    }
 }
