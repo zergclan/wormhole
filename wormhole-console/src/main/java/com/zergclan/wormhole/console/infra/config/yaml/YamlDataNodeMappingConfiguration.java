@@ -17,16 +17,22 @@
 
 package com.zergclan.wormhole.console.infra.config.yaml;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * YAML data node mapping configuration.
  */
+@Getter
+@Setter
 public final class YamlDataNodeMappingConfiguration implements YamlConfiguration {
     
-    private Collection<String> targetNames;
+    private String targetNames;
     
-    private Collection<String> sourceNames;
+    private String sourceNames;
     
-    private Collection<YamlFilterConfiguration> filters;
+    private Collection<YamlFilterConfiguration> filters = new LinkedList<>();
 }

@@ -15,55 +15,47 @@
 # limitations under the License.
 #
 
-order: 0
-batch-size: 1000
+order: 1
+batchSize: 1000
 source:
-  data-source: ds-source
+  dataSource: ds-source
   table: t_user
-  actual-sql: SELECT * FROM t_user where name is not null
-  data-nodes:
+  actualSql: SELECT * FROM t_user
+  dataNodes:
     id:
-      node-type: aa
-      data-type: aa
+      nodeType: REQUIRED
+      dataType: INT
     name:
-      node-type: aa
-      data-type: aa
-      default-value: aa
+      nodeType: required
+      dataType: text
 target:
-  data-source: ds-target
+  dataSource: ds-target
   table: t_user
-  unique-nodes: id
-  compare-nodes: id,name,age
-  ignore-nodes: create_time,update_time
-  data-nodes:
+  uniqueNodes: id,name
+  compareNodes: id,name
+  ignoreNodes: create_time,update_time
+  dataNodes:
     id:
-      node-type: aa
-      data-type: aa
-      default-value: aa
+      nodeType: REQUIRED
+      dataType: INT
     name:
-      node-type: aa
-      data-type: aa
-      default-value: aa
-data-node-mappings:
-  - target-names: id
-    source-names: name
+      nodeType: required
+      dataType: text
+      defaultValue: default_name
+dataNodeMappings:
+  - targetNames: id
+    sourceNames: id
     filters:
-      - type: aa
+      - type: NOT_NULL
         order: 1
         prop:
-          foo: bar
-      - type: bb
-        order: 2
-        prop:
-          foo: bar
-  - target-names: id
-    source-names: name
+          sourceName: id
+  - targetNames: name
+    sourceNames: name
     filters:
-      - type: aa
+      - type: NULL_TO_DEFAULT
         order: 1
         prop:
-          foo: bar
-      - type: bb
-        order: 2
-        prop:
-          foo: bar
+          sourceName: name
+          defaultValue: default_name
+          dataType: text

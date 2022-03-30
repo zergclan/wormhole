@@ -21,9 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * YAML target configuration.
@@ -36,11 +34,11 @@ public final class YamlTargetConfiguration implements YamlConfiguration {
     
     private String table;
     
-    private Set<String> uniqueNodes = new LinkedHashSet<>();
+    private String uniqueNodes;
     
-    private Set<String> compareNodes = new LinkedHashSet<>();
+    private String compareNodes;
     
-    private Set<String> ignoreNodes = new LinkedHashSet<>();
+    private String ignoreNodes;
     
     private Map<String, YamlDataNodeConfiguration> dataNodes = new LinkedHashMap<>();
 }

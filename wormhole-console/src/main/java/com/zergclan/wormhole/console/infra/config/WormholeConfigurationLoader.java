@@ -19,7 +19,7 @@ package com.zergclan.wormhole.console.infra.config;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.config.core.WormholeConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlPlanConfiguration;
+import com.zergclan.wormhole.console.infra.config.swapper.YamlWormholeConfigurationSwapper;
 import com.zergclan.wormhole.console.infra.config.yaml.YamlTaskConfiguration;
 import com.zergclan.wormhole.console.infra.config.yaml.YamlWormholeConfiguration;
 import com.zergclan.wormhole.console.infra.util.YamlUtil;
@@ -29,7 +29,10 @@ import lombok.NoArgsConstructor;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * {@link WormholeConfiguration} loader.
@@ -43,7 +46,12 @@ public final class WormholeConfigurationLoader {
     
     private static final String WORMHOLE_TASK_CONFIGURATION_FILE_PREFIX = "wormhole-task-";
     
+    private static final String WORMHOLE_TASK_CONFIGURATION_FILE_SUFFIX = "yaml";
+    
+    private static final YamlWormholeConfigurationSwapper SWAPPER;
+    
     static {
+        SWAPPER = new YamlWormholeConfigurationSwapper();
         CONFIGURATION_PATH_PREFIX = System.getProperty("user.dir") + "/src/main/resources/conf";
     }
     
@@ -54,31 +62,23 @@ public final class WormholeConfigurationLoader {
      * @throws IOException IO exception
      */
     public static WormholeConfiguration load() throws IOException {
-        return createWormholeConfiguration(loadYamlWormholeConfiguration());
+        return SWAPPER.swapToTarget(loadYamlWormholeConfiguration());
     }
     
     private static YamlWormholeConfiguration loadYamlWormholeConfiguration() throws IOException {
         YamlWormholeConfiguration result = YamlUtil.unmarshal(loadFile(WORMHOLE_SERVER_CONFIGURATION_FILE), YamlWormholeConfiguration.class);
         Map<String, YamlTaskConfiguration> tasks = new LinkedHashMap<>();
-        for (Map.Entry<String, YamlPlanConfiguration> entry : result.getPlans().entrySet()) {
-            String taskName = entry.getKey();
-            if (!tasks.containsKey(taskName)) {
-                tasks.put(taskName, loadYamlTaskConfiguration(taskName));
-            }
+        Set<String> taskNames = result.getPlans().entrySet().stream().flatMap(entry -> entry.getValue().getTasks().stream()).collect(Collectors.toCollection(LinkedHashSet::new));
+        for (String each : taskNames) {
+            tasks.put(each, loadYamlTaskConfiguration(each));
         }
         result.setTasks(tasks);
         return result;
     }
     
     private static YamlTaskConfiguration loadYamlTaskConfiguration(final String taskName) throws IOException {
-        File file = loadFile(WORMHOLE_TASK_CONFIGURATION_FILE_PREFIX + taskName);
-        YamlTaskConfiguration yamlTaskConfiguration = YamlUtil.unmarshal(file, YamlTaskConfiguration.class);
-        return yamlTaskConfiguration;
-    }
-    
-    private static WormholeConfiguration createWormholeConfiguration(final YamlWormholeConfiguration yamlWormholeConfiguration) {
-        // TODO create wormhole configuration
-        return null;
+        File file = loadFile(WORMHOLE_TASK_CONFIGURATION_FILE_PREFIX + taskName + MarkConstant.POINT + WORMHOLE_TASK_CONFIGURATION_FILE_SUFFIX);
+        return YamlUtil.unmarshal(file, YamlTaskConfiguration.class);
     }
     
     private static File loadFile(final String fileName) {

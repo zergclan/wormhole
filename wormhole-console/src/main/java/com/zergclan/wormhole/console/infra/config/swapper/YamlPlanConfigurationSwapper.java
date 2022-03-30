@@ -15,29 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core;
+package com.zergclan.wormhole.console.infra.config.swapper;
 
-import com.zergclan.wormhole.config.api.Configuration;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.config.api.Swapper;
+import com.zergclan.wormhole.config.core.PlanConfiguration;
+import com.zergclan.wormhole.console.infra.config.yaml.YamlPlanConfiguration;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-/**
- * Configuration of plan.
- */
-@RequiredArgsConstructor
-@Getter
-public final class PlanConfiguration implements Configuration {
-
-    private static final long serialVersionUID = 3170585157651174520L;
+public final class YamlPlanConfigurationSwapper implements Swapper<YamlPlanConfiguration, PlanConfiguration> {
     
-    private final String mode;
-
-    private final String expression;
-
-    private final boolean atomic;
+    @Override
+    public PlanConfiguration swapToTarget(final YamlPlanConfiguration yamlConfiguration) {
+        return null;
+    }
     
-    private final Map<String, TaskConfiguration> tasks = new LinkedHashMap<>();
+    @Override
+    public YamlPlanConfiguration swapToSource(final PlanConfiguration configuration) {
+        return null;
+    }
 }

@@ -46,7 +46,7 @@ public final class PlanMetadataInitializer {
     public PlanMetaData init(final String planIdentifier, final PlanConfiguration configuration, final Map<String, DataSourceMetaData> dataSources) {
         PlanMetaData.ExecutionMode executionMode = PlanMetaData.ExecutionMode.valueOf(configuration.getMode().trim().toUpperCase());
         Map<String, TaskMetaData> tasks = createTasks(planIdentifier, configuration.getTasks(), dataSources);
-        return new PlanMetaData(planIdentifier, executionMode, configuration.getCorn(), configuration.isAtomic(), tasks);
+        return new PlanMetaData(planIdentifier, executionMode, configuration.getExpression(), configuration.isAtomic(), tasks);
     }
     
     private Map<String, TaskMetaData> createTasks(final String planIdentifier, final Map<String, TaskConfiguration> configurations, final Map<String, DataSourceMetaData> dataSources) {
