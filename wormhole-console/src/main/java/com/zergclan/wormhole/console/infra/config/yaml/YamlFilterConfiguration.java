@@ -15,12 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.api;
+package com.zergclan.wormhole.console.infra.config.yaml;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Properties;
 
 /**
- * The root interface from which all configuration shall be derived in Wormhole.
+ * YAML filter configuration.
  */
-public interface Configuration extends Serializable {
+@Getter
+@Setter
+public final class YamlFilterConfiguration implements YamlConfiguration {
+    
+    private String type;
+    
+    private int order;
+    
+    private Properties prop;
 }

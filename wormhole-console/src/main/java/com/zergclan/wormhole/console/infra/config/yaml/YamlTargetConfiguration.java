@@ -15,12 +15,32 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.api;
+package com.zergclan.wormhole.console.infra.config.yaml;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * The root interface from which all configuration shall be derived in Wormhole.
+ * YAML target configuration.
  */
-public interface Configuration extends Serializable {
+@Getter
+@Setter
+public final class YamlTargetConfiguration implements YamlConfiguration {
+    
+    private String dataSource;
+    
+    private String table;
+    
+    private Set<String> uniqueNodes = new LinkedHashSet<>();
+    
+    private Set<String> compareNodes = new LinkedHashSet<>();
+    
+    private Set<String> ignoreNodes = new LinkedHashSet<>();
+    
+    private Map<String, YamlDataNodeConfiguration> dataNodes = new LinkedHashMap<>();
 }

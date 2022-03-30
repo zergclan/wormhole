@@ -15,12 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.api;
+package com.zergclan.wormhole.console.infra.config.yaml;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
- * The root interface from which all configuration shall be derived in Wormhole.
+ * YAML plan configuration.
  */
-public interface Configuration extends Serializable {
+@Getter
+@Setter
+public final class YamlPlanConfiguration implements YamlConfiguration {
+    
+    private String mode;
+    
+    private String expression;
+    
+    private boolean atomic;
+    
+    private Collection<String> tasks = new LinkedList<>();
 }
