@@ -15,12 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.api;
+package com.zergclan.wormhole.console.infra.config.yaml;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * The root interface from which all configuration shall be derived in Wormhole.
+ * YAML data source configuration.
  */
-public interface Configuration extends Serializable {
+@Getter
+@Setter
+public final class YamlDataNodeConfiguration implements YamlConfiguration {
+    
+    private String nodeType;
+    
+    private String dataType;
+    
+    private String defaultValue;
 }

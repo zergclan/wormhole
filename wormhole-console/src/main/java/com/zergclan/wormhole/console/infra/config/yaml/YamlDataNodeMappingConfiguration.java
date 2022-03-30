@@ -15,12 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.api;
+package com.zergclan.wormhole.console.infra.config.yaml;
 
-import java.io.Serializable;
+import java.util.Collection;
 
 /**
- * The root interface from which all configuration shall be derived in Wormhole.
+ * YAML data node mapping configuration.
  */
-public interface Configuration extends Serializable {
+public final class YamlDataNodeMappingConfiguration implements YamlConfiguration {
+    
+    private Collection<String> targetNames;
+    
+    private Collection<String> sourceNames;
+    
+    private Collection<YamlFilterConfiguration> filters;
 }

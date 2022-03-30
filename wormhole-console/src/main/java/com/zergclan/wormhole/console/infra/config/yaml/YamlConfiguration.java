@@ -15,17 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.generator;
+package com.zergclan.wormhole.console.infra.config.yaml;
 
-import freemarker.template.TemplateException;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
-public final class MapperGeneratorTest {
-
-    @Test
-    public void assertGenerator() throws TemplateException, IOException {
-        MapperGenerator.generator();
-    }
+/**
+ * The root interface from which all YAML configuration shall be derived in Wormhole.
+ */
+public interface YamlConfiguration {
 }
