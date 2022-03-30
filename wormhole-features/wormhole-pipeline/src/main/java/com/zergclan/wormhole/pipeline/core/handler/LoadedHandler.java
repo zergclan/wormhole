@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.core.handler;
 
+import com.zergclan.wormhole.data.api.result.Result;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.pipeline.api.Handler;
 import com.zergclan.wormhole.plugin.api.Loader;
@@ -27,14 +28,16 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public final class LoadedHandler implements Handler<BatchedDataGroup> {
-
-    private final Loader<BatchedDataGroup, Integer> loader;
-
+    
+    private final Loader<BatchedDataGroup, Result<?>> loader;
+    
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {
+        loader.load(batchedDataGroup);
+        
         // TODO loader data
     }
-
+    
     @Override
     public int getOrder() {
         return Integer.MAX_VALUE;

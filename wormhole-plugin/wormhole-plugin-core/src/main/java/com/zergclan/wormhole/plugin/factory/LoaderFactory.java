@@ -19,7 +19,7 @@ package com.zergclan.wormhole.plugin.factory;
 
 import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.common.spi.typed.TypedSPIRegistry;
-import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -39,10 +39,16 @@ public final class LoaderFactory {
     /**
      * Get loader.
      *
-     * @param dataSource {@link DataSourceMetaData}
+     * @param cachedTarget {@link CachedTargetMetaData}
      * @return {@link Loader}
      */
-    public static Optional<Loader> getLoader(final DataSourceMetaData dataSource) {
-        return TypedSPIRegistry.findRegisteredService(Loader.class, dataSource.getDataSourceType());
+    public static Optional<Loader> getLoader(final CachedTargetMetaData cachedTarget) {
+        Optional<Loader> registeredService = TypedSPIRegistry.findRegisteredService(Loader.class, cachedTarget.getDataSource().getDataSourceType());
+        if (registeredService.isPresent()) {
+            Loader loader = registeredService.get();
+            loader.init(cachedTarget);
+            return Optional.of(loader);
+        }
+        return Optional.empty();
     }
 }
