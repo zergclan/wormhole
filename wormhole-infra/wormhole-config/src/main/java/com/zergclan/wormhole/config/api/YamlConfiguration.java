@@ -15,24 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.config.swapper;
-
-import com.zergclan.wormhole.config.api.Swapper;
-import com.zergclan.wormhole.config.core.PlanConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlPlanConfiguration;
+package com.zergclan.wormhole.config.api;
 
 /**
- * YAML plan configuration swapper.
+ * The root interface from which all YAML configuration shall be derived in Wormhole.
  */
-public final class YamlPlanConfigurationSwapper implements Swapper<YamlPlanConfiguration, PlanConfiguration> {
-    
-    @Override
-    public PlanConfiguration swapToTarget(final YamlPlanConfiguration yamlConfiguration) {
-        return new PlanConfiguration(yamlConfiguration.getMode(), yamlConfiguration.getExpression(), yamlConfiguration.isAtomic());
-    }
-    
-    @Override
-    public YamlPlanConfiguration swapToSource(final PlanConfiguration configuration) {
-        return null;
-    }
+public interface YamlConfiguration {
 }

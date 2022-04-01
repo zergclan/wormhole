@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.config.swapper;
+package com.zergclan.wormhole.config.core.swapper;
 
 import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.config.core.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.config.core.SourceConfiguration;
 import com.zergclan.wormhole.config.core.TargetConfiguration;
 import com.zergclan.wormhole.config.core.TaskConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlTaskConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlTaskConfiguration;
 
 import java.util.Collection;
 import java.util.LinkedList;

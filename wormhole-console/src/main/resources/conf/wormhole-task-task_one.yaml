@@ -31,6 +31,7 @@ source:
 target:
   dataSource: ds-target
   table: t_user
+  transaction: true
   uniqueNodes: id,name
   compareNodes: id,name
   ignoreNodes: create_time,update_time

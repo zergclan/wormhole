@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.config.swapper;
+package com.zergclan.wormhole.config.core.swapper;
 
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.config.core.DataSourceConfiguration;
 import com.zergclan.wormhole.config.core.PlanConfiguration;
 import com.zergclan.wormhole.config.core.WormholeConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlDataSourceConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlPlanConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlTaskConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlWormholeConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlDataSourceConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlPlanConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlTaskConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlWormholeConfiguration;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -69,7 +69,7 @@ public final class YamlWormholeConfigurationSwapper implements Swapper<YamlWormh
             planConfiguration = planSwapper.swapToTarget(yamlPlanConfiguration);
             Map<String, YamlTaskConfiguration> relatedTaskConfigurations = getRelatedTaskConfigurations(taskConfigurations, yamlPlanConfiguration, planName);
             initTasks(planConfiguration, relatedTaskConfigurations);
-            result.put(planName, planSwapper.swapToTarget(entry.getValue()));
+            result.put(planName, planConfiguration);
         }
         return result;
     }
