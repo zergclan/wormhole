@@ -40,4 +40,14 @@ public final class PlanConfiguration implements Configuration {
     private final boolean atomic;
     
     private final Map<String, TaskConfiguration> tasks = new LinkedHashMap<>();
+    
+    /**
+     * Register {@link TaskConfiguration}.
+     *
+     * @param taskName task name
+     * @param taskConfiguration task configuration.
+     */
+    public void registerTask(final String taskName, final TaskConfiguration taskConfiguration) {
+        tasks.put(taskName, taskConfiguration);
+    }
 }

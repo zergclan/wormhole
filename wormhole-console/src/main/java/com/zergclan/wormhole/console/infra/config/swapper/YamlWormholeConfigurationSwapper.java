@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.console.infra.config.swapper;
 
+import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.config.core.DataSourceConfiguration;
 import com.zergclan.wormhole.config.core.PlanConfiguration;
@@ -26,6 +27,7 @@ import com.zergclan.wormhole.console.infra.config.yaml.YamlPlanConfiguration;
 import com.zergclan.wormhole.console.infra.config.yaml.YamlTaskConfiguration;
 import com.zergclan.wormhole.console.infra.config.yaml.YamlWormholeConfiguration;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -37,6 +39,8 @@ public final class YamlWormholeConfigurationSwapper implements Swapper<YamlWormh
     private final YamlDataSourceConfigurationSwapper dataSourceSwapper = new YamlDataSourceConfigurationSwapper();
     
     private final YamlPlanConfigurationSwapper planSwapper = new YamlPlanConfigurationSwapper();
+    
+    private final YamlTaskConfigurationSwapper taskSwapper = new YamlTaskConfigurationSwapper();
     
     @Override
     public WormholeConfiguration swapToTarget(final YamlWormholeConfiguration yamlConfiguration) {
@@ -60,20 +64,34 @@ public final class YamlWormholeConfigurationSwapper implements Swapper<YamlWormh
         Map<String, PlanConfiguration> result = new LinkedHashMap<>();
         PlanConfiguration planConfiguration;
         for (Map.Entry<String, YamlPlanConfiguration> entry : planConfigurations.entrySet()) {
-            planConfiguration = planSwapper.swapToTarget(entry.getValue());
-            initTasks(planConfiguration, taskConfigurations);
-            result.put(entry.getKey(), planSwapper.swapToTarget(entry.getValue()));
+            String planName = entry.getKey();
+            YamlPlanConfiguration yamlPlanConfiguration = entry.getValue();
+            planConfiguration = planSwapper.swapToTarget(yamlPlanConfiguration);
+            Map<String, YamlTaskConfiguration> relatedTaskConfigurations = getRelatedTaskConfigurations(taskConfigurations, yamlPlanConfiguration, planName);
+            initTasks(planConfiguration, relatedTaskConfigurations);
+            result.put(planName, planSwapper.swapToTarget(entry.getValue()));
         }
         return result;
     }
     
-    private void initTasks(final PlanConfiguration planConfiguration, final Map<String, YamlTaskConfiguration> taskConfigurations) {
-        //TODO init tasks
+    private Map<String, YamlTaskConfiguration> getRelatedTaskConfigurations(final Map<String, YamlTaskConfiguration> tasks, final YamlPlanConfiguration yamlPlan, final String planName) {
+        Collection<String> relatedTaskNames = yamlPlan.getTasks();
+        Map<String, YamlTaskConfiguration> result = new LinkedHashMap<>();
+        relatedTaskNames.forEach(each -> {
+            YamlTaskConfiguration taskConfiguration = tasks.get(each);
+            Validator.notNull(taskConfiguration, "error: related task [%s] can not find in plan [%s]", each, planName);
+            result.put(each, taskConfiguration);
+        });
+        return result;
+    }
+    
+    private void initTasks(final PlanConfiguration planConfiguration, final Map<String, YamlTaskConfiguration> relatedTaskConfigurations) {
+        relatedTaskConfigurations.forEach((key, each) -> planConfiguration.registerTask(key, taskSwapper.swapToTarget(each)));
     }
     
     @Override
-    public YamlWormholeConfiguration swapToSource(final WormholeConfiguration target) {
-        // TODO
+    public YamlWormholeConfiguration swapToSource(final WormholeConfiguration configuration) {
+        // TODO init yamlWormholeConfiguration
         return null;
     }
 }
