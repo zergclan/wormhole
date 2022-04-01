@@ -21,11 +21,14 @@ import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.config.core.PlanConfiguration;
 import com.zergclan.wormhole.console.infra.config.yaml.YamlPlanConfiguration;
 
+/**
+ * YAML plan configuration swapper.
+ */
 public final class YamlPlanConfigurationSwapper implements Swapper<YamlPlanConfiguration, PlanConfiguration> {
     
     @Override
     public PlanConfiguration swapToTarget(final YamlPlanConfiguration yamlConfiguration) {
-        return null;
+        return new PlanConfiguration(yamlConfiguration.getMode(), yamlConfiguration.getExpression(), yamlConfiguration.isAtomic());
     }
     
     @Override
