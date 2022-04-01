@@ -17,16 +17,16 @@
 
 dataSources:
   ds-source:
-    type: mysql
+    type: MySQL
     host: 127.0.0.1
     port: 3306
     username: root
     password: root
     catalog: ds_source
   ds-target:
-    type: mysql
+    type: MySQL
     host: 127.0.0.1
-    port: 3306
+    port: 3307
     username: root
     password: root
     catalog: ds_target

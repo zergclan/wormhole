@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.console.infra.util;
 
-import com.zergclan.wormhole.console.infra.config.yaml.YamlConfiguration;
+import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.yaml.snakeyaml.Yaml;

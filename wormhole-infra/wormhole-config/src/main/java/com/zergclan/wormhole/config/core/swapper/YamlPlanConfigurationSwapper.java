@@ -15,26 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.config.yaml;
+package com.zergclan.wormhole.config.core.swapper;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Collection;
-import java.util.LinkedList;
+import com.zergclan.wormhole.config.api.Swapper;
+import com.zergclan.wormhole.config.core.PlanConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlPlanConfiguration;
 
 /**
- * YAML plan configuration.
+ * YAML plan configuration swapper.
  */
-@Getter
-@Setter
-public final class YamlPlanConfiguration implements YamlConfiguration {
+public final class YamlPlanConfigurationSwapper implements Swapper<YamlPlanConfiguration, PlanConfiguration> {
     
-    private String mode;
+    @Override
+    public PlanConfiguration swapToTarget(final YamlPlanConfiguration yamlConfiguration) {
+        return new PlanConfiguration(yamlConfiguration.getMode(), yamlConfiguration.getExpression(), yamlConfiguration.isAtomic());
+    }
     
-    private String expression;
-    
-    private boolean atomic;
-    
-    private Collection<String> tasks = new LinkedList<>();
+    @Override
+    public YamlPlanConfiguration swapToSource(final PlanConfiguration configuration) {
+        return null;
+    }
 }

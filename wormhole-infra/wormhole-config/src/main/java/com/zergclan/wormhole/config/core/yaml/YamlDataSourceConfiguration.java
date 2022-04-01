@@ -15,10 +15,42 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.config.yaml;
+package com.zergclan.wormhole.config.core.yaml;
+
+import com.zergclan.wormhole.config.api.YamlConfiguration;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * The root interface from which all YAML configuration shall be derived in Wormhole.
+ * YAML data source configuration.
  */
-public interface YamlConfiguration {
+@Getter
+@Setter
+public final class YamlDataSourceConfiguration implements YamlConfiguration {
+    
+    private String dataSourceName;
+    
+    private String type;
+    
+    private String host;
+    
+    private int port;
+    
+    private String username;
+    
+    private String password;
+    
+    private String catalog;
+    
+    private String poolName;
+    
+    private int minPoolSize = 5;
+    
+    private int maxPoolSize = 20;
+    
+    private int connectionTimeoutMilliseconds = 30000;
+    
+    private int idleTimeoutMilliseconds = 60000;
+    
+    private int maxLifetimeMilliseconds = 1800000;
 }

@@ -15,35 +15,44 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.config.swapper;
+package com.zergclan.wormhole.config.core.swapper;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.config.core.DataNodeConfiguration;
-import com.zergclan.wormhole.config.core.SourceConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlSourceConfiguration;
+import com.zergclan.wormhole.config.core.TargetConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlTargetConfiguration;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * YAML source configuration swapper.
+ * YAML target configuration swapper.
  */
-public final class YamlSourceConfigurationSwapper implements Swapper<YamlSourceConfiguration, SourceConfiguration> {
+public final class YamlTargetConfigurationSwapper implements Swapper<YamlTargetConfiguration, TargetConfiguration> {
     
     @Override
-    public SourceConfiguration swapToTarget(final YamlSourceConfiguration yamlConfiguration) {
+    public TargetConfiguration swapToTarget(final YamlTargetConfiguration yamlConfiguration) {
         String dataSource = yamlConfiguration.getDataSource();
-        String actualSql = yamlConfiguration.getActualSql();
         String table = yamlConfiguration.getTable();
-        String conditionSql = yamlConfiguration.getConditionSql();
+        boolean transaction = yamlConfiguration.isTransaction();
+        Collection<String> uniqueNodes = parseNodeNames(yamlConfiguration.getUniqueNodes());
+        Collection<String> compareNodes = parseNodeNames(yamlConfiguration.getCompareNodes());
+        Collection<String> ignoreNodes = parseNodeNames(yamlConfiguration.getIgnoreNodes());
         Map<String, DataNodeConfiguration> dataNodes = new LinkedHashMap<>();
         yamlConfiguration.getDataNodes().forEach((key, value) -> dataNodes.put(key, new DataNodeConfiguration(key, value.getNodeType(), value.getDataType(), value.getDefaultValue())));
-        return new SourceConfiguration(dataSource, actualSql, table, conditionSql, dataNodes);
+        return new TargetConfiguration(dataSource, table, transaction, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
+    }
+    
+    private Collection<String> parseNodeNames(final String nodeNames) {
+        return StringUtil.deduplicatedSplit(nodeNames, MarkConstant.COMMA);
     }
     
     @Override
-    public YamlSourceConfiguration swapToSource(final SourceConfiguration configuration) {
-        // TODO init yamlSourceConfiguration
+    public YamlTargetConfiguration swapToSource(final TargetConfiguration configuration) {
+        // TODO init yamlTargetConfiguration
         return null;
     }
 }

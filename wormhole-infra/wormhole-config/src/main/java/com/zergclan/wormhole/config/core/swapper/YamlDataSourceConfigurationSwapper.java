@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.config.swapper;
+package com.zergclan.wormhole.config.core.swapper;
 
 import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.config.core.DataSourceConfiguration;
-import com.zergclan.wormhole.console.infra.config.yaml.YamlDataSourceConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlDataSourceConfiguration;
 
 import java.util.Properties;
 
