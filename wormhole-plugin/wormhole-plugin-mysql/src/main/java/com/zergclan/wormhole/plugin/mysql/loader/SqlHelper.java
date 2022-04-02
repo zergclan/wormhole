@@ -17,9 +17,10 @@
 
 package com.zergclan.wormhole.plugin.mysql.loader;
 
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.SqlExecutor;
+import com.zergclan.wormhole.common.util.StringUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -43,16 +44,27 @@ public final class SqlHelper {
      * @param selectData {@link Collection}
      * @return List
      */
-    public List<Map<String, String>> executeSelect(final Collection selectData) {
-        //TODO
-        return null;
+    public List<Map<String, String>> executeSelect(final Collection selectData) throws SQLException {
+        String selectSql = sqlGenerator.createSelectSql();
+        String whereSql = selectSql.split("where")[1];
+        if (StringUtil.isBlank(whereSql)) {
+            String conditionColumn = whereSql.split("in")[0];
+            if (StringUtil.isBlank(conditionColumn)) {
+                String[] conditionArr = conditionColumn.split("-");
+                for(String columnName : conditionArr) {
+
+                }
+            }
+        }
+        List<Map<String, String>> result = sqlExecutor.executeSelect(selectSql, selectData);
+        return result;
     }
 
     /**
      * execute batch insert sql.
      * @param insertData {@link Collection}
      */
-    public void executeBatchInsert(final Collection insertData) {
+    public void executeBatchInsert(final Collection insertData) throws SQLException {
         //TODO
     }
 
@@ -60,7 +72,7 @@ public final class SqlHelper {
      * execute batch insert sql.
      * @param updateData {@link Object}
      */
-    public void executeUpdate(final Object updateData) {
+    public void executeUpdate(final Object updateData) throws SQLException {
         //TODO
     }
 }

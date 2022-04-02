@@ -21,22 +21,19 @@ import com.zergclan.wormhole.data.core.DataGroup;
 import lombok.Data;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Result value of database loader.
  */
 @Data
-public final class MysqlLoadResult {
+public final class MysqlLoadResult implements LoadResult {
 
     private Integer dataNum;
 
     private Integer addNum;
 
-    private Integer updateNum;
+    private Integer modifyNum;
 
-    private Boolean loadFlag;
-
-    private Collection<DataGroup> errData;
-
-    private Collection<String> errInfo;
+    private Map<String, Collection<DataGroup>> errInfo;
 }

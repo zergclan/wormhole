@@ -18,12 +18,7 @@
 package com.zergclan.wormhole.plugin.mysql.old.writer.xsql;
 
 import com.zergclan.wormhole.plugin.mysql.old.writer.util.SqlUtil;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterArray;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterBean;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterMap;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.Parameter;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.ParameterHandler;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.ParameterObject;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.*;
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
@@ -88,6 +83,8 @@ public class ParameterPlanner {
                 p.setGetter(new FieldGetterArray(segments.size()));
             } else if (Map.class.isAssignableFrom(clazz)) {
                 p.setGetter(new FieldGetterMap(name));
+            } else if (FieldGetterDataGroup.class.isAssignableFrom(clazz)) {
+                p.setGetter(new FieldGetterDataGroup(name));
             } else {
                 String name2 = SqlUtil.sqlToJava(name.toLowerCase());
                 p.setGetter(new FieldGetterBean(clazz, name2));

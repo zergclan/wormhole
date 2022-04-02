@@ -15,16 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql;
+package com.zergclan.wormhole.plugin.mysql.loader;
 
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.plugin.mysql.old.writer.util.SqlUtil;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.ParameterPlanner;
 import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.ParameterHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,26 +46,22 @@ public class SqlExecutor {
     }
 
     /**
-     * query count.
+     * query.
      *
      * @param querySql {@link String}
-     * @param mapData  {@link Map}
+     * @param selectData  {@link Map}
      * @return int
      */
-    public int queryCount(final String querySql, final Map<String, Object> mapData) {
-        try {
-            try (PreparedStatement ps = prepareSql(querySql, mapData)) {
-                System.out.println("----------------------queryCount-------------------:" + ps);
-                ResultSet rs = ps.executeQuery();
-                int row = -1;
-                if (rs.next()) {
-                    row = rs.getInt("count");
-                }
-
-                return row;
+    public List<Map<String, String>> executeSelect(final String querySql, final Collection selectData) throws SQLException {
+        try (PreparedStatement ps = prepareSql(querySql, selectData)) {
+            System.out.println("----------------------queryCount-------------------:" + ps);
+            ResultSet rs = ps.executeQuery();
+            int row = -1;
+            if (rs.next()) {
+                row = rs.getInt("count");
             }
-        } catch (SQLException e) {
-            throw new WormholeException(e);
+
+            return null;
         }
     }
 

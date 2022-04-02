@@ -17,12 +17,28 @@
 
 package com.zergclan.wormhole.plugin.mysql.loader;
 
+import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * generate sql statement.
  */
 public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
+
+    public static final String SELECT_STR = "SELECT-";
+
+    public static final String INSERT_STR = "INSERT-";
+
+    public static final String UPDATE_STR = "UPDATE-";
+
+    private Map<String, String> sqlMap = new ConcurrentHashMap<>(8);
 
     private CachedTargetMetaData cachedTargetMetaData;
 
@@ -32,16 +48,77 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
 
     @Override
     public String createSelectSql() {
-        return null;
+        String sqlKey = SELECT_STR + cachedTargetMetaData.getIdentifier();
+        String selectSql = sqlMap.get(sqlKey);
+        if (StringUtil.isEmpty(selectSql)) {
+            StringBuilder stringBuilder = new StringBuilder(" select ");
+            Collection<String> compareNodes = cachedTargetMetaData.getCompareNodes();
+            Iterator<String> compareNodesIterator = compareNodes.iterator();
+            String selectField = StringUtil.join(compareNodesIterator, ",");
+            stringBuilder.append(selectField);
+            stringBuilder.append(" from ").append(cachedTargetMetaData.getTable()).append(" where ");
+            Collection<String> uniqueNodes  = cachedTargetMetaData.getCompareNodes();
+            Iterator<String> uniqueNodesIterator = uniqueNodes.iterator();
+            String whereField = StringUtil.join(uniqueNodesIterator, "-");
+            stringBuilder.append(whereField).append(" in (?)");
+            selectSql = stringBuilder.toString();
+            sqlMap.put(sqlKey, selectSql);
+        }
+        System.out.println("-----------------createBatchInsertSql------------------:" + selectSql);
+        return selectSql;
     }
 
     @Override
     public String createInsertSql() {
-        return null;
+        String sqlKey = INSERT_STR + cachedTargetMetaData.getIdentifier();
+        String insertSql = sqlMap.get(sqlKey);
+        if (StringUtil.isEmpty(insertSql)) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(" insert into ").append(cachedTargetMetaData.getTable());
+
+            Map<String, DataNodeMetaData> dataNodes = cachedTargetMetaData.getDataNodes();
+            String tableColumn = "";
+            String valueColumn = "";
+            for (Map.Entry<String, DataNodeMetaData> entry : dataNodes.entrySet()) {
+                String columnName = entry.getValue().getName();
+                tableColumn += columnName + ",";
+                valueColumn += String.format(" $%s{%s} ", "O", columnName);
+            }
+            stringBuilder.append(" (").append(tableColumn.substring(0, tableColumn.length() - 1)).append(") ")
+                    .append(" values (").append(valueColumn.substring(0, valueColumn.length() - 1)).append(")");
+            insertSql = stringBuilder.toString();
+            sqlMap.put(sqlKey, insertSql);
+        }
+        System.out.println("-----------------createBatchInsertSql------------------:" + insertSql);
+        return insertSql;
     }
 
     @Override
     public String createUpdateSql() {
-        return null;
+        String sqlKey = UPDATE_STR + cachedTargetMetaData.getIdentifier();
+        String updateSql = sqlMap.get(sqlKey);
+        if (StringUtil.isEmpty(updateSql)) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(" update ").append(cachedTargetMetaData.getTable()).append(" set ");
+            Map<String, DataNodeMetaData> dataNodes = cachedTargetMetaData.getDataNodes();
+            for (Map.Entry<String, DataNodeMetaData> entry : dataNodes.entrySet()) {
+                String columnName = entry.getValue().getName();
+                stringBuilder.append(columnName + " = ");
+                stringBuilder.append(String.format(" $%s{%s} ", "O", columnName));
+                stringBuilder.append(",");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            stringBuilder.append(" where 1=1 ");
+            Collection<String> uniqueNodes = cachedTargetMetaData.getCompareNodes();
+            for (int i = 0; i < uniqueNodes.size(); i++) {
+                String columnName = ((List<String>) uniqueNodes).get(i);
+                stringBuilder.append(" and ").append(columnName).append(" = ").append(String.format(" $%s{%s} ", "O", columnName));
+            }
+            updateSql = stringBuilder.toString();
+            sqlMap.put(sqlKey, updateSql);
+        }
+        System.out.println("-----------------createBatchUpdateSql------------------:" + updateSql);
+        return updateSql;
     }
+
 }

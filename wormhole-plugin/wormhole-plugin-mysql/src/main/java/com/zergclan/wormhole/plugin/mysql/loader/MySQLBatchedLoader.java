@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.plugin.mysql.loader;
 
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
 import com.zergclan.wormhole.data.core.result.MysqlLoadResult;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
@@ -25,9 +26,8 @@ import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Batched loader of MySQL.
@@ -36,27 +36,58 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
 
     @Override
     protected BatchedLoadResult standardLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
+
+        MysqlLoadResult mysqlLoadResult = new MysqlLoadResult();
+        mysqlLoadResult.setDataNum(data.getDataGroups().size());
+
         //1.new JdbcTemplate
         DataSourceMetaData dataSourceMetaData = cachedTarget.getDataSource();
         JdbcTemplate jdbcTemplate = JdbcTemplateCreator.create(dataSourceMetaData);
+
         //2.generate sql
         SqlGenerator sqlGenerator = new CachedTargetMetaDataSqlGenerator(cachedTarget);
+
         //3.compare date
         SqlHelper sqlHelper = new SqlHelper(jdbcTemplate, sqlGenerator);
-        List<Map<String, String>> targetData = sqlHelper.executeSelect(data.getDataGroups());
-        Map<String, List<Map<String, String>>> incrementalData = compareData(data.getDataGroups(),
+        List<Map<String, String>> targetData = null;
+        try {
+            targetData = sqlHelper.executeSelect(data.getDataGroups());
+        } catch (SQLException e) {
+            String errInfo = e.getErrorCode() + e.getSQLState();
+            Map<String, Collection<DataGroup>> errMap = new HashMap<>(8);
+            errMap.put(errInfo, data.getDataGroups());
+        }
+        Map<String, Collection<DataGroup>> incrementalData = compareData(data.getDataGroups(),
                 targetData, cachedTarget.getUniqueNodes(), cachedTarget.getCompareNodes());
+
         //4.handle Incremental data  insert or update
-        sqlHelper.executeBatchInsert(incrementalData.get("add"));
-        incrementalData.get("update").forEach(map -> {
-            sqlHelper.executeUpdate(map);
-        });
+        Collection<DataGroup> addData = incrementalData.get("add");
+        Collection<DataGroup> modifyData = incrementalData.get("modify");
+        if (addData.size() > 0) {
+            try {
+                sqlHelper.executeBatchInsert(addData);
+            } catch (SQLException e) {
+                String errInfo = e.getErrorCode() + e.getSQLState();
+                Map<String, Collection<DataGroup>> errMap = new HashMap<>(8);
+                errMap.put(errInfo, addData);
+            }
+        }
+        if (modifyData.size() > 0) {
+            for (DataGroup dataGroup : modifyData) {
+                try {
+                    sqlHelper.executeUpdate(dataGroup);
+                } catch (SQLException e) {
+                    String errInfo = e.getErrorCode() + e.getSQLState();
+                    Map<String, Collection<DataGroup>> errMap = new HashMap<>(8);
+                    Collection<DataGroup> collection = new ArrayList<>();
+                    collection.add(dataGroup);
+                    errMap.put(errInfo, collection);
+                }
+            }
+
+        }
+
         //5.return
-        MysqlLoadResult mysqlLoadResult = new MysqlLoadResult();
-        mysqlLoadResult.setLoadFlag(Boolean.TRUE);
-        mysqlLoadResult.setDataNum(data.getDataGroups().size());
-        mysqlLoadResult.setAddNum(incrementalData.get("add").size());
-        mysqlLoadResult.setUpdateNum(incrementalData.get("update").size());
         return new BatchedLoadResult(true, mysqlLoadResult);
     }
 
@@ -70,11 +101,16 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
         return "MySQL";
     }
 
-    private Map<String, List<Map<String, String>>> compareData(final Collection sourceData,
+    private Map<String, Collection<DataGroup>> compareData(final Collection sourceData,
                                                   final Collection targetData,
                                                   final Collection<String> uniqueNodes,
                                                   final Collection<String> compareNodes) {
+        Map<String, Collection<DataGroup>> incrementMap = new HashMap<>(8);
+        Collection<DataGroup> addData = new LinkedList<>();
+        Collection<DataGroup> modifyData = new LinkedList<>();
         //TODO Calculate incremental data and add batchNo
-        return null;
+        incrementMap.put("add", addData);
+        incrementMap.put("modify", modifyData);
+        return incrementMap;
     }
 }

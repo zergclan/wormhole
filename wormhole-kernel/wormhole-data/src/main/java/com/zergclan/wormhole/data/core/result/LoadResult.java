@@ -15,28 +15,38 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.loader;
+package com.zergclan.wormhole.data.core.result;
 
+import com.zergclan.wormhole.data.core.DataGroup;
+
+import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-public interface SqlGenerator {
+/**
+ * The interface of Load result.
+ */
+public interface LoadResult {
+    /**
+     * get total data.
+     * @return int
+     */
+    int getDataNum();
 
     /**
-     * create select sql.
-     * @return String
+     * get add data num.
+     * @return int
      */
-    String createSelectSql();
+    int getAddNum();
 
     /**
-     * create batch insert sql.
-     * @return String
+     * get modify data num.
+     * @return int
      */
-    String createInsertSql();
+    int getModifyNum();
 
     /**
-     * create batch update sql.
-     * @return String
+     * get error info.
+     * @return map
      */
-    String createUpdateSql();
+    Map<String, Collection<DataGroup>> getErrInfo();
 }

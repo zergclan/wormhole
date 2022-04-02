@@ -15,28 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.loader;
+package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.zergclan.wormhole.data.core.DataGroup;
 
-public interface SqlGenerator {
+public class FieldGetterDataGroup extends FieldGetter {
 
-    /**
-     * create select sql.
-     * @return String
-     */
-    String createSelectSql();
+    private final String name;
 
-    /**
-     * create batch insert sql.
-     * @return String
-     */
-    String createInsertSql();
+    public FieldGetterDataGroup(final String name) {
+        this.name = name;
+    }
 
-    /**
-     * create batch update sql.
-     * @return String
-     */
-    String createUpdateSql();
+    @Override
+    public Object get(final Object params) {
+        DataGroup dataGroup = (DataGroup)params;
+        return dataGroup.getDataNode(name).getValue();
+    }
+
+    public static void main(String[] args) {
+        FieldGetterDataGroup fieldDataGroup = new FieldGetterDataGroup("11");
+        test(fieldDataGroup);
+    }
+    public static void test(Object o) {
+        System.out.println(FieldGetterDataGroup.class.isAssignableFrom(o.getClass()));
+    }
 }
