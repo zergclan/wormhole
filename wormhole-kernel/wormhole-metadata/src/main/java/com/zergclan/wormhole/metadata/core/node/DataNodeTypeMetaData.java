@@ -21,41 +21,51 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Locale;
-import java.util.Optional;
 
+/**
+ * Data node type meta data.
+ */
+@RequiredArgsConstructor
 @Getter
 public final class DataNodeTypeMetaData implements MetaData {
 
     private final NodeType nodeType;
 
     private final DataType dataType;
-
+    
     public DataNodeTypeMetaData(final ColumnMetaData columnMetadata) {
-        Optional<String> defaultValue = columnMetadata.getDefaultValue();
-        NodeType nodeType = NodeType.STANDARD;
-        if (columnMetadata.isNullable()) {
-            if (defaultValue.isPresent()) {
-                nodeType = NodeType.DEFAULT_ABLE;
-            }
-        } else {
-            nodeType = NodeType.REQUIRED;
-        }
-        this.nodeType = nodeType;
-        this.dataType = DataType.valueOf(columnMetadata.getDataType());
+        this.nodeType = initNodeType(columnMetadata);
+        this.dataType = DataType.valueOf(columnMetadata.getDataType().toUpperCase(Locale.ROOT));
     }
-
+    
     public DataNodeTypeMetaData(final String nodeTypeValue, final String dataTypeValue) {
-        this.nodeType = NodeType.valueOf(nodeTypeValue.toUpperCase(Locale.ROOT));
-        this.dataType = DataType.valueOf(dataTypeValue.toUpperCase(Locale.ROOT));
+        this(NodeType.valueOf(nodeTypeValue.toUpperCase(Locale.ROOT)), DataType.valueOf(dataTypeValue.toUpperCase(Locale.ROOT)));
     }
 
     @Override
     public String getIdentifier() {
         return nodeType.name() + MarkConstant.COLON + dataType.name();
     }
-
+    
+    /**
+     * Init {@link NodeType}.
+     *
+     * @param columnMetaData {@link ColumnMetaData}
+     * @return {@link NodeType}
+     */
+    public static NodeType initNodeType(final ColumnMetaData columnMetaData) {
+        if (!columnMetaData.isNullable()) {
+            return NodeType.REQUIRED;
+        }
+        if (null != columnMetaData.getDefaultValue()) {
+            return NodeType.DEFAULT_ABLE;
+        }
+        return NodeType.STANDARD;
+    }
+    
     /**
      * Node type.
      */
