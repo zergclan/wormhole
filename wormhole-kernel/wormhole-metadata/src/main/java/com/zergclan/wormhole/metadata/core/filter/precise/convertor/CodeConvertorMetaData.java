@@ -21,6 +21,7 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import java.util.Properties;
  * Business code convertor implemented of {@link FilterMetaData}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class CodeConvertorMetaData implements FilterMetaData {
     
     private static final FilterType FILTER_TYPE = FilterType.CODE_CONVERTOR;
@@ -49,11 +51,6 @@ public final class CodeConvertorMetaData implements FilterMetaData {
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
-    }
-    
-    @Override
-    public int getOrder() {
-        return order;
     }
     
     @Override

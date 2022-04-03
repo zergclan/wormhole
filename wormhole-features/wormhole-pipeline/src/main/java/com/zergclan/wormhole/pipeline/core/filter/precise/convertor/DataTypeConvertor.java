@@ -19,6 +19,7 @@ package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
 
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.core.helper.DataTypeConvertorHelper;
 import lombok.Getter;
@@ -32,10 +33,12 @@ import java.util.Optional;
  * Node data type convertor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class DataTypeConvertor implements Filter<DataGroup> {
     
-    @Getter
     private final int order;
+    
+    private final FilterType filterType;
     
     private final Map<String, DataTypeConvertorHelper> dataTypeConvertorHelpers;
     
@@ -58,6 +61,6 @@ public final class DataTypeConvertor implements Filter<DataGroup> {
     
     @Override
     public String getType() {
-        return "DATA_TYPE_CONVERTOR";
+        return filterType.name();
     }
 }

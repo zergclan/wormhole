@@ -56,13 +56,13 @@ public final class StringUtil {
     }
     
     /**
-     * Split deduplicated.
+     * Split deduplicate.
      *
      * @param input input
      * @param delimiter delimiter
      * @return elements
      */
-    public static Collection<String> deduplicatedSplit(final String input, final String delimiter) {
+    public static Collection<String> deduplicateSplit(final String input, final String delimiter) {
         if (isBlank(input)) {
             return new LinkedList<>();
         }

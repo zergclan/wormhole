@@ -26,9 +26,10 @@ import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTaskMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
+import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.api.Handler;
-import com.zergclan.wormhole.pipeline.core.filter.FilterFactory;
+import com.zergclan.wormhole.pipeline.core.filter.DataGroupFilterFactory;
 import com.zergclan.wormhole.pipeline.core.handler.LoadedHandler;
 import com.zergclan.wormhole.plugin.api.Extractor;
 import com.zergclan.wormhole.plugin.api.Loader;
@@ -40,6 +41,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -102,10 +104,11 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
     
     private Collection<Filter<DataGroup>> createFilters(final CachedTaskMetaData cachedTaskMetadata) {
         Collection<Filter<DataGroup>> result = new LinkedHashSet<>();
-        Collection<FilterMetaData> filters = cachedTaskMetadata.getFilters();
-        Iterator<FilterMetaData> iterator = filters.iterator();
+        Map<Integer, Map<FilterType, Collection<FilterMetaData>>> filters = cachedTaskMetadata.getFilters();
+        Iterator<Map.Entry<Integer, Map<FilterType, Collection<FilterMetaData>>>> iterator = filters.entrySet().iterator();
         while (iterator.hasNext()) {
-            result.add(FilterFactory.createDataGroupFilter(iterator.next()));
+            Map<FilterType, Collection<FilterMetaData>> value = iterator.next().getValue();
+            result.addAll(DataGroupFilterFactory.createDataGroupFilters(iterator.next().getKey(), iterator.next().getValue()));
         }
         return result;
     }

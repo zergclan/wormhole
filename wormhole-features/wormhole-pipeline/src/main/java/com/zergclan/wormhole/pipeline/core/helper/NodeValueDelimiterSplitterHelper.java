@@ -15,41 +15,41 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
+package com.zergclan.wormhole.pipeline.core.helper;
 
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
-import com.zergclan.wormhole.pipeline.api.Filter;
-import lombok.Getter;
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Iterator;
-import java.util.Map;
-
 /**
- * Name convertor implemented of {@link Filter}.
+ * Node value splitter helper.
  */
 @RequiredArgsConstructor
-public final class NameConvertor implements Filter<DataGroup> {
-
-    @Getter
-    private final int order;
-
-    private final Map<String, String> names;
-
-    @Override
-    public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, String>> iterator = names.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, String> entry = iterator.next();
-            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
-            dataNode.refreshName(entry.getValue());
+public final class NodeValueDelimiterSplitterHelper {
+    
+    private final String delimiter;
+    
+    private final String sourceName;
+    
+    private final String[] targetNames;
+    
+    /**
+     * Split node value.
+     *
+     * @param dataGroup {@link DataGroup}
+     * @return is success or not
+     */
+    public boolean splitNodeValue(final DataGroup dataGroup) {
+        DataNode<?> sourceDataNode = dataGroup.getDataNode(sourceName);
+        if (sourceDataNode instanceof TextDataNode) {
+            String value = ((TextDataNode) sourceDataNode).getValue();
+            String[] split = value.split(delimiter);
+            for (int i = 0; i < split.length; i++) {
+                dataGroup.refresh(new TextDataNode(targetNames[i], split[i]));
+            }
+            return true;
         }
-        return true;
-    }
-
-    @Override
-    public String getType() {
-        return "NAME_CONVERTOR";
+        return false;
     }
 }

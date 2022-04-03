@@ -47,7 +47,7 @@ public final class YamlTargetConfigurationSwapper implements Swapper<YamlTargetC
     }
     
     private Collection<String> parseNodeNames(final String nodeNames) {
-        return StringUtil.deduplicatedSplit(nodeNames, MarkConstant.COMMA);
+        return StringUtil.deduplicateSplit(nodeNames, MarkConstant.COMMA);
     }
     
     @Override

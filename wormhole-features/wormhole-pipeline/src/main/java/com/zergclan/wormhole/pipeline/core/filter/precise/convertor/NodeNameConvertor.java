@@ -15,42 +15,43 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
+package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
 
+import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
-import com.zergclan.wormhole.pipeline.core.helper.NodeValueHelper;
+import com.zergclan.wormhole.pipeline.core.helper.NodeNameHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Fixed node editor implemented of {@link Filter}.
+ * Name convertor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 @Getter
-public final class FixedNodeEditor implements Filter<DataGroup> {
+public final class NodeNameConvertor implements Filter<DataGroup> {
     
     private final int order;
     
     private final FilterType filterType;
-
-    private final Collection<NodeValueHelper> fixedValue;
     
+    private final Map<String, NodeNameHelper> nodeNameHelpers;
+
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<NodeValueHelper> iterator = fixedValue.iterator();
+        Iterator<Map.Entry<String, NodeNameHelper>> iterator = nodeNameHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            if (!dataGroup.refresh(iterator.next().getDefaultValue())) {
-                return false;
-            }
+            Map.Entry<String, NodeNameHelper> entry = iterator.next();
+            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
+            dataNode.refreshName(entry.getValue().getTargetName());
         }
         return true;
     }
-    
+
     @Override
     public String getType() {
         return filterType.name();
