@@ -31,13 +31,13 @@ import java.util.Properties;
  * Fixed node editor implemented of {@link FilterMetaData}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class FixedNodeEditorMetaData implements FilterMetaData {
 
     private static final FilterType FILTER_TYPE = FilterType.FIXED_NODE;
 
     private final String taskIdentifier;
-
-    @Getter
+    
     private final int order;
 
     private final String sourceName;

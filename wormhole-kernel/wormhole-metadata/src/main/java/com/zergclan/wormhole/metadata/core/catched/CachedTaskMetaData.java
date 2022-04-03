@@ -24,6 +24,7 @@ import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetadataFactory;
+import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.metadata.core.initializer.DataNodeMetadataInitializer;
 import com.zergclan.wormhole.metadata.core.initializer.DataSourceMetadataInitializer;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
@@ -37,9 +38,12 @@ import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Cached {@link TaskMetaData}.
@@ -59,8 +63,8 @@ public final class CachedTaskMetaData implements MetaData {
     private final CachedSourceMetaData source;
 
     private final CachedTargetMetaData target;
-
-    private final Collection<FilterMetaData> filters;
+    
+    private final Map<Integer, Map<FilterType, Collection<FilterMetaData>>> filters;
     
     /**
      * Builder for {@link CachedTaskMetaData}.
@@ -100,7 +104,8 @@ public final class CachedTaskMetaData implements MetaData {
             }
             CachedTargetMetaData cachedTargetMetadata = CachedTargetMetaData.builder(generateIdentifier(), target, dataSources.get(target.getDataSourceIdentifier()));
             CachedSourceMetaData cachedSourceMetadata = CachedSourceMetaData.builder(generateIdentifier(), source, dataSources.get(source.getDataSourceIdentifier()));
-            return new CachedTaskMetaData(task.getIdentifier(), SequenceGenerator.generateId(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters());
+            return new CachedTaskMetaData(task.getIdentifier(), SequenceGenerator.generateId(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata,
+                    groupFilters(task.getFilters()));
         }
         
         private Map<String, DataNodeMetaData[]> createDefaultDataNodes(final TargetMetaData target, final SourceMetaData source) throws SQLException {
@@ -131,6 +136,24 @@ public final class CachedTaskMetaData implements MetaData {
         
         private String generateIdentifier() {
             return task.getIdentifier() + MarkConstant.SPACE + taskBatch;
+        }
+    
+        private Map<Integer, Map<FilterType, Collection<FilterMetaData>>> groupFilters(final Collection<FilterMetaData> filters) {
+            Map<Integer, Map<FilterType, Collection<FilterMetaData>>> result = new TreeMap<>();
+            Map<FilterType, Collection<FilterMetaData>> temp;
+            for (FilterMetaData each : filters) {
+                int order = each.getOrder();
+                if (!result.containsKey(order)) {
+                    temp = new EnumMap<>(FilterType.class);
+                    Collection<FilterMetaData> tempFilter = new LinkedList<>();
+                    tempFilter.add(each);
+                    temp.put(each.getType(), tempFilter);
+                    result.put(order, temp);
+                    continue;
+                }
+                result.get(order).get(each.getType()).add(each);
+            }
+            return result;
         }
     }
 }

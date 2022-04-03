@@ -20,6 +20,7 @@ package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
+import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.core.helper.ValueRangeHelper;
 import lombok.Getter;
@@ -32,16 +33,18 @@ import java.util.Map;
  * Data node value range editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class ValueRangeEditor implements Filter<DataGroup> {
-
-    @Getter
+    
     private final int order;
+    
+    private final FilterType filterType;
 
-    private final Map<String, ValueRangeHelper> rangeHelpers;
+    private final Map<String, ValueRangeHelper> valueRangeHelpers;
 
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, ValueRangeHelper>> iterator = rangeHelpers.entrySet().iterator();
+        Iterator<Map.Entry<String, ValueRangeHelper>> iterator = valueRangeHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, ValueRangeHelper> entry = iterator.next();
             String name = entry.getKey();
@@ -58,6 +61,6 @@ public final class ValueRangeEditor implements Filter<DataGroup> {
 
     @Override
     public String getType() {
-        return "VALUE_RANGE";
+        return filterType.name();
     }
 }

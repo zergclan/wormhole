@@ -18,22 +18,24 @@
 package com.zergclan.wormhole.metadata.core.filter.complex;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
 /**
- * Delimiter splitter implemented of {@link FilterMetaData}.
+ * Node value concat merger implemented of {@link FilterMetaData}.
  */
 @RequiredArgsConstructor
-public final class DelimiterSplitterMetaData implements FilterMetaData {
+@Getter
+public final class NodeValueConcatMergerMetaData implements FilterMetaData {
 
-    private static final FilterType FILTER_TYPE = FilterType.DELIMITER_SPLITTER;
+    private static final FilterType FILTER_TYPE = FilterType.CONCAT_MERGER;
 
     private final String taskIdentifier;
 
@@ -41,48 +43,44 @@ public final class DelimiterSplitterMetaData implements FilterMetaData {
     
     private final String delimiter;
     
-    private final String sourceName;
+    private final String targetName;
     
-    private final Collection<String> targetNames;
+    private final String[] sourceNames;
 
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
     }
-
-    @Override
-    public int getOrder() {
-        return order;
-    }
-
+    
     @Override
     public FilterType getType() {
         return FILTER_TYPE;
     }
 
     /**
-     * Builder for {@link DelimiterSplitterMetaData}.
+     * Builder for {@link NodeValueConcatMergerMetaData}.
      *
      * @param taskIdentifier task identifier
      * @param order order
      * @param props props
-     * @return {@link DelimiterSplitterMetaData}
+     * @return {@link NodeValueConcatMergerMetaData}
      */
-    public static DelimiterSplitterMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build DelimiterSplitterMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String targetNames = props.getProperty("targetNames");
-        Validator.notNull(targetNames, "error : build DelimiterSplitterMetadata failed targetNames in props can not be null, task identifier: [%s]", taskIdentifier);
+    public static NodeValueConcatMergerMetaData builder(final String taskIdentifier, final int order, final Properties props) {
+        String targetName = props.getProperty("targetName");
+        Validator.notNull(targetName, "error : build ConcatMergerMetadata failed targetName in props can not be null, task identifier: [%s]", taskIdentifier);
+        String sourceNames = props.getProperty("sourceNames");
+        Validator.notNull(sourceNames, "error : build ConcatMergerMetadata failed sourceNames in props can not be null, task identifier: [%s]", taskIdentifier);
         String delimiter = props.getProperty("delimiter", "");
-        return new FilterBuilder(taskIdentifier, order, delimiter, sourceName, initTargetNames(targetNames.split(MarkConstant.COMMA))).build();
+        return new FilterBuilder(taskIdentifier, order, delimiter, targetName, parseSourceNames(sourceNames)).build();
     }
     
-    private static Collection<String> initTargetNames(final String[] split) {
-        int length = split.length;
-        Validator.preState(1 < length, "error : build DelimiterSplitterMetadata failed targetNames must be plural separated by ','");
-        Collection<String> result = new ArrayList<>();
-        for (int i = 0; i < length; i++) {
-            result.add(split[i].trim());
+    private static String[] parseSourceNames(final String sourceNames) {
+        Collection<String> names = StringUtil.deduplicateSplit(sourceNames, MarkConstant.COMMA);
+        String[] result = new String[names.size()];
+        int index = 0;
+        for (String each : names) {
+            result[index] = each;
+            index++;
         }
         return result;
     }
@@ -98,10 +96,10 @@ public final class DelimiterSplitterMetaData implements FilterMetaData {
         
         private final String targetName;
         
-        private final Collection<String> sourceNames;
+        private final String[] sourceNames;
         
-        private DelimiterSplitterMetaData build() {
-            return new DelimiterSplitterMetaData(taskIdentifier, order, delimiter, targetName, sourceNames);
+        private NodeValueConcatMergerMetaData build() {
+            return new NodeValueConcatMergerMetaData(taskIdentifier, order, delimiter, targetName, sourceNames);
         }
     }
 }

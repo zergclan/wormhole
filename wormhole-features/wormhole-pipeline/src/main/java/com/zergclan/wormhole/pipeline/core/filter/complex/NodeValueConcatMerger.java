@@ -15,36 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
+package com.zergclan.wormhole.pipeline.core.filter.complex;
 
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
-import com.zergclan.wormhole.pipeline.core.helper.NodeValueHelper;
+import com.zergclan.wormhole.pipeline.core.helper.NodeValueConcatMergerHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 /**
- * Fixed node editor implemented of {@link Filter}.
+ * Node value concat merger implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 @Getter
-public final class FixedNodeEditor implements Filter<DataGroup> {
+public final class NodeValueConcatMerger implements Filter<DataGroup> {
     
     private final int order;
     
     private final FilterType filterType;
-
-    private final Collection<NodeValueHelper> fixedValue;
+    
+    private final NodeValueConcatMergerHelper[] nodeValueConcatMergerHelpers;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<NodeValueHelper> iterator = fixedValue.iterator();
-        while (iterator.hasNext()) {
-            if (!dataGroup.refresh(iterator.next().getDefaultValue())) {
+        int length = nodeValueConcatMergerHelpers.length;
+        for (int i = 0; i < length; i++) {
+            if (!nodeValueConcatMergerHelpers[i].mergeNodeValue(dataGroup)) {
                 return false;
             }
         }

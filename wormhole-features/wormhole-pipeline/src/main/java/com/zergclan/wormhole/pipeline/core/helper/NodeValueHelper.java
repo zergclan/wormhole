@@ -15,28 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.filter;
+package com.zergclan.wormhole.pipeline.core.helper;
 
-import com.zergclan.wormhole.data.core.DataGroup;
-import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
-import com.zergclan.wormhole.pipeline.api.Filter;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Simple factory for create {@link Filter}.
+ * Node value helper.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class FilterFactory {
+@RequiredArgsConstructor
+public final class NodeValueHelper {
+    
+    private final DataNodeTypeMetaData.DataType dataType;
+    
+    private final String defaultValue;
     
     /**
-     * Create {@link Filter} of {@link DataGroup}.
+     * Get default {@link DataNode}.
      *
-     * @param filterMetaData {@link FilterMetaData}
-     * @return {@link Filter}
+     * @return {@link DataNode}
      */
-    public static Filter<DataGroup> createDataGroupFilter(final FilterMetaData filterMetaData) {
-        // TODO create filter for data group
+    public DataNode<?> getDefaultValue() {
+        // TODO get default data node
         return null;
     }
 }

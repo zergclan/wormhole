@@ -22,6 +22,7 @@ import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
@@ -30,6 +31,7 @@ import java.util.Properties;
  * Data type convertor implemented of {@link FilterMetaData}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class DataTypeConvertorMetaData implements FilterMetaData {
 
     private static final FilterType FILTER_TYPE = FilterType.DATA_TYPE_CONVERTOR;
@@ -47,11 +49,6 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
-    }
-
-    @Override
-    public int getOrder() {
-        return order;
     }
 
     @Override

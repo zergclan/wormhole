@@ -42,7 +42,7 @@ public final class YamlDataNodeMappingConfigurationSwapper implements Swapper<Ya
     }
     
     private Collection<String> parseNodeNames(final String nodeNames) {
-        return StringUtil.deduplicatedSplit(nodeNames, MarkConstant.COMMA);
+        return StringUtil.deduplicateSplit(nodeNames, MarkConstant.COMMA);
     }
     
     @Override

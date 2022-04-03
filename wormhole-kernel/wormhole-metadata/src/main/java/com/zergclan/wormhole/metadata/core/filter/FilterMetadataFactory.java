@@ -19,11 +19,11 @@ package com.zergclan.wormhole.metadata.core.filter;
 
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.config.core.FilterConfiguration;
-import com.zergclan.wormhole.metadata.core.filter.complex.ConcatMergerMetaData;
-import com.zergclan.wormhole.metadata.core.filter.complex.DelimiterSplitterMetaData;
+import com.zergclan.wormhole.metadata.core.filter.complex.NodeValueConcatMergerMetaData;
+import com.zergclan.wormhole.metadata.core.filter.complex.NodeValueDelimiterSplitterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.CodeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.DataTypeConvertorMetaData;
-import com.zergclan.wormhole.metadata.core.filter.precise.convertor.NameConvertorMetaData;
+import com.zergclan.wormhole.metadata.core.filter.precise.convertor.NodeNameConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.FixedNodeEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.NullToDefaultEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueRangeEditorMetaData;
@@ -66,7 +66,7 @@ public final class FilterMetadataFactory {
         if (DataNodeTypeMetaData.NodeType.DEFAULT_ABLE == targetNodeType && DataNodeTypeMetaData.NodeType.STANDARD == sourceNodeType) {
             String defaultValue = targetDataNode.getDefaultValue();
             Validator.notNull(defaultValue, "error : create default filter metadata failed defaultValue can not be null task identifier: [%s]", taskIdentifier);
-            result.add(NullToDefaultEditorMetaData.builder(taskIdentifier, Integer.MIN_VALUE, sourceName, targetDataNode.getDefaultValue()));
+            result.add(NullToDefaultEditorMetaData.builder(taskIdentifier, Integer.MIN_VALUE, sourceName, targetDataNode.getDefaultValue(), targetDataNode.getType().getDataType()));
         }
         result.addAll(createDataTypeConvertorMetadata(taskIdentifier, 0, sourceName, targetDataNode.getType().getDataType(), sourceDataNode.getType().getDataType()));
         return result;
@@ -119,15 +119,15 @@ public final class FilterMetadataFactory {
             case VALUE_RANGE:
                 return ValueRangeEditorMetaData.builder(taskIdentifier, order, props);
             case NAME_CONVERTOR:
-                return NameConvertorMetaData.builder(taskIdentifier, order, props);
+                return NodeNameConvertorMetaData.builder(taskIdentifier, order, props);
             case CODE_CONVERTOR:
                 return CodeConvertorMetaData.builder(taskIdentifier, order, props);
             case DATA_TYPE_CONVERTOR:
                 return DataTypeConvertorMetaData.builder(taskIdentifier, order, props);
             case CONCAT_MERGER:
-                return ConcatMergerMetaData.builder(taskIdentifier, order, props);
+                return NodeValueConcatMergerMetaData.builder(taskIdentifier, order, props);
             case DELIMITER_SPLITTER:
-                return DelimiterSplitterMetaData.builder(taskIdentifier, order, props);
+                return NodeValueDelimiterSplitterMetaData.builder(taskIdentifier, order, props);
             default:
                 throw new UnsupportedOperationException();
         }
