@@ -17,13 +17,13 @@
 
 package com.zergclan.wormhole.metadata.core.initializer;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.config.core.DataNodeConfiguration;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaDataFactory;
 import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
 
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * Data node metadata initializer.
@@ -45,16 +45,28 @@ public final class DataNodeMetadataInitializer {
     }
     
     /**
-     * Init defaulted {@link DataNodeMetaData}.
+     * Init default target source data nodes.
      *
-     * @param columnMetadata {@link ColumnMetaData}
-     * @return {@link DataNodeMetaData}
+     * @param targetColumn {@link ColumnMetaData}
+     * @param sourceColumn {@link ColumnMetaData}
+     * @return default target source data nodes
      */
-    public DataNodeMetaData init(final ColumnMetaData columnMetadata) {
-        String name = columnMetadata.getName();
-        String tableName = columnMetadata.getSchema() + MarkConstant.POINT + columnMetadata.getTable();
-        DataNodeTypeMetaData type = new DataNodeTypeMetaData(columnMetadata);
-        Optional<String> defaultValue = columnMetadata.getDefaultValue();
-        return defaultValue.map(value -> new DataNodeMetaData(name, tableName, type, value)).orElseGet(() -> new DataNodeMetaData(name, tableName, type));
+    public DataNodeMetaData[] initDefaultTargetSourceDataNodes(final ColumnMetaData targetColumn, final ColumnMetaData sourceColumn) {
+        DataNodeMetaData[] result = new DataNodeMetaData[2];
+        if (isSameDataNodeType(targetColumn, sourceColumn)) {
+            result[0] = DataNodeTypeMetaDataFactory.createObjectDataType(targetColumn);
+            result[1] = DataNodeTypeMetaDataFactory.createObjectDataType(sourceColumn);
+            return result;
+        }
+        result[0] = DataNodeTypeMetaDataFactory.createDataType(targetColumn);
+        result[1] = DataNodeTypeMetaDataFactory.createDataType(sourceColumn);
+        return result;
+    }
+    
+    private boolean isSameDataNodeType(final ColumnMetaData targetColumn, final ColumnMetaData sourceColumn) {
+        boolean isSameType = Objects.equals(targetColumn.getDataType(), sourceColumn.getDataType());
+        boolean isSameNullable = Objects.equals(targetColumn.isNullable(), sourceColumn.isNullable());
+        boolean isSameDefaultValue = Objects.equals(targetColumn.getDefaultValue(), sourceColumn.getDefaultValue());
+        return isSameType && isSameNullable && isSameDefaultValue;
     }
 }

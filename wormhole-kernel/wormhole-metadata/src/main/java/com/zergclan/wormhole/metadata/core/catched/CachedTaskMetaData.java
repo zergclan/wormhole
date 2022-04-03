@@ -37,8 +37,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -87,68 +87,48 @@ public final class CachedTaskMetaData implements MetaData {
     
         private CachedTaskMetaData build() throws SQLException {
             TargetMetaData target = task.getTarget();
-            Map<String, DataNodeMetaData> defaultTargetDataNodes = createDefaultTargetDataNodes(target);
             SourceMetaData source = task.getSource();
-            Map<String, DataNodeMetaData> defaultSourceDataNodes = createDefaultSourceDataNodes(defaultTargetDataNodes, source);
-            Collection<FilterMetaData> defaultFilters = createDefaultFilters(defaultTargetDataNodes, defaultSourceDataNodes);
-            target.getDataNodes().putAll(defaultTargetDataNodes);
-            source.getDataNodes().putAll(defaultSourceDataNodes);
+            Map<String, DataNodeMetaData[]> defaultDataNodes = createDefaultDataNodes(target, source);
+            Iterator<Map.Entry<String, DataNodeMetaData[]>> iterator = defaultDataNodes.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, DataNodeMetaData[]> entry = iterator.next();
+                String dataNodeName = entry.getKey();
+                DataNodeMetaData[] targetSourceDataNodes = entry.getValue();
+                target.getDataNodes().put(dataNodeName, targetSourceDataNodes[0]);
+                source.getDataNodes().put(dataNodeName, targetSourceDataNodes[1]);
+                task.getFilters().addAll(FilterMetadataFactory.getDefaultInstance(task.getIdentifier(), targetSourceDataNodes[0], targetSourceDataNodes[1]));
+            }
             CachedTargetMetaData cachedTargetMetadata = CachedTargetMetaData.builder(generateIdentifier(), target, dataSources.get(target.getDataSourceIdentifier()));
             CachedSourceMetaData cachedSourceMetadata = CachedSourceMetaData.builder(generateIdentifier(), source, dataSources.get(source.getDataSourceIdentifier()));
-            task.getFilters().addAll(defaultFilters);
             return new CachedTaskMetaData(task.getIdentifier(), SequenceGenerator.generateId(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata, task.getFilters());
         }
-    
-        private Map<String, DataNodeMetaData> createDefaultTargetDataNodes(final TargetMetaData target) throws SQLException {
-            Map<String, DataNodeMetaData> result = new LinkedHashMap<>();
-            DataSourceMetaData dataSourceMetaData = dataSources.get(target.getDataSourceIdentifier());
-            DataSourceMetadataInitializer.init(dataSourceMetaData);
-            TableMetaData targetTable = dataSourceMetaData.getTable(target.getTable());
-            Map<String, ColumnMetaData> defaultColumns = createRelatedTargetDefaultColumn(target, targetTable);
-            defaultColumns.forEach((key, value) -> result.put(key, dataNodeMetadataInitializer.init(value)));
-            return result;
-        }
         
-        private Map<String, ColumnMetaData> createRelatedTargetDefaultColumn(final TargetMetaData target, final TableMetaData table) {
-            Map<String, ColumnMetaData> result = new LinkedHashMap<>();
-            Map<String, ColumnMetaData> targetColumns = table.getColumns();
-            Map<String, DataNodeMetaData> initializationDataNodes = target.getDataNodes();
+        private Map<String, DataNodeMetaData[]> createDefaultDataNodes(final TargetMetaData target, final SourceMetaData source) throws SQLException {
+            TableMetaData targetTable = initTableMetaData(target.getDataSourceIdentifier(), target.getTable());
+            TableMetaData sourceTable = initTableMetaData(source.getDataSourceIdentifier(), source.getTable());
+            Map<String, DataNodeMetaData[]> result = new LinkedHashMap<>();
+            Map<String, DataNodeMetaData> initializationTargetDataNodes = target.getDataNodes();
             Collection<String> ignoreNodes = target.getIgnoreNodes();
-            for (Map.Entry<String, ColumnMetaData> entry : targetColumns.entrySet()) {
+            Map<String, ColumnMetaData> columns = targetTable.getColumns();
+            Iterator<Map.Entry<String, ColumnMetaData>> iterator = columns.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, ColumnMetaData> entry = iterator.next();
                 String columnName = entry.getKey();
-                if (!initializationDataNodes.containsKey(columnName) && !ignoreNodes.contains(columnName)) {
-                    
-                    result.put(columnName, entry.getValue());
+                if (!initializationTargetDataNodes.containsKey(columnName) && !ignoreNodes.contains(columnName)) {
+                    ColumnMetaData sourceColumn = sourceTable.getColumn(columnName);
+                    Validator.notNull(sourceColumn, "error: create default source data node failed, columnName: [%s]", columnName);
+                    result.put(columnName, dataNodeMetadataInitializer.initDefaultTargetSourceDataNodes(entry.getValue(), sourceColumn));
                 }
             }
             return result;
         }
         
-        private Map<String, DataNodeMetaData> createDefaultSourceDataNodes(final Map<String, DataNodeMetaData> defaultTargetDataNodes, final SourceMetaData source) throws SQLException {
-            Map<String, DataNodeMetaData> result = new LinkedHashMap<>();
-            DataSourceMetaData dataSourceMetaData = dataSources.get(source.getDataSourceIdentifier());
+        private TableMetaData initTableMetaData(final String dataSourceIdentifier, final String table) throws SQLException {
+            DataSourceMetaData dataSourceMetaData = dataSources.get(dataSourceIdentifier);
             DataSourceMetadataInitializer.init(dataSourceMetaData);
-            Map<String, ColumnMetaData> columns = dataSourceMetaData.getTable(source.getTable()).getColumns();
-            for (Map.Entry<String, DataNodeMetaData> entry : defaultTargetDataNodes.entrySet()) {
-                String columnName = entry.getKey();
-                ColumnMetaData columnMetaData = columns.get(columnName);
-                Validator.notNull(columnMetaData, "error: create default source data node failed, columnName: [%s]", columnName);
-                result.put(columnName, dataNodeMetadataInitializer.init(columnMetaData));
-            }
-            return result;
+            return dataSourceMetaData.getTable(table);
         }
         
-        private Collection<FilterMetaData> createDefaultFilters(final Map<String, DataNodeMetaData> defaultTarget, final Map<String, DataNodeMetaData> defaultSource) {
-            Collection<FilterMetaData> result = new LinkedList<>();
-            for (Map.Entry<String, DataNodeMetaData> entry : defaultTarget.entrySet()) {
-                String nodeName = entry.getKey();
-                DataNodeMetaData targetDataNode = entry.getValue();
-                DataNodeMetaData sourceDataNode = defaultSource.get(nodeName);
-                result.addAll(FilterMetadataFactory.getDefaultInstance(task.getIdentifier(), sourceDataNode, targetDataNode));
-            }
-            return result;
-        }
-    
         private String generateIdentifier() {
             return task.getIdentifier() + MarkConstant.SPACE + taskBatch;
         }
