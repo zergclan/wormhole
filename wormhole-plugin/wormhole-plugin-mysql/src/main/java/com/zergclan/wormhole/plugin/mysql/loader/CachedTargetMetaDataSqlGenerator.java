@@ -57,10 +57,10 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
             String selectField = StringUtil.join(compareNodesIterator, ",");
             stringBuilder.append(selectField);
             stringBuilder.append(" from ").append(cachedTargetMetaData.getTable()).append(" where ");
-            Collection<String> uniqueNodes  = cachedTargetMetaData.getCompareNodes();
+            Collection<String> uniqueNodes = cachedTargetMetaData.getCompareNodes();
             Iterator<String> uniqueNodesIterator = uniqueNodes.iterator();
             String whereField = StringUtil.join(uniqueNodesIterator, "-");
-            stringBuilder.append(whereField).append(" in (?)");
+            stringBuilder.append(whereField).append(String.format(" $%s{%s} ", "O", whereField));
             selectSql = stringBuilder.toString();
             sqlMap.put(sqlKey, selectSql);
         }

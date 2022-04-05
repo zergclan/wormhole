@@ -17,9 +17,6 @@
 
 package com.zergclan.wormhole.plugin.mysql.loader;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 public interface SqlGenerator {
 
     /**

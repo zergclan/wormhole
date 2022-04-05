@@ -19,28 +19,30 @@ package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 public class FieldGetterSelectCondition extends FieldGetter {
 
     private final String name;
 
-    private final FieldGetter elementFieldGetter;
+    private final Map<String, FieldGetter> elementFieldGetter;
 
-    public FieldGetterSelectCondition(final String name, final FieldGetter elementFieldGetter) {
+    public FieldGetterSelectCondition(final String name, final Map<String, FieldGetter> elementFieldGetter) {
         this.name = name;
         this.elementFieldGetter = elementFieldGetter;
     }
 
     @Override
     public Object get(final Object params) {
-        Collection collection = (Collection)params;
+        Collection collection = (Collection) params;
         StringBuilder stringBuilder = new StringBuilder("");
         String[] conditionArr = name.split("-");
         Iterator<Object> iterator = collection.iterator();
         while (iterator.hasNext()) {
+            Object element = iterator.next();
             stringBuilder.append("'");
-            for(String columnName : conditionArr) {
-                stringBuilder.append(elementFieldGetter.get(columnName)).append("-");
+            for (String columnName : conditionArr) {
+                stringBuilder.append(elementFieldGetter.get(columnName).get(element)).append("-");
             }
             stringBuilder.substring(0, stringBuilder.length() - 1);
             stringBuilder.append("',");

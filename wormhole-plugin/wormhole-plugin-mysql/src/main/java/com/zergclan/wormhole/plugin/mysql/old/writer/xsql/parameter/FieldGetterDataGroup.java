@@ -29,15 +29,7 @@ public class FieldGetterDataGroup extends FieldGetter {
 
     @Override
     public Object get(final Object params) {
-        DataGroup dataGroup = (DataGroup)params;
+        DataGroup dataGroup = (DataGroup) params;
         return dataGroup.getDataNode(name).getValue();
-    }
-
-    public static void main(String[] args) {
-        FieldGetterDataGroup fieldDataGroup = new FieldGetterDataGroup("11");
-        test(fieldDataGroup);
-    }
-    public static void test(Object o) {
-        System.out.println(FieldGetterDataGroup.class.isAssignableFrom(o.getClass()));
     }
 }

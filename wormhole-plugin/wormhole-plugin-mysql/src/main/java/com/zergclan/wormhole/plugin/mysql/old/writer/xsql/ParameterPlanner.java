@@ -18,13 +18,23 @@
 package com.zergclan.wormhole.plugin.mysql.old.writer.xsql;
 
 import com.zergclan.wormhole.plugin.mysql.old.writer.util.SqlUtil;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.*;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterDataGroup;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.ParameterObject;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.Parameter;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterArray;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterMap;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetter;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterSelectCondition;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterBean;
+import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.ParameterHandler;
 import lombok.SneakyThrows;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,6 +95,18 @@ public class ParameterPlanner {
                 p.setGetter(new FieldGetterMap(name));
             } else if (FieldGetterDataGroup.class.isAssignableFrom(clazz)) {
                 p.setGetter(new FieldGetterDataGroup(name));
+            } else if (Collection.class.isAssignableFrom(clazz)) {
+                Map<String, FieldGetter> elementFieldGetter = new HashMap<>(8);
+                String[] conditionArr = name.split("-");
+                for (String columnName : conditionArr) {
+                    Iterator iterator = ((Collection) param).iterator();
+                    if (iterator.hasNext()) {
+//                        if (FieldGetterDataGroup.class.isAssignableFrom(iterator.next().getClass())) {
+                        elementFieldGetter.put(columnName, new FieldGetterDataGroup(columnName));
+//                        }
+                    }
+                }
+                p.setGetter(new FieldGetterSelectCondition(name, elementFieldGetter));
             } else {
                 String name2 = SqlUtil.sqlToJava(name.toLowerCase());
                 p.setGetter(new FieldGetterBean(clazz, name2));

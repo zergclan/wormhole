@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.plugin.mysql.loader;
 
-import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.plugin.mysql.old.writer.util.SqlUtil;
 import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.ParameterPlanner;
 import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.ParameterHandler;
@@ -25,11 +24,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.List;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -47,57 +48,52 @@ public class SqlExecutor {
 
     /**
      * query.
-     *
      * @param querySql {@link String}
-     * @param selectData  {@link Map}
-     * @return int
+     * @param selectData {@link Collection}
+     * @return List
+     * @throws SQLException  Exception
      */
     public List<Map<String, String>> executeSelect(final String querySql, final Collection selectData) throws SQLException {
+        List<Map<String, String>> result = new LinkedList<>();
         try (PreparedStatement ps = prepareSql(querySql, selectData)) {
-            System.out.println("----------------------queryCount-------------------:" + ps);
-            ResultSet rs = ps.executeQuery();
-            int row = -1;
-            if (rs.next()) {
-                row = rs.getInt("count");
+            ResultSet resultSet = ps.executeQuery();
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            int columnCount = resultSetMetaData.getColumnCount();
+            while (resultSet.next()) {
+                Map<String, String> map = new LinkedHashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    map.put(resultSetMetaData.getColumnName(i), resultSet.getString(i));
+                }
+                result.add(map);
             }
-
-            return null;
         }
+        return result;
     }
 
     /**
      * batch insert.
      *
      * @param insertSql  {@link String}
-     * @param insertData {@link Map}
+     * @param insertData {@link Collection}
+     * @throws SQLException  Exception
      */
-    public void batchInsert(final String insertSql, final List<Map<String, Object>> insertData) {
-        try {
-            try (PreparedStatement ps = prepareBatchInsertSql(insertSql, insertData)) {
-                System.out.println("----------------------batchInsert-------------------:" + ps);
-                ps.execute();
-            }
-        } catch (SQLException e) {
-            throw new WormholeException(e);
+    public void batchInsert(final String insertSql, final Collection insertData) throws SQLException {
+        try (PreparedStatement ps = prepareBatchInsertSql(insertSql, insertData)) {
+            System.out.println("----------------------batchInsert-------------------:" + ps);
+            ps.execute();
         }
     }
 
     /**
      * batch update.
      * @param updateStr  {@link String}
-     * @param updateData {@link Map}
+     * @param updateData {@link Object}
+     * @throws SQLException  Exception
      */
-    public void batchUpdate(final String updateStr, final List<Map<String, Object>> updateData) {
-        updateData.forEach(map -> {
-            try {
-                try (PreparedStatement ps = prepareSql(updateStr, map)) {
-                    System.out.println("----------------------batchUpdate-------------------:" + ps);
-                    ps.execute();
-                }
-            } catch (SQLException e) {
-                throw new WormholeException(e);
-            }
-        });
+    public void batchUpdate(final String updateStr, final Object updateData) throws SQLException {
+        try (PreparedStatement ps = prepareSql(updateStr, updateData)) {
+            ps.execute();
+        }
     }
 
     /**
@@ -130,7 +126,7 @@ public class SqlExecutor {
      * @return PreparedStatement
      * @throws SQLException notNull
      */
-    private PreparedStatement prepareBatchInsertSql(final String sql, final List<Map<String, Object>> insertData) throws SQLException {
+    private PreparedStatement prepareBatchInsertSql(final String sql, final Collection insertData) throws SQLException {
 
         ParameterHandler parameterHandler = PARAMETER_HANDLER_CACHE.get(sql);
         if (parameterHandler == null) {
@@ -146,7 +142,7 @@ public class SqlExecutor {
             sb.append(valueStr);
         }
         PreparedStatement ps = jdbcTemplate.getDataSource().getConnection().prepareStatement(sql2);
-        parameterHandler.setBatchInsertParameters(ps, (List) insertData);
+        parameterHandler.setBatchInsertParameters(ps, insertData);
 
         return ps;
     }
