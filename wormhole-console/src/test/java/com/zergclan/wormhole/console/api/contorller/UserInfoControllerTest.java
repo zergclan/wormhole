@@ -93,7 +93,7 @@ public final class UserInfoControllerTest {
                 .contentType("application/json").content(requestJson)).andReturn();
         HttpResult<Object> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
         List<UserInfo> items = (ArrayList) ((LinkedHashMap) httpResult.getData()).get("items");
-        assertEquals(1, items.size());
+        assertFalse(items.isEmpty());
     }
 
     private void assertAdd() throws Exception {
