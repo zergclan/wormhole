@@ -50,8 +50,8 @@ public final class UserInfoControllerTest {
     
     @Test
     public void assertUserInfoController() throws Exception {
-        assertGetById();
         assertList();
+        assertGetById();
         assertPage();
         assertAdd();
         assertUpdate();
