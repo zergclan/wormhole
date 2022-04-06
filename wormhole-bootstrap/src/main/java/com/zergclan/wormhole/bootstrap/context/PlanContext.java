@@ -44,7 +44,7 @@ public final class PlanContext {
      * @return is executing or not
      */
     public boolean isExecuting(final String planIdentifier) {
-        return false;
+        return cachedMetadata.asMap().containsKey(planIdentifier);
     }
 
     /**

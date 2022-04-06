@@ -50,11 +50,10 @@ public final class BatchedDataGroupHandler implements ProcessTask {
     @Override
     public void run() {
         Iterator<DataGroup> iterator = batchedDataGroup.getDataGroups().iterator();
-        DataGroup each;
         while (iterator.hasNext()) {
-            each = iterator.next();
-            if (handleDataGroup(each)) {
-                batchedDataGroup.remove(each);
+            DataGroup dataGroup = iterator.next();
+            if (!handleDataGroup(dataGroup)) {
+                batchedDataGroup.remove(dataGroup);
             }
         }
         loadedHandler.handle(batchedDataGroup);
@@ -63,7 +62,9 @@ public final class BatchedDataGroupHandler implements ProcessTask {
     private boolean handleDataGroup(final DataGroup dataGroup) {
         Iterator<Filter<DataGroup>> iterator = filters.iterator();
         while (iterator.hasNext()) {
-            if (!iterator.next().doFilter(dataGroup)) {
+            Filter<DataGroup> filter = iterator.next();
+            if (!filter.doFilter(dataGroup)) {
+                // TODO send event
                 return false;
             }
         }
