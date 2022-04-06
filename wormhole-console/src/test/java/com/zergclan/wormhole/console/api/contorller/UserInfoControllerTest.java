@@ -38,6 +38,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -50,8 +51,8 @@ public final class UserInfoControllerTest {
     
     @Test
     public void assertUserInfoController() throws Exception {
-        assertList();
         assertGetById();
+        assertList();
         assertPage();
         assertAdd();
         assertUpdate();
@@ -78,7 +79,7 @@ public final class UserInfoControllerTest {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/system/user/list").header("token", "wormhole-console-test-token").header("trace", "trace")
                 .contentType("application/json").content("")).andReturn();
         HttpResult<List<UserInfo>> httpResult = JSON_CONVERTER.shallowParse(mvcResult.getResponse().getContentAsString(), HttpResult.class);
-        assertEquals(1, httpResult.getData().size());
+        assertFalse(httpResult.getData().isEmpty());
     }
     
     @SuppressWarnings("all")
