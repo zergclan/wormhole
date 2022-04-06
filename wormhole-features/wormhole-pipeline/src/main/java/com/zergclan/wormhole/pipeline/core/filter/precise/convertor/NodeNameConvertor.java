@@ -21,7 +21,7 @@ import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
-import com.zergclan.wormhole.pipeline.core.helper.NodeNameHelper;
+import com.zergclan.wormhole.pipeline.core.helper.NodeNameConvertorHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -39,13 +39,13 @@ public final class NodeNameConvertor implements Filter<DataGroup> {
     
     private final FilterType filterType;
     
-    private final Map<String, NodeNameHelper> nodeNameHelpers;
+    private final Map<String, NodeNameConvertorHelper> nodeNameHelpers;
 
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, NodeNameHelper>> iterator = nodeNameHelpers.entrySet().iterator();
+        Iterator<Map.Entry<String, NodeNameConvertorHelper>> iterator = nodeNameHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, NodeNameHelper> entry = iterator.next();
+            Map.Entry<String, NodeNameConvertorHelper> entry = iterator.next();
             DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
             dataNode.refreshName(entry.getValue().getTargetName());
         }

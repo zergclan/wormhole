@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Batched of {@link DataGroup}.
@@ -33,6 +34,8 @@ public final class BatchedDataGroup {
     
     private final Collection<DataGroup> dataGroups;
     
+    private final Collection<DataGroup> errors = new LinkedList<>();
+    
     /**
      * Remove {@link DataGroup}.
      *
@@ -40,6 +43,6 @@ public final class BatchedDataGroup {
      * @return is removed or not
      */
     public boolean remove(final DataGroup dataGroup) {
-        return dataGroups.remove(dataGroup);
+        return errors.add(dataGroup);
     }
 }

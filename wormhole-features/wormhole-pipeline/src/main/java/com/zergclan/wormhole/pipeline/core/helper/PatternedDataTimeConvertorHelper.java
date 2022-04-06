@@ -15,30 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.handler;
+package com.zergclan.wormhole.pipeline.core.helper;
 
-import com.zergclan.wormhole.data.api.result.Result;
-import com.zergclan.wormhole.data.core.BatchedDataGroup;
-import com.zergclan.wormhole.pipeline.api.Handler;
-import com.zergclan.wormhole.plugin.api.Loader;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.data.core.node.PatternedDataTime;
+
+import java.util.Optional;
 
 /**
- * Loaded handler.
+ * Patterned data time convertor helper.
  */
-@RequiredArgsConstructor
-public final class LoadedHandler implements Handler<BatchedDataGroup> {
+public final class PatternedDataTimeConvertorHelper {
     
-    private final Loader<BatchedDataGroup, Result<?>> loader;
-    
-    @Override
-    public void handle(final BatchedDataGroup batchedDataGroup) {
-        batchedDataGroup.getDataGroups().removeAll(batchedDataGroup.getErrors());
-        loader.load(batchedDataGroup);
-    }
-    
-    @Override
-    public int getOrder() {
-        return Integer.MAX_VALUE;
+    /**
+     * Convert source to target of {@link PatternedDataTime} type.
+     *
+     * @param patternedDataTime {@link PatternedDataTime}
+     * @return target {@link PatternedDataTime}
+     */
+    public Optional<PatternedDataTime> convert(final PatternedDataTime patternedDataTime) {
+        // TODO convert
+        return Optional.empty();
     }
 }

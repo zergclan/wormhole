@@ -43,7 +43,7 @@ import com.zergclan.wormhole.pipeline.core.filter.precise.validator.NotBlankVali
 import com.zergclan.wormhole.pipeline.core.filter.precise.validator.NotNullValidator;
 import com.zergclan.wormhole.pipeline.core.helper.CodeConvertorHelper;
 import com.zergclan.wormhole.pipeline.core.helper.DataTypeConvertorHelper;
-import com.zergclan.wormhole.pipeline.core.helper.NodeNameHelper;
+import com.zergclan.wormhole.pipeline.core.helper.NodeNameConvertorHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueConcatMergerHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueDelimiterSplitterHelper;
@@ -159,11 +159,11 @@ public final class DataGroupFilterFactory {
     }
     
     private static Filter<DataGroup> createNodeNameConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
-        Map<String, NodeNameHelper> nodeNameHelpers = new LinkedHashMap<>();
+        Map<String, NodeNameConvertorHelper> nodeNameHelpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
             NodeNameConvertorMetaData filterMetaData = (NodeNameConvertorMetaData) iterator.next();
-            nodeNameHelpers.put(filterMetaData.getSourceName(), new NodeNameHelper(filterMetaData.getSourceName(), filterMetaData.getTargetName()));
+            nodeNameHelpers.put(filterMetaData.getSourceName(), new NodeNameConvertorHelper(filterMetaData.getSourceName(), filterMetaData.getTargetName()));
         }
         return new NodeNameConvertor(order, type, nodeNameHelpers);
     }

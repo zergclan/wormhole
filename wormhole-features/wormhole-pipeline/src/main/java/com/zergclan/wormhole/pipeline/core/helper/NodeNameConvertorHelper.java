@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-public final class NodeNameHelper {
+public final class NodeNameConvertorHelper {
     
     private final String sourceName;
     

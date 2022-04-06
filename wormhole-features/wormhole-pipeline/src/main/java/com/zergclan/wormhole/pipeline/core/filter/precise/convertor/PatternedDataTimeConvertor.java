@@ -17,30 +17,51 @@
 
 package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
 
+import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.PatternedDataTime;
+import com.zergclan.wormhole.data.core.node.PatternedDataTimeDataNode;
+import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.helper.PatternedDataTimeConvertorHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  *  {@link PatternedDataTime} convertor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class PatternedDataTimeConvertor implements Filter<DataGroup> {
     
-    @Getter
     private final int order;
     
-    private final PatternedDataTime patternedDataTime;
+    private final FilterType filterType;
+    
+    private final Map<String, PatternedDataTimeConvertorHelper> patternedDataTimeConvertorHelpers;
     
     @Override
-    public boolean doFilter(final DataGroup data) {
-        return false;
+    public boolean doFilter(final DataGroup dataGroup) {
+        Iterator<Map.Entry<String, PatternedDataTimeConvertorHelper>> iterator = patternedDataTimeConvertorHelpers.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, PatternedDataTimeConvertorHelper> entry = iterator.next();
+            String name = entry.getKey();
+            DataNode<?> dataNode = dataGroup.getDataNode(name);
+            Optional<PatternedDataTime> target = entry.getValue().convert((PatternedDataTime) dataNode.getValue());
+            if (!target.isPresent()) {
+                return false;
+            }
+            dataGroup.refresh(new PatternedDataTimeDataNode(name, target.get()));
+        }
+        return true;
     }
     
     @Override
     public String getType() {
-        return null;
+        return FilterType.PATTERNED_DATA_TIME_CONVERTOR.name();
     }
 }
