@@ -19,7 +19,6 @@ package com.zergclan.wormhole.data.core.result;
 
 import com.zergclan.wormhole.data.core.DataGroup;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -33,20 +32,20 @@ public interface LoadResult {
     int getDataNum();
 
     /**
-     * get add data num.
+     * get success data num.
      * @return int
      */
-    int getAddNum();
+    int getSuccessNum();
 
     /**
-     * get modify data num.
+     * get fail data num.
      * @return int
      */
-    int getModifyNum();
+    int getFailNum();
 
     /**
      * get error info.
      * @return map
      */
-    Map<String, Collection<DataGroup>> getErrInfo();
+    Map<DataGroup, String> getErrInfo();
 }

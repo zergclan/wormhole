@@ -15,27 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.reader.mysql;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
+import com.zergclan.wormhole.data.core.DataGroup;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+public class FieldGetterDataGroup extends FieldGetter {
 
-/**
- * ResultSet to entity conversion.
- */
-@RequiredArgsConstructor
-public final class TableMetaDataRowMapper implements RowMapper<TableMetaData> {
+    private final String name;
 
-    private final String databaseIdentifier;
+    public FieldGetterDataGroup(final String name) {
+        this.name = name;
+    }
 
     @Override
-    public TableMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-        TableMetaData tableMetaData = new TableMetaData(databaseIdentifier, rs.getString("TABLE_SCHEMA"),
-                rs.getString("TABLE_NAME"));
-        return tableMetaData;
+    public Object get(final Object params) {
+        DataGroup dataGroup = (DataGroup) params;
+        return dataGroup.getDataNode(name).getValue();
     }
 }

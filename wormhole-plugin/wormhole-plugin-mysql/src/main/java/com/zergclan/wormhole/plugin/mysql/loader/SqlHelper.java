@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.plugin.mysql.loader;
 
+import com.zergclan.wormhole.plugin.mysql.xsql.SqlExecutor;
+import com.zergclan.wormhole.plugin.mysql.xsql.SqlGenerator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
@@ -44,29 +46,29 @@ public final class SqlHelper {
      * @return List
      * @throws SQLException  Exception
      */
-    public List<Map<String, String>> executeSelect(final Collection selectData) throws SQLException {
+    public List<Map<String, Object>> executeSelect(final Object selectData) throws SQLException {
         String selectSql = sqlGenerator.createSelectSql();
-        List<Map<String, String>> result = sqlExecutor.executeSelect(selectSql, selectData);
+        List<Map<String, Object>> result = sqlExecutor.query(selectSql, selectData);
         return result;
     }
 
     /**
-     * execute batch insert sql.
+     * execute insert sql.
      * @param insertData {@link Collection}
      * @throws SQLException  Exception
      */
-    public void executeBatchInsert(final Collection insertData) throws SQLException {
+    public void executeInsert(final Object insertData) throws SQLException {
         String insertSql = sqlGenerator.createInsertSql();
-        sqlExecutor.batchInsert(insertSql, insertData);
+        sqlExecutor.execute(insertSql, insertData);
     }
 
     /**
-     * execute batch insert sql.
+     * execute insert sql.
      * @param updateData {@link Object}
      * @throws SQLException  Exception
      */
     public void executeUpdate(final Object updateData) throws SQLException {
         String updateSql = sqlGenerator.createUpdateSql();
-        sqlExecutor.batchUpdate(updateSql, updateData);
+        sqlExecutor.execute(updateSql, updateData);
     }
 }

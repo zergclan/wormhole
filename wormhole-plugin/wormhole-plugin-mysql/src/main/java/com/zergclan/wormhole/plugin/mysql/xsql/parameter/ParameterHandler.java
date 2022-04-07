@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

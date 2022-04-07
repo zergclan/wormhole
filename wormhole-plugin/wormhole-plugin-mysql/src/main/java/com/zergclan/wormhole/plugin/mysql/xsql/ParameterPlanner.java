@@ -15,26 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql;
+package com.zergclan.wormhole.plugin.mysql.xsql;
 
-import com.zergclan.wormhole.plugin.mysql.old.writer.util.SqlUtil;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterDataGroup;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.ParameterObject;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.Parameter;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterArray;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterMap;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetter;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterSelectCondition;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.FieldGetterBean;
-import com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter.ParameterHandler;
+import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.plugin.mysql.util.SqlUtil;
+import com.zergclan.wormhole.plugin.mysql.xsql.parameter.FieldGetterDataGroup;
+import com.zergclan.wormhole.plugin.mysql.xsql.parameter.ParameterObject;
+import com.zergclan.wormhole.plugin.mysql.xsql.parameter.Parameter;
+import com.zergclan.wormhole.plugin.mysql.xsql.parameter.FieldGetterArray;
+import com.zergclan.wormhole.plugin.mysql.xsql.parameter.FieldGetterMap;
+import com.zergclan.wormhole.plugin.mysql.xsql.parameter.FieldGetterBean;
+import com.zergclan.wormhole.plugin.mysql.xsql.parameter.ParameterHandler;
 import lombok.SneakyThrows;
 
 import java.util.Map;
 import java.util.List;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,16 +46,6 @@ public class ParameterPlanner {
 
     static {
         PARAMETER_MAP.put("O", ParameterObject.class);
-//        PARAMETER_MAP.put("S", ParameterString.class);
-//        PARAMETER_MAP.put("I", ParameterInteger.class);
-//        PARAMETER_MAP.put("L", ParameterLong.class);
-//        PARAMETER_MAP.put("D", ParameterDouble.class);
-//        PARAMETER_MAP.put("F", ParameterFloat.class);
-//        PARAMETER_MAP.put("T", ParameterDate.class);
-//        PARAMETER_MAP.put("B", ParameterBigDecimal.class);
-//        PARAMETER_MAP.put("P", ParameterTimestamp.class);
-//        PARAMETER_MAP.put("M", ParameterArrayString.class);
-//        PARAMETER_MAP.put("N", ParameterArrayInt.class);
     }
 
     /**
@@ -93,20 +80,8 @@ public class ParameterPlanner {
                 p.setGetter(new FieldGetterArray(segments.size()));
             } else if (Map.class.isAssignableFrom(clazz)) {
                 p.setGetter(new FieldGetterMap(name));
-            } else if (FieldGetterDataGroup.class.isAssignableFrom(clazz)) {
+            } else if (DataGroup.class.isAssignableFrom(clazz)) {
                 p.setGetter(new FieldGetterDataGroup(name));
-            } else if (Collection.class.isAssignableFrom(clazz)) {
-                Map<String, FieldGetter> elementFieldGetter = new HashMap<>(8);
-                String[] conditionArr = name.split("-");
-                for (String columnName : conditionArr) {
-                    Iterator iterator = ((Collection) param).iterator();
-                    if (iterator.hasNext()) {
-//                        if (FieldGetterDataGroup.class.isAssignableFrom(iterator.next().getClass())) {
-                        elementFieldGetter.put(columnName, new FieldGetterDataGroup(columnName));
-//                        }
-                    }
-                }
-                p.setGetter(new FieldGetterSelectCondition(name, elementFieldGetter));
             } else {
                 String name2 = SqlUtil.sqlToJava(name.toLowerCase());
                 p.setGetter(new FieldGetterBean(clazz, name2));

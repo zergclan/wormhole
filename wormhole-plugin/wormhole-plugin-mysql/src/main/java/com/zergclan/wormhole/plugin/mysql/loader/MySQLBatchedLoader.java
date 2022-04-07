@@ -24,15 +24,16 @@ import com.zergclan.wormhole.data.core.result.MysqlLoadResult;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
+import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;
+import com.zergclan.wormhole.plugin.mysql.xsql.SqlGenerator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.List;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Batched loader of MySQL.
@@ -43,7 +44,8 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
     protected BatchedLoadResult standardLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
 
         MysqlLoadResult mysqlLoadResult = new MysqlLoadResult();
-        mysqlLoadResult.setDataNum(data.getDataGroups().size());
+        Collection<DataGroup> dataGroups = data.getDataGroups();
+        mysqlLoadResult.setDataNum(dataGroups.size());
 
         //1.new JdbcTemplate
         DataSourceMetaData dataSourceMetaData = cachedTarget.getDataSource();
@@ -52,47 +54,39 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
         //2.generate sql
         SqlGenerator sqlGenerator = new CachedTargetMetaDataSqlGenerator(cachedTarget);
 
-        //3.compare date
+        //3.compare date and handle data
         SqlHelper sqlHelper = new SqlHelper(jdbcTemplate, sqlGenerator);
-        List<Map<String, String>> targetData = null;
-        try {
-            targetData = sqlHelper.executeSelect(data.getDataGroups());
-        } catch (SQLException e) {
-            String errInfo = e.getErrorCode() + e.getSQLState();
-            Map<String, Collection<DataGroup>> errMap = new HashMap<>(8);
-            errMap.put(errInfo, data.getDataGroups());
-        }
-        Map<String, Collection<DataGroup>> incrementalData = compareData(data.getDataGroups(),
-                targetData, cachedTarget.getUniqueNodes(), cachedTarget.getCompareNodes());
-
-        //4.handle Incremental data  insert or update
-        Collection<DataGroup> addData = incrementalData.get("add");
-        Collection<DataGroup> modifyData = incrementalData.get("modify");
-        if (addData.size() > 0) {
+        Map<DataGroup, String> errMap = new HashMap<>(8);
+        Iterator<DataGroup> iterator = dataGroups.iterator();
+        while (iterator.hasNext()) {
+            DataGroup dataGroup = iterator.next();
+            int successNum = 0;
+            int failNum = 0;
+            List<Map<String, Object>> targetData = null;
             try {
-                sqlHelper.executeBatchInsert(addData);
-            } catch (SQLException e) {
-                String errInfo = e.getErrorCode() + e.getSQLState();
-                Map<String, Collection<DataGroup>> errMap = new HashMap<>(8);
-                errMap.put(errInfo, addData);
-            }
-        }
-        if (modifyData.size() > 0) {
-            for (DataGroup dataGroup : modifyData) {
-                try {
-                    sqlHelper.executeUpdate(dataGroup);
-                } catch (SQLException e) {
-                    String errInfo = e.getErrorCode() + e.getSQLState();
-                    Map<String, Collection<DataGroup>> errMap = new HashMap<>(8);
-                    Collection<DataGroup> collection = new ArrayList<>();
-                    collection.add(dataGroup);
-                    errMap.put(errInfo, collection);
+                targetData = sqlHelper.executeSelect(dataGroup);
+                if (null == targetData || targetData.size() == 0) {
+                    sqlHelper.executeInsert(dataGroup);
+                } else {
+                    boolean flag = compareData(dataGroup, targetData.get(0), cachedTarget.getCompareNodes());
+                    if (flag) {
+                        sqlHelper.executeUpdate(dataGroup);
+                    }
                 }
+                successNum++;
+            } catch (SQLException e) {
+                System.out.println(e);
+                String errInfo = e.getErrorCode() + e.getSQLState();
+                errMap.put(dataGroup, errInfo);
+                failNum++;
+            } finally {
+                mysqlLoadResult.setSuccessNum(successNum);
+                mysqlLoadResult.setFailNum(failNum);
+                mysqlLoadResult.setErrInfo(errMap);
             }
-
         }
 
-        //5.return
+        //4.return
         return new BatchedLoadResult(true, mysqlLoadResult);
     }
 
@@ -106,16 +100,25 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
         return "MySQL";
     }
 
-    private Map<String, Collection<DataGroup>> compareData(final Collection sourceData,
-                                                  final Collection targetData,
-                                                  final Collection<String> uniqueNodes,
-                                                  final Collection<String> compareNodes) {
-        Map<String, Collection<DataGroup>> incrementMap = new HashMap<>(8);
-        Collection<DataGroup> addData = new LinkedList<>();
-        Collection<DataGroup> modifyData = new LinkedList<>();
-        //TODO Calculate incremental data and add batchNo
-        incrementMap.put("add", addData);
-        incrementMap.put("modify", modifyData);
-        return incrementMap;
+    private boolean compareData(final DataGroup sourceData,
+                                final Map<String, Object> targetData,
+                                final Collection<String> compareNodes) {
+        boolean result = false;
+        Iterator<String> iterator = compareNodes.iterator();
+        while (iterator.hasNext()) {
+            String fieldName = iterator.next();
+            Object sourceValue = sourceData.getDataNode(fieldName).getValue();
+            Object targetValue = targetData.get(fieldName);
+            if (null != sourceValue && null != targetValue) {
+                if (!sourceValue.toString().equals(targetValue.toString())) {
+                    return true;
+                }
+            } else if (null == sourceValue && null == targetValue) {
+                result = false;
+            } else {
+                return true;
+            }
+        }
+        return result;
     }
 }

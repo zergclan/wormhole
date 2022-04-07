@@ -15,13 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
+package com.zergclan.wormhole.plugin.mysql.xsql;
 
-public abstract class FieldGetter {
+public interface SqlGenerator {
+
     /**
-     * get value from bean's field.
-     * @param params {@link Object}
-     * @return Object
+     * create select sql.
+     * @return String
      */
-    public abstract Object get(Object params);
+    String createSelectSql();
+
+    /**
+     * create insert sql.
+     * @return String
+     */
+    String createInsertSql();
+
+    /**
+     * create update sql.
+     * @return String
+     */
+    String createUpdateSql();
 }

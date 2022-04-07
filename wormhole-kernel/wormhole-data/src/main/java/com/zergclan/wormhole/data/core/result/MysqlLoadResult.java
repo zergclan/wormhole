@@ -20,7 +20,6 @@ package com.zergclan.wormhole.data.core.result;
 import com.zergclan.wormhole.data.core.DataGroup;
 import lombok.Data;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -29,11 +28,11 @@ import java.util.Map;
 @Data
 public final class MysqlLoadResult implements LoadResult {
 
-    private Integer dataNum;
+    private int dataNum;
 
-    private Integer addNum;
+    private int successNum;
 
-    private Integer modifyNum;
+    private int failNum;
 
-    private Map<String, Collection<DataGroup>> errInfo;
+    private Map<DataGroup, String> errInfo;
 }

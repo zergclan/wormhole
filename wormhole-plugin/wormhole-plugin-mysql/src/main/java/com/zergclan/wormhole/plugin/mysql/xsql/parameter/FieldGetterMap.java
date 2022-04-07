@@ -15,21 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-import lombok.Setter;
+import java.util.Map;
 
-import javax.sql.DataSource;
+public class FieldGetterMap extends FieldGetter {
 
-/**
- * Loader for MySQL.
- */
-@Setter
-public final class MySQLLoader {
+    private final String name;
 
-    private final LoadHandler loadHandler;
+    public FieldGetterMap(final String name) {
+        this.name = name;
+    }
 
-    public MySQLLoader(final DataSource dataSource) {
-        this.loadHandler = new LoadHandler(dataSource);
+    @Override
+    public Object get(final Object params) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) params;
+        return map.get(name);
     }
 }

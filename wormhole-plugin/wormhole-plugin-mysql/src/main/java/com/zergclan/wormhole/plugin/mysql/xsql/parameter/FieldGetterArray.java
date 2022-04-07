@@ -15,18 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.reader;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-/**
- * Reader Constants.
- */
-public final class WormholeReaderConstants {
+public class FieldGetterArray extends FieldGetter {
 
-    public static final String SQL_SELECT = " SELECT ";
+    private final int index;
 
-    public static final String SQL_FROM = " FROM ";
+    public FieldGetterArray(final int index) {
+        this.index = index;
+    }
 
-    public static final String SQL_WHERE = " WHERE ";
-
-    public static final String SQL_AS = " AS ";
+    @Override
+    public Object get(final Object params) {
+        Object[] array = (Object[]) params;
+        return array[index];
+    }
 }

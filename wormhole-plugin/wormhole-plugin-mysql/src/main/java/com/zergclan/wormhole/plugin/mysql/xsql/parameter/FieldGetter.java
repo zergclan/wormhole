@@ -15,21 +15,13 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-import com.zergclan.wormhole.data.core.DataGroup;
-
-public class FieldGetterDataGroup extends FieldGetter {
-
-    private final String name;
-
-    public FieldGetterDataGroup(final String name) {
-        this.name = name;
-    }
-
-    @Override
-    public Object get(final Object params) {
-        DataGroup dataGroup = (DataGroup) params;
-        return dataGroup.getDataNode(name).getValue();
-    }
+public abstract class FieldGetter {
+    /**
+     * get value from bean's field.
+     * @param params {@link Object}
+     * @return Object
+     */
+    public abstract Object get(Object params);
 }

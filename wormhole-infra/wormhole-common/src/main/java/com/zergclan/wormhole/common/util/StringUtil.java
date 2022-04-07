@@ -39,13 +39,12 @@ public final class StringUtil {
     public static final String EMPTY = "";
 
     /**
-     * * 判断一个字符串是否为空串
+     * Determine whether a string is an empty string.
      *
      * @param str String
-     * @return true：为空 false：非空
+     * @return true：null false：notnull
      */
-    public static boolean isEmpty(final String str)
-    {
+    public static boolean isEmpty(final String str) {
         return null == str || EMPTY.equals(str.trim());
     }
 

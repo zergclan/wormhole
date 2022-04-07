@@ -20,6 +20,7 @@ package com.zergclan.wormhole.plugin.mysql.loader;
 import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
+import com.zergclan.wormhole.plugin.mysql.xsql.SqlGenerator;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -56,15 +57,16 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
             Iterator<String> compareNodesIterator = compareNodes.iterator();
             String selectField = StringUtil.join(compareNodesIterator, ",");
             stringBuilder.append(selectField);
-            stringBuilder.append(" from ").append(cachedTargetMetaData.getTable()).append(" where ");
-            Collection<String> uniqueNodes = cachedTargetMetaData.getCompareNodes();
-            Iterator<String> uniqueNodesIterator = uniqueNodes.iterator();
-            String whereField = StringUtil.join(uniqueNodesIterator, "-");
-            stringBuilder.append(whereField).append(String.format(" $%s{%s} ", "O", whereField));
+            stringBuilder.append(" from ").append(cachedTargetMetaData.getTable()).append(" where 1=1 ");
+            Collection<String> uniqueNodes = cachedTargetMetaData.getUniqueNodes();
+            for (int i = 0; i < uniqueNodes.size(); i++) {
+                String columnName = ((List<String>) uniqueNodes).get(i);
+                stringBuilder.append(" and ").append(columnName).append(" = ").append(String.format(" $%s{%s} ", "O", columnName));
+            }
             selectSql = stringBuilder.toString();
             sqlMap.put(sqlKey, selectSql);
         }
-        System.out.println("-----------------createBatchInsertSql------------------:" + selectSql);
+        System.out.println("-----------------createSelectSql------------------:" + selectSql);
         return selectSql;
     }
 
@@ -82,14 +84,14 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
             for (Map.Entry<String, DataNodeMetaData> entry : dataNodes.entrySet()) {
                 String columnName = entry.getValue().getName();
                 tableColumn += columnName + ",";
-                valueColumn += String.format(" $%s{%s} ", "O", columnName);
+                valueColumn += String.format(" $%s{%s} ", "O", columnName) + ",";
             }
             stringBuilder.append(" (").append(tableColumn.substring(0, tableColumn.length() - 1)).append(") ")
                     .append(" values (").append(valueColumn.substring(0, valueColumn.length() - 1)).append(")");
             insertSql = stringBuilder.toString();
             sqlMap.put(sqlKey, insertSql);
         }
-        System.out.println("-----------------createBatchInsertSql------------------:" + insertSql);
+        System.out.println("-----------------createInsertSql------------------:" + insertSql);
         return insertSql;
     }
 
@@ -109,7 +111,7 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
             }
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
             stringBuilder.append(" where 1=1 ");
-            Collection<String> uniqueNodes = cachedTargetMetaData.getCompareNodes();
+            Collection<String> uniqueNodes = cachedTargetMetaData.getUniqueNodes();
             for (int i = 0; i < uniqueNodes.size(); i++) {
                 String columnName = ((List<String>) uniqueNodes).get(i);
                 stringBuilder.append(" and ").append(columnName).append(" = ").append(String.format(" $%s{%s} ", "O", columnName));
@@ -117,7 +119,7 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
             updateSql = stringBuilder.toString();
             sqlMap.put(sqlKey, updateSql);
         }
-        System.out.println("-----------------createBatchUpdateSql------------------:" + updateSql);
+        System.out.println("-----------------createUpdateSql------------------:" + updateSql);
         return updateSql;
     }
 

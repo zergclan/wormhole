@@ -15,23 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.reader.mysql;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-import com.zergclan.wormhole.metadata.core.resource.IndexMetaData;
-import org.springframework.jdbc.core.RowMapper;
-
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.LinkedList;
 
-/**
- * ResultSet to entity conversion.
- */
-public final class IndexMetaDataRowMapper implements RowMapper<IndexMetaData> {
+public class ParameterObject extends Parameter {
+
     @Override
-    public IndexMetaData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-        IndexMetaData indexMetaData = new IndexMetaData(null, null, rs.getString("Table"),
-                rs.getString("Key_name"), 0 == rs.getInt("Non_unique"), new LinkedList<>());
-        return indexMetaData;
+    public int set(final PreparedStatement ps, final Object params, final int index) throws SQLException {
+        Object v = getGetter().get(params);
+        ps.setObject(index, v);
+        return index;
     }
 }
