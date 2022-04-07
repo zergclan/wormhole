@@ -15,18 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.reader;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-/**
- * Reader Constants.
- */
-public final class WormholeReaderConstants {
+import lombok.Data;
 
-    public static final String SQL_SELECT = " SELECT ";
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
-    public static final String SQL_FROM = " FROM ";
+@Data
+public abstract class Parameter {
 
-    public static final String SQL_WHERE = " WHERE ";
+    private String fixed;
 
-    public static final String SQL_AS = " AS ";
+    private FieldGetter getter;
+
+    /**
+     * use ? in sql.
+     * @param sb {@link StringBuilder}
+     * @param params {@link Object}
+     */
+    public void sql(final StringBuilder sb, final Object params) {
+        sb.append(fixed).append("?");
+    }
+
+    /**
+     * set param value.
+     * @param ps {@link StringBuilder}
+     * @param params {@link Object}
+     * @param index {@link int}
+     * @return int {@link int}
+     * @throws SQLException notNull
+     */
+    public abstract int set(PreparedStatement ps, Object params, int index) throws SQLException;
 }

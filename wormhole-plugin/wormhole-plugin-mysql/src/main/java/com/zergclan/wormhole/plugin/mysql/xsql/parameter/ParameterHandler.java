@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 public class ParameterHandler {
@@ -50,10 +51,10 @@ public class ParameterHandler {
     /**
      * set batch param.
      * @param ps {@link PreparedStatement}
-     * @param listData {@link List}
+     * @param listData {@link Collection}
      * @throws SQLException notNull
      */
-    public void setBatchParameters(final PreparedStatement ps, final List<Object> listData) throws SQLException {
+    public void setBatchInsertParameters(final PreparedStatement ps, final Collection<Object> listData) throws SQLException {
         int index = 1;
         for (Object params : listData) {
             for (Parameter p : vars) {

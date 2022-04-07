@@ -15,22 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
+package com.zergclan.wormhole.data.core.result;
+
+import com.zergclan.wormhole.data.core.DataGroup;
 
 import java.util.Map;
 
-public class FieldGetterMap extends FieldGetter {
+/**
+ * The interface of Load result.
+ */
+public interface LoadResult {
+    /**
+     * get total data.
+     * @return int
+     */
+    int getDataNum();
 
-    private final String name;
+    /**
+     * get success data num.
+     * @return int
+     */
+    int getSuccessNum();
 
-    public FieldGetterMap(final String name) {
-        this.name = name;
-    }
+    /**
+     * get fail data num.
+     * @return int
+     */
+    int getFailNum();
 
-    @Override
-    public Object get(final Object params) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> map = (Map<String, Object>) params;
-        return map.get(name);
-    }
+    /**
+     * get error info.
+     * @return map
+     */
+    Map<DataGroup, String> getErrInfo();
 }

@@ -15,13 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-public abstract class FieldGetter {
-    /**
-     * get value from bean's field.
-     * @param params {@link Object}
-     * @return Object
-     */
-    public abstract Object get(Object params);
+import java.util.Map;
+
+public class FieldGetterMap extends FieldGetter {
+
+    private final String name;
+
+    public FieldGetterMap(final String name) {
+        this.name = name;
+    }
+
+    @Override
+    public Object get(final Object params) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) params;
+        return map.get(name);
+    }
 }

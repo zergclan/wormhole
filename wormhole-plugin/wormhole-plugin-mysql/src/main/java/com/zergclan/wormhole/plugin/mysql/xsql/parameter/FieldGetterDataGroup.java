@@ -15,17 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.zergclan.wormhole.data.core.DataGroup;
 
-public class ParameterObject extends Parameter {
+public class FieldGetterDataGroup extends FieldGetter {
+
+    private final String name;
+
+    public FieldGetterDataGroup(final String name) {
+        this.name = name;
+    }
 
     @Override
-    public int set(final PreparedStatement ps, final Object params, final int index) throws SQLException {
-        Object v = getGetter().get(params);
-        ps.setObject(index, v);
-        return index;
+    public Object get(final Object params) {
+        DataGroup dataGroup = (DataGroup) params;
+        return dataGroup.getDataNode(name).getValue();
     }
 }

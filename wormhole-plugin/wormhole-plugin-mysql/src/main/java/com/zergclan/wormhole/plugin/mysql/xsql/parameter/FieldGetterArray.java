@@ -15,21 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer;
+package com.zergclan.wormhole.plugin.mysql.xsql.parameter;
 
-import lombok.Setter;
+public class FieldGetterArray extends FieldGetter {
 
-import javax.sql.DataSource;
+    private final int index;
 
-/**
- * Loader for MySQL.
- */
-@Setter
-public final class MySQLLoader {
+    public FieldGetterArray(final int index) {
+        this.index = index;
+    }
 
-    private final LoadHandler loadHandler;
-
-    public MySQLLoader(final DataSource dataSource) {
-        this.loadHandler = new LoadHandler(dataSource);
+    @Override
+    public Object get(final Object params) {
+        Object[] array = (Object[]) params;
+        return array[index];
     }
 }

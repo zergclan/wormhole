@@ -15,36 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.xsql.parameter;
+package com.zergclan.wormhole.plugin.mysql.xsql;
 
-import lombok.Data;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-@Data
-public abstract class Parameter {
-
-    private String fixed;
-
-    private FieldGetter getter;
+public interface SqlGenerator {
 
     /**
-     * use ? in sql.
-     * @param sb {@link StringBuilder}
-     * @param params {@link Object}
+     * create select sql.
+     * @return String
      */
-    public void sql(final StringBuilder sb, final Object params) {
-        sb.append(fixed).append("?");
-    }
+    String createSelectSql();
 
     /**
-     * set param value.
-     * @param ps {@link StringBuilder}
-     * @param params {@link Object}
-     * @param index {@link int}
-     * @return int {@link int}
-     * @throws SQLException notNull
+     * create insert sql.
+     * @return String
      */
-    public abstract int set(PreparedStatement ps, Object params, int index) throws SQLException;
+    String createInsertSql();
+
+    /**
+     * create update sql.
+     * @return String
+     */
+    String createUpdateSql();
 }

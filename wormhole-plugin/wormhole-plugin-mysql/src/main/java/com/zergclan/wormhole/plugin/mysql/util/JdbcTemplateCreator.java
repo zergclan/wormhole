@@ -15,13 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.loader;
+package com.zergclan.wormhole.plugin.mysql.util;
 
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public final class JdbcTemplateCreator {
+
+    private static final Map<String, JdbcTemplate> JDBC_TEMPLATE_CACHE = new ConcurrentHashMap<>();
 
     /**
      * Create {@link JdbcTemplate}.
@@ -30,11 +35,16 @@ public final class JdbcTemplateCreator {
      * @return {@link JdbcTemplate}
      */
     public static JdbcTemplate create(final DataSourceMetaData dataSourceMetadata) {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(dataSourceMetadata.getDriverClassName());
-        dataSource.setUrl(dataSourceMetadata.getJdbcUrl());
-        dataSource.setUsername(dataSourceMetadata.getUsername());
-        dataSource.setPassword(dataSourceMetadata.getPassword());
-        return new JdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = JDBC_TEMPLATE_CACHE.get(dataSourceMetadata.getIdentifier());
+        if (null == jdbcTemplate) {
+            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+            dataSource.setDriverClassName(dataSourceMetadata.getDriverClassName());
+            dataSource.setUrl(dataSourceMetadata.getJdbcUrl());
+            dataSource.setUsername(dataSourceMetadata.getUsername());
+            dataSource.setPassword(dataSourceMetadata.getPassword());
+            jdbcTemplate = new JdbcTemplate(dataSource);
+            JDBC_TEMPLATE_CACHE.put(dataSourceMetadata.getIdentifier(), jdbcTemplate);
+        }
+        return jdbcTemplate;
     }
 }

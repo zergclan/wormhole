@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.mysql.old.writer.util;
+package com.zergclan.wormhole.plugin.mysql.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import java.util.Iterator;
+
 /**
  * Util tools for String.
  * <p>
@@ -35,6 +37,22 @@ import java.util.Set;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringUtil {
+
+    /**
+     * The empty String {@code ""}.
+     */
+    public static final String EMPTY = "";
+
+    /**
+     * Determine whether a string is an empty string.
+     *
+     * @param str String
+     * @return true：null false：notnull
+     */
+    public static boolean isEmpty(final String str) {
+        return null == str || EMPTY.equals(str.trim());
+    }
+
 
     /**
      * Is blank validation of char sequence.
@@ -54,7 +72,51 @@ public final class StringUtil {
         }
         return true;
     }
-    
+
+    /**
+     * <p>Joins the elements of the provided {@code Iterator} into
+     * a single String containing the provided elements.</p>
+     *
+     * <p>No delimiter is added before or after the list.
+     * A {@code null} separator is the same as an empty String ("").</p>
+     *
+     * @param iterator  the {@code Iterator} of values to join together, may be null
+     * @param separator  the separator character to use, null treated as ""
+     * @return the joined String, {@code null} if null iterator input
+     */
+    public static String join(final Iterator<String> iterator, final String separator) {
+
+        // handle null, zero and one elements before building a buffer
+        if (iterator == null) {
+            return null;
+        }
+        if (!iterator.hasNext()) {
+            return EMPTY;
+        }
+        final String first = iterator.next();
+        if (!iterator.hasNext()) {
+            final String result = first;
+            return result;
+        }
+
+        // two or more elements
+        final StringBuilder buf = new StringBuilder(256);
+        if (first != null) {
+            buf.append(first);
+        }
+
+        while (iterator.hasNext()) {
+            if (separator != null) {
+                buf.append(separator);
+            }
+            final Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
+            }
+        }
+        return buf.toString();
+    }
+
     /**
      * Split deduplicate.
      *
