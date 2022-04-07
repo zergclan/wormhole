@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.handler;
+package com.zergclan.wormhole.bootstrap.scheduling.task;
 
 import com.zergclan.wormhole.common.concurrent.ProcessTask;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
@@ -31,31 +31,40 @@ import java.util.Iterator;
  * Implemented {@link ProcessTask} to handle {@link BatchedDataGroup}.
  */
 @RequiredArgsConstructor
-public final class ProcessTaskHandler implements ProcessTask {
+public final class BatchedDataGroupHandler implements ProcessTask {
+    
+    private final String planIdentifier;
+    
+    private final long planBatch;
+    
+    private final String taskIdentifier;
+    
+    private final long taskBatchId;
+    
+    private final BatchedDataGroup batchedDataGroup;
     
     private final Collection<Filter<DataGroup>> filters;
     
-    private final Handler<BatchedDataGroup> nextHandler;
-    
-    private final BatchedDataGroup batchedDataGroup;
+    private final Handler<BatchedDataGroup> loadedHandler;
     
     @Override
     public void run() {
         Iterator<DataGroup> iterator = batchedDataGroup.getDataGroups().iterator();
-        DataGroup each;
         while (iterator.hasNext()) {
-            each = iterator.next();
-            if (handleDataGroup(each)) {
-                batchedDataGroup.remove(each);
+            DataGroup dataGroup = iterator.next();
+            if (!handleDataGroup(dataGroup)) {
+                batchedDataGroup.remove(dataGroup);
             }
         }
-        nextHandler.handle(batchedDataGroup);
+        loadedHandler.handle(batchedDataGroup);
     }
     
     private boolean handleDataGroup(final DataGroup dataGroup) {
         Iterator<Filter<DataGroup>> iterator = filters.iterator();
         while (iterator.hasNext()) {
-            if (!iterator.next().doFilter(dataGroup)) {
+            Filter<DataGroup> filter = iterator.next();
+            if (!filter.doFilter(dataGroup)) {
+                // TODO send event
                 return false;
             }
         }

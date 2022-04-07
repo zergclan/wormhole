@@ -19,5 +19,8 @@ package com.zergclan.wormhole.config.api;
 
 import java.io.Serializable;
 
+/**
+ * The root interface from which all configuration shall be derived in Wormhole.
+ */
 public interface Configuration extends Serializable {
 }

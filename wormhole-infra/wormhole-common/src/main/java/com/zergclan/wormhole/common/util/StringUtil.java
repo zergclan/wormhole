@@ -20,6 +20,11 @@ package com.zergclan.wormhole.common.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
 import java.util.Iterator;
 
 /**
@@ -110,5 +115,25 @@ public final class StringUtil {
             }
         }
         return buf.toString();
+    }
+
+    /**
+     * Split deduplicate.
+     *
+     * @param input input
+     * @param delimiter delimiter
+     * @return elements
+     */
+    public static Collection<String> deduplicateSplit(final String input, final String delimiter) {
+        if (isBlank(input)) {
+            return new LinkedList<>();
+        }
+        String[] split = input.split(delimiter);
+        int length = split.length;
+        Set<String> result = new HashSet<>(length, 1);
+        for (int i = 0; i < length; i++) {
+            result.add(split[i].trim());
+        }
+        return result;
     }
 }

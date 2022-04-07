@@ -30,16 +30,15 @@ import java.util.Properties;
  * Not null validator implemented of {@link FilterMetaData}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class NotNullValidatorMetaData implements FilterMetaData {
     
     private static final FilterType FILTER_TYPE = FilterType.NOT_NULL;
     
     private final String taskIdentifier;
-
-    @Getter
+    
     private final int order;
     
-    @Getter
     private final String sourceName;
     
     @Override

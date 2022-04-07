@@ -21,6 +21,7 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
@@ -29,7 +30,8 @@ import java.util.Properties;
  * Name convertor implemented of {@link FilterMetaData}.
  */
 @RequiredArgsConstructor
-public final class NameConvertorMetaData implements FilterMetaData {
+@Getter
+public final class NodeNameConvertorMetaData implements FilterMetaData {
 
     private static final FilterType FILTER_TYPE = FilterType.NAME_CONVERTOR;
 
@@ -47,24 +49,19 @@ public final class NameConvertorMetaData implements FilterMetaData {
     }
 
     @Override
-    public int getOrder() {
-        return order;
-    }
-
-    @Override
     public FilterType getType() {
         return FILTER_TYPE;
     }
 
     /**
-     * Builder for {@link NameConvertorMetaData}.
+     * Builder for {@link NodeNameConvertorMetaData}.
      *
      * @param taskIdentifier task identifier
      * @param order order
      * @param props props
-     * @return {@link NameConvertorMetaData}
+     * @return {@link NodeNameConvertorMetaData}
      */
-    public static NameConvertorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
+    public static NodeNameConvertorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build NameConvertorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
         String targetName = props.getProperty("targetName");
@@ -83,8 +80,8 @@ public final class NameConvertorMetaData implements FilterMetaData {
 
         private final String sourceName;
 
-        private NameConvertorMetaData build() {
-            return new NameConvertorMetaData(taskIdentifier, order, targetName, sourceName);
+        private NodeNameConvertorMetaData build() {
+            return new NodeNameConvertorMetaData(taskIdentifier, order, targetName, sourceName);
         }
     }
 }

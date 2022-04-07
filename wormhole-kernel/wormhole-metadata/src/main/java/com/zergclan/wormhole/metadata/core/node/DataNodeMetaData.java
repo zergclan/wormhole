@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Data node metadata.
+ * Data node meta data.
  */
 @RequiredArgsConstructor
 @Getter

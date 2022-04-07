@@ -19,7 +19,6 @@ package com.zergclan.wormhole.plugin.api;
 
 import com.zergclan.wormhole.common.spi.typed.TypedSPI;
 import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
 
 import java.util.Collection;
 
@@ -29,10 +28,16 @@ import java.util.Collection;
 public interface Extractor<D> extends TypedSPI {
     
     /**
+     * Init.
+     *
+     * @param cachedSource {@link CachedSourceMetaData}
+     */
+    void init(CachedSourceMetaData cachedSource);
+    
+    /**
      * Extract.
      *
-     * @param cachedSource {@link SourceMetaData}
      * @return data
      */
-    Collection<D> extract(CachedSourceMetaData cachedSource);
+    Collection<D> extract();
 }

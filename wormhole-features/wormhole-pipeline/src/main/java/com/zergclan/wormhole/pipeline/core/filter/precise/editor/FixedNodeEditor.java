@@ -17,9 +17,10 @@
 
 package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
 
-import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.helper.NodeValueHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -30,18 +31,20 @@ import java.util.Iterator;
  * Fixed node editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class FixedNodeEditor implements Filter<DataGroup> {
     
-    @Getter
     private final int order;
+    
+    private final FilterType filterType;
 
-    private final Collection<DataNode<?>> fixedValue;
+    private final Collection<NodeValueHelper> fixedValue;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<DataNode<?>> iterator = fixedValue.iterator();
+        Iterator<NodeValueHelper> iterator = fixedValue.iterator();
         while (iterator.hasNext()) {
-            if (!dataGroup.refresh(iterator.next())) {
+            if (!dataGroup.refresh(iterator.next().getDefaultValue())) {
                 return false;
             }
         }
@@ -50,6 +53,6 @@ public final class FixedNodeEditor implements Filter<DataGroup> {
     
     @Override
     public String getType() {
-        return "FIXED_NODE";
+        return filterType.name();
     }
 }

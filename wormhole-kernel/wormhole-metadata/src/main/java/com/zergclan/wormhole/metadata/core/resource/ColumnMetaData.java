@@ -22,8 +22,6 @@ import com.zergclan.wormhole.metadata.api.MetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
-
 /**
  * Metadata for column.
  */
@@ -44,15 +42,6 @@ public final class ColumnMetaData implements MetaData {
     private final String defaultValue;
 
     private final boolean nullable;
-
-    /**
-     * Get default value.
-     *
-     * @return default value
-     */
-    public Optional<String> getDefaultValue() {
-        return Optional.ofNullable(defaultValue);
-    }
 
     @Override
     public String getIdentifier() {

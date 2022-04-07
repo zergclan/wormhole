@@ -21,6 +21,8 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
@@ -29,6 +31,7 @@ import java.util.Properties;
  * Null to default editor implemented of {@link FilterMetaData}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class NullToDefaultEditorMetaData implements FilterMetaData {
 
     private static final FilterType FILTER_TYPE = FilterType.NOT_BLANK;
@@ -40,15 +43,12 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
     private final String sourceName;
 
     private final String defaultValue;
+    
+    private final DataNodeTypeMetaData.DataType dataType;
 
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
-    }
-
-    @Override
-    public int getOrder() {
-        return order;
     }
 
     @Override
@@ -69,7 +69,8 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
         Validator.notNull(sourceName, "error : build NullToDefaultEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
         String defaultValue = props.getProperty("defaultValue");
         Validator.notNull(defaultValue, "error : build NullToDefaultEditorMetadata failed defaultValue in props can not be null, task identifier: [%s]", taskIdentifier);
-        return builder(taskIdentifier, order, sourceName, defaultValue);
+        String dataType = props.getProperty("dataType");
+        return builder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetaData.DataType.valueOf(dataType));
     }
 
     /**
@@ -79,10 +80,11 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
      * @param order order
      * @param sourceName source name
      * @param defaultValue default value
+     * @param dataType {@link DataNodeTypeMetaData.DataType}
      * @return {@link NullToDefaultEditorMetaData}
      */
-    public static NullToDefaultEditorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final String defaultValue) {
-        return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue).build();
+    public static NullToDefaultEditorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final String defaultValue, final DataNodeTypeMetaData.DataType dataType) {
+        return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue, dataType).build();
     }
 
     @RequiredArgsConstructor
@@ -95,9 +97,11 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
         private final String sourceName;
 
         private final String defaultValue;
+    
+        private final DataNodeTypeMetaData.DataType dataType;
 
         private NullToDefaultEditorMetaData build() {
-            return new NullToDefaultEditorMetaData(taskIdentifier, order, sourceName, defaultValue);
+            return new NullToDefaultEditorMetaData(taskIdentifier, order, sourceName, defaultValue, dataType);
         }
     }
 }

@@ -21,6 +21,7 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Properties;
@@ -30,6 +31,7 @@ import java.util.Properties;
  *
  */
 @RequiredArgsConstructor
+@Getter
 public final class ValueRangeEditorMetaData implements FilterMetaData {
     
     private static final FilterType FILTER_TYPE = FilterType.VALUE_RANGE;
@@ -47,11 +49,6 @@ public final class ValueRangeEditorMetaData implements FilterMetaData {
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
-    }
-    
-    @Override
-    public int getOrder() {
-        return order;
     }
     
     @Override

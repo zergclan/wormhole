@@ -17,9 +17,10 @@
 
 package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
 
-import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.helper.NodeValueHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -31,21 +32,21 @@ import java.util.Objects;
  * Null to default editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
+@Getter
 public final class NullToDefaultEditor implements Filter<DataGroup> {
     
-    @Getter
     private final int order;
     
-    private final Map<String, DataNode<?>> defaultValue;
+    private final FilterType filterType;
+    
+    private final Map<String, NodeValueHelper> defaultValueHelpers;
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, DataNode<?>>> iterator = defaultValue.entrySet().iterator();
-        Map.Entry<String, DataNode<?>> entry;
+        Iterator<Map.Entry<String, NodeValueHelper>> iterator = defaultValueHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            entry = iterator.next();
-            if (Objects.isNull(dataGroup.getDataNode(entry.getKey()))) {
-                dataGroup.register(entry.getValue());
+            if (Objects.isNull(dataGroup.getDataNode(iterator.next().getKey()))) {
+                dataGroup.register(iterator.next().getValue().getDefaultValue());
             }
         }
         return true;
@@ -53,6 +54,6 @@ public final class NullToDefaultEditor implements Filter<DataGroup> {
     
     @Override
     public String getType() {
-        return "NULL_TO_DEFAULT";
+        return filterType.name();
     }
 }

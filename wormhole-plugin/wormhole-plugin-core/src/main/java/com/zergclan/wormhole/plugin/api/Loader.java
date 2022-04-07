@@ -27,13 +27,19 @@ import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
  * @param <V> class type of result
  */
 public interface Loader<D, V> extends TypedSPI {
-
+    
+    /**
+     * Init.
+     *
+     * @param cachedTarget {@link CachedTargetMetaData}
+     */
+    void init(CachedTargetMetaData cachedTarget);
+    
     /**
      * Load.
      *
      * @param data data
-     * @param cachedTarget {@link CachedTargetMetaData}
      * @return result
      */
-    V load(D data, CachedTargetMetaData cachedTarget);
+    V load(D data);
 }

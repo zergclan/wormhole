@@ -42,7 +42,6 @@
 
     <developers>
         <developer>
-            <id>soulasuna</id>
             <name>gin</name>
             <email>jacky7boy@163.com</email>
         </developer>
@@ -73,6 +72,7 @@
         <caffeine.version>2.9.3</caffeine.version>
         <hibernate.version>6.2.0.Final</hibernate.version>
         <cron.version>9.1.6</cron.version>
+        <snakeyaml.version>1.30</snakeyaml.version>
         <freemarker.version>2.3.31</freemarker.version>
         <!-- databases -->
         <HikariCP.version>4.0.3</HikariCP.version>
@@ -136,6 +136,12 @@
                 <groupId>com.cronutils</groupId>
                 <artifactId>cron-utils</artifactId>
                 <version>${cron.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
