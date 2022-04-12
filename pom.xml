@@ -98,6 +98,7 @@
         <module>wormhole-infra</module>
         <module>wormhole-plugin</module>
         <module>wormhole-console</module>
+        <module>wormhole-test</module>
     </modules>
 
     <dependencyManagement>

@@ -29,6 +29,7 @@ header:
     - '**/*.json'
     - '**/*.iml'
     - '**/*.ini'
+    - '**/*.txt'
     - 'LICENSE'
     - 'NOTICE'
 

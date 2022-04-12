@@ -51,7 +51,7 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
     public String createSelectSql() {
         String sqlKey = SELECT_STR + cachedTargetMetaData.getIdentifier();
         String selectSql = sqlMap.get(sqlKey);
-        if (StringUtil.isEmpty(selectSql)) {
+        if (StringUtil.isBlank(selectSql)) {
             StringBuilder stringBuilder = new StringBuilder(" select ");
             Collection<String> compareNodes = cachedTargetMetaData.getCompareNodes();
             Iterator<String> compareNodesIterator = compareNodes.iterator();
@@ -74,7 +74,7 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
     public String createInsertSql() {
         String sqlKey = INSERT_STR + cachedTargetMetaData.getIdentifier();
         String insertSql = sqlMap.get(sqlKey);
-        if (StringUtil.isEmpty(insertSql)) {
+        if (StringUtil.isBlank(insertSql)) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(" insert into ").append(cachedTargetMetaData.getTable());
 
@@ -99,7 +99,7 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
     public String createUpdateSql() {
         String sqlKey = UPDATE_STR + cachedTargetMetaData.getIdentifier();
         String updateSql = sqlMap.get(sqlKey);
-        if (StringUtil.isEmpty(updateSql)) {
+        if (StringUtil.isBlank(updateSql)) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(" update ").append(cachedTargetMetaData.getTable()).append(" set ");
             Map<String, DataNodeMetaData> dataNodes = cachedTargetMetaData.getDataNodes();

@@ -183,7 +183,7 @@ public final class DataGroupFilterFactory {
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
             FixedNodeEditorMetaData filterMetaData = (FixedNodeEditorMetaData) iterator.next();
-            nodeValueHelpers.add(new NodeValueHelper(filterMetaData.getDataType(), filterMetaData.getDefaultValue()));
+            nodeValueHelpers.add(new NodeValueHelper(filterMetaData.getDataType(), filterMetaData.getSourceName(), filterMetaData.getDefaultValue()));
         }
         return new FixedNodeEditor(order, type, nodeValueHelpers);
     }
@@ -193,7 +193,7 @@ public final class DataGroupFilterFactory {
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
             NullToDefaultEditorMetaData filterMetaData = (NullToDefaultEditorMetaData) iterator.next();
-            nodeValueHelpers.put(filterMetaData.getSourceName(), new NodeValueHelper(filterMetaData.getDataType(), filterMetaData.getDefaultValue()));
+            nodeValueHelpers.put(filterMetaData.getSourceName(), new NodeValueHelper(filterMetaData.getDataType(), filterMetaData.getSourceName(), filterMetaData.getDefaultValue()));
         }
         return new NullToDefaultEditor(order, type, nodeValueHelpers);
     }
