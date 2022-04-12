@@ -50,9 +50,16 @@ public final class DataGroup implements Serializable {
      * @param dataNode {@link DataNode}
      * @return is registered or not
      */
-    public synchronized boolean register(final DataNode<?> dataNode) {
+    public boolean register(final DataNode<?> dataNode) {
+        if (isExist(dataNode)) {
+            return false;
+        }
         dataNodes.put(dataNode.getName(), dataNode);
         return true;
+    }
+    
+    private boolean isExist(final DataNode<?> dataNode) {
+        return dataNodes.containsKey(dataNode.getName());
     }
     
     /**
@@ -61,8 +68,11 @@ public final class DataGroup implements Serializable {
      * @param dataNode {@link DataNode}
      * @return is refreshed or not
      */
-    public synchronized boolean refresh(final DataNode<?> dataNode) {
-        dataNodes.put(dataNode.getName(), dataNode);
-        return true;
+    public boolean refresh(final DataNode<?> dataNode) {
+        if (isExist(dataNode)) {
+            dataNodes.put(dataNode.getName(), dataNode);
+            return true;
+        }
+        return false;
     }
 }

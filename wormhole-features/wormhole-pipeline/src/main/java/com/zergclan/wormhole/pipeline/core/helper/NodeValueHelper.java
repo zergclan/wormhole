@@ -17,9 +17,19 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
+import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.node.BigDecimalDataNode;
+import com.zergclan.wormhole.data.core.node.IntegerDataNode;
+import com.zergclan.wormhole.data.core.node.LocalDateTimeDataNode;
+import com.zergclan.wormhole.data.core.node.LongDataNode;
+import com.zergclan.wormhole.data.core.node.PatternedDataTime;
+import com.zergclan.wormhole.data.core.node.PatternedDataTimeDataNode;
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
 import lombok.RequiredArgsConstructor;
+
+import java.math.BigDecimal;
 
 /**
  * Node value helper.
@@ -29,6 +39,8 @@ public final class NodeValueHelper {
     
     private final DataNodeTypeMetaData.DataType dataType;
     
+    private final String name;
+    
     private final String defaultValue;
     
     /**
@@ -37,7 +49,21 @@ public final class NodeValueHelper {
      * @return {@link DataNode}
      */
     public DataNode<?> getDefaultValue() {
-        // TODO get default data node
-        return null;
+        switch (dataType) {
+            case TEXT:
+                return new TextDataNode(name, defaultValue);
+            case INT:
+                return new IntegerDataNode(name, Integer.parseInt(defaultValue));
+            case LONG:
+                return new LongDataNode(name, Long.parseLong(defaultValue));
+            case MONETARY:
+                return new BigDecimalDataNode(name, new BigDecimal(defaultValue));
+            case DATA_TIME:
+                return new LocalDateTimeDataNode(name, DateUtil.parseLocalDateTime(defaultValue, PatternedDataTime.DatePattern.STANDARD.getPattern()));
+            case PATTERNED_DATA_TIME:
+                return new PatternedDataTimeDataNode(name, new PatternedDataTime(defaultValue, PatternedDataTime.DatePattern.STANDARD));
+            default:
+                return null;
+        }
     }
 }
