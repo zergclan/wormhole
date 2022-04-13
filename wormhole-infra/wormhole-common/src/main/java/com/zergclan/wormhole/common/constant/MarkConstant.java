@@ -26,6 +26,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MarkConstant {
     
+    public static final String BLANK = " ";
+    
     public static final String POINT = ".";
     
     public static final String COMMA = ",";
@@ -43,4 +45,8 @@ public final class MarkConstant {
     public static final String AT = "@";
 
     public static final String EQUAL = "=";
+    
+    public static final String ASTERISK = "*";
+    
+    public static final String BACK_QUOTE = "`";
 }

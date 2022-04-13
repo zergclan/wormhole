@@ -15,31 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core.yaml;
+package com.zergclan.wormhole.common.constant;
 
-import com.zergclan.wormhole.config.api.YamlConfiguration;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * YAML target configuration.
+ * Constant of SQL keyword.
  */
-@Getter
-@Setter
-public final class YamlTargetConfiguration implements YamlConfiguration {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SQLKeywordConstant {
     
-    private String dataSource;
+    public static final String SELECT = "SELECT ";
     
-    private String table;
+    public static final String INSERT = "INSERT ";
     
-    private String uniqueNodes;
+    public static final String UPDATE = "UPDATE ";
     
-    private String compareNodes;
+    public static final String FROM = " FROM ";
     
-    private String ignoreNodes;
+    public static final String WHERE = " WHERE ";
     
-    private Map<String, YamlDataNodeConfiguration> dataNodes = new LinkedHashMap<>();
+    public static final String AS = " AS ";
 }

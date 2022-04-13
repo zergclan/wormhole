@@ -29,40 +29,39 @@ import com.zergclan.wormhole.plugin.mysql.xsql.SqlGenerator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Batched loader of MySQL.
  */
-public final class MySQLBatchedLoader extends AbstractBatchedLoader {
+public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadResult> {
 
     @Override
-    protected BatchedLoadResult standardLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
-
+    protected BatchedLoadResult<MysqlLoadResult> standardLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
         MysqlLoadResult mysqlLoadResult = new MysqlLoadResult();
         Collection<DataGroup> dataGroups = data.getDataGroups();
         mysqlLoadResult.setDataNum(dataGroups.size());
-
+        
         //1.new JdbcTemplate
         DataSourceMetaData dataSourceMetaData = cachedTarget.getDataSource();
         JdbcTemplate jdbcTemplate = JdbcTemplateCreator.create(dataSourceMetaData);
-
+        
         //2.generate sql
         SqlGenerator sqlGenerator = new CachedTargetMetaDataSqlGenerator(cachedTarget);
-
+        
         //3.compare date and handle data
         SqlHelper sqlHelper = new SqlHelper(jdbcTemplate, sqlGenerator);
-        Map<DataGroup, String> errMap = new HashMap<>(8);
+        Map<DataGroup, String> errMap = new LinkedHashMap<>();
         Iterator<DataGroup> iterator = dataGroups.iterator();
+        int successNum = 0;
+        int failNum = 0;
         while (iterator.hasNext()) {
             DataGroup dataGroup = iterator.next();
-            int successNum = 0;
-            int failNum = 0;
-            List<Map<String, Object>> targetData = null;
+            List<Map<String, Object>> targetData;
             try {
                 targetData = sqlHelper.executeSelect(dataGroup);
                 if (null == targetData || targetData.size() == 0) {
@@ -74,51 +73,38 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
                     }
                 }
                 successNum++;
-            } catch (SQLException e) {
-                System.out.println(e);
-                String errInfo = e.getErrorCode() + e.getSQLState();
-                errMap.put(dataGroup, errInfo);
+            } catch (final SQLException ex) {
+                errMap.put(dataGroup, ex.getErrorCode() + ex.getSQLState());
                 failNum++;
-            } finally {
-                mysqlLoadResult.setSuccessNum(successNum);
-                mysqlLoadResult.setFailNum(failNum);
-                mysqlLoadResult.setErrInfo(errMap);
             }
         }
-
+        mysqlLoadResult.setSuccessNum(successNum);
+        mysqlLoadResult.setFailNum(failNum);
+        mysqlLoadResult.setErrInfo(errMap);
+        
         //4.return
-        return new BatchedLoadResult(true, mysqlLoadResult);
-    }
-
-    @Override
-    protected BatchedLoadResult transactionLoad(final BatchedDataGroup data, final CachedTargetMetaData cachedTarget) {
-        return null;
+        return new BatchedLoadResult<>(true, mysqlLoadResult);
     }
     
-    @Override
-    public String getType() {
-        return "MySQL";
-    }
-
-    private boolean compareData(final DataGroup sourceData,
-                                final Map<String, Object> targetData,
-                                final Collection<String> compareNodes) {
-        boolean result = false;
+    private boolean compareData(final DataGroup sourceData, final Map<String, Object> targetData, final Collection<String> compareNodes) {
         Iterator<String> iterator = compareNodes.iterator();
         while (iterator.hasNext()) {
             String fieldName = iterator.next();
             Object sourceValue = sourceData.getDataNode(fieldName).getValue();
             Object targetValue = targetData.get(fieldName);
-            if (null != sourceValue && null != targetValue) {
-                if (!sourceValue.toString().equals(targetValue.toString())) {
-                    return true;
-                }
-            } else if (null == sourceValue && null == targetValue) {
-                result = false;
-            } else {
-                return true;
+            if (null == sourceValue && null == targetValue) {
+                return false;
             }
+            if (null != sourceValue && null != targetValue) {
+                return !sourceValue.toString().equals(targetValue.toString());
+            }
+            return true;
         }
-        return result;
+        return false;
+    }
+    
+    @Override
+    public String getType() {
+        return "MySQL";
     }
 }

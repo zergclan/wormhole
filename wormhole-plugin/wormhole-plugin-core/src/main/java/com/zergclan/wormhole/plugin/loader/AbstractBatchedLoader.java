@@ -25,7 +25,7 @@ import com.zergclan.wormhole.plugin.api.Loader;
 /**
  * Abstract loader of {@link BatchedDataGroup}.
  */
-public abstract class AbstractBatchedLoader implements Loader<BatchedDataGroup, BatchedLoadResult> {
+public abstract class AbstractBatchedLoader<T> implements Loader<BatchedDataGroup, BatchedLoadResult<T>> {
     
     private volatile CachedTargetMetaData cachedTarget;
     
@@ -36,11 +36,9 @@ public abstract class AbstractBatchedLoader implements Loader<BatchedDataGroup, 
     }
     
     @Override
-    public BatchedLoadResult load(final BatchedDataGroup data) {
-        return cachedTarget.isTransaction() ? transactionLoad(data, cachedTarget) : standardLoad(data, cachedTarget);
+    public BatchedLoadResult<T> load(final BatchedDataGroup data) {
+        return standardLoad(data, cachedTarget);
     }
     
-    protected abstract BatchedLoadResult standardLoad(BatchedDataGroup data, CachedTargetMetaData cachedTarget);
-    
-    protected abstract BatchedLoadResult transactionLoad(BatchedDataGroup data, CachedTargetMetaData cachedTarget);
+    protected abstract BatchedLoadResult<T> standardLoad(BatchedDataGroup data, CachedTargetMetaData cachedTarget);
 }

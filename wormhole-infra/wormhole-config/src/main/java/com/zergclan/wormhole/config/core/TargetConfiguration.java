@@ -36,9 +36,7 @@ public final class TargetConfiguration implements Configuration {
     private final String dataSource;
 
     private final String table;
-
-    private final boolean transaction;
-
+    
     private final Collection<String> uniqueNodes;
 
     private final Collection<String> compareNodes;

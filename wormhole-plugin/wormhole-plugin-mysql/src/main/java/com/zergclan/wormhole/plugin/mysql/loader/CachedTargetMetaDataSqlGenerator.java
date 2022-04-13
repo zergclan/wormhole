@@ -21,6 +21,7 @@ import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.mysql.xsql.SqlGenerator;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -31,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * generate sql statement.
  */
+@RequiredArgsConstructor
 public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
 
     public static final String SELECT_STR = "SELECT-";
@@ -38,15 +40,11 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
     public static final String INSERT_STR = "INSERT-";
 
     public static final String UPDATE_STR = "UPDATE-";
+    
+    private final CachedTargetMetaData cachedTargetMetaData;
 
-    private Map<String, String> sqlMap = new ConcurrentHashMap<>(8);
-
-    private CachedTargetMetaData cachedTargetMetaData;
-
-    public CachedTargetMetaDataSqlGenerator(final CachedTargetMetaData cachedTargetMetaData) {
-        this.cachedTargetMetaData = cachedTargetMetaData;
-    }
-
+    private final Map<String, String> sqlMap = new ConcurrentHashMap<>(16, 1);
+    
     @Override
     public String createSelectSql() {
         String sqlKey = SELECT_STR + cachedTargetMetaData.getIdentifier();
