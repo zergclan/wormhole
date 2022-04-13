@@ -24,6 +24,7 @@ import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.api.Extractor;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public abstract class AbstractCompletedExtractor implements Extractor<DataGroup>
     }
     
     @Override
-    public Collection<DataGroup> extract() {
+    public Collection<DataGroup> extract() throws SQLException {
         String extractSQl = getExtractSQl(cachedSource);
         return doExtract(cachedSource.getDataSource(), cachedSource.getDataNodes(), extractSQl);
     }
@@ -71,5 +72,5 @@ public abstract class AbstractCompletedExtractor implements Extractor<DataGroup>
      * @param extractSQl extract SQl
      * @return {@link DataGroup}
      */
-    protected abstract Collection<DataGroup> doExtract(DataSourceMetaData dataSource, Map<String, DataNodeMetaData> dataNodes, String extractSQl);
+    protected abstract Collection<DataGroup> doExtract(DataSourceMetaData dataSource, Map<String, DataNodeMetaData> dataNodes, String extractSQl) throws SQLException;
 }
