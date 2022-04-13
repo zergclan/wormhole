@@ -36,9 +36,7 @@ public final class TargetMetaData implements MetaData {
     private final String dataSourceIdentifier;
 
     private final String table;
-
-    private final boolean transaction;
-
+    
     private final Collection<String> uniqueNodes;
 
     private final Collection<String> compareNodes;

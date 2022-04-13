@@ -41,8 +41,6 @@ public final class CachedTargetMetaData implements MetaData {
 
     private final String table;
 
-    private final boolean transaction;
-
     private final Collection<String> uniqueNodes;
 
     private final Collection<String> compareNodes;
@@ -71,7 +69,7 @@ public final class CachedTargetMetaData implements MetaData {
         private final DataSourceMetaData dataSource;
         
         private CachedTargetMetaData build() {
-            return new CachedTargetMetaData(generateIdentifier(), dataSource, target.getTable(), target.isTransaction(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
+            return new CachedTargetMetaData(generateIdentifier(), dataSource, target.getTable(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
         }
         
         private String generateIdentifier() {

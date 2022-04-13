@@ -37,13 +37,12 @@ public final class YamlTargetConfigurationSwapper implements Swapper<YamlTargetC
     public TargetConfiguration swapToTarget(final YamlTargetConfiguration yamlConfiguration) {
         String dataSource = yamlConfiguration.getDataSource();
         String table = yamlConfiguration.getTable();
-        boolean transaction = yamlConfiguration.isTransaction();
         Collection<String> uniqueNodes = parseNodeNames(yamlConfiguration.getUniqueNodes());
         Collection<String> compareNodes = parseNodeNames(yamlConfiguration.getCompareNodes());
         Collection<String> ignoreNodes = parseNodeNames(yamlConfiguration.getIgnoreNodes());
         Map<String, DataNodeConfiguration> dataNodes = new LinkedHashMap<>();
         yamlConfiguration.getDataNodes().forEach((key, value) -> dataNodes.put(key, new DataNodeConfiguration(key, value.getNodeType(), value.getDataType(), value.getDefaultValue())));
-        return new TargetConfiguration(dataSource, table, transaction, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
+        return new TargetConfiguration(dataSource, table, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
     }
     
     private Collection<String> parseNodeNames(final String nodeNames) {

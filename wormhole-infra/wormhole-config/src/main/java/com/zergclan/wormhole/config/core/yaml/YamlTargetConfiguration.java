@@ -35,8 +35,6 @@ public final class YamlTargetConfiguration implements YamlConfiguration {
     
     private String table;
     
-    private boolean transaction;
-    
     private String uniqueNodes;
     
     private String compareNodes;

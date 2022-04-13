@@ -66,12 +66,11 @@ public final class TaskMetadataInitializer {
 
     private TargetMetaData createTarget(final TargetConfiguration targetConfiguration, final DataSourceMetaData targetDataSource) {
         String table = targetConfiguration.getTable();
-        boolean transaction = targetConfiguration.isTransaction();
         Collection<String> uniqueNodes = targetConfiguration.getUniqueNodes();
         Collection<String> compareNodes = targetConfiguration.getCompareNodes();
         Collection<String> ignoreNodes = targetConfiguration.getIgnoreNodes();
         Map<String, DataNodeMetaData> dataNodes = createConfiguredDataNodes(targetConfiguration.getDataNodes());
-        return new TargetMetaData(targetDataSource.getIdentifier(), table, transaction, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
+        return new TargetMetaData(targetDataSource.getIdentifier(), table, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
     }
 
     private Map<String, DataNodeMetaData> createConfiguredDataNodes(final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
