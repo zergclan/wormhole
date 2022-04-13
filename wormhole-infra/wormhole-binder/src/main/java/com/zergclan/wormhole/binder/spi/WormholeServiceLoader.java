@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.spi;
+package com.zergclan.wormhole.binder.spi;
 
 import com.zergclan.wormhole.common.exception.WormholeException;
 import lombok.AccessLevel;

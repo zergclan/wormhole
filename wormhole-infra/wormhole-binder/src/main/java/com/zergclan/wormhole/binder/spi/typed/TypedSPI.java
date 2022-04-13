@@ -15,31 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.spi.typed;
+package com.zergclan.wormhole.binder.spi.typed;
 
-import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-import java.util.Optional;
-
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class TypedSPIRegistry {
+/**
+ * Typed SPI.
+ */
+public interface TypedSPI {
     
     /**
-     * Find registered service.
+     * Get type.
      *
-     * @param typedSPIClass typed SPI class
-     * @param type type
-     * @param <T> type
-     * @return registered service
+     * @return type
      */
-    public static <T extends TypedSPI> Optional<T> findRegisteredService(final Class<T> typedSPIClass, final String type) {
-        for (T each : WormholeServiceLoader.newServiceInstances(typedSPIClass)) {
-            if (each.getType().equalsIgnoreCase(type)) {
-                return Optional.of(each);
-            }
-        }
-        return Optional.empty();
-    }
+    String getType();
 }

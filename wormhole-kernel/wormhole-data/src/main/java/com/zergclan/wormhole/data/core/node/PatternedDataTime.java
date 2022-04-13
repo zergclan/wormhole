@@ -37,6 +37,10 @@ public final class PatternedDataTime implements Serializable {
 
     private final DatePattern pattern;
     
+    public PatternedDataTime(final String value) {
+        this(value, DatePattern.STANDARD.name());
+    }
+    
     public PatternedDataTime(final String value, final String pattern) {
         this(value, DatePattern.valueOf(pattern));
     }

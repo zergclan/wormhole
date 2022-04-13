@@ -33,5 +33,6 @@
         <module>wormhole-common</module>
         <module>wormhole-config</module>
         <module>wormhole-bus</module>
+        <module>wormhole-binder</module>
     </modules>
 </project>
