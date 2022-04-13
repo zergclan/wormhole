@@ -101,4 +101,14 @@ public final class StringUtil {
         }
         return stringJoiner.toString();
     }
+    
+    /**
+     * Returns the string representation of the {@code Object} argument.
+     *
+     * @param object an {@code Object}
+     * @return if the argument is {@code null}, then a string equal to {@code ""}, otherwise, the value of  {@code obj.toString()} is returned.
+     */
+    public static String valueOf(final Object object) {
+        return null == object ? "" : object.toString();
+    }
 }

@@ -27,24 +27,24 @@ import java.math.BigDecimal;
  */
 @Getter
 public final class BigDecimalDataNode implements DataNode<BigDecimal> {
-
+    
     private static final long serialVersionUID = 2776591635524683863L;
-
+    
     private String name;
-
+    
     private BigDecimal value;
-
+    
     public BigDecimalDataNode(final String name, final BigDecimal value) {
         this.name = name;
         this.value = value;
     }
-
+    
     @Override
     public boolean refreshName(final String name) {
         this.name = name;
         return true;
     }
-
+    
     @Override
     public boolean refreshValue(final BigDecimal value) {
         this.value = value;

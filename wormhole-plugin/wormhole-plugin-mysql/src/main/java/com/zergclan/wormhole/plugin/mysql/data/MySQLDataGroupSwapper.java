@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.plugin.mysql.data;
 
+import com.zergclan.wormhole.binder.api.Swapper;
 import com.zergclan.wormhole.common.util.DateUtil;
-import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.BigDecimalDataNode;

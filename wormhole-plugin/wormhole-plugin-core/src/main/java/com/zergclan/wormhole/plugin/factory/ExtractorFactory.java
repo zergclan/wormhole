@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.plugin.factory;
 
-import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
-import com.zergclan.wormhole.common.spi.typed.TypedSPIRegistry;
+import com.zergclan.wormhole.binder.spi.WormholeServiceLoader;
+import com.zergclan.wormhole.binder.spi.typed.TypedSPIRegistry;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.plugin.api.Extractor;

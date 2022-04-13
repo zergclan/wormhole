@@ -37,6 +37,7 @@ import com.zergclan.wormhole.plugin.factory.ExtractorFactory;
 import com.zergclan.wormhole.plugin.factory.LoaderFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -68,7 +69,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         return PromiseTaskResult.newError(new TaskResult(cachedTaskMetadata.getIdentifier()));
     }
     
-    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, Result<?>> loader) {
+    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, Result<?>> loader) throws SQLException {
         Collection<DataGroup> dataGroups = extractor.extract();
         if (dataGroups.isEmpty()) {
             return PromiseTaskResult.newSuccess(createTaskResult());

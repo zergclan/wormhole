@@ -15,17 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.spi.typed;
+package com.zergclan.wormhole.binder.api;
 
 /**
- * Typed SPI.
+ * The root interface from which all swapper objects shall be derived in Wormhole.
+ *
+ * @param <S> class type of source
+ * @param <T> class type of target
  */
-public interface TypedSPI {
+public interface Swapper<S, T> {
     
     /**
-     * Get type.
+     * Swap source to target.
      *
-     * @return type
+     * @param source source
+     * @return target
      */
-    String getType();
+    T swapToTarget(S source);
+    
+    /**
+     * Swap target to source.
+     *
+     * @param target target
+     * @return source
+     */
+    S swapToSource(T target);
 }

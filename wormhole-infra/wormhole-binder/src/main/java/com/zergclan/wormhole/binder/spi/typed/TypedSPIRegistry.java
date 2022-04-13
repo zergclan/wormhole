@@ -15,29 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.api;
+package com.zergclan.wormhole.binder.spi.typed;
 
-/**
- * The root interface from which all swapper objects shall be derived in Wormhole.
- *
- * @param <S> class type of source
- * @param <T> class type of target
- */
-public interface Swapper<S, T> {
+import com.zergclan.wormhole.binder.spi.WormholeServiceLoader;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+import java.util.Optional;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class TypedSPIRegistry {
     
     /**
-     * Swap source to target.
+     * Find registered service.
      *
-     * @param source source
-     * @return target
+     * @param typedSPIClass typed SPI class
+     * @param type type
+     * @param <T> type
+     * @return registered service
      */
-    T swapToTarget(S source);
-    
-    /**
-     * Swap target to source.
-     *
-     * @param target target
-     * @return source
-     */
-    S swapToSource(T target);
+    public static <T extends TypedSPI> Optional<T> findRegisteredService(final Class<T> typedSPIClass, final String type) {
+        for (T each : WormholeServiceLoader.newServiceInstances(typedSPIClass)) {
+            if (each.getType().equalsIgnoreCase(type)) {
+                return Optional.of(each);
+            }
+        }
+        return Optional.empty();
+    }
 }

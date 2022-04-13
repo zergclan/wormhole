@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.plugin.api;
 
-import com.zergclan.wormhole.common.spi.typed.TypedSPI;
+import com.zergclan.wormhole.binder.spi.typed.TypedSPI;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 
 /**

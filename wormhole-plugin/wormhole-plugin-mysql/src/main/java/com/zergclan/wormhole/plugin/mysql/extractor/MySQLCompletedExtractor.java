@@ -18,19 +18,30 @@
 package com.zergclan.wormhole.plugin.mysql.extractor;
 
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.data.core.node.DataNodeBuilder;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
+import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
  * Completed extractor of MySQL.
  */
 public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
-
+    
     private final MySQLExpressionBuilder expressionBuilder = new MySQLExpressionBuilder();
     
     @Override
@@ -42,9 +53,40 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     }
 
     @Override
-    protected Collection<DataGroup> doExtract(final DataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) {
-        // TODO do extract of MySQL
-        return null;
+    protected Collection<DataGroup> doExtract(final DataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
+        Collection<DataGroup> result = new LinkedList<>();
+        Connection connection = createConnection(dataSource);
+        ResultSet resultSet = execute(connection, extractSQl);
+        while (resultSet.next()) {
+            result.add(createDataGroup(resultSet, dataNodes));
+        }
+        return result;
+    }
+    
+    private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
+        JdbcTemplate jdbcTemplate = JdbcTemplateCreator.create(dataSourceMetaData);
+        DataSource dataSource = jdbcTemplate.getDataSource();
+        if (null != dataSource) {
+            return dataSource.getConnection();
+        }
+        throw new SQLTimeoutException();
+    }
+    
+    private ResultSet execute(final Connection connection, final String extractSQl) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(extractSQl)) {
+            return preparedStatement.executeQuery();
+        }
+    }
+    
+    private DataGroup createDataGroup(final ResultSet resultSet, final Map<String, DataNodeMetaData> dataNodes) throws SQLException {
+        DataGroup result = new DataGroup();
+        Iterator<Map.Entry<String, DataNodeMetaData>> iterator = dataNodes.entrySet().iterator();
+        Map.Entry<String, DataNodeMetaData> entry;
+        while (iterator.hasNext()) {
+            entry = iterator.next();
+            result.register(DataNodeBuilder.build(resultSet.getObject(entry.getKey()), entry.getValue()));
+        }
+        return result;
     }
     
     @Override

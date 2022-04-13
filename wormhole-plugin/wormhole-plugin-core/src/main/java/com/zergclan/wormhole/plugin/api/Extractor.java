@@ -17,9 +17,10 @@
 
 package com.zergclan.wormhole.plugin.api;
 
-import com.zergclan.wormhole.common.spi.typed.TypedSPI;
+import com.zergclan.wormhole.binder.spi.typed.TypedSPI;
 import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 /**
@@ -38,6 +39,7 @@ public interface Extractor<D> extends TypedSPI {
      * Extract.
      *
      * @return data
+     * @throws SQLException {@link SQLException}
      */
-    Collection<D> extract();
+    Collection<D> extract() throws SQLException;
 }
