@@ -21,6 +21,7 @@ import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
+import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -30,10 +31,14 @@ import java.util.Map;
  */
 public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
 
+    private final MySQLExpressionBuilder expressionBuilder = new MySQLExpressionBuilder();
+    
     @Override
     protected String generatorExtractSQl(final String table, final String conditionSql, final Map<String, DataNodeMetaData> dataNodes) {
-        // TODO generator extract SQl for MySQL
-        return null;
+        String selectColumns = expressionBuilder.buildSelectColumns(table, dataNodes.keySet());
+        String fromTable = expressionBuilder.buildFromTable(table);
+        String condition = expressionBuilder.buildWhere(conditionSql);
+        return selectColumns + fromTable + condition;
     }
 
     @Override

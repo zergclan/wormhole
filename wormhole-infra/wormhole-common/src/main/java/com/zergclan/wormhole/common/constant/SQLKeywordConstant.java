@@ -21,32 +21,20 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Constant of mark.
+ * Constant of SQL keyword.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MarkConstant {
+public final class SQLKeywordConstant {
     
-    public static final String BLANK = " ";
+    public static final String SELECT = "SELECT ";
     
-    public static final String POINT = ".";
+    public static final String INSERT = "INSERT ";
     
-    public static final String COMMA = ",";
-
-    public static final String SPACE = "#";
+    public static final String UPDATE = "UPDATE ";
     
-    public static final String COLON = ":";
+    public static final String FROM = " FROM ";
     
-    public static final String FORWARD_SLASH = "/";
+    public static final String WHERE = " WHERE ";
     
-    public static final String QUESTION = "?";
-    
-    public static final String AND = "&";
-    
-    public static final String AT = "@";
-
-    public static final String EQUAL = "=";
-    
-    public static final String ASTERISK = "*";
-    
-    public static final String BACK_QUOTE = "`";
+    public static final String AS = " AS ";
 }
