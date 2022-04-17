@@ -31,6 +31,7 @@ public final class PlanInfo extends AbstractPO {
     
     private static final long serialVersionUID = 7199515290545924206L;
     
+    // TODO fix it by @gz
     private String title;
     
     private String code;

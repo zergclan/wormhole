@@ -32,11 +32,6 @@
     <dependencies>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-binder</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zergclan</groupId>
             <artifactId>wormhole-metadata</artifactId>
             <version>${project.version}</version>
         </dependency>

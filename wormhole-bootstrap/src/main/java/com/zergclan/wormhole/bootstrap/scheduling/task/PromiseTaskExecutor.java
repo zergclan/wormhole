@@ -44,6 +44,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Promise task executor.
@@ -99,7 +100,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         long taskBatch = cachedTaskMetadata.getTaskBatch();
         BatchedDataGroup batchedDataGroup = new BatchedDataGroup(cachedTaskMetadata.getBatchSize(), dataGroups);
         Collection<Filter<DataGroup>> filters = createFilters(cachedTaskMetadata);
-        Handler<BatchedDataGroup> nextHandler = new LoadedHandler(loader);
+        Handler<BatchedDataGroup> nextHandler = new LoadedHandler(loader, new AtomicReference<>());
         ExecutorServiceManager.getComputingExecutor().execute(new BatchedDataGroupHandler(planIdentifier, planBatch, taskIdentifier, taskBatch, batchedDataGroup, filters, nextHandler));
     }
     
@@ -108,7 +109,6 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         Map<Integer, Map<FilterType, Collection<FilterMetaData>>> filters = cachedTaskMetadata.getFilters();
         Iterator<Map.Entry<Integer, Map<FilterType, Collection<FilterMetaData>>>> iterator = filters.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map<FilterType, Collection<FilterMetaData>> value = iterator.next().getValue();
             result.addAll(DataGroupFilterFactory.createDataGroupFilters(iterator.next().getKey(), iterator.next().getValue()));
         }
         return result;

@@ -15,25 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.event.status;
+package com.zergclan.wormhole.console.application.listener;
+
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
+import org.springframework.stereotype.Component;
 
 /**
- * Business type enum.
+ * Listener for Wormhole.
  */
-public enum ExecutedType {
+@Component
+public class WormholeListener {
     
-    /**
-     * Executed type of plan.
-     */
-    PLAN,
-    
-    /**
-     * Executed type of job.
-     */
-    JOB,
-    
-    /**
-     * Executed type of task.
-     */
-    TASK
+    static {
+        WormholeEventBus.register(WormholeListener.class);
+    }
 }

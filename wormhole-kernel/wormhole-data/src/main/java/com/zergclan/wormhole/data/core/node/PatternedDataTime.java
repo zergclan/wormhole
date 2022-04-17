@@ -51,7 +51,7 @@ public final class PatternedDataTime implements Serializable {
     
     @Getter
     public enum DatePattern {
-
+        // TODO add source date pattern
         STANDARD("yyyy-MM-dd HH:mm:ss"),
         DATE("yyyy-MM-dd"),
         TIME("HH:mm:ss");

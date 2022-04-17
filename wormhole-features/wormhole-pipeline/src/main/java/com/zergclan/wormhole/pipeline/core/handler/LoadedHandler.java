@@ -23,6 +23,8 @@ import com.zergclan.wormhole.pipeline.api.Handler;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.RequiredArgsConstructor;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * Loaded handler.
  */
@@ -31,10 +33,12 @@ public final class LoadedHandler implements Handler<BatchedDataGroup> {
     
     private final Loader<BatchedDataGroup, Result<?>> loader;
     
+    private final AtomicReference<Result<?>> result;
+    
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {
         batchedDataGroup.getDataGroups().removeAll(batchedDataGroup.getErrors());
-        loader.load(batchedDataGroup);
+        result.set(loader.load(batchedDataGroup));
     }
     
     @Override

@@ -34,9 +34,9 @@ import java.util.concurrent.TimeUnit;
  * Plan context.
  */
 public final class PlanContext {
-
+    
     private final Cache<String, CachedPlanMetaData> cachedMetadata = Caffeine.newBuilder().initialCapacity(1).maximumSize(100).expireAfterWrite(1, TimeUnit.DAYS).build();
-
+    
     /**
      * Is executing plan.
      *
@@ -46,7 +46,7 @@ public final class PlanContext {
     public boolean isExecuting(final String planIdentifier) {
         return cachedMetadata.asMap().containsKey(planIdentifier);
     }
-
+    
     /**
      * Create {@link CachedPlanMetaData}.
      *
@@ -57,12 +57,14 @@ public final class PlanContext {
     public Optional<CachedPlanMetaData> cachedMetadata(final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) {
         String planIdentifier = planTrigger.getPlanIdentifier();
         if (isExecuting(planIdentifier)) {
-            // TODO send plan is executing event
+            /**
+             * TODO send plan is executing event by @gz
+             */
             return Optional.empty();
         }
         Optional<PlanMetaData> plan = wormholeMetaData.getPlan(planIdentifier);
         if (!plan.isPresent()) {
-            // TODO send plan not exist event
+            // TODO fix me with exception
             return Optional.empty();
         }
         return cachedMetaData(plan.get(), wormholeMetaData.getDataSources());
@@ -74,6 +76,7 @@ public final class PlanContext {
             cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
             return Optional.of(planMetadata);
         } catch (final SQLException ex) {
+            // TODO send plan cached metaData failed
             return Optional.empty();
         }
     }

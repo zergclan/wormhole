@@ -15,17 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.demo;
+package com.zergclan.wormhole.bus.memory;
 
 import com.google.common.eventbus.EventBus;
+import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.bus.demo.EventBusFactory;
 
 /**
  * Event bus operation.
  */
 public final class WormholeEventBus {
-
+    
+    // TODO fix by WtlKoma
     private static final EventBus EVENTBUS = EventBusFactory.getEventBus();
-
+    
     /**
      * Register event listener.
      * You can register multiple.
@@ -54,7 +57,7 @@ public final class WormholeEventBus {
      *
      * @param event Event message object.
      */
-    public static void post(final Object event) {
+    public static void post(final Event event) {
         EVENTBUS.post(event);
     }
 
