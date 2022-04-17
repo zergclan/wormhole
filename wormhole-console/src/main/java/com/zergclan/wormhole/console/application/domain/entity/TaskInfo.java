@@ -29,6 +29,7 @@ public final class TaskInfo extends AbstractPO {
     
     private static final long serialVersionUID = 3553295866589815888L;
 
+    // TODO fix it by @gz
     private Integer planId;
 
     private String code;

@@ -56,7 +56,6 @@ public final class PlanExecutionEngine {
     public void execute(final PlanTrigger planTrigger) {
         Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
         if (!cachedPlanMetadata.isPresent()) {
-            
             return;
         }
         PlanExecutorFactory.create(cachedPlanMetadata.get()).execute();

@@ -32,7 +32,7 @@
     <dependencies>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-common</artifactId>
+            <artifactId>wormhole-binder</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

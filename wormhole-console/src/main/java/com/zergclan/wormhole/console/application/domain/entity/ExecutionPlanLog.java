@@ -27,6 +27,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public final class ExecutionPlanLog extends AbstractPO {
     
+    private static final long serialVersionUID = -9107170916332742939L;
+    
+    // TODO fix it by @gz
     private Long planBatch;
     
     private Integer planId;

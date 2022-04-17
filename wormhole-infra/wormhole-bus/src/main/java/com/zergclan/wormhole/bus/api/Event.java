@@ -21,11 +21,4 @@ package com.zergclan.wormhole.bus.api;
  * The root interface from which all event state objects shall be derived in Wormhole.
  */
 public interface Event {
-    
-    /**
-     * The object on which the Event initially occurred.
-     *
-     * @return The object on which the Event initially occurred.
-     */
-    Object getSource();
 }

@@ -15,21 +15,9 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.listener;
+package com.zergclan.wormhole.bus.memory.event;
 
-import com.lmax.disruptor.EventHandler;
-import com.zergclan.wormhole.bus.api.EventListener;
-import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
-
-public final class ExecutedStateEventListener implements EventListener<ExecutedStateEvent>, EventHandler<ExecutedStateEvent> {
+public final class EventFactory {
     
-    @Override
-    public void onEvent(final ExecutedStateEvent event) {
-        // TODO on executed state event.
-    }
-    
-    @Override
-    public void onEvent(final ExecutedStateEvent executedStateEvent, final long sequence, final boolean endOfBatch) throws Exception {
-        onEvent(executedStateEvent);
-    }
+    // TODO create event by WtlKoma
 }

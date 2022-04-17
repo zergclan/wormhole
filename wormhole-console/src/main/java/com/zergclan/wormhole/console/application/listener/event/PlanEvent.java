@@ -15,15 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.memory.publisher;
+package com.zergclan.wormhole.console.application.listener.event;
 
-import com.zergclan.wormhole.bus.api.EventPublisher;
-import com.zergclan.wormhole.bus.memory.event.status.ExecutedStateEvent;
+import com.zergclan.wormhole.bus.api.Event;
 
-public class ExecutedStateEventPublisher implements EventPublisher<ExecutedStateEvent> {
-    
-    @Override
-    public void publishEvent(final ExecutedStateEvent event) {
-        // TODO publish executed state event.
-    }
+public class PlanEvent implements Event {
+
 }

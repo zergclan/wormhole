@@ -57,6 +57,7 @@ public final class BatchedDataGroupHandler implements ProcessTask {
             }
         }
         loadedHandler.handle(batchedDataGroup);
+        // TODO send task result event
     }
     
     private boolean handleDataGroup(final DataGroup dataGroup) {
@@ -64,7 +65,7 @@ public final class BatchedDataGroupHandler implements ProcessTask {
         while (iterator.hasNext()) {
             Filter<DataGroup> filter = iterator.next();
             if (!filter.doFilter(dataGroup)) {
-                // TODO send event
+                // TODO send error data event
                 return false;
             }
         }

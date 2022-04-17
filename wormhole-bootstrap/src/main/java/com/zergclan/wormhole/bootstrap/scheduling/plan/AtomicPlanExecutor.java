@@ -70,7 +70,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
                 // TODO send task execute success event
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
-                // TODO send task execute error event
+                // TODO send task execute failed event
             }
         }
         return Optional.empty();
