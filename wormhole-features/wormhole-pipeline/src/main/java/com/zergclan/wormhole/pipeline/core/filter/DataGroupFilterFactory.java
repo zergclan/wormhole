@@ -27,6 +27,7 @@ import com.zergclan.wormhole.metadata.core.filter.precise.convertor.DataTypeConv
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.NodeNameConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.FixedNodeEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.NullToDefaultEditorMetaData;
+import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueAppendEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueRangeEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.validator.NotBlankValidatorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.validator.NotNullValidatorMetaData;
@@ -38,6 +39,7 @@ import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.DataTypeConv
 import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.NodeNameConvertor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.FixedNodeEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.NullToDefaultEditor;
+import com.zergclan.wormhole.pipeline.core.filter.precise.editor.ValueAppendEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.ValueRangeEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.validator.NotBlankValidator;
 import com.zergclan.wormhole.pipeline.core.filter.precise.validator.NotNullValidator;
@@ -47,6 +49,7 @@ import com.zergclan.wormhole.pipeline.core.helper.NodeNameConvertorHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueConcatMergerHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueDelimiterSplitterHelper;
+import com.zergclan.wormhole.pipeline.core.helper.ValueAppendHelper;
 import com.zergclan.wormhole.pipeline.core.helper.ValueRangeHelper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -91,6 +94,9 @@ public final class DataGroupFilterFactory {
                     break;
                 case VALUE_RANGE:
                     result.add(createValueRangeFilters(order, type, entry.getValue()));
+                    break;
+                case VALUE_APPEND:
+                    result.add(createValueAppendFilters(order, type, entry.getValue()));
                     break;
                 case NAME_CONVERTOR:
                     result.add(createNodeNameConvertorFilters(order, type, entry.getValue()));
@@ -176,6 +182,16 @@ public final class DataGroupFilterFactory {
             valueRangeHelpers.put(filterMetaData.getSourceName(), new ValueRangeHelper(filterMetaData.getStartIndex(), filterMetaData.getEndIndex()));
         }
         return new ValueRangeEditor(order, type, valueRangeHelpers);
+    }
+    
+    private static Filter<DataGroup> createValueAppendFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+        Map<String, ValueAppendHelper> valueAppendHelpers = new LinkedHashMap<>();
+        Iterator<FilterMetaData> iterator = filters.iterator();
+        while (iterator.hasNext()) {
+            ValueAppendEditorMetaData filterMetaData = (ValueAppendEditorMetaData) iterator.next();
+            valueAppendHelpers.put(filterMetaData.getSourceName(), new ValueAppendHelper(filterMetaData.getAppendValue()));
+        }
+        return new ValueAppendEditor(order, type, valueAppendHelpers);
     }
     
     private static Filter<DataGroup> createFixedNodeFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
