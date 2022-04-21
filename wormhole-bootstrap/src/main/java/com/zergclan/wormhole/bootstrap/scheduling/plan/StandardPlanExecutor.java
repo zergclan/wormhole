@@ -44,6 +44,13 @@ public final class StandardPlanExecutor implements PlanExecutor {
         final long planBatch = SequenceGenerator.generateId();
         cachedPlanMetadata.getCachedTasks().forEach(each -> parallelExecute(each, planIdentifier, planBatch));
         // TODO send plan execute success event
+        /**
+         * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
+         * planBatch
+         * planId
+         * status 计划执行成功的状态
+         * createTime，modifyTime
+         */
     }
 
     private void parallelExecute(final Map<String, CachedTaskMetaData> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
@@ -58,9 +65,28 @@ public final class StandardPlanExecutor implements PlanExecutor {
             try {
                 promiseTaskResult = completionService.take().get();
                 // TODO send task execute success event
+                /**
+                 * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog
+                 * planBatch
+                 * planId
+                 * taskBatch
+                 * taskId
+                 * status 任务执行成功的状态
+                 * createTime，modifyTime
+                 */
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
                 // TODO send task execute failed event
+                /**
+                 * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog
+                 * planBatch
+                 * planId
+                 * taskBatch
+                 * taskId
+                 * status 任务执行失败的状态
+                 * description 错误的原因
+                 * createTime，modifyTime
+                 */
             }
         }
     }

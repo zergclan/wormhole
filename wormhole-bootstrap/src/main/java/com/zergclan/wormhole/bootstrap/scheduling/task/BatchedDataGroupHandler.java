@@ -58,6 +58,25 @@ public final class BatchedDataGroupHandler implements ProcessTask {
         }
         loadedHandler.handle(batchedDataGroup);
         // TODO send task result event
+        /**
+         * recode com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog
+         * planBatch
+         * planId
+         * taskBatch
+         * taskId
+         * errorCode 异常编码，插入数据失败
+         * errorDate 异常数据
+         * description 异常表示
+         * createTime，modifyTime
+         */
+
+        /**
+         * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionDataGroupLog
+         * taskBatch
+         * transDataNum 转换数据条数
+         * errorDataNum 异常数据条数
+         * createTime，modifyTime
+         */
     }
     
     private boolean handleDataGroup(final DataGroup dataGroup) {
@@ -66,6 +85,17 @@ public final class BatchedDataGroupHandler implements ProcessTask {
             Filter<DataGroup> filter = iterator.next();
             if (!filter.doFilter(dataGroup)) {
                 // TODO send error data event
+                /**
+                 * recode com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog
+                 * planBatch
+                 * planId
+                 * taskBatch
+                 * taskId
+                 * errorCode 异常编码，转换失败
+                 * errorDate 异常数据
+                 * description 异常表示
+                 * createTime，modifyTime
+                 */
                 return false;
             }
         }

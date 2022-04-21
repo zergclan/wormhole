@@ -56,6 +56,14 @@ public final class PlanExecutionEngine {
     public void execute(final PlanTrigger planTrigger) {
         Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
         if (!cachedPlanMetadata.isPresent()) {
+            /**
+             * TODO send plan is executing event by @gz
+             * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
+            * planBatch
+            * planId
+            * status 计划初始化失败的状态
+            * createTime，modifyTime
+            */
             return;
         }
         PlanExecutorFactory.create(cachedPlanMetadata.get()).execute();

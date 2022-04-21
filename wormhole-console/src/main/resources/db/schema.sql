@@ -148,8 +148,7 @@ CREATE TABLE plan_execution_log (
     `plan_batch` bigint(20) NOT NULL COMMENT '方案批次号',
     `plan_id` INT(11) NOT NULL COMMENT '关联方案ID',
     `status` INT(11) NOT NULL COMMENT '执行状态',
-    `description` VARCHAR(255) NOT NULL COMMENT '执行描述',
-    `operator` INT(11) NOT NULL COMMENT '操作员ID',
+    `description` VARCHAR(255) COMMENT '执行描述',
     `create_time` datetime(0) NOT NULL COMMENT '创建时间',
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
@@ -162,7 +161,6 @@ CREATE TABLE task_execution_log (
     `plan_id` INT(11) NOT NULL COMMENT '关联方案ID',
     `status` INT(11) NOT NULL COMMENT '执行状态',
     `description` VARCHAR(255) NOT NULL COMMENT '执行描述',
-    `operator` INT(11) NOT NULL COMMENT '操作员ID',
     `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
     `task_id` INT(11) NOT NULL COMMENT '所属任务ID',
     `trans_data_num` INT(11) DEFAULT 0 COMMENT '转换数据条数',
@@ -171,6 +169,17 @@ CREATE TABLE task_execution_log (
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '任务执行日志表';
+
+DROP TABLE IF EXISTS `data_group_execution_log`;
+CREATE TABLE data_group_execution_log (
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
+    `trans_data_num` INT(11) DEFAULT 0 COMMENT '转换数据条数',
+    `error_data_num` INT(11) DEFAULT 0 COMMENT '错误数据条数',
+    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '批次数据执行记录';
 
 DROP TABLE IF EXISTS `error_date_log`;
 CREATE TABLE error_date_log (

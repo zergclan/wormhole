@@ -15,33 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.infra.repository.mapper;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * {@link ErrorDataLog}.
+ * Mapper of {@link ExecutionTaskLog}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class ErrorDataLog extends AbstractPO {
-    
-    private static final long serialVersionUID = -3569118343604729642L;
-
-    private Integer id;
-
-    private Integer planId;
-
-    private Long planBatch;
-
-    private Long taskBatch;
-
-    private Integer taskId;
-
-    private String errorCode;
-
-    private String errorDate;
-
-    private String description;
+@Mapper
+public interface ExecutionTaskLogMapper extends BaseMapper<ExecutionTaskLog> {
 }

@@ -15,33 +15,30 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.application.service;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.api.vo.PageQuery;
+import com.zergclan.wormhole.console.application.domain.entity.ExecutionDataGroupLog;
+import com.zergclan.wormhole.console.infra.repository.PageData;
 
 /**
- * {@link ErrorDataLog}.
+ * Service interface of {@link ExecutionDataGroupLog}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class ErrorDataLog extends AbstractPO {
+public interface ExecutionDataGroupLogService {
     
-    private static final long serialVersionUID = -3569118343604729642L;
-
-    private Integer id;
-
-    private Integer planId;
-
-    private Long planBatch;
-
-    private Long taskBatch;
-
-    private Integer taskId;
-
-    private String errorCode;
-
-    private String errorDate;
-
-    private String description;
+    /**
+     * Get {@link ExecutionDataGroupLog} by id.
+     *
+     * @param id id
+     * @return {@link ExecutionDataGroupLog}
+     */
+    ExecutionDataGroupLog getById(Integer id);
+    
+    /**
+     * List {@link ExecutionDataGroupLog} by {@link PageQuery}.
+     *
+     * @param pageQuery {@link PageQuery}
+     * @return {@link PageData}
+     */
+    PageData<ExecutionDataGroupLog> listByPage(PageQuery<ExecutionDataGroupLog> pageQuery);
 }

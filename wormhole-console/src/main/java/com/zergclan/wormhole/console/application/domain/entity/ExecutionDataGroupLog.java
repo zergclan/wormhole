@@ -21,27 +21,20 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link ErrorDataLog}.
+ * {@link ExecutionDataGroupLog}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class ErrorDataLog extends AbstractPO {
-    
-    private static final long serialVersionUID = -3569118343604729642L;
+public final class ExecutionDataGroupLog extends AbstractPO {
+
+    private static final long serialVersionUID = -1576617291765406125L;
 
     private Integer id;
 
-    private Integer planId;
-
-    private Long planBatch;
-
     private Long taskBatch;
 
-    private Integer taskId;
+    private Integer transDataNum;
 
-    private String errorCode;
+    private Integer errorDataNum;
 
-    private String errorDate;
-
-    private String description;
 }
