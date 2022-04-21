@@ -20,6 +20,7 @@ package com.zergclan.wormhole.bootstrap.context;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
@@ -53,37 +54,23 @@ public final class PlanContext {
      * @param wormholeMetaData {@link WormholeMetaData}
      * @param planTrigger plan identifier
      * @return {@link CachedPlanMetaData}
+     * @exception SQLException SQL exception
      */
-    public Optional<CachedPlanMetaData> cachedMetadata(final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) {
+    public synchronized Optional<CachedPlanMetaData> cachedMetadata(final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) throws SQLException {
         String planIdentifier = planTrigger.getPlanIdentifier();
         if (isExecuting(planIdentifier)) {
-            /**
-             * TODO send plan is executing event by @gz
-             *
-             * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
-             * planBatch
-             * planId
-             * status 任务正在执行中，这次不能再跑的状态
-             * createTime，modifyTime
-             */
             return Optional.empty();
         }
         Optional<PlanMetaData> plan = wormholeMetaData.getPlan(planIdentifier);
-        if (!plan.isPresent()) {
-            // TODO fix me with exception
-            return Optional.empty();
+        if (plan.isPresent()) {
+            return Optional.of(cachedMetaData(plan.get(), wormholeMetaData.getDataSources()));
         }
-        return cachedMetaData(plan.get(), wormholeMetaData.getDataSources());
+        throw new WormholeException("error: can not find plan meta data named: [%s]", planIdentifier);
     }
     
-    private Optional<CachedPlanMetaData> cachedMetaData(final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) {
-        try {
-            CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planMetaData, dataSources);
-            cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
-            return Optional.of(planMetadata);
-        } catch (final SQLException ex) {
-            // TODO send plan cached metaData failed
-            return Optional.empty();
-        }
+    private CachedPlanMetaData cachedMetaData(final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
+        CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planMetaData, dataSources);
+        cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
+        return planMetadata;
     }
 }
