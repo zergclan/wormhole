@@ -47,10 +47,24 @@ public final class AtomicPlanExecutor implements PlanExecutor {
             Optional<String> failedTask = transactionalExecute(each, planIdentifier, planBatch);
             if (failedTask.isPresent()) {
                 // TODO send plan execute failed event
+                /**
+                 * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
+                 * planBatch
+                 * planId
+                 * status 计划执行失败的状态
+                 * createTime，modifyTime
+                 */
                 break;
             }
         }
         // TODO send plan execute success event
+        /**
+         * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
+         * planBatch
+         * planId
+         * status 计划执行成功的状态
+         * createTime，modifyTime
+         */
     }
     
     private Optional<String> transactionalExecute(final Map<String, CachedTaskMetaData> cachedTaskMetadata, final String planIdentifier, final long planBatch) {

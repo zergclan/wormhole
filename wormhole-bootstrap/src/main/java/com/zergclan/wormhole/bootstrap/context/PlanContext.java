@@ -59,6 +59,12 @@ public final class PlanContext {
         if (isExecuting(planIdentifier)) {
             /**
              * TODO send plan is executing event by @gz
+             *
+             * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
+             * planBatch
+             * planId
+             * status 任务正在执行中，这次不能再跑的状态
+             * createTime，modifyTime
              */
             return Optional.empty();
         }
