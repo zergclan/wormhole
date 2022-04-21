@@ -15,12 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.metadata.core.filter;
+package com.zergclan.wormhole.pipeline.core.helper;
+
+import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.common.util.Validator;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Type of {@link FilterMetaData}.
+ * Value append helper.
  */
-public enum FilterType {
+@RequiredArgsConstructor
+public final class ValueAppendHelper {
     
-    NOT_NULL, NOT_BLANK, NULL_TO_DEFAULT, FIXED_NODE, VALUE_RANGE, VALUE_APPEND, NAME_CONVERTOR, CODE_CONVERTOR, DATA_TYPE_CONVERTOR, PATTERNED_DATA_TIME_CONVERTOR, CONCAT_MERGER, DELIMITER_SPLITTER
+    private final String appendValue;
+    
+    /**
+     * Sub value.
+     *
+     * @param value value
+     * @return sub value
+     */
+    public String append(final String value) {
+        Validator.preState(!StringUtil.isBlank(value), "error : append helper arg value can not be blank");
+        return value + appendValue;
+    }
 }

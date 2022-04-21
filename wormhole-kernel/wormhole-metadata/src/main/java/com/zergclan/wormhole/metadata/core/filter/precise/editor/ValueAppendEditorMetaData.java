@@ -27,13 +27,13 @@ import lombok.RequiredArgsConstructor;
 import java.util.Properties;
 
 /**
- * Value range editor implemented of {@link FilterMetaData}.
+ * Value append editor implemented of {@link FilterMetaData}.
  */
 @RequiredArgsConstructor
 @Getter
-public final class ValueRangeEditorMetaData implements FilterMetaData {
+public final class ValueAppendEditorMetaData implements FilterMetaData {
     
-    private static final FilterType FILTER_TYPE = FilterType.VALUE_RANGE;
+    private static final FilterType FILTER_TYPE = FilterType.VALUE_APPEND;
     
     private final String taskIdentifier;
     
@@ -41,9 +41,7 @@ public final class ValueRangeEditorMetaData implements FilterMetaData {
     
     private final String sourceName;
     
-    private final int startIndex;
-    
-    private final int endIndex;
+    private final String appendValue;
     
     @Override
     public String getIdentifier() {
@@ -56,7 +54,7 @@ public final class ValueRangeEditorMetaData implements FilterMetaData {
     }
     
     /**
-     * Builder for {@link ValueRangeEditorMetaData}.
+     * Builder for {@link ValueAppendEditorMetaData}.
      *
      * @param taskIdentifier task identifier
      * @param order order
@@ -65,11 +63,10 @@ public final class ValueRangeEditorMetaData implements FilterMetaData {
      */
     public static FilterMetaData builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build ValueRangeEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String endIndex = props.getProperty("endIndex");
-        Validator.notNull(endIndex, "error : build ValueRangeEditorMetadata failed endIndex in props can not be null, task identifier: [%s]", taskIdentifier);
-        String startIndex = props.getProperty("startIndex", "0");
-        return new FilterBuilder(taskIdentifier, order, sourceName, Integer.parseInt(startIndex), Integer.parseInt(endIndex)).build();
+        Validator.notNull(sourceName, "error : build ValueAppendEditorMetaData failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
+        String appendValue = props.getProperty("appendValue");
+        Validator.notNull(appendValue, "error : build ValueAppendEditorMetaData failed appendValue in props can not be null, task identifier: [%s]", taskIdentifier);
+        return new ValueAppendEditorMetaData.FilterBuilder(taskIdentifier, order, sourceName, appendValue).build();
     }
     
     @RequiredArgsConstructor
@@ -81,12 +78,10 @@ public final class ValueRangeEditorMetaData implements FilterMetaData {
         
         private final String sourceName;
     
-        private final int startIndex;
-    
-        private final int endIndex;
+        private final String appendValue;
         
-        private ValueRangeEditorMetaData build() {
-            return new ValueRangeEditorMetaData(taskIdentifier, order, sourceName, startIndex, endIndex);
+        private ValueAppendEditorMetaData build() {
+            return new ValueAppendEditorMetaData(taskIdentifier, order, sourceName, appendValue);
         }
     }
 }
