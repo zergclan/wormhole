@@ -20,11 +20,13 @@ package com.zergclan.wormhole.bootstrap.engine;
 import com.zergclan.wormhole.bootstrap.context.PlanContext;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutorFactory;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -46,26 +48,31 @@ public final class PlanExecutionEngine {
     public boolean register(final MetaData metadata) {
         return wormholeMetadata.register(metadata);
     }
-
-
+    
     /**
      * Execute by plan trigger.
      *
      * @param planTrigger {@link PlanTrigger}
      */
     public void execute(final PlanTrigger planTrigger) {
-        Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
-        if (!cachedPlanMetadata.isPresent()) {
-            /**
-             * TODO send plan is executing event by @gz
-             * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
-            * planBatch
-            * planId
-            * status 计划初始化失败的状态
-            * createTime，modifyTime
-            */
-            return;
+        // TODO send plan trigger event
+        try {
+            Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
+            if (!cachedPlanMetadata.isPresent()) {
+                /**
+                 * TODO send plan execute failed is executing
+                 * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
+                 * planBatch
+                 * planId
+                 * status 计划初始化失败的状态
+                 * createTime，modifyTime
+                 */
+                return;
+            }
+            PlanExecutorFactory.create(cachedPlanMetadata.get()).execute();
+        } catch (final SQLException ex) {
+            // TODO send plan execute failed SQLException
+            throw new WormholeException("error: can not cached plan meta data by SQL exception", ex);
         }
-        PlanExecutorFactory.create(cachedPlanMetadata.get()).execute();
     }
 }

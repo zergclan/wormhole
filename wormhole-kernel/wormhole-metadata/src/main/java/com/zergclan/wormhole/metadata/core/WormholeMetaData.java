@@ -22,7 +22,6 @@ import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
-import com.zergclan.wormhole.metadata.core.resource.SchemaMetaData;
 import lombok.Getter;
 
 import java.util.Map;
@@ -56,8 +55,7 @@ public final class WormholeMetaData implements MetaData {
         Validator.notNull(planIdentifier, "error : get plan metadata plan identifier can not be null");
         LOCK.readLock().lock();
         try {
-            PlanMetaData planMetadata = plans.get(planIdentifier);
-            return null == planMetadata ? Optional.empty() : Optional.of(planMetadata);
+            return Optional.ofNullable(plans.get(planIdentifier));
         } finally {
             LOCK.readLock().unlock();
         }
@@ -77,9 +75,6 @@ public final class WormholeMetaData implements MetaData {
             if (metadata instanceof DataSourceMetaData) {
                 return register((DataSourceMetaData) metadata);
             }
-            if (metadata instanceof SchemaMetaData) {
-                return register((SchemaMetaData) metadata);
-            }
             if (metadata instanceof PlanMetaData) {
                 return register((PlanMetaData) metadata);
             }
@@ -91,11 +86,6 @@ public final class WormholeMetaData implements MetaData {
     
     private boolean register(final DataSourceMetaData dataSourceMetaData) {
         dataSources.put(dataSourceMetaData.getIdentifier(), dataSourceMetaData);
-        return true;
-    }
-    
-    private boolean register(final SchemaMetaData schemaMetadata) {
-        dataSources.get(schemaMetadata.getDataSourceIdentifier()).registerSchema(schemaMetadata);
         return true;
     }
     

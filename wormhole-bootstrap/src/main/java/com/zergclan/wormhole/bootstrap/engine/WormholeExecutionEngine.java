@@ -31,6 +31,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Wormhole execution engine.
@@ -40,13 +41,13 @@ public final class WormholeExecutionEngine {
     
     private static final WormholeExecutionEngine INSTANCE = new WormholeExecutionEngine();
     
-    private final WormholeMetadataInitializer initializer = new WormholeMetadataInitializer();
+    private static final AtomicReference<EngineState> STATE = new AtomicReference<>(EngineState.UNINITIALIZED);
     
-    private final PlanTriggerManager planTriggerManager = new PlanTriggerManager();
+    private static final WormholeMetadataInitializer INITIALIZER = new WormholeMetadataInitializer();
+    
+    private static final PlanTriggerManager PLAN_TRIGGER_MANAGER = new PlanTriggerManager();
     
     private volatile PlanExecutionEngine planExecutionEngine;
-    
-    private volatile EngineState engineState = EngineState.UNINITIALIZED;
     
     /**
      * Get instance.
@@ -57,45 +58,44 @@ public final class WormholeExecutionEngine {
      */
     public static synchronized WormholeExecutionEngine getInstance(final WormholeConfiguration configuration) throws SQLException {
         Validator.notNull(configuration, "error : wormhole execution engine new instance configuration can not be null");
-        if (INSTANCE.isUninitialized()) {
+        if (!isInitialization()) {
             INSTANCE.init(configuration);
         }
         return INSTANCE;
     }
     
-    private boolean isUninitialized() {
-        return EngineState.UNINITIALIZED == engineState;
+    private static boolean isInitialization() {
+        return EngineState.INITIALIZATION == STATE.get();
     }
     
     private void init(final WormholeConfiguration configuration) throws SQLException {
-        WormholeMetaData wormholeMetadata = initializer.init(configuration);
-        planExecutionEngine = createPlanExecutionEngine(wormholeMetadata);
+        WormholeMetaData wormholeMetadata = INITIALIZER.init(configuration);
+        planExecutionEngine = new PlanExecutionEngine(wormholeMetadata);
         initPlanTriggerManager(wormholeMetadata.getPlans());
-        engineState = EngineState.INITIALIZATION;
-    }
-    
-    private PlanExecutionEngine createPlanExecutionEngine(final WormholeMetaData wormholeMetadata) {
-        return new PlanExecutionEngine(wormholeMetadata);
+        STATE.compareAndSet(EngineState.UNINITIALIZED, EngineState.INITIALIZATION);
     }
     
     private void initPlanTriggerManager(final Map<String, PlanMetaData> planMetaData) {
-        planMetaData.values().forEach(planTriggerManager::register);
+        planMetaData.values().forEach(PLAN_TRIGGER_MANAGER::register);
     }
     
     /**
      * Execute executable plan.
      */
     public void execute() {
-        planTriggerManager.getExecutableTrigger().ifPresent(this::handleExecutableTrigger);
+        for (;;) {
+            if (isInitialization()) {
+                PLAN_TRIGGER_MANAGER.getExecutableTrigger().ifPresent(this::handleExecutableTrigger);
+            }
+        }
     }
 
     private void handleExecutableTrigger(final PlanTrigger planTrigger) {
         planExecutionEngine.execute(planTrigger);
         if (planTrigger instanceof ScheduledPlanTrigger) {
-            planTriggerManager.reRegister((ScheduledPlanTrigger) planTrigger);
+            PLAN_TRIGGER_MANAGER.reRegister((ScheduledPlanTrigger) planTrigger);
         }
     }
-    // TODO fix register plan and task by gin
     
     /**
      * Register {@link MetaData}.
@@ -103,8 +103,11 @@ public final class WormholeExecutionEngine {
      * @param metadata {@link MetaData}
      * @return is registered or not
      */
-    public boolean register(final MetaData metadata) {
-        return planExecutionEngine.register(metadata);
+    public synchronized boolean register(final MetaData metadata) {
+        if (isInitialization()) {
+            return planExecutionEngine.register(metadata);
+        }
+        return false;
     }
     
     private enum EngineState {
