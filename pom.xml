@@ -107,43 +107,36 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.sersion}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.lmax</groupId>
                 <artifactId>disruptor</artifactId>
                 <version>${disruptor.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.cronutils</groupId>
                 <artifactId>cron-utils</artifactId>
                 <version>${cron.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
@@ -155,13 +148,12 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
-                <scope>provided</scope>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
