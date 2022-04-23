@@ -20,6 +20,7 @@ package com.zergclan.wormhole.bootstrap.context;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
+import com.zergclan.wormhole.bus.disruptor.event.ExecutionEvent;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
@@ -72,5 +73,42 @@ public final class PlanContext {
         CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planMetaData, dataSources);
         cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
         return planMetadata;
+    }
+    
+    /**
+     * Handle trigger.
+     *
+     * @param planTrigger {@link PlanTrigger}
+     */
+    public void handleTrigger(final PlanTrigger planTrigger) {
+        // TODO plan execution init state
+    }
+    
+    /**
+     * Handle cached failed.
+     *
+     * @param planTrigger {@link PlanTrigger}
+     */
+    public void handleCachedFailed(final PlanTrigger planTrigger) {
+        // TODO plan cached failed
+    }
+    
+    /**
+     * Handle execute SQL exception.
+     *
+     * @param exception {@link SQLException}
+     */
+    public void handleExecuteException(final SQLException exception) {
+        // TODO plan failed by exception
+        throw new WormholeException("error: can not cached plan meta data by SQL exception", exception);
+    }
+    
+    /**
+     * Handle execute event.
+     *
+     * @param event {@link ExecutionEvent}
+     */
+    public void handleExecuteEvent(final ExecutionEvent event) {
+        // TODO handle plan&task execute event
     }
 }

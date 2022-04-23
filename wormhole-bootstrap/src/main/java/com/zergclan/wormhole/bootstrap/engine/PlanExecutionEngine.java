@@ -20,7 +20,8 @@ package com.zergclan.wormhole.bootstrap.engine;
 import com.zergclan.wormhole.bootstrap.context.PlanContext;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutorFactory;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
-import com.zergclan.wormhole.common.exception.WormholeException;
+import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.bus.disruptor.event.ExecutionEvent;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
@@ -33,7 +34,7 @@ import java.util.Optional;
  * Plan execution engine.
  */
 @RequiredArgsConstructor
-public final class PlanExecutionEngine {
+public final class PlanExecutionEngine implements EventListener<ExecutionEvent> {
     
     private final PlanContext planContext = new PlanContext();
     
@@ -55,24 +56,21 @@ public final class PlanExecutionEngine {
      * @param planTrigger {@link PlanTrigger}
      */
     public void execute(final PlanTrigger planTrigger) {
-        // TODO send plan trigger event
+        planContext.handleTrigger(planTrigger);
         try {
             Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
             if (!cachedPlanMetadata.isPresent()) {
-                /**
-                 * TODO send plan execute failed is executing
-                 * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
-                 * planBatch
-                 * planId
-                 * status 计划初始化失败的状态
-                 * createTime，modifyTime
-                 */
+                planContext.handleCachedFailed(planTrigger);
                 return;
             }
             PlanExecutorFactory.create(cachedPlanMetadata.get()).execute();
         } catch (final SQLException ex) {
-            // TODO send plan execute failed SQLException
-            throw new WormholeException("error: can not cached plan meta data by SQL exception", ex);
+            planContext.handleExecuteException(ex);
         }
+    }
+    
+    @Override
+    public void onEvent(final ExecutionEvent event) {
+        planContext.handleExecuteEvent(event);
     }
 }
