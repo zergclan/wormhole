@@ -32,5 +32,6 @@ header:
     - '**/*.txt'
     - 'LICENSE'
     - 'NOTICE'
+    - '**/.github/PULL_REQUEST_TEMPLATE'
 
   comment: on-failure
