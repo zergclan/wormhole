@@ -17,12 +17,13 @@
 
 package com.zergclan.wormhole.data.core.node;
 
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.DateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Patterned data time.
@@ -33,20 +34,29 @@ public final class PatternedDataTime implements Serializable {
 
     private static final long serialVersionUID = 6418454456243094323L;
 
-    private final String value;
-
+    private final Date value;
+    
     private final DatePattern pattern;
     
     public PatternedDataTime(final String value) {
-        this(value, DatePattern.STANDARD.name());
+        this(value, DatePattern.STANDARD);
     }
     
     public PatternedDataTime(final String value, final String pattern) {
-        this(value, DatePattern.valueOf(pattern));
+        this(value, DatePattern.valueOfPattern(pattern));
     }
     
-    public PatternedDataTime(final LocalDateTime localDateTime, final DatePattern pattern) {
-        this(pattern.format(localDateTime), pattern);
+    public PatternedDataTime(final String value, final DatePattern pattern) {
+        this(pattern.parseDate(value), pattern);
+    }
+    
+    /**
+     * Get patterned value.
+     *
+     * @return patterned value
+     */
+    public String getPatternedValue() {
+        return DateUtil.format(value, pattern.getPattern());
     }
     
     @Getter
@@ -61,9 +71,28 @@ public final class PatternedDataTime implements Serializable {
         DatePattern(final String pattern) {
             this.pattern = pattern;
         }
+    
+        private Date parseDate(final String value) {
+            return DateUtil.parseDate(value, getPattern());
+        }
         
-        private String format(final LocalDateTime localDateTime) {
-            return DateUtil.format(localDateTime, pattern);
+        /**
+         * Value of pattern.
+         *
+         * @param pattern pattern
+         * @return {@link DatePattern}
+         */
+        public static DatePattern valueOfPattern(final String pattern) {
+            if ("yyyy-MM-dd HH:mm:ss".equals(pattern) || "STANDARD".equalsIgnoreCase(pattern)) {
+                return STANDARD;
+            }
+            if ("yyyy-MM-dd".equals(pattern) || "DATE".equalsIgnoreCase(pattern)) {
+                return DATE;
+            }
+            if ("HH:mm:ss".equals(pattern) || "TIME".equalsIgnoreCase(pattern)) {
+                return TIME;
+            }
+            throw new WormholeException("error : No enum constant in PatternedDataTime.DatePattern value of [%s]", pattern);
         }
     }
 }

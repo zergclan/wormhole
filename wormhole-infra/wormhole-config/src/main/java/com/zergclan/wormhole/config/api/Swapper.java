@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.binder.api;
+package com.zergclan.wormhole.config.api;
 
 /**
  * The root interface from which all swapper objects shall be derived in Wormhole.

@@ -53,7 +53,7 @@ public final class DateUtil {
     }
     
     /**
-     * Swap To {@link LocalDateTime}.
+     * Swap to {@link LocalDateTime}.
      *
      * @param date date
      * @return {@link LocalDateTime}
@@ -61,7 +61,17 @@ public final class DateUtil {
     public static LocalDateTime swapToLocalDateTime(final Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
-
+    
+    /**
+     * Swap to {@link Date}.
+     *
+     * @param localDateTime localDateTime
+     * @return {@link Date}
+     */
+    public static Date swapToDate(final LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+    
     /**
      * Format {@link Date}.
      *

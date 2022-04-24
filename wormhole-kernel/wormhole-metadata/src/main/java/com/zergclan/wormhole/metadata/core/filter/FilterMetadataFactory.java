@@ -24,6 +24,7 @@ import com.zergclan.wormhole.metadata.core.filter.complex.NodeValueDelimiterSpli
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.CodeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.DataTypeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.NodeNameConvertorMetaData;
+import com.zergclan.wormhole.metadata.core.filter.precise.convertor.PatternedDataTimeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.FixedNodeEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.NullToDefaultEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueAppendEditorMetaData;
@@ -127,6 +128,8 @@ public final class FilterMetadataFactory {
                 return CodeConvertorMetaData.builder(taskIdentifier, order, props);
             case DATA_TYPE_CONVERTOR:
                 return DataTypeConvertorMetaData.builder(taskIdentifier, order, props);
+            case PATTERNED_DATA_TIME_CONVERTOR:
+                return PatternedDataTimeConvertorMetaData.builder(taskIdentifier, order, props);
             case CONCAT_MERGER:
                 return NodeValueConcatMergerMetaData.builder(taskIdentifier, order, props);
             case DELIMITER_SPLITTER:

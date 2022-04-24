@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.pipeline.core.filter;
 
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.data.core.node.PatternedDataTime;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.metadata.core.filter.complex.NodeValueConcatMergerMetaData;
@@ -25,6 +26,7 @@ import com.zergclan.wormhole.metadata.core.filter.complex.NodeValueDelimiterSpli
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.CodeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.DataTypeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.NodeNameConvertorMetaData;
+import com.zergclan.wormhole.metadata.core.filter.precise.convertor.PatternedDataTimeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.FixedNodeEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.NullToDefaultEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueAppendEditorMetaData;
@@ -37,6 +39,7 @@ import com.zergclan.wormhole.pipeline.core.filter.complex.NodeValueDelimiterSpli
 import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.CodeConvertor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.DataTypeConvertor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.NodeNameConvertor;
+import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.PatternedDataTimeConvertor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.FixedNodeEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.NullToDefaultEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.ValueAppendEditor;
@@ -45,10 +48,10 @@ import com.zergclan.wormhole.pipeline.core.filter.precise.validator.NotBlankVali
 import com.zergclan.wormhole.pipeline.core.filter.precise.validator.NotNullValidator;
 import com.zergclan.wormhole.pipeline.core.helper.CodeConvertorHelper;
 import com.zergclan.wormhole.pipeline.core.helper.DataTypeConvertorHelper;
-import com.zergclan.wormhole.pipeline.core.helper.NodeNameConvertorHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueConcatMergerHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueDelimiterSplitterHelper;
+import com.zergclan.wormhole.pipeline.core.helper.PatternedDataTimeConvertorHelper;
 import com.zergclan.wormhole.pipeline.core.helper.ValueAppendHelper;
 import com.zergclan.wormhole.pipeline.core.helper.ValueRangeHelper;
 import lombok.AccessLevel;
@@ -107,6 +110,9 @@ public final class DataGroupFilterFactory {
                 case DATA_TYPE_CONVERTOR:
                     result.add(createDataTypeConvertorFilters(order, type, entry.getValue()));
                     break;
+                case PATTERNED_DATA_TIME_CONVERTOR:
+                    result.add(createPatternedDataTimeConvertorFilters(order, type, entry.getValue()));
+                    break;
                 case CONCAT_MERGER:
                     result.add(createConcatMergerFilters(order, type, entry.getValue()));
                     break;
@@ -126,7 +132,7 @@ public final class DataGroupFilterFactory {
         int index = 0;
         while (iterator.hasNext()) {
             NodeValueDelimiterSplitterMetaData filterMetaData = (NodeValueDelimiterSplitterMetaData) iterator.next();
-            nodeValueDelimiterSplitterHelpers[index] = new NodeValueDelimiterSplitterHelper(filterMetaData.getDelimiter(), filterMetaData.getSourceName(), filterMetaData.getTargetNames());
+            nodeValueDelimiterSplitterHelpers[index] = new NodeValueDelimiterSplitterHelper(filterMetaData.getSourceName(), filterMetaData.getTargetNames(), filterMetaData.getDelimiter());
             index++;
         }
         return new NodeValueDelimiterSplitter(order, type, nodeValueDelimiterSplitterHelpers);
@@ -138,20 +144,32 @@ public final class DataGroupFilterFactory {
         int index = 0;
         while (iterator.hasNext()) {
             NodeValueConcatMergerMetaData filterMetaData = (NodeValueConcatMergerMetaData) iterator.next();
-            nodeValueConcatMergerHelpers[index] = new NodeValueConcatMergerHelper(filterMetaData.getDelimiter(), filterMetaData.getTargetName(), filterMetaData.getSourceNames());
+            nodeValueConcatMergerHelpers[index] = new NodeValueConcatMergerHelper(filterMetaData.getSourceNames(), filterMetaData.getTargetName(), filterMetaData.getDelimiter());
             index++;
         }
         return new NodeValueConcatMerger(order, type, nodeValueConcatMergerHelpers);
     }
     
     private static Filter<DataGroup> createDataTypeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
-        Map<String, DataTypeConvertorHelper> dataTypeConvertorHelpers = new LinkedHashMap<>();
+        Map<String, DataTypeConvertorHelper> helpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
             DataTypeConvertorMetaData filterMetaData = (DataTypeConvertorMetaData) iterator.next();
-            dataTypeConvertorHelpers.put(filterMetaData.getSourceName(), new DataTypeConvertorHelper(filterMetaData.getTargetDataType(), filterMetaData.getSourceDataType()));
+            helpers.put(filterMetaData.getSourceName(), new DataTypeConvertorHelper(filterMetaData.getTargetDataType(), filterMetaData.getSourceDataType()));
         }
-        return new DataTypeConvertor(order, type, dataTypeConvertorHelpers);
+        return new DataTypeConvertor(order, type, helpers);
+    }
+    
+    private static Filter<DataGroup> createPatternedDataTimeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+        Map<String, PatternedDataTimeConvertorHelper> helpers = new LinkedHashMap<>();
+        Iterator<FilterMetaData> iterator = filters.iterator();
+        while (iterator.hasNext()) {
+            PatternedDataTimeConvertorMetaData filterMetaData = (PatternedDataTimeConvertorMetaData) iterator.next();
+            PatternedDataTime.DatePattern source = PatternedDataTime.DatePattern.valueOfPattern(filterMetaData.getSourcePattern());
+            PatternedDataTime.DatePattern target = PatternedDataTime.DatePattern.valueOfPattern(filterMetaData.getTargetPattern());
+            helpers.put(filterMetaData.getSourceName(), new PatternedDataTimeConvertorHelper(source, target));
+        }
+        return new PatternedDataTimeConvertor(order, type, helpers);
     }
     
     private static Filter<DataGroup> createCodeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
@@ -159,19 +177,19 @@ public final class DataGroupFilterFactory {
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
             CodeConvertorMetaData filterMetaData = (CodeConvertorMetaData) iterator.next();
-            codeConvertorHelpers.put(filterMetaData.getSourceName(), new CodeConvertorHelper(filterMetaData.getDefaultCode(), filterMetaData.getSourceTargetCodeMappings()));
+            codeConvertorHelpers.put(filterMetaData.getSourceName(), new CodeConvertorHelper(filterMetaData.getSourceTargetCodeMappings(), filterMetaData.getDefaultCode()));
         }
         return new CodeConvertor(order, type, codeConvertorHelpers);
     }
     
     private static Filter<DataGroup> createNodeNameConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
-        Map<String, NodeNameConvertorHelper> nodeNameHelpers = new LinkedHashMap<>();
+        Map<String, String> sourceTargetNameMappings = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
             NodeNameConvertorMetaData filterMetaData = (NodeNameConvertorMetaData) iterator.next();
-            nodeNameHelpers.put(filterMetaData.getSourceName(), new NodeNameConvertorHelper(filterMetaData.getSourceName(), filterMetaData.getTargetName()));
+            sourceTargetNameMappings.put(filterMetaData.getSourceName(), filterMetaData.getTargetName());
         }
-        return new NodeNameConvertor(order, type, nodeNameHelpers);
+        return new NodeNameConvertor(order, type, sourceTargetNameMappings);
     }
     
     private static Filter<DataGroup> createValueRangeFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {

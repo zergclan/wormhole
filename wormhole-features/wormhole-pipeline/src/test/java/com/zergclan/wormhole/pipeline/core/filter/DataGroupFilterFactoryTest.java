@@ -15,41 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.filter.complex;
+package com.zergclan.wormhole.pipeline.core.filter;
 
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
-import com.zergclan.wormhole.pipeline.core.helper.NodeValueConcatMergerHelper;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-/**
- * Node value concat merger implemented of {@link Filter}.
- */
-@RequiredArgsConstructor
-@Getter
-public final class NodeValueConcatMerger implements Filter<DataGroup> {
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class DataGroupFilterFactoryTest {
     
-    private final int order;
-    
-    private final FilterType filterType;
-    
-    private final NodeValueConcatMergerHelper[] nodeValueConcatMergerHelpers;
-    
-    @Override
-    public boolean doFilter(final DataGroup dataGroup) {
-        int length = nodeValueConcatMergerHelpers.length;
-        for (int i = 0; i < length; i++) {
-            if (!nodeValueConcatMergerHelpers[i].merge(dataGroup)) {
-                return false;
-            }
-        }
-        return true;
+    @Test
+    public void assertCreateDataGroupFilters() {
+        Map<FilterType, Collection<FilterMetaData>> typedFilterMetaData = createEmptyTypedFilterMetaData();
+        Collection<Filter<DataGroup>> dataGroupFilters = DataGroupFilterFactory.createDataGroupFilters(0, typedFilterMetaData);
+        assertEquals(0, dataGroupFilters.size());
     }
     
-    @Override
-    public String getType() {
-        return filterType.name();
+    private Map<FilterType, Collection<FilterMetaData>> createEmptyTypedFilterMetaData() {
+        Map<FilterType, Collection<FilterMetaData>> result = new LinkedHashMap<>();
+        return result;
     }
 }

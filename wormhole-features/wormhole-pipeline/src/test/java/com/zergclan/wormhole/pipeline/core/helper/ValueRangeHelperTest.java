@@ -17,17 +17,21 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-/**
- * Node name helper.
- */
-@RequiredArgsConstructor
-@Getter
-public final class NodeNameConvertorHelper {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class ValueRangeHelperTest {
     
-    private final String sourceName;
-    
-    private final String targetName;
+    @Test
+    public void assertAppendValue() {
+        ValueRangeHelper name1Helper = new ValueRangeHelper(0, 4);
+        assertEquals("name", name1Helper.sub("name-age"));
+        ValueRangeHelper name2Helper = new ValueRangeHelper(-8, 4);
+        assertEquals("name", name1Helper.sub("name-age"));
+        ValueRangeHelper age1Helper = new ValueRangeHelper(5, 8);
+        assertEquals("age", age1Helper.sub("name-age"));
+        ValueRangeHelper age2Helper = new ValueRangeHelper(-3, 8);
+        assertEquals("age", age2Helper.sub("name-age"));
+    }
 }

@@ -61,7 +61,9 @@ public final class NodeValueHelper {
             case DATA_TIME:
                 return new LocalDateTimeDataNode(name, DateUtil.parseLocalDateTime(defaultValue, PatternedDataTime.DatePattern.STANDARD.getPattern()));
             case PATTERNED_DATA_TIME:
-                return new PatternedDataTimeDataNode(name, new PatternedDataTime(defaultValue, PatternedDataTime.DatePattern.STANDARD));
+                PatternedDataTime.DatePattern standard = PatternedDataTime.DatePattern.STANDARD;
+                DateUtil.parseLocalDateTime(defaultValue, standard.getPattern());
+                return new PatternedDataTimeDataNode(name, new PatternedDataTime(DateUtil.parseDate(defaultValue, standard.getPattern()), standard));
             default:
                 return null;
         }

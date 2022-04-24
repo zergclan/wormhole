@@ -28,11 +28,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class NodeValueDelimiterSplitterHelper {
     
-    private final String delimiter;
-    
     private final String sourceName;
     
     private final String[] targetNames;
+    
+    private final String delimiter;
     
     /**
      * Split node value.
@@ -46,8 +46,9 @@ public final class NodeValueDelimiterSplitterHelper {
             String value = ((TextDataNode) sourceDataNode).getValue();
             String[] split = value.split(delimiter);
             for (int i = 0; i < split.length; i++) {
-                dataGroup.refresh(new TextDataNode(targetNames[i], split[i]));
+                dataGroup.register(new TextDataNode(targetNames[i], split[i]));
             }
+            dataGroup.remove(sourceName);
             return true;
         }
         return false;

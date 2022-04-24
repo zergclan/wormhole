@@ -17,8 +17,6 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
-import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.common.util.Validator;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
@@ -31,9 +29,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class CodeConvertorHelper {
     
-    private final String defaultCode;
-    
     private final Map<String, String> sourceTargetCodeMapping;
+    
+    private final String defaultCode;
     
     /**
      * Get target code.
@@ -42,7 +40,6 @@ public final class CodeConvertorHelper {
      * @return target code
      */
     public Optional<String> convert(final String sourceCode) {
-        Validator.preState(StringUtil.isBlank(sourceCode), "error : range helper arg value can not be blank");
         String targetCode = sourceTargetCodeMapping.get(sourceCode);
         return Objects.isNull(targetCode) ? getDefault() : Optional.of(targetCode);
     }

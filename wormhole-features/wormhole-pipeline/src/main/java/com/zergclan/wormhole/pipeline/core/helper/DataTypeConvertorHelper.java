@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
+import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.node.BigDecimalDataNode;
 import com.zergclan.wormhole.data.core.node.IntegerDataNode;
@@ -41,9 +42,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class DataTypeConvertorHelper {
     
-    private final DataNodeTypeMetaData.DataType targetDataType;
-    
     private final DataNodeTypeMetaData.DataType sourceDataType;
+    
+    private final DataNodeTypeMetaData.DataType targetDataType;
     
     /**
      * Convert source to target of {@link DataNode} type.
@@ -92,7 +93,7 @@ public final class DataTypeConvertorHelper {
             return Optional.of(new LongDataNode(sourceDataNode.getName(), Timestamp.valueOf(sourceDataNode.getValue()).getTime()));
         }
         if (DataNodeTypeMetaData.DataType.PATTERNED_DATA_TIME == targetDataType) {
-            return Optional.of(new PatternedDataTimeDataNode(sourceDataNode.getName(), new PatternedDataTime(sourceDataNode.getValue(), PatternedDataTime.DatePattern.STANDARD)));
+            return Optional.of(new PatternedDataTimeDataNode(sourceDataNode.getName(), new PatternedDataTime(DateUtil.swapToDate(sourceDataNode.getValue()), PatternedDataTime.DatePattern.STANDARD)));
         }
         return Optional.empty();
     }
