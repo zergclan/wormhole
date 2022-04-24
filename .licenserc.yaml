@@ -33,5 +33,6 @@ header:
     - 'LICENSE'
     - 'NOTICE'
     - '**/.github/PULL_REQUEST_TEMPLATE'
+    - '**/.github/ISSUE_TEMPLATE/*.md'
 
   comment: on-failure
