@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Data node value append editor implemented of {@link Filter}.
+ * Data node value appendValue editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 @Getter
@@ -51,7 +51,7 @@ public final class ValueAppendEditor implements Filter<DataGroup> {
             DataNode<?> dataNode = dataGroup.getDataNode(name);
             String value = dataNode.getValue().toString();
             ValueAppendHelper valueAppendHelper = entry.getValue();
-            String append = valueAppendHelper.append(value);
+            String append = valueAppendHelper.appendValue(value);
             if (!dataGroup.refresh(new TextDataNode(name, append))) {
                 return false;
             }

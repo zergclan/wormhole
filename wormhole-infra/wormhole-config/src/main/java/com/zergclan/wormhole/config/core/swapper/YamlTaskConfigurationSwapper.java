@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.config.core.swapper;
 
-import com.zergclan.wormhole.binder.api.Swapper;
+import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.config.core.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.config.core.SourceConfiguration;
 import com.zergclan.wormhole.config.core.TargetConfiguration;

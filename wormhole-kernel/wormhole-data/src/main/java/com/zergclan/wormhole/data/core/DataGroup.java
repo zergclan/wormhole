@@ -69,10 +69,16 @@ public final class DataGroup implements Serializable {
      * @return is refreshed or not
      */
     public boolean refresh(final DataNode<?> dataNode) {
-        if (isExist(dataNode)) {
-            dataNodes.put(dataNode.getName(), dataNode);
-            return true;
-        }
-        return false;
+        dataNodes.put(dataNode.getName(), dataNode);
+        return true;
+    }
+    
+    /**
+     * Remove {@link DataNode}.
+     *
+     * @param name name
+     */
+    public void remove(final String name) {
+        dataNodes.remove(name);
     }
 }

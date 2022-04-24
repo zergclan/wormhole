@@ -17,11 +17,9 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
-import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.data.core.node.PatternedDataTime;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -41,10 +39,6 @@ public final class PatternedDataTimeConvertorHelper {
      * @return target {@link PatternedDataTime}
      */
     public Optional<PatternedDataTime> convert(final PatternedDataTime patternedDataTime) {
-        return source == patternedDataTime.getPattern() ? Optional.of(new PatternedDataTime(parseValue(patternedDataTime), target)) : Optional.empty();
-    }
-    
-    private LocalDateTime parseValue(final PatternedDataTime patternedDataTime) {
-        return DateUtil.parseLocalDateTime(patternedDataTime.getValue(), patternedDataTime.getPattern().getPattern());
+        return source == patternedDataTime.getPattern() ? Optional.of(new PatternedDataTime(patternedDataTime.getValue(), target)) : Optional.empty();
     }
 }

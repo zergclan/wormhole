@@ -17,9 +17,10 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
-import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Objects;
 
 /**
  * Value range helper.
@@ -38,16 +39,16 @@ public final class ValueRangeHelper {
      * @return sub value
      */
     public String sub(final String value) {
-        Validator.preState(!StringUtil.isBlank(value), "error : range helper arg value can not be blank");
+        Validator.preState(!Objects.isNull(value), "error : range helper arg value can not be null");
         int length = value.length();
         int startIndex = computeIndex(start, length);
         int endIndex = computeIndex(end, length);
-        return startIndex >= endIndex ? value.substring(endIndex, startIndex) : value.substring(startIndex, endIndex);
+        return value.substring(startIndex, endIndex);
     }
-
+    
     private int computeIndex(final int input, final int length) {
         int absInput = Math.abs(input);
-        Validator.isTrue(length > absInput, "error : range helper index out of bounds exception index:[%d] length:[%d]", input, length);
+        Validator.preState(absInput <= length, "error : range helper index out of bounds exception index:[%d] length:[%d]", input, length);
         return input < 0 ? length - absInput : input;
     }
 }

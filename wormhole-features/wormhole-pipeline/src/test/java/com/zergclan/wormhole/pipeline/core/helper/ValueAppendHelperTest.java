@@ -17,27 +17,15 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
-import com.zergclan.wormhole.common.util.Validator;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-import java.util.Objects;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Value appendValue helper.
- */
-@RequiredArgsConstructor
-public final class ValueAppendHelper {
+public final class ValueAppendHelperTest {
     
-    private final String appendValue;
-    
-    /**
-     * Sub value.
-     *
-     * @param value value
-     * @return sub value
-     */
-    public String appendValue(final String value) {
-        Validator.preState(!Objects.isNull(value), "error : appendValue helper arg value can not be null");
-        return value + appendValue;
+    @Test
+    public void assertAppendValue() {
+        ValueAppendHelper appendHelper = new ValueAppendHelper("+append");
+        assertEquals("value+append", appendHelper.appendValue("value"));
     }
 }

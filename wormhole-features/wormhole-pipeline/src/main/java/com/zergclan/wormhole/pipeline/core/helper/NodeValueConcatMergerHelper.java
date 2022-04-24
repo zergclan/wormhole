@@ -29,11 +29,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class NodeValueConcatMergerHelper {
     
-    private final String delimiter;
+    private final String[] sourceNames;
     
     private final String targetName;
     
-    private final String[] sourceNames;
+    private final String delimiter;
     
     /**
      * merge {@link DataNode}.
@@ -41,7 +41,7 @@ public final class NodeValueConcatMergerHelper {
      * @param dataGroup {@link DataGroup}
      * @return is success or not
      */
-    public boolean mergeNodeValue(final DataGroup dataGroup) {
+    public boolean merge(final DataGroup dataGroup) {
         StringBuilder stringBuilder = new StringBuilder();
         int length = sourceNames.length;
         int count = 0;
@@ -50,11 +50,12 @@ public final class NodeValueConcatMergerHelper {
             boolean state = null != dataNode && !dataNode.isNull();
             Validator.preState(state, "error : merge node value failed node name [%s] can not be null", String.valueOf(sourceNames[i]));
             stringBuilder.append(dataNode.getValue());
+            dataGroup.remove(sourceNames[i]);
             if (length == ++count) {
                 break;
             }
             stringBuilder.append(delimiter);
         }
-        return dataGroup.refresh(new TextDataNode(targetName, stringBuilder.toString()));
+        return dataGroup.register(new TextDataNode(targetName, stringBuilder.toString()));
     }
 }
