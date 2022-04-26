@@ -19,23 +19,23 @@ package com.zergclan.wormhole.bus.memory;
 
 import com.google.common.eventbus.EventBus;
 import com.zergclan.wormhole.bus.api.Event;
-import com.zergclan.wormhole.bus.demo.EventBusFactory;
+import com.zergclan.wormhole.bus.api.EventListener;
 
 /**
  * Event bus operation.
  */
 public final class WormholeEventBus {
     
-    // TODO fix by WtlKoma
-    private static final EventBus EVENTBUS = EventBusFactory.getEventBus();
-    
+    private static final EventBus EVENTBUS = EventBusHolder.INSTANCE.eventBus;
+
     /**
      * Register event listener.
      * You can register multiple.
      *
      * @param listener Listener object.
+     * @param <T> Class T extend Event.
      */
-    public static void register(final Object listener) {
+    public static <T extends Event> void register(final EventListener<T> listener) {
         EVENTBUS.register(listener);
     }
 
@@ -44,8 +44,9 @@ public final class WormholeEventBus {
      * Required and registered as the same object.
      *
      * @param listener Listener object.
+     * @param <T> Class T extend Event.
      */
-    public static void unregister(final Object listener) {
+    public static <T extends Event> void unregister(final EventListener<T> listener) {
         EVENTBUS.unregister(listener);
     }
 
@@ -59,6 +60,20 @@ public final class WormholeEventBus {
      */
     public static void post(final Event event) {
         EVENTBUS.post(event);
+    }
+
+    /**
+     * For creating event bus singleton object.
+     */
+    private enum EventBusHolder {
+
+        INSTANCE("wormhole");
+
+        private final EventBus eventBus;
+
+        EventBusHolder(final String identifier) {
+            eventBus = new EventBus(identifier);
+        }
     }
 
 }
