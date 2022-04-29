@@ -17,16 +17,29 @@
 
 package com.zergclan.wormhole.console.application.listener;
 
+import com.google.common.eventbus.Subscribe;
+import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
+import com.zergclan.wormhole.console.application.listener.event.PlanEvent;
 import org.springframework.stereotype.Component;
 
 /**
  * Listener for Wormhole.
  */
 @Component
-public class WormholeListener {
+public class WormholeListener implements EventListener<PlanEvent> {
     
-    static {
-        WormholeEventBus.register(WormholeListener.class);
+    {
+        WormholeEventBus.register(this);
+    }
+
+    /**
+     * Plan event listener handle.
+     * @param event Event object.
+     */
+    @Subscribe
+    @Override
+    public void onEvent(final PlanEvent event) {
+
     }
 }

@@ -20,14 +20,14 @@ package com.zergclan.wormhole.bus.api;
 /**
  * The root interface from which all event listener objects shall be derived in Wormhole.
  *
- * @param <E> class type of event
+ * @param <T> class type of event
  */
-public interface EventListener<E extends Event> {
-    
+public interface EventListener<T extends Event> {
+
     /**
      * On Event.
-     *
+     * After implementing this method, you need to add the @Subscribe annotation to this method
      * @param event event
      */
-    void onEvent(E event);
+    void onEvent(T event);
 }
