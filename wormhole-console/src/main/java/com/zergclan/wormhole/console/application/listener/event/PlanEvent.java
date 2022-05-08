@@ -19,6 +19,9 @@ package com.zergclan.wormhole.console.application.listener.event;
 
 import com.zergclan.wormhole.bus.api.Event;
 
-public class PlanEvent implements Event {
+/**
+ * Plan event.
+ */
+public final class PlanEvent implements Event {
 
 }

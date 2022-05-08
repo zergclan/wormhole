@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.console.application.context;
 
 import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
+import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.console.infra.config.WormholeConfigurationLoader;
 import lombok.Getter;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Container of {@link ApplicationContext}.
@@ -46,6 +48,7 @@ public final class SpringContextContainer implements ApplicationContextAware {
     }
     
     private void startUp() {
+        wormholeEngineExecutor.register(container.getBeansOfType(EventListener.class));
         new Thread(wormholeEngineExecutor).start();
     }
     
@@ -88,6 +91,10 @@ public final class SpringContextContainer implements ApplicationContextAware {
             } catch (SQLException | IOException e) {
                 throw new WormholeException(e);
             }
+        }
+        
+        private void register(final Map<String, EventListener> listeners) {
+            wormholeExecutionEngine.register(listeners);
         }
         
         @Override

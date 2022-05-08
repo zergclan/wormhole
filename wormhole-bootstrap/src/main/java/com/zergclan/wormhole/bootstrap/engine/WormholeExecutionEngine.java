@@ -20,6 +20,8 @@ package com.zergclan.wormhole.bootstrap.engine;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTriggerManager;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.ScheduledPlanTrigger;
+import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.config.core.WormholeConfiguration;
@@ -68,7 +70,6 @@ public final class WormholeExecutionEngine {
         if (!isInitialization()) {
             INSTANCE.init(configuration);
         }
-        log.info("Wormhole execution engine initialization completed, started successfully !!");
         return INSTANCE;
     }
     
@@ -80,7 +81,6 @@ public final class WormholeExecutionEngine {
         WormholeMetaData wormholeMetadata = INITIALIZER.init(configuration);
         planExecutionEngine = new PlanExecutionEngine(wormholeMetadata);
         initPlanTriggerManager(wormholeMetadata.getPlans());
-        STATE.compareAndSet(EngineState.UNINITIALIZED, EngineState.INITIALIZATION);
     }
     
     private void initPlanTriggerManager(final Map<String, PlanMetaData> planMetaData) {
@@ -116,6 +116,22 @@ public final class WormholeExecutionEngine {
             return planExecutionEngine.register(metadata);
         }
         return false;
+    }
+    
+    /**
+     * Register {@link EventListener}.
+     *
+     * @param listeners {@link EventListener}
+     */
+    @SuppressWarnings("all")
+    public void register(final Map<String, EventListener> listeners) {
+        listeners.values().forEach(WormholeEventBus::register);
+        started();
+    }
+    
+    private void started() {
+        STATE.compareAndSet(EngineState.UNINITIALIZED, EngineState.INITIALIZATION);
+        log.info("Wormhole execution engine initialization completed, started successfully !!");
     }
     
     /**

@@ -17,29 +17,18 @@
 
 package com.zergclan.wormhole.console.application.listener;
 
-import com.google.common.eventbus.Subscribe;
 import com.zergclan.wormhole.bus.api.EventListener;
-import com.zergclan.wormhole.bus.memory.WormholeEventBus;
-import com.zergclan.wormhole.console.application.listener.event.PlanEvent;
+import com.zergclan.wormhole.console.application.listener.event.TaskEvent;
 import org.springframework.stereotype.Component;
 
 /**
- * Listener for Wormhole.
+ * Task event listener.
  */
 @Component
-public class WormholeListener implements EventListener<PlanEvent> {
+public final class TaskEventListener implements EventListener<TaskEvent> {
     
-    {
-        WormholeEventBus.register(this);
-    }
-
-    /**
-     * Plan event listener handle.
-     * @param event Event object.
-     */
-    @Subscribe
     @Override
-    public void onEvent(final PlanEvent event) {
-
+    public void onEvent(final TaskEvent event) {
+        // TODO on event
     }
 }

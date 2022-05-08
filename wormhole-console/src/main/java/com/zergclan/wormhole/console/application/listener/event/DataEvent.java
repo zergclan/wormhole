@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api;
+package com.zergclan.wormhole.console.application.listener.event;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.bus.api.Event;
 
 /**
- * The root interface from which all event state objects shall be derived in Wormhole.
+ * Data event.
  */
-public interface Event extends Serializable {
+public final class DataEvent implements Event {
 }
