@@ -103,7 +103,7 @@ public final class FilterMetadataFactory {
      */
     public static FilterMetaData getPreciseInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration) {
         FilterType filterType = FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT));
-        boolean preState = FilterType.CONCAT_MERGER == filterType || FilterType.DELIMITER_SPLITTER == filterType;
+        boolean preState = FilterType.CONCAT_MERGER != filterType && FilterType.DELIMITER_SPLITTER != filterType;
         Validator.preState(preState, "error : create precise filter metadata failed filterType can not be: [%s] task identifier: [%s]", filterType.name(), taskIdentifier);
         return createFilterMetadata(filterType, taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
     }

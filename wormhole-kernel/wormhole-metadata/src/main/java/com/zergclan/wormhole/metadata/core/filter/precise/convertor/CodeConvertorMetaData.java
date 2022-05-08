@@ -70,7 +70,7 @@ public final class CodeConvertorMetaData implements FilterMetaData {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build CodeConvertorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
         Map<String, String> sourceTargetCodeMappings = createSourceTargetCodeMappings(props);
-        Validator.preState(sourceTargetCodeMappings.isEmpty(),
+        Validator.preState(!sourceTargetCodeMappings.isEmpty(),
                 "error : build CodeConvertorMetadata failed source target code mappings in props can not be empty, task identifier: [%s]", taskIdentifier);
         return new FilterBuilder(taskIdentifier, order, sourceName, sourceTargetCodeMappings, props.getProperty("defaultCode")).build();
     }

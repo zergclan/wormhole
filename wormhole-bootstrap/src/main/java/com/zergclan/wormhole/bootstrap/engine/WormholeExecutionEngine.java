@@ -20,22 +20,29 @@ package com.zergclan.wormhole.bootstrap.engine;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTriggerManager;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.ScheduledPlanTrigger;
+import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.config.core.WormholeConfiguration;
+import com.zergclan.wormhole.data.core.node.PatternedDataTime.DatePattern;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.initializer.WormholeMetadataInitializer;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
+import com.zergclan.wormhole.metadata.core.plan.PlanMetaData.ExecutionMode;
+import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Wormhole execution engine.
  */
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeExecutionEngine {
     
@@ -61,6 +68,7 @@ public final class WormholeExecutionEngine {
         if (!isInitialization()) {
             INSTANCE.init(configuration);
         }
+        log.info("Wormhole execution engine initialization completed, started successfully !!");
         return INSTANCE;
     }
     
@@ -108,6 +116,31 @@ public final class WormholeExecutionEngine {
             return planExecutionEngine.register(metadata);
         }
         return false;
+    }
+    
+    /**
+     * Register {@link MetaData}.
+     *
+     * @param planIdentifier plan identifier
+     * @return is registered or not
+     */
+    public synchronized boolean trigger(final String planIdentifier) {
+        if (isInitialization()) {
+            Optional<PlanMetaData> plan = planExecutionEngine.getPlan(planIdentifier);
+            if (plan.isPresent()) {
+                return PLAN_TRIGGER_MANAGER.register(initTrigger(plan.get()));
+            }
+        }
+        return false;
+    }
+    
+    private PlanMetaData initTrigger(final PlanMetaData planMetaData) {
+        String identifier = planMetaData.getIdentifier();
+        ExecutionMode mode = ExecutionMode.ONE_OFF;
+        String expression = DateUtil.format(DateUtil.getCurrentNextSeconds(10), DatePattern.STANDARD.getPattern());
+        boolean atomic = planMetaData.isAtomic();
+        Map<String, TaskMetaData> tasks = planMetaData.getTasks();
+        return new PlanMetaData(identifier, mode, expression, atomic, tasks);
     }
     
     private enum EngineState {

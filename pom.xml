@@ -32,33 +32,6 @@
     <name>${project.artifactId}</name>
     <url>https://github.com/zergclan/wormhole</url>
 
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>gin</name>
-            <email>jacky7boy@163.com</email>
-        </developer>
-        <developer>
-            <name>WtlKoma</name>
-            <email>15810322721@163.com</email>
-        </developer>
-        <developer>
-            <name>wenguozhang</name>
-            <email>15710047100@163.com</email>
-        </developer>
-        <developer>
-            <name>rabbit1225</name>
-            <email>shihuatao@gmail.com</email>
-        </developer>
-    </developers>
-
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -252,4 +225,31 @@
             </plugin>
         </plugins>
     </build>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>gin</name>
+            <email>jacky7boy@163.com</email>
+        </developer>
+        <developer>
+            <name>WtlKoma</name>
+            <email>15810322721@163.com</email>
+        </developer>
+        <developer>
+            <name>wenguozhang</name>
+            <email>15710047100@163.com</email>
+        </developer>
+        <developer>
+            <name>rabbit1225</name>
+            <email>shihuatao@gmail.com</email>
+        </developer>
+    </developers>
 </project>

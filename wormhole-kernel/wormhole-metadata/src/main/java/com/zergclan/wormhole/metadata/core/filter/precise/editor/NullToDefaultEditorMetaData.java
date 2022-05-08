@@ -34,7 +34,7 @@ import java.util.Properties;
 @Getter
 public final class NullToDefaultEditorMetaData implements FilterMetaData {
 
-    private static final FilterType FILTER_TYPE = FilterType.NOT_BLANK;
+    private static final FilterType FILTER_TYPE = FilterType.NULL_TO_DEFAULT;
 
     private final String taskIdentifier;
 
@@ -67,10 +67,10 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
     public static NullToDefaultEditorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build NullToDefaultEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String defaultValue = props.getProperty("defaultValue");
+        Object defaultValue = props.get("defaultValue");
         Validator.notNull(defaultValue, "error : build NullToDefaultEditorMetadata failed defaultValue in props can not be null, task identifier: [%s]", taskIdentifier);
         String dataType = props.getProperty("dataType");
-        return builder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetaData.DataType.valueOf(dataType));
+        return builder(taskIdentifier, order, sourceName, String.valueOf(defaultValue), DataNodeTypeMetaData.DataType.valueOf(dataType));
     }
 
     /**

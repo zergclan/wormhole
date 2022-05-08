@@ -17,22 +17,45 @@
 
 package com.zergclan.wormhole.console.application.context;
 
+import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
+import com.zergclan.wormhole.common.exception.WormholeException;
+import com.zergclan.wormhole.console.infra.config.WormholeConfigurationLoader;
+import lombok.Getter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Container of {@link ApplicationContext}.
  */
 @Component
 public final class SpringContextContainer implements ApplicationContextAware {
-
+    
     private static ApplicationContext container;
-
+    
+    private final WormholeEngineExecutor wormholeEngineExecutor = new WormholeEngineExecutor();
+    
     @Override
     public void setApplicationContext(final @Nullable ApplicationContext applicationContext) {
         container = applicationContext;
+        startUp();
+    }
+    
+    private void startUp() {
+        new Thread(wormholeEngineExecutor).start();
+    }
+    
+    /**
+     * Get {@link WormholeExecutionEngine}.
+     *
+     * @return {@link WormholeExecutionEngine}
+     */
+    public WormholeExecutionEngine getExecutionEngine() {
+        return wormholeEngineExecutor.getWormholeExecutionEngine();
     }
     
     /**
@@ -47,10 +70,29 @@ public final class SpringContextContainer implements ApplicationContextAware {
         checkApplicationContext();
         return container.getBean(name, clazz);
     }
-
+    
     private static void checkApplicationContext() {
         if (container == null) {
             throw new IllegalStateException("error : spring application context not init");
+        }
+    }
+    
+    @Getter
+    private static final class WormholeEngineExecutor implements Runnable {
+        
+        private final WormholeExecutionEngine wormholeExecutionEngine;
+        
+        WormholeEngineExecutor() {
+            try {
+                wormholeExecutionEngine = WormholeExecutionEngine.getInstance(WormholeConfigurationLoader.load());
+            } catch (SQLException | IOException e) {
+                throw new WormholeException(e);
+            }
+        }
+        
+        @Override
+        public void run() {
+            wormholeExecutionEngine.execute();
         }
     }
 }

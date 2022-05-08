@@ -45,7 +45,7 @@ public final class WormholeConfigurationLoaderTest {
         assertTargetDataSource(targetDataSourceConfiguration);
         Map<String, PlanConfiguration> plans = wormholeConfiguration.getPlans();
         assertEquals(1, plans.size());
-        assertPlan(plans.get("test-plan-one"));
+        assertPlan(plans.get("test_plan"));
     }
     
     private void assertSourceDataSource(final DataSourceConfiguration dataSource) {
@@ -73,21 +73,15 @@ public final class WormholeConfigurationLoaderTest {
     private void assertPlan(final PlanConfiguration plan) {
         assertNotNull(plan);
         assertEquals("SCHEDULED", plan.getMode());
-        assertEquals("/ 0 0 2 * * ?", plan.getExpression());
+        assertEquals("0 0 10 * * *", plan.getExpression());
         assertTrue(plan.isAtomic());
         Map<String, TaskConfiguration> tasks = plan.getTasks();
-        assertEquals(2, tasks.size());
-        assertTaskOne(tasks.get("task_one"));
-        assertTaskTwo(tasks.get("task_two"));
+        assertEquals(1, tasks.size());
+        assertTaskOne(tasks.get("task_source_to_target"));
     }
     
     private void assertTaskOne(final TaskConfiguration taskOne) {
         assertEquals(0, taskOne.getOrder());
-        assertEquals(1000, taskOne.getBatchSize());
-    }
-    
-    private void assertTaskTwo(final TaskConfiguration taskTwo) {
-        assertEquals(1, taskTwo.getOrder());
-        assertEquals(1000, taskTwo.getBatchSize());
+        assertEquals(10, taskOne.getBatchSize());
     }
 }
