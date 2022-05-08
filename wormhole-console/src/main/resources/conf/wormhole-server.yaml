@@ -32,10 +32,9 @@ dataSources:
     catalog: ds_target
 
 plans:
-  test-plan-one:
+  test_plan:
     mode: SCHEDULED
-    expression: / 0 0 2 * * ?
+    expression: 0 0 10 * * *
     atomic: true
     tasks:
-      - task_one
-      - task_two
+      - task_source_to_target

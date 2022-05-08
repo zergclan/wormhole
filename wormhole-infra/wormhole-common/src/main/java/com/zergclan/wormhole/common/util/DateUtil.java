@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -115,5 +116,17 @@ public final class DateUtil {
     public static LocalDateTime parseLocalDateTime(final String text, final String pattern) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern(pattern);
         return LocalDateTime.parse(text, df);
+    }
+    
+    /**
+     * Get next seconds {@link Date} after current time.
+     *
+     * @param seconds seconds
+     * @return {@link Date}
+     */
+    public static Date getCurrentNextSeconds(final int seconds) {
+        Calendar nextTime = Calendar.getInstance();
+        nextTime.add(Calendar.SECOND, seconds);
+        return nextTime.getTime();
     }
 }

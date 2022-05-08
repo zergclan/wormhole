@@ -25,6 +25,7 @@ import com.zergclan.wormhole.bus.disruptor.event.ExecutionEvent;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
+import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
@@ -48,6 +49,16 @@ public final class PlanExecutionEngine implements EventListener<ExecutionEvent> 
      */
     public boolean register(final MetaData metadata) {
         return wormholeMetadata.register(metadata);
+    }
+    
+    /**
+     * Get {@link PlanMetaData}.
+     *
+     * @param planIdentifier plan identifier
+     * @return {@link PlanMetaData}
+     */
+    public Optional<PlanMetaData> getPlan(final String planIdentifier) {
+        return wormholeMetadata.getPlan(planIdentifier);
     }
     
     /**
