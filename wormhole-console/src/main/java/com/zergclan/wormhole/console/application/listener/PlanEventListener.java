@@ -15,12 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bus.api;
+package com.zergclan.wormhole.console.application.listener;
 
-import java.io.Serializable;
+import com.google.common.eventbus.Subscribe;
+import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.console.application.listener.event.PlanEvent;
+import org.springframework.stereotype.Component;
 
 /**
- * The root interface from which all event state objects shall be derived in Wormhole.
+ * Plan event listener.
  */
-public interface Event extends Serializable {
+@Component
+public final class PlanEventListener implements EventListener<PlanEvent> {
+    
+    @Subscribe
+    @Override
+    public void onEvent(final PlanEvent event) {
+        // TODO on event
+    }
 }
