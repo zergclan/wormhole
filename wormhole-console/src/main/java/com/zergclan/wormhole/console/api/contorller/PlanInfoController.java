@@ -113,14 +113,13 @@ public class PlanInfoController extends AbstractRestController {
     }
     
     /**
-     * Trigger by id for test.
+     * Trigger by code for plan test.
      *
-     * @param id id
+     * @param code id
      * @return {@link PageData}
      */
-    @GetMapping("/trigger/{id}")
-    public HttpResult<Void> trigger(@PathVariable(value = "id") final Integer id) {
-        planInfoService.triggerById(id);
-        return success();
+    @GetMapping("/trigger/{code}")
+    public HttpResult<Boolean> trigger(@PathVariable(value = "code") final String code) {
+        return success(planInfoService.triggerByCode(code));
     }
 }
