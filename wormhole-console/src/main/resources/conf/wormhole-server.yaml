@@ -21,14 +21,14 @@ dataSources:
     host: 127.0.0.1
     port: 3306
     username: root
-    password: root
+    password: 123456
     catalog: ds_source
   ds-target:
     type: MySQL
     host: 127.0.0.1
     port: 3307
     username: root
-    password: root
+    password: 123456
     catalog: ds_target
 
 plans:

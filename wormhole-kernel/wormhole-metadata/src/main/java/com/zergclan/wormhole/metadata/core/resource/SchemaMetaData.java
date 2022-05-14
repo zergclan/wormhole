@@ -45,7 +45,7 @@ public final class SchemaMetaData implements MetaData {
      * @return is registered or not.
      */
     public boolean registerTable(final TableMetaData tableMetadata) {
-        tables.put(tableMetadata.getIdentifier(), tableMetadata);
+        tables.put(tableMetadata.getName(), tableMetadata);
         return true;
     }
 
@@ -58,7 +58,7 @@ public final class SchemaMetaData implements MetaData {
     public TableMetaData getTable(final String name) {
         return tables.get(name);
     }
-
+    
     @Override
     public String getIdentifier() {
         return dataSourceIdentifier + MarkConstant.SPACE + name;

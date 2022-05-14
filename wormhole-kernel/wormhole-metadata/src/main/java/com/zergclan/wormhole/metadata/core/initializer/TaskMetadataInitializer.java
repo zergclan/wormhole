@@ -50,7 +50,7 @@ public final class TaskMetadataInitializer {
      * @return {@link TaskMetaData}
      */
     public TaskMetaData init(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, DataSourceMetaData> dataSources) {
-        TargetMetaData target = createTarget(configuration.getTarget(), dataSources.get(configuration.getSource().getDataSource()));
+        TargetMetaData target = createTarget(configuration.getTarget(), dataSources.get(configuration.getTarget().getDataSource()));
         SourceMetaData source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSource()));
         Collection<FilterMetaData> filters = filterMetadataInitializer.init(taskIdentifier, configuration.getDataNodeMappings(), target, source);
         return new TaskMetaData(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);

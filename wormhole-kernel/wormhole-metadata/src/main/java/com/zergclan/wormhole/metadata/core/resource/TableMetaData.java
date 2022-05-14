@@ -49,7 +49,7 @@ public final class TableMetaData implements MetaData {
      * @return is registered or not.
      */
     public boolean registerColumn(final ColumnMetaData columnMetadata) {
-        columns.put(columnMetadata.getIdentifier(), columnMetadata);
+        columns.put(columnMetadata.getName(), columnMetadata);
         return true;
     }
 
@@ -74,8 +74,6 @@ public final class TableMetaData implements MetaData {
         return columns.get(columnName);
     }
     
-    
-
     /**
      * Register {@link IndexMetaData}.
      *
@@ -83,7 +81,7 @@ public final class TableMetaData implements MetaData {
      * @return is registered or not.
      */
     public boolean registerIndex(final IndexMetaData indexMetadata) {
-        indexes.put(indexMetadata.getIdentifier(), indexMetadata);
+        indexes.put(indexMetadata.getName(), indexMetadata);
         return true;
     }
 
