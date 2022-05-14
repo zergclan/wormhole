@@ -23,8 +23,8 @@ import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -32,7 +32,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Root implemented {@link MetaData} in wormhole project.
  */
-@RequiredArgsConstructor
 @Getter
 public final class WormholeMetaData implements MetaData {
 
@@ -41,6 +40,15 @@ public final class WormholeMetaData implements MetaData {
     private final Map<String, DataSourceMetaData> dataSources;
 
     private final Map<String, PlanMetaData> plans;
+    
+    public WormholeMetaData(final Map<String, DataSourceMetaData> dataSources, final Map<String, PlanMetaData> plans) {
+        Map<String, DataSourceMetaData> dataSourceMetaData = new LinkedHashMap<>();
+        dataSources.forEach((key, value) -> {
+            dataSourceMetaData.put(value.getIdentifier(), value);
+        });
+        this.dataSources = dataSourceMetaData;
+        this.plans = plans;
+    }
     
     /**
      * Get {@link PlanMetaData} by plan identifier.

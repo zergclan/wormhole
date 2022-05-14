@@ -38,7 +38,7 @@ public final class DataNodeTypeMetaData implements MetaData {
     
     public DataNodeTypeMetaData(final ColumnMetaData columnMetadata) {
         this.nodeType = initNodeType(columnMetadata);
-        this.dataType = DataType.valueOf(columnMetadata.getDataType().toUpperCase(Locale.ROOT));
+        this.dataType = initDataType(columnMetadata);
     }
     
     public DataNodeTypeMetaData(final String nodeTypeValue, final String dataTypeValue) {
@@ -48,6 +48,17 @@ public final class DataNodeTypeMetaData implements MetaData {
     @Override
     public String getIdentifier() {
         return nodeType.name() + MarkConstant.COLON + dataType.name();
+    }
+    
+    /**
+     * Init {@link DataType}.
+     *
+     * @param columnMetadata {@link ColumnMetaData}
+     * @return {@link NodeType}
+     */
+    private static DataType initDataType(final ColumnMetaData columnMetadata) {
+        // TODO columnMetadata.getDataType() -> DataType
+        return DataType.valueOf(columnMetadata.getDataType().toUpperCase(Locale.ROOT));
     }
     
     /**

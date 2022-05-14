@@ -114,15 +114,15 @@ public final class CachedTaskMetaData implements MetaData {
             Map<String, DataNodeMetaData[]> result = new LinkedHashMap<>();
             Map<String, DataNodeMetaData> initializationTargetDataNodes = target.getDataNodes();
             Collection<String> ignoreNodes = target.getIgnoreNodes();
-            Map<String, ColumnMetaData> columns = targetTable.getColumns();
-            Iterator<Map.Entry<String, ColumnMetaData>> iterator = columns.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, ColumnMetaData> entry = iterator.next();
-                String columnName = entry.getKey();
-                if (!initializationTargetDataNodes.containsKey(columnName) && !ignoreNodes.contains(columnName)) {
-                    ColumnMetaData sourceColumn = sourceTable.getColumn(columnName);
-                    Validator.notNull(sourceColumn, "error: create default source data node failed, columnName: [%s]", columnName);
-                    result.put(columnName, dataNodeMetadataInitializer.initDefaultTargetSourceDataNodes(entry.getValue(), sourceColumn));
+            Map<String, ColumnMetaData> targetColumns = targetTable.getColumns();
+            Iterator<Map.Entry<String, ColumnMetaData>> targetIterator = targetColumns.entrySet().iterator();
+            while (targetIterator.hasNext()) {
+                Map.Entry<String, ColumnMetaData> entry = targetIterator.next();
+                String targetColumnName = entry.getKey();
+                if (!initializationTargetDataNodes.containsKey(targetColumnName) && !ignoreNodes.contains(targetColumnName)) {
+                    ColumnMetaData sourceColumn = sourceTable.getColumn(targetColumnName);
+                    Validator.notNull(sourceColumn, "error: create default source data node failed, columnName: [%s]", targetColumnName);
+                    result.put(targetColumnName, dataNodeMetadataInitializer.initDefaultTargetSourceDataNodes(entry.getValue(), sourceColumn));
                 }
             }
             return result;

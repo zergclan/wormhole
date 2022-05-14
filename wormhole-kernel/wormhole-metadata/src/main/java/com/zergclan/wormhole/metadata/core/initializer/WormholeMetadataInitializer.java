@@ -44,8 +44,10 @@ public final class WormholeMetadataInitializer {
      * @throws SQLException SQL Exception
      */
     public WormholeMetaData init(final WormholeConfiguration configuration) throws SQLException {
-        Map<String, DataSourceMetaData> dataSources = createDataSources(configuration.getDataSources());
-        Map<String, PlanMetaData> plans = createPlans(configuration.getPlans(), dataSources);
+        Map<String, DataSourceMetaData> dataSourceMetaData = createDataSources(configuration.getDataSources());
+        Map<String, PlanMetaData> plans = createPlans(configuration.getPlans(), dataSourceMetaData);
+        Map<String, DataSourceMetaData> dataSources = new LinkedHashMap<>();
+        dataSourceMetaData.forEach((key, value) -> dataSources.put(value.getIdentifier(), value));
         return new WormholeMetaData(dataSources, plans);
     }
     
