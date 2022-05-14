@@ -47,7 +47,7 @@ public final class ApiAspect {
     
     private static final String REQUEST_HEAD_TRACE = "trace";
     
-    private static final String[] NO_TRACE_URL = {"/user/login"};
+    private static final String[] NO_TRACE_URL = {"/user/login", "/scheduling/plan/trigger/test_plan"};
     
     /**
      * Point cut.

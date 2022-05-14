@@ -31,9 +31,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Getter
 public final class PatternedDataTime implements Serializable {
-
+    
     private static final long serialVersionUID = 6418454456243094323L;
-
+    
     private final Date value;
     
     private final DatePattern pattern;

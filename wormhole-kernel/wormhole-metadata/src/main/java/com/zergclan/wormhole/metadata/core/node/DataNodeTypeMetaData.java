@@ -66,14 +66,11 @@ public final class DataNodeTypeMetaData implements MetaData {
         return NodeType.STANDARD;
     }
     
-    /**
-     * Node type.
-     */
     public enum NodeType {
-
-        REQUIRED, DEFAULT_ABLE, STANDARD, FIXED, MAPPED
+    
+        STANDARD, REQUIRED, DEFAULT_ABLE, FIXED, MAPPED
     }
-
+    
     /**
      * Data type.
      */

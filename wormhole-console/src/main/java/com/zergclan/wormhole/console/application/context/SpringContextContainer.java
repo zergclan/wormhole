@@ -39,7 +39,7 @@ public final class SpringContextContainer implements ApplicationContextAware {
     
     private static ApplicationContext container;
     
-    private final WormholeEngineExecutor wormholeEngineExecutor = new WormholeEngineExecutor();
+    private static final WormholeEngineExecutor WORMHOLE_ENGINE_EXECUTOR = new WormholeEngineExecutor();
     
     @Override
     public void setApplicationContext(final @Nullable ApplicationContext applicationContext) {
@@ -48,8 +48,8 @@ public final class SpringContextContainer implements ApplicationContextAware {
     }
     
     private void startUp() {
-        wormholeEngineExecutor.register(container.getBeansOfType(EventListener.class));
-        new Thread(wormholeEngineExecutor).start();
+        WORMHOLE_ENGINE_EXECUTOR.register(container.getBeansOfType(EventListener.class));
+        new Thread(WORMHOLE_ENGINE_EXECUTOR).start();
     }
     
     /**
@@ -57,8 +57,8 @@ public final class SpringContextContainer implements ApplicationContextAware {
      *
      * @return {@link WormholeExecutionEngine}
      */
-    public WormholeExecutionEngine getExecutionEngine() {
-        return wormholeEngineExecutor.getWormholeExecutionEngine();
+    public static WormholeExecutionEngine getExecutionEngine() {
+        return WORMHOLE_ENGINE_EXECUTOR.getWormholeExecutionEngine();
     }
     
     /**
