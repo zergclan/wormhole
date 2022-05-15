@@ -19,6 +19,7 @@ package com.zergclan.wormhole.plugin.mysql.builder;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.constant.SQLKeywordConstant;
+import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.plugin.api.ExpressionBuilder;
 
 import java.util.Collection;
@@ -78,6 +79,6 @@ public final class MySQLExpressionBuilder implements ExpressionBuilder {
     
     @Override
     public String buildWhere(final String condition) {
-        return SQLKeywordConstant.WHERE + condition;
+        return StringUtil.isBlank(condition) ? "" : SQLKeywordConstant.WHERE + condition;
     }
 }

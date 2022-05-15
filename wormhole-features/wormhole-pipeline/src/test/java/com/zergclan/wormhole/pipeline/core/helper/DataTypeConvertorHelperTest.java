@@ -23,7 +23,7 @@ import com.zergclan.wormhole.data.core.node.LocalDateTimeDataNode;
 import com.zergclan.wormhole.data.core.node.LongDataNode;
 import com.zergclan.wormhole.data.core.node.PatternedDataTime;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
-import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData.DataType;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -38,17 +38,17 @@ public final class DataTypeConvertorHelperTest {
     
     @Test
     public void assertConvertText() {
-        DataTypeConvertorHelper intHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.TEXT, DataNodeTypeMetaData.DataType.INT);
+        DataTypeConvertorHelper intHelper = new DataTypeConvertorHelper(DataType.TEXT, DataType.INT);
         Optional<DataNode<?>> anInt = intHelper.convert(new TextDataNode("int", "1"));
         assertTrue(anInt.isPresent());
         assertEquals("int", anInt.get().getName());
         assertEquals(1, anInt.get().getValue());
-        DataTypeConvertorHelper longHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.TEXT, DataNodeTypeMetaData.DataType.LONG);
+        DataTypeConvertorHelper longHelper = new DataTypeConvertorHelper(DataType.TEXT, DataType.LONG);
         Optional<DataNode<?>> anLong = longHelper.convert(new TextDataNode("long", "1"));
         assertTrue(anLong.isPresent());
         assertEquals("long", anLong.get().getName());
         assertEquals(1L, anLong.get().getValue());
-        DataTypeConvertorHelper monetaryHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.TEXT, DataNodeTypeMetaData.DataType.MONETARY);
+        DataTypeConvertorHelper monetaryHelper = new DataTypeConvertorHelper(DataType.TEXT, DataType.MONETARY);
         Optional<DataNode<?>> anMonetary = monetaryHelper.convert(new TextDataNode("monetary", "1"));
         assertTrue(anMonetary.isPresent());
         assertEquals("monetary", anMonetary.get().getName());
@@ -59,17 +59,17 @@ public final class DataTypeConvertorHelperTest {
     public void assertConvertLong() {
         LocalDateTime localDateTime = DateUtil.parseLocalDateTime("2022-04-24 15:00:00", "yyyy-MM-dd HH:mm:ss");
         long timeMillis = DateUtil.getTimeMillis(localDateTime);
-        DataTypeConvertorHelper localDateTimeHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.LONG, DataNodeTypeMetaData.DataType.DATA_TIME);
+        DataTypeConvertorHelper localDateTimeHelper = new DataTypeConvertorHelper(DataType.LONG, DataType.DATA_TIME);
         Optional<DataNode<?>> anLocalDateTime = localDateTimeHelper.convert(new LongDataNode("localDateTime", timeMillis));
         assertTrue(anLocalDateTime.isPresent());
         assertEquals("localDateTime", anLocalDateTime.get().getName());
         assertEquals(localDateTime, anLocalDateTime.get().getValue());
-        DataTypeConvertorHelper textHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.LONG, DataNodeTypeMetaData.DataType.TEXT);
+        DataTypeConvertorHelper textHelper = new DataTypeConvertorHelper(DataType.LONG, DataType.TEXT);
         Optional<DataNode<?>> anString = textHelper.convert(new LongDataNode("string", 1L));
         assertTrue(anString.isPresent());
         assertEquals("string", anString.get().getName());
         assertEquals("1", anString.get().getValue());
-        DataTypeConvertorHelper intHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.LONG, DataNodeTypeMetaData.DataType.INT);
+        DataTypeConvertorHelper intHelper = new DataTypeConvertorHelper(DataType.LONG, DataType.INT);
         Optional<DataNode<?>> anInt = intHelper.convert(new LongDataNode("int", 1L));
         assertFalse(anInt.isPresent());
     }
@@ -78,12 +78,12 @@ public final class DataTypeConvertorHelperTest {
     public void assertConvertDataTime() {
         LocalDateTime localDateTime = DateUtil.parseLocalDateTime("2022-04-24 15:00:00", "yyyy-MM-dd HH:mm:ss");
         long timeMillis = DateUtil.getTimeMillis(localDateTime);
-        DataTypeConvertorHelper longHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.DATA_TIME, DataNodeTypeMetaData.DataType.LONG);
+        DataTypeConvertorHelper longHelper = new DataTypeConvertorHelper(DataType.DATA_TIME, DataType.LONG);
         Optional<DataNode<?>> anLong = longHelper.convert(new LocalDateTimeDataNode("long", localDateTime));
         assertTrue(anLong.isPresent());
         assertEquals("long", anLong.get().getName());
         assertEquals(timeMillis, anLong.get().getValue());
-        DataTypeConvertorHelper patternedDataTimeHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.DATA_TIME, DataNodeTypeMetaData.DataType.PATTERNED_DATA_TIME);
+        DataTypeConvertorHelper patternedDataTimeHelper = new DataTypeConvertorHelper(DataType.DATA_TIME, DataType.PATTERNED_DATA_TIME, "yyyy-MM-dd HH:mm:ss");
         Optional<DataNode<?>> anPatternedDataTime = patternedDataTimeHelper.convert(new LocalDateTimeDataNode("patternedDataTime", localDateTime));
         assertTrue(anPatternedDataTime.isPresent());
         assertEquals("patternedDataTime", anPatternedDataTime.get().getName());

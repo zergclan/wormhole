@@ -56,7 +56,7 @@ public final class ValueAppendEditor implements Filter<DataGroup> {
                 return false;
             }
         }
-        return false;
+        return true;
     }
     
     @Override

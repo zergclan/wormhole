@@ -84,6 +84,6 @@ public final class ExecutorService extends AbstractExecutorService {
     
     @Override
     public void execute(@NonNull final Runnable command) {
-        threadPoolExecutor.execute(command);
+        threadPoolExecutor.submit(command);
     }
 }
