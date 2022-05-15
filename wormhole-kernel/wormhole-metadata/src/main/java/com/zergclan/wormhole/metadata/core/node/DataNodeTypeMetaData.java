@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.metadata.core.node;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
 import lombok.Getter;
@@ -57,8 +58,7 @@ public final class DataNodeTypeMetaData implements MetaData {
      * @return {@link NodeType}
      */
     private static DataType initDataType(final ColumnMetaData columnMetadata) {
-        // TODO columnMetadata.getDataType() -> DataType
-        return DataType.valueOf(columnMetadata.getDataType().toUpperCase(Locale.ROOT));
+        return DataType.valueOfType(columnMetadata.getDataType().toUpperCase(Locale.ROOT));
     }
     
     /**
@@ -86,7 +86,32 @@ public final class DataNodeTypeMetaData implements MetaData {
      * Data type.
      */
     public enum DataType {
-
-        OBJECT, TEXT, INT, LONG, MONETARY, DATA_TIME, PATTERNED_DATA_TIME, CODE
+        
+        OBJECT, TEXT, INT, LONG, MONETARY, DATA_TIME, PATTERNED_DATA_TIME, CODE;
+    
+        /**
+         * Value of type.
+         *
+         * @param dataType data type
+         * @return {@link DataType}
+         */
+        public static DataType valueOfType(final String dataType) {
+            if ("VARCHAR".equals(dataType)) {
+                return TEXT;
+            }
+            if ("INT".equals(dataType)) {
+                return INT;
+            }
+            if ("BIGINT".equals(dataType)) {
+                return LONG;
+            }
+            if ("DECIMAL".equals(dataType)) {
+                return MONETARY;
+            }
+            if ("DATETIME".equals(dataType) || "TIMESTAMP".equals(dataType)) {
+                return DATA_TIME;
+            }
+            throw new WormholeException("error : No enum constant in DataNodeTypeMetaData.DataType value of [%s]", dataType);
+        }
     }
 }

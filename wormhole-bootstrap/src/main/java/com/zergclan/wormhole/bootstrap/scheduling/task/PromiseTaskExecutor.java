@@ -77,8 +77,10 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         }
         int size = dataGroups.size();
         int batchSize = cachedTaskMetadata.getBatchSize();
+        Handler<BatchedDataGroup> nextHandler = new LoadedHandler(loader, new AtomicReference<>());
+        Collection<Filter<DataGroup>> filters = createFilters(cachedTaskMetadata);
         if (size <= batchSize) {
-            handleBatchedTask(dataGroups, loader);
+            handleBatchedTask(dataGroups, nextHandler, filters);
             return PromiseTaskResult.newSuccess(createTaskResult());
         }
         int count = 0;
@@ -88,20 +90,11 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
             count++;
             batchedEach.add(iterator.next());
             if (batchSize == batchedEach.size() || size == count) {
-                handleBatchedTask(batchedEach, loader);
+                handleBatchedTask(batchedEach, nextHandler, filters);
                 batchedEach = new LinkedList<>();
             }
         }
         return PromiseTaskResult.newSuccess(createTaskResult());
-    }
-    
-    private void handleBatchedTask(final Collection<DataGroup> dataGroups, final Loader<BatchedDataGroup, Result<?>> loader) {
-        String taskIdentifier = cachedTaskMetadata.getIdentifier();
-        long taskBatch = cachedTaskMetadata.getTaskBatch();
-        BatchedDataGroup batchedDataGroup = new BatchedDataGroup(cachedTaskMetadata.getBatchSize(), dataGroups);
-        Collection<Filter<DataGroup>> filters = createFilters(cachedTaskMetadata);
-        Handler<BatchedDataGroup> nextHandler = new LoadedHandler(loader, new AtomicReference<>());
-        ExecutorServiceManager.getComputingExecutor().execute(new BatchedDataGroupHandler(planIdentifier, planBatch, taskIdentifier, taskBatch, batchedDataGroup, filters, nextHandler));
     }
     
     private Collection<Filter<DataGroup>> createFilters(final CachedTaskMetaData cachedTaskMetadata) {
@@ -109,9 +102,21 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         Map<Integer, Map<FilterType, Collection<FilterMetaData>>> filters = cachedTaskMetadata.getFilters();
         Iterator<Map.Entry<Integer, Map<FilterType, Collection<FilterMetaData>>>> iterator = filters.entrySet().iterator();
         while (iterator.hasNext()) {
-            result.addAll(DataGroupFilterFactory.createDataGroupFilters(iterator.next().getKey(), iterator.next().getValue()));
+            Map.Entry<Integer, Map<FilterType, Collection<FilterMetaData>>> entry = iterator.next();
+            Integer order = entry.getKey();
+            Map<FilterType, Collection<FilterMetaData>> typedFilters = entry.getValue();
+            Collection<Filter<DataGroup>> dataGroupFilters = DataGroupFilterFactory.createDataGroupFilters(order, typedFilters);
+            result.addAll(dataGroupFilters);
         }
         return result;
+    }
+    
+    private void handleBatchedTask(final Collection<DataGroup> dataGroups, final Handler<BatchedDataGroup> nextHandler, final Collection<Filter<DataGroup>> filters) {
+        String taskIdentifier = cachedTaskMetadata.getIdentifier();
+        long taskBatch = cachedTaskMetadata.getTaskBatch();
+        BatchedDataGroup batchedDataGroup = new BatchedDataGroup(cachedTaskMetadata.getBatchSize(), dataGroups);
+        BatchedDataGroupHandler batchedDataGroupHandler = new BatchedDataGroupHandler(planIdentifier, planBatch, taskIdentifier, taskBatch, batchedDataGroup, filters, nextHandler);
+        ExecutorServiceManager.getComputingExecutor().submit(batchedDataGroupHandler);
     }
     
     private TaskResult createTaskResult() {

@@ -64,8 +64,9 @@ public final class PatternedDataTime implements Serializable {
         // TODO add source date pattern
         STANDARD("yyyy-MM-dd HH:mm:ss"),
         DATE("yyyy-MM-dd"),
-        TIME("HH:mm:ss");
-
+        TIME("HH:mm:ss"),
+        FORWARD_SLASH_DATE("yyyy/MM/dd");
+        
         private final String pattern;
         
         DatePattern(final String pattern) {
@@ -91,6 +92,9 @@ public final class PatternedDataTime implements Serializable {
             }
             if ("HH:mm:ss".equals(pattern) || "TIME".equalsIgnoreCase(pattern)) {
                 return TIME;
+            }
+            if ("yyyy/MM/dd".equals(pattern) || "FORWARD_SLASH_DATE".equalsIgnoreCase(pattern)) {
+                return FORWARD_SLASH_DATE;
             }
             throw new WormholeException("error : No enum constant in PatternedDataTime.DatePattern value of [%s]", pattern);
         }

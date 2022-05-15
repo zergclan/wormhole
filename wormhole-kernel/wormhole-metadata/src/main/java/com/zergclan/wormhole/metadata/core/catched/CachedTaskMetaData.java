@@ -102,10 +102,10 @@ public final class CachedTaskMetaData implements MetaData {
                 source.getDataNodes().put(dataNodeName, targetSourceDataNodes[1]);
                 task.getFilters().addAll(FilterMetadataFactory.getDefaultInstance(task.getIdentifier(), targetSourceDataNodes[0], targetSourceDataNodes[1]));
             }
-            CachedTargetMetaData cachedTargetMetadata = CachedTargetMetaData.builder(generateIdentifier(), target, dataSources.get(target.getDataSourceIdentifier()));
-            CachedSourceMetaData cachedSourceMetadata = CachedSourceMetaData.builder(generateIdentifier(), source, dataSources.get(source.getDataSourceIdentifier()));
-            return new CachedTaskMetaData(task.getIdentifier(), SequenceGenerator.generateId(), task.getOrder(), task.getBatchSize(), cachedSourceMetadata, cachedTargetMetadata,
-                    groupFilters(task.getFilters()));
+            CachedTargetMetaData cachedTarget = CachedTargetMetaData.builder(generateIdentifier(), target, dataSources.get(target.getDataSourceIdentifier()));
+            CachedSourceMetaData cachedSource = CachedSourceMetaData.builder(generateIdentifier(), source, dataSources.get(source.getDataSourceIdentifier()));
+            Map<Integer, Map<FilterType, Collection<FilterMetaData>>> groupedFilters = groupFilters(task.getFilters());
+            return new CachedTaskMetaData(task.getIdentifier(), SequenceGenerator.generateId(), task.getOrder(), task.getBatchSize(), cachedSource, cachedTarget, groupedFilters);
         }
         
         private Map<String, DataNodeMetaData[]> createDefaultDataNodes(final TargetMetaData target, final SourceMetaData source) throws SQLException {
@@ -151,7 +151,13 @@ public final class CachedTaskMetaData implements MetaData {
                     result.put(order, temp);
                     continue;
                 }
-                result.get(order).get(each.getType()).add(each);
+                Map<FilterType, Collection<FilterMetaData>> filterTypeCollectionMap = result.get(order);
+                Collection<FilterMetaData> filterMetaData = filterTypeCollectionMap.get(each.getType());
+                if (null == filterMetaData) {
+                    filterMetaData = new LinkedList<>();
+                }
+                filterMetaData.add(each);
+                filterTypeCollectionMap.put(each.getType(), filterMetaData);
             }
             return result;
         }

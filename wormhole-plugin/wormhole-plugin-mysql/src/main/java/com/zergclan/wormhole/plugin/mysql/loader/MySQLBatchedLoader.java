@@ -23,6 +23,7 @@ import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
 import com.zergclan.wormhole.data.core.result.MysqlLoadResult;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
 import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
 import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;
 import com.zergclan.wormhole.plugin.mysql.xsql.SqlGenerator;
@@ -105,6 +106,6 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     
     @Override
     public String getType() {
-        return "MySQL";
+        return DatabaseType.MYSQL.getName();
     }
 }
