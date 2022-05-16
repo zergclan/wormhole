@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * generate sql statement.
  */
 @RequiredArgsConstructor
-public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
+public final class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
 
     public static final String SELECT_STR = "SELECT-";
 
@@ -43,7 +43,7 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
     
     private final CachedTargetMetaData cachedTargetMetaData;
 
-    private final Map<String, String> sqlMap = new ConcurrentHashMap<>(16, 1);
+    private final Map<String, String> sqlMap = new ConcurrentHashMap<>();
     
     @Override
     public String createSelectSql() {
@@ -57,9 +57,8 @@ public class CachedTargetMetaDataSqlGenerator implements SqlGenerator {
             stringBuilder.append(selectField);
             stringBuilder.append(" from ").append(cachedTargetMetaData.getTable()).append(" where 1=1 ");
             Collection<String> uniqueNodes = cachedTargetMetaData.getUniqueNodes();
-            for (int i = 0; i < uniqueNodes.size(); i++) {
-                String columnName = ((List<String>) uniqueNodes).get(i);
-                stringBuilder.append(" and ").append(columnName).append(" = ").append(String.format(" $%s{%s} ", "O", columnName));
+            for (String each : uniqueNodes) {
+                stringBuilder.append(" and ").append(each).append(" = ").append(String.format(" $%s{%s} ", "O", each));
             }
             selectSql = stringBuilder.toString();
             sqlMap.put(sqlKey, selectSql);

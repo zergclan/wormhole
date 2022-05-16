@@ -49,4 +49,8 @@ public final class MarkConstant {
     public static final String ASTERISK = "*";
     
     public static final String BACK_QUOTE = "`";
+    
+    public static final String LEFT_PARENTHESIS = "(";
+    
+    public static final String RIGHT_PARENTHESIS = ")";
 }
