@@ -43,13 +43,11 @@ import java.util.Map;
  */
 public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     
-    private final MySQLExpressionBuilder expressionBuilder = new MySQLExpressionBuilder();
-    
     @Override
     protected String generatorExtractSQl(final String table, final String conditionSql, final Map<String, DataNodeMetaData> dataNodes) {
-        String selectColumns = expressionBuilder.buildSelectColumns(table, dataNodes.keySet());
-        String fromTable = expressionBuilder.buildFromTable(table);
-        String condition = expressionBuilder.buildWhere(conditionSql);
+        String selectColumns = MySQLExpressionBuilder.buildSelectColumns(table, dataNodes.keySet());
+        String fromTable = MySQLExpressionBuilder.buildFromTable(table);
+        String condition = MySQLExpressionBuilder.buildConditionWhere(conditionSql);
         return selectColumns + fromTable + condition;
     }
 
