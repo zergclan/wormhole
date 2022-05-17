@@ -166,8 +166,14 @@ dataNodeMappings:
   - targetNames: academic_system
     sourceNames: academic_system
     filters:
-      - type: NULL_TO_DEFAULT
+      - type: DATA_TYPE_CONVERTOR
         order: 1
+        prop:
+          sourceName: academic_system
+          sourceDataType: TEXT
+          targetDataType: MONETARY
+      - type: NULL_TO_DEFAULT
+        order: 2
         prop:
           sourceName: academic_system
           defaultValue: 4

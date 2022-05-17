@@ -21,7 +21,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -71,7 +71,7 @@ public final class StringUtil {
         }
         String[] split = input.split(delimiter);
         int length = split.length;
-        Set<String> result = new HashSet<>(length, 1);
+        Set<String> result = new LinkedHashSet<>(length, 1);
         for (int i = 0; i < length; i++) {
             result.add(split[i].trim());
         }
