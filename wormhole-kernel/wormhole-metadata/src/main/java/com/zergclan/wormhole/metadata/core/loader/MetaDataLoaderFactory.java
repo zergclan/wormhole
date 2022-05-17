@@ -40,6 +40,7 @@ public final class MetaDataLoaderFactory {
     public static MetaDataLoader getInstance(final Connection connection) throws SQLException {
         String databaseProductName = connection.getMetaData().getDatabaseProductName().toUpperCase();
         switch (databaseProductName) {
+            case "H2" :
             case "MYSQL" :
                 return new MySQLMetaDataLoader(connection);
             case "ORACLE" :

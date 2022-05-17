@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DataSourceManger {
+public final class DataSourceManager {
 
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
 
@@ -83,6 +83,7 @@ public final class DataSourceManger {
      */
     public static boolean refresh(final DataSourceMetaData metadata) {
         Validator.notNull(metadata, "error : refresh jdbc data source arg metadata can not be null");
+        LOCK.writeLock().lock();
         try {
             CONTAINER.put(metadata.getIdentifier(), DataSourceCreator.create(metadata));
             return true;
