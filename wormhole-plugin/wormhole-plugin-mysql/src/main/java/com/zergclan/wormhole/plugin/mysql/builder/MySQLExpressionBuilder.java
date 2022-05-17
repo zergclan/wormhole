@@ -167,4 +167,30 @@ public final class MySQLExpressionBuilder {
         }
         return columnsExpression + SQLKeywordConstant.VALUES + valuesExpression;
     }
+    
+    /**
+     * Build update table expression.
+     *
+     * @param table table
+     * @return update table expression
+     */
+    public static String buildUpdateTable(final String table) {
+        return SQLKeywordConstant.UPDATE + table;
+    }
+    
+    /**
+     * Build set columns expression.
+     *
+     * @param columns columns
+     * @return set columns expression
+     */
+    public static String buildSetColumns(final Collection<String> columns) {
+        StringBuilder setColumnsBuilder = new StringBuilder();
+        Iterator<String> iterator = columns.iterator();
+        setColumnsBuilder.append(iterator.next()).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
+        while (iterator.hasNext()) {
+            setColumnsBuilder.append(MarkConstant.COMMA).append(iterator.next()).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
+        }
+        return SQLKeywordConstant.SET + setColumnsBuilder;
+    }
 }

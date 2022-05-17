@@ -72,7 +72,7 @@ public final class MySQLExpressionBuilderTest {
     }
     
     @Test
-    public void buildInsertColumnsValues() {
+    public void assertBuildInsertColumnsValues() {
         String expectedInsertColumnsValues = "(`id`,`name`) VALUES (?,?)";
         Collection<String> columns = new LinkedList<>();
         columns.add("id");
@@ -81,11 +81,26 @@ public final class MySQLExpressionBuilderTest {
     }
     
     @Test
-    public void buildInsertBatchColumnsValues() {
+    public void assertBuildInsertBatchColumnsValues() {
         String expectedInsertColumnsValues = "(`id`,`name`) VALUES (?,?),(?,?),(?,?)";
         Collection<String> columns = new LinkedList<>();
         columns.add("id");
         columns.add("name");
         assertEquals(expectedInsertColumnsValues, MySQLExpressionBuilder.buildInsertColumnsValues(columns, 3));
+    }
+    
+    @Test
+    public void assertBuildUpdateTable() {
+        String expectedUpdateTable = "UPDATE t_user";
+        assertEquals(expectedUpdateTable, MySQLExpressionBuilder.buildUpdateTable("t_user"));
+    }
+    
+    @Test
+    public void assertBuildSetColumns() {
+        String expectedSetColumns = " SET id=?,name=?";
+        Collection<String> columns = new LinkedList<>();
+        columns.add("id");
+        columns.add("name");
+        assertEquals(expectedSetColumns, MySQLExpressionBuilder.buildSetColumns(columns));
     }
 }

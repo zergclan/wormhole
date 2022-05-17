@@ -27,11 +27,11 @@ import lombok.Getter;
 public final class PatternedDataTimeDataNode implements DataNode<PatternedDataTime> {
 
     private static final long serialVersionUID = -4571978987948014231L;
-
+    
     private String name;
 
     private PatternedDataTime value;
-
+    
     public PatternedDataTimeDataNode(final String name, final PatternedDataTime value) {
         this.name = name;
         this.value = value;
@@ -47,5 +47,14 @@ public final class PatternedDataTimeDataNode implements DataNode<PatternedDataTi
     public boolean refreshValue(final PatternedDataTime value) {
         this.value = value;
         return false;
+    }
+    
+    /**
+     * Get patterned value.
+     *
+     * @return patterned value
+     */
+    public String getPatternedValue() {
+        return value.getPatternedValue();
     }
 }
