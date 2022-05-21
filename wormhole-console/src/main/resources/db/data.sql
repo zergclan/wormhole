@@ -19,6 +19,13 @@ DELETE FROM user_info;
 INSERT INTO user_info (id, username, password, email, is_enable, create_time, modify_time) VALUES
 (1, 'root', '123456', 'jacky7boy@163.com', 0, {ts '2012-11-19 18:30:30.00'}, {ts '2012-11-19 18:30:30.00'});
 
+DELETE FROM error_data_log;
+INSERT INTO error_data_log (id, task_identifier, plan_batch, task_batch, code, message, owner_identifier, data_json, create_timestamp)
+VALUES (1, 'test_task_1', 1653140066101L, 1653140066102L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L),
+    (2, 'test_task_1', 1653140066101L, 1653140066102L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L),
+    (3, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L),
+    (4, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L);
+
 DELETE FROM database_info;
 INSERT INTO database_info (id, host, port, catalog, type, username, password, description, operator, create_time, modify_time)
 VALUES ( 1, '127.0.0.1', 3306, 'source_db', 0, 'root', '123456', 'MySQL测试源数据库', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'}),
