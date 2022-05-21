@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service.impl;
+package com.zergclan.wormhole.console.application.service.log.impl;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog;
-import com.zergclan.wormhole.console.application.service.ErrorDataLogService;
+import com.zergclan.wormhole.console.application.domain.metrics.ErrorDataLog;
+import com.zergclan.wormhole.console.application.service.log.ErrorDataLogService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.stereotype.Service;
@@ -36,8 +36,13 @@ public class ErrorDataLogServiceImpl implements ErrorDataLogService {
     private BaseRepository<ErrorDataLog> errorDataLogRepository;
     
     @Override
-    public ErrorDataLog getById(final Integer id) {
-        return errorDataLogRepository.get(id);
+    public void add(final ErrorDataLog errorDataLog) {
+        errorDataLogRepository.add(errorDataLog);
+    }
+    
+    @Override
+    public boolean removeById(final Integer id) {
+        return errorDataLogRepository.remove(id);
     }
     
     @Override

@@ -59,23 +59,59 @@ public final class BatchedDataGroupHandler implements ProcessTask {
         loadedHandler.handle(batchedDataGroup);
         // TODO send task result event
         /**
-         * recode com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog
-         * planBatch
-         * planId
-         * taskBatch
-         * taskId
-         * errorCode 异常编码，插入数据失败
-         * errorDate 异常数据
-         * description 异常表示
-         * createTime，modifyTime
+         * com.zergclan.wormhole.console.application.domain.entity.planExecutionLog
+         *
+         * planId 方案编码
+         * planTriggerId 触发类型
+         * planBatch 方案批次号
+         * successTask
+         * totalTask
+         * executionStatus 初始化（initialization）/配置环境 （configuration）/执行中（execution）/结束（Finish）
+         * start timestamp
+         * end timestamp
          */
-
+        
         /**
-         * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionDataGroupLog
+         * com.zergclan.wormhole.console.application.domain.entity.taskExecutionLog
+         *
+         * taskId 任务编码
+         * planBatch 方案批次号
+         * taskBatch 方案批次号
+         * totalData 任务批次号
+         * successData
+         * executionStatus 初始化（initialization）/提取数据（Extraction）/执行中（Transform）/结束（Load）
+         * start timestamp 开始时间
+         * end timestamp long 结束时间
+         */
+        
+        /**
+         * com.zergclan.wormhole.console.application.domain.entity.DataGroupExecutionLog
+         *
+         * taskId 任务编码
+         * taskBatch 任务批次号
+         * batchIndex 执行序号
+         * totalRow
+         * insertRow
+         * updateRow
+         * errorRow
+         * sameRow（计算出来）
+         * start timestamp long
+         * end timestamp long
+         */
+    
+        /**
+         * com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog
+         *
+         * taskId
+         * planBatch
          * taskBatch
-         * transDataNum 转换数据条数
-         * errorDataNum 异常数据条数
-         * createTime，modifyTime
+         * errorCode 异常编码
+         * errorMessage 异常信息
+         * timestamp long
+         *
+         * errorDate 异常数据 json
+         * errorDateOwner 异常数据所属
+         *
          */
     }
     
@@ -86,17 +122,6 @@ public final class BatchedDataGroupHandler implements ProcessTask {
             boolean isFiltered = filter.doFilter(dataGroup);
             if (!isFiltered) {
                 // TODO send error data event
-                /**
-                 * recode com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog
-                 * planBatch
-                 * planId
-                 * taskBatch
-                 * taskId
-                 * errorCode 异常编码，转换失败
-                 * errorDate 异常数据
-                 * description 异常表示
-                 * createTime，modifyTime
-                 */
                 return false;
             }
         }

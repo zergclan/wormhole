@@ -15,31 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service;
+package com.zergclan.wormhole.console.application.domain.metrics;
 
-import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
-import com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog;
-import com.zergclan.wormhole.console.infra.repository.PageData;
+import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * Service interface of {@link ErrorDataLog}.
+ * {@link ErrorDataLog}.
  */
-public interface ErrorDataLogService {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public final class ErrorDataLog extends AbstractPO {
     
-    /**
-     * Get {@link ErrorDataLog} by id.
-     *
-     * @param id id
-     * @return {@link ErrorDataLog}
-     */
-    ErrorDataLog getById(Integer id);
+    private static final long serialVersionUID = -685034037667839493L;
     
-    /**
-     * List {@link DatasourceInfo} by {@link PageQuery}.
-     *
-     * @param pageQuery {@link PageQuery}
-     * @return {@link PageData}
-     */
-    PageData<ErrorDataLog> listByPage(PageQuery<ErrorDataLog> pageQuery);
+    private Integer id;
+    
+    private String taskIdentifier;
+    
+    private Long planBatch;
+    
+    private Long taskBatch;
+    
+    private String code;
+    
+    private String message;
+    
+    private String ownerIdentifier;
+    
+    private String dataJson;
+    
+    private Long createTimestamp;
 }

@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog;
+import com.zergclan.wormhole.console.application.domain.metrics.ErrorDataLog;
 import org.springframework.stereotype.Repository;
 
 /**
