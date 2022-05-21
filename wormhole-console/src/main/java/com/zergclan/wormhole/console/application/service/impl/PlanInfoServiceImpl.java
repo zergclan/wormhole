@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.console.application.service.impl;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
+import com.zergclan.wormhole.console.application.context.SpringContextContainer;
 import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
 import com.zergclan.wormhole.console.application.domain.entity.PlanTaskLinking;
 import com.zergclan.wormhole.console.application.domain.entity.TaskInfo;
@@ -73,9 +74,9 @@ public class PlanInfoServiceImpl implements PlanInfoService {
     public PageData<PlanInfo> listByPage(final PageQuery<PlanInfo> pageQuery) {
         return planInfoRepository.listByPage(pageQuery);
     }
-
+    
     @Override
-    public void triggerById(final Integer id) {
-        PlanInfo planInfo = planInfoRepository.get(id);
+    public boolean triggerByCode(final String code) {
+        return SpringContextContainer.getExecutionEngine().trigger(code);
     }
 }

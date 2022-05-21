@@ -42,9 +42,11 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
     
     private final String sourceName;
     
-    private final DataNodeTypeMetaData.DataType targetDataType;
-
     private final DataNodeTypeMetaData.DataType sourceDataType;
+    
+    private final DataNodeTypeMetaData.DataType targetDataType;
+    
+    private final String pattern;
 
     @Override
     public String getIdentifier() {
@@ -67,26 +69,43 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
     public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build DataTypeConvertorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String targetDataType = props.getProperty("targetDataType");
-        Validator.notNull(targetDataType, "error : build DataTypeConvertorMetadata failed targetDataType in props can not be null, task identifier: [%s]", taskIdentifier);
         String sourceDataType = props.getProperty("sourceDataType");
         Validator.notNull(sourceDataType, "error : build DataTypeConvertorMetadata failed sourceDataType in props can not be null, task identifier: [%s]", taskIdentifier);
-        return builder(taskIdentifier, order, sourceName, DataNodeTypeMetaData.DataType.valueOf(targetDataType), DataNodeTypeMetaData.DataType.valueOf(sourceDataType));
+        String targetDataType = props.getProperty("targetDataType");
+        Validator.notNull(targetDataType, "error : build DataTypeConvertorMetadata failed targetDataType in props can not be null, task identifier: [%s]", taskIdentifier);
+        String pattern = props.getProperty("pattern");
+        return builder(taskIdentifier, order, sourceName, DataNodeTypeMetaData.DataType.valueOf(sourceDataType), DataNodeTypeMetaData.DataType.valueOf(targetDataType), pattern);
     }
-
+    
     /**
      * Builder for {@link DataTypeConvertorMetaData}.
      *
      * @param taskIdentifier task identifier
      * @param order order
      * @param sourceName source name
-     * @param targetDataType target {@link DataNodeTypeMetaData.DataType}
      * @param sourceDataType source {@link DataNodeTypeMetaData.DataType}
+     * @param targetDataType target {@link DataNodeTypeMetaData.DataType}
      * @return {@link DataTypeConvertorMetaData}
      */
-    public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final DataNodeTypeMetaData.DataType targetDataType,
-                                                    final DataNodeTypeMetaData.DataType sourceDataType) {
-        return new FilterBuilder(taskIdentifier, order, sourceName, targetDataType, sourceDataType).build();
+    public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final DataNodeTypeMetaData.DataType sourceDataType,
+                                                    final DataNodeTypeMetaData.DataType targetDataType) {
+        return new FilterBuilder(taskIdentifier, order, sourceName, sourceDataType, targetDataType, null).build();
+    }
+    
+    /**
+     * Builder for {@link DataTypeConvertorMetaData}.
+     *
+     * @param taskIdentifier task identifier
+     * @param order order
+     * @param sourceName source name
+     * @param sourceDataType source {@link DataNodeTypeMetaData.DataType}
+     * @param targetDataType target {@link DataNodeTypeMetaData.DataType}
+     * @param pattern pattern
+     * @return {@link DataTypeConvertorMetaData}
+     */
+    public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final DataNodeTypeMetaData.DataType sourceDataType,
+                                                    final DataNodeTypeMetaData.DataType targetDataType, final String pattern) {
+        return new FilterBuilder(taskIdentifier, order, sourceName, sourceDataType, targetDataType, pattern).build();
     }
 
     @RequiredArgsConstructor
@@ -97,13 +116,15 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
         private final int order;
     
         private final String sourceName;
-
-        private final DataNodeTypeMetaData.DataType targetDataType;
-
+    
         private final DataNodeTypeMetaData.DataType sourceDataType;
+    
+        private final DataNodeTypeMetaData.DataType targetDataType;
+    
+        private final String pattern;
 
         private DataTypeConvertorMetaData build() {
-            return new DataTypeConvertorMetaData(taskIdentifier, order, sourceName, targetDataType, sourceDataType);
+            return new DataTypeConvertorMetaData(taskIdentifier, order, sourceName, sourceDataType, targetDataType, pattern);
         }
     }
 }

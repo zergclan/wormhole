@@ -155,7 +155,7 @@ public final class DataGroupFilterFactory {
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
             DataTypeConvertorMetaData filterMetaData = (DataTypeConvertorMetaData) iterator.next();
-            helpers.put(filterMetaData.getSourceName(), new DataTypeConvertorHelper(filterMetaData.getTargetDataType(), filterMetaData.getSourceDataType()));
+            helpers.put(filterMetaData.getSourceName(), new DataTypeConvertorHelper(filterMetaData.getSourceDataType(), filterMetaData.getTargetDataType(), filterMetaData.getPattern()));
         }
         return new DataTypeConvertor(order, type, helpers);
     }

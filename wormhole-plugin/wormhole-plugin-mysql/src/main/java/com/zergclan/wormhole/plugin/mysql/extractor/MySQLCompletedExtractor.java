@@ -21,6 +21,7 @@ import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.DataNodeBuilder;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
 import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;
@@ -42,25 +43,18 @@ import java.util.Map;
  */
 public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     
-    private final MySQLExpressionBuilder expressionBuilder = new MySQLExpressionBuilder();
-    
     @Override
     protected String generatorExtractSQl(final String table, final String conditionSql, final Map<String, DataNodeMetaData> dataNodes) {
-        String selectColumns = expressionBuilder.buildSelectColumns(table, dataNodes.keySet());
-        String fromTable = expressionBuilder.buildFromTable(table);
-        String condition = expressionBuilder.buildWhere(conditionSql);
+        String selectColumns = MySQLExpressionBuilder.buildSelectColumns(table, dataNodes.keySet());
+        String fromTable = MySQLExpressionBuilder.buildFromTable(table);
+        String condition = MySQLExpressionBuilder.buildConditionWhere(conditionSql);
         return selectColumns + fromTable + condition;
     }
 
     @Override
     protected Collection<DataGroup> doExtract(final DataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
-        Collection<DataGroup> result = new LinkedList<>();
         Connection connection = createConnection(dataSource);
-        ResultSet resultSet = execute(connection, extractSQl);
-        while (resultSet.next()) {
-            result.add(createDataGroup(resultSet, dataNodes));
-        }
-        return result;
+        return execute(connection, dataNodes, extractSQl);
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
@@ -72,10 +66,15 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
         throw new SQLTimeoutException();
     }
     
-    private ResultSet execute(final Connection connection, final String extractSQl) throws SQLException {
+    private Collection<DataGroup> execute(final Connection connection, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
+        Collection<DataGroup> result = new LinkedList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(extractSQl)) {
-            return preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                result.add(createDataGroup(resultSet, dataNodes));
+            }
         }
+        return result;
     }
     
     private DataGroup createDataGroup(final ResultSet resultSet, final Map<String, DataNodeMetaData> dataNodes) throws SQLException {
@@ -91,6 +90,6 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     
     @Override
     public String getType() {
-        return "MySQL";
+        return DatabaseType.MYSQL.getName();
     }
 }

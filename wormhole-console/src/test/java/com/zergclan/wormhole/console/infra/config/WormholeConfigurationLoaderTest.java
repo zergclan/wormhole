@@ -55,7 +55,7 @@ public final class WormholeConfigurationLoaderTest {
         assertEquals("127.0.0.1", dataSource.getHost());
         assertEquals(3306, dataSource.getPort());
         assertEquals("root", dataSource.getUsername());
-        assertEquals("root", dataSource.getPassword());
+        assertEquals("123456", dataSource.getPassword());
         assertEquals("ds_source", dataSource.getCatalog());
     }
     
@@ -66,7 +66,7 @@ public final class WormholeConfigurationLoaderTest {
         assertEquals("127.0.0.1", dataSource.getHost());
         assertEquals(3307, dataSource.getPort());
         assertEquals("root", dataSource.getUsername());
-        assertEquals("root", dataSource.getPassword());
+        assertEquals("123456", dataSource.getPassword());
         assertEquals("ds_target", dataSource.getCatalog());
     }
     

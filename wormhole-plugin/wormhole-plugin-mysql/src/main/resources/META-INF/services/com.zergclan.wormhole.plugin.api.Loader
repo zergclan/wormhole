@@ -15,26 +15,4 @@
 # limitations under the License.
 #
 
-dataSources:
-  ds-source:
-    type: MySQL
-    host: 127.0.0.1
-    port: 3306
-    username: root
-    password: 123456
-    catalog: ds_source
-  ds-target:
-    type: MySQL
-    host: 127.0.0.1
-    port: 3307
-    username: root
-    password: 123456
-    catalog: ds_target
-
-plans:
-  test_plan:
-    mode: SCHEDULED
-    expression: 0 0 10 * * *
-    atomic: true
-    tasks:
-      - task_source_to_target
+com.zergclan.wormhole.plugin.mysql.loader.MySQLBatchedLoader

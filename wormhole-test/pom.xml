@@ -30,6 +30,6 @@
     <name>${project.artifactId}</name>
 
     <modules>
-        <module>wormhole-test-jmh</module>
+        <module>wormhole-integration-test</module>
     </modules>
 </project>

@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Data source metadata of H2.
@@ -37,19 +36,15 @@ public final class H2DataSourceMetaData implements DataSourceMetaData {
 
     private static final DatabaseType TYPE = DatabaseType.H2;
 
-    private final String host;
+    private final String driverClassName;
 
-    private final int port;
+    private final String jdbcUrl;
 
     @Getter
     private final String username;
 
     @Getter
     private final String password;
-
-    private final String catalog;
-
-    private final Properties parameters;
 
     @Getter
     private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
@@ -61,14 +56,12 @@ public final class H2DataSourceMetaData implements DataSourceMetaData {
     
     @Override
     public String getDriverClassName() {
-        // TODO driver class name
-        return "";
+        return driverClassName;
     }
     
     @Override
     public String getJdbcUrl() {
-        // TODO init jdbc url
-        return "";
+        return jdbcUrl;
     }
 
     @Override
@@ -90,6 +83,6 @@ public final class H2DataSourceMetaData implements DataSourceMetaData {
 
     @Override
     public String getIdentifier() {
-        return TYPE.getName() + MarkConstant.SPACE + host + MarkConstant.COLON + port + MarkConstant.COLON + catalog + MarkConstant.SPACE + username + MarkConstant.AT + password;
+        return TYPE.getName() + MarkConstant.SPACE + jdbcUrl + MarkConstant.SPACE + username + MarkConstant.AT + password;
     }
 }

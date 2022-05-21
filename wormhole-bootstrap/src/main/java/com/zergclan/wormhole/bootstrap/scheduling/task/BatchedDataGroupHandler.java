@@ -83,7 +83,8 @@ public final class BatchedDataGroupHandler implements ProcessTask {
         Iterator<Filter<DataGroup>> iterator = filters.iterator();
         while (iterator.hasNext()) {
             Filter<DataGroup> filter = iterator.next();
-            if (!filter.doFilter(dataGroup)) {
+            boolean isFiltered = filter.doFilter(dataGroup);
+            if (!isFiltered) {
                 // TODO send error data event
                 /**
                  * recode com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog

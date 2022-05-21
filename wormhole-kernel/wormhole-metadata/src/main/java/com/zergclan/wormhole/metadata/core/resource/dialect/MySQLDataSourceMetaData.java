@@ -77,12 +77,12 @@ public final class MySQLDataSourceMetaData implements DataSourceMetaData {
             stringJoiner.add(entry.getKey() + MarkConstant.EQUAL + entry.getValue());
         }
         String result = stringJoiner.toString();
-        return StringUtil.isBlank(result) ? "" : MarkConstant.QUESTION + result;
+        return StringUtil.isBlank(result) ? MarkConstant.QUESTION + "serverTimezone=UTC&useSSL=false" : MarkConstant.QUESTION + result;
     }
     
     @Override
     public boolean registerSchema(final SchemaMetaData schemaMetaData) {
-        schemas.put(schemaMetaData.getIdentifier(), schemaMetaData);
+        schemas.put(schemaMetaData.getName(), schemaMetaData);
         return true;
     }
     
@@ -93,10 +93,15 @@ public final class MySQLDataSourceMetaData implements DataSourceMetaData {
 
     @Override
     public TableMetaData getTable(final String name) {
-        String[] split = name.split(MarkConstant.POINT);
-        return getSchema(split[0]).getTable(split[1]);
+        if (name.contains(MarkConstant.POINT)) {
+            String[] split = name.split(MarkConstant.POINT);
+            return getSchema(split[0]).getTable(split[1]);
+        }
+        SchemaMetaData schemaMetaData = schemas.get(catalog);
+        TableMetaData table = schemaMetaData.getTable(name);
+        return table;
     }
-
+    
     @Override
     public String getIdentifier() {
         return TYPE.getName() + MarkConstant.SPACE + host + MarkConstant.COLON + port + MarkConstant.COLON + catalog + MarkConstant.SPACE + username + MarkConstant.AT + password;

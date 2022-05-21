@@ -19,23 +19,23 @@ package com.zergclan.wormhole.metadata.core.initializer;
 
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.config.core.DataSourceConfiguration;
-import com.zergclan.wormhole.metadata.core.loader.DataSourceManger;
+import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.core.loader.DataSourceManager;
 import com.zergclan.wormhole.metadata.core.loader.MetaDataLoader;
 import com.zergclan.wormhole.metadata.core.loader.MetaDataLoaderFactory;
-import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
 import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
-import com.zergclan.wormhole.metadata.core.resource.IndexMetaData;
 import com.zergclan.wormhole.metadata.core.resource.SchemaMetaData;
 import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
-import com.zergclan.wormhole.metadata.core.resource.dialect.H2DataSourceMetaData;
+import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
+import com.zergclan.wormhole.metadata.core.resource.IndexMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.MySQLDataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.OracleDataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.PostgreSQLDataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.SQLServerDataSourceMetaData;
-import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
@@ -62,7 +62,7 @@ public final class DataSourceMetadataInitializer {
             String catalog = configuration.getCatalog();
             String username = configuration.getUsername();
             String password = configuration.getPassword();
-            Properties parameters = configuration.getProps();
+            Properties parameters = null == configuration.getProps() ? new Properties() : configuration.getProps();
             DatabaseType type = databaseType.get();
             if (DatabaseType.MYSQL == type) {
                 return new MySQLDataSourceMetaData(host, port, username, password, catalog, parameters);
@@ -76,9 +76,6 @@ public final class DataSourceMetadataInitializer {
             if (DatabaseType.POSTGRESQL == type) {
                 return new PostgreSQLDataSourceMetaData(host, port, username, password, catalog, parameters);
             }
-            if (DatabaseType.H2 == type) {
-                return new H2DataSourceMetaData(host, port, username, password, catalog, parameters);
-            }
         }
         throw new WormholeException("error : create data source metadata failed databaseType [%s] not find", configuration.getType());
     }
@@ -90,7 +87,8 @@ public final class DataSourceMetadataInitializer {
      * @throws SQLException SQL Exception
      */
     public static void init(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        initDataSource(dataSourceMetaData, MetaDataLoaderFactory.getInstance(DataSourceManger.get(dataSourceMetaData).getConnection()));
+        Connection connection = DataSourceManager.get(dataSourceMetaData).getConnection();
+        initDataSource(dataSourceMetaData, MetaDataLoaderFactory.getInstance(connection));
     }
     
     private static void initDataSource(final DataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {

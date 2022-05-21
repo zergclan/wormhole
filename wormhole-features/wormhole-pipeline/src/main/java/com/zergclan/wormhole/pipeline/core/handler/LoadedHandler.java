@@ -19,10 +19,12 @@ package com.zergclan.wormhole.pipeline.core.handler;
 
 import com.zergclan.wormhole.data.api.result.Result;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
+import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.pipeline.api.Handler;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -37,8 +39,10 @@ public final class LoadedHandler implements Handler<BatchedDataGroup> {
     
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {
-        batchedDataGroup.getDataGroups().removeAll(batchedDataGroup.getErrors());
-        result.set(loader.load(batchedDataGroup));
+        Collection<DataGroup> errors = batchedDataGroup.getErrors();
+        batchedDataGroup.getDataGroups().removeAll(errors);
+        Result<?> load = loader.load(batchedDataGroup);
+        result.set(load);
     }
     
     @Override

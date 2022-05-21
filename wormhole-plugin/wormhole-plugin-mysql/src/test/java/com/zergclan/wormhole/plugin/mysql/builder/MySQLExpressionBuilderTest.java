@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.plugin.mysql.builder;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -27,43 +26,81 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class MySQLExpressionBuilderTest {
     
-    private static MySQLExpressionBuilder builder;
-    
-    @BeforeAll
-    public static void init() {
-        builder = new MySQLExpressionBuilder();
-    }
-    
-    @Test
-    public void assertWrapColumn() {
-        String expectedColumn = "`name`";
-        assertEquals(expectedColumn, builder.wrapColumn("name"));
-    }
-    
-    @Test
-    public void assertBuildSelectColumn() {
-        String expectedSelectColumn = "t_user.`name` AS `name`";
-        assertEquals(expectedSelectColumn, builder.buildSelectColumn("t_user", "name"));
-    }
-    
     @Test
     public void assertBuildSelectColumns() {
+        String expectedSelectColumns = "SELECT `id`,`name`";
+        Collection<String> columns = new LinkedList<>();
+        columns.add("id");
+        columns.add("name");
+        assertEquals(expectedSelectColumns, MySQLExpressionBuilder.buildSelectColumns(columns));
+    }
+    
+    @Test
+    public void assertBuildSelectAsColumns() {
         String expectedSelectColumns = "SELECT t_user.`id` AS `id`,t_user.`name` AS `name`";
         Collection<String> columns = new LinkedList<>();
         columns.add("id");
         columns.add("name");
-        assertEquals(expectedSelectColumns, builder.buildSelectColumns("t_user", columns));
+        assertEquals(expectedSelectColumns, MySQLExpressionBuilder.buildSelectColumns("t_user", columns));
     }
     
     @Test
     public void assertBuildFromTable() {
         String expectedFromTable = " FROM t_user";
-        assertEquals(expectedFromTable, builder.buildFromTable("t_user"));
+        assertEquals(expectedFromTable, MySQLExpressionBuilder.buildFromTable("t_user"));
     }
     
     @Test
-    public void assertBuildWhere() {
+    public void assertBuildConditionWhere() {
         String expectedWhere = " WHERE id = 1";
-        assertEquals(expectedWhere, builder.buildWhere("id = 1"));
+        assertEquals(expectedWhere, MySQLExpressionBuilder.buildConditionWhere("id = 1"));
+    }
+    
+    @Test
+    public void assertBuildAllEqualsWhere() {
+        String expectedWhere = " WHERE `id`=? AND `name`=?";
+        Collection<String> columns = new LinkedList<>();
+        columns.add("id");
+        columns.add("name");
+        assertEquals(expectedWhere, MySQLExpressionBuilder.buildAllEqualsWhere(columns));
+    }
+    
+    @Test
+    public void assertBuildInsertTable() {
+        String expectedInsertTable = "INSERT INTO t_user";
+        assertEquals(expectedInsertTable, MySQLExpressionBuilder.buildInsertTable("t_user"));
+    }
+    
+    @Test
+    public void assertBuildInsertColumnsValues() {
+        String expectedInsertColumnsValues = "(`id`,`name`) VALUES (?,?)";
+        Collection<String> columns = new LinkedList<>();
+        columns.add("id");
+        columns.add("name");
+        assertEquals(expectedInsertColumnsValues, MySQLExpressionBuilder.buildInsertColumnsValues(columns));
+    }
+    
+    @Test
+    public void assertBuildInsertBatchColumnsValues() {
+        String expectedInsertColumnsValues = "(`id`,`name`) VALUES (?,?),(?,?),(?,?)";
+        Collection<String> columns = new LinkedList<>();
+        columns.add("id");
+        columns.add("name");
+        assertEquals(expectedInsertColumnsValues, MySQLExpressionBuilder.buildInsertColumnsValues(columns, 3));
+    }
+    
+    @Test
+    public void assertBuildUpdateTable() {
+        String expectedUpdateTable = "UPDATE t_user";
+        assertEquals(expectedUpdateTable, MySQLExpressionBuilder.buildUpdateTable("t_user"));
+    }
+    
+    @Test
+    public void assertBuildSetColumns() {
+        String expectedSetColumns = " SET id=?,name=?";
+        Collection<String> columns = new LinkedList<>();
+        columns.add("id");
+        columns.add("name");
+        assertEquals(expectedSetColumns, MySQLExpressionBuilder.buildSetColumns(columns));
     }
 }
