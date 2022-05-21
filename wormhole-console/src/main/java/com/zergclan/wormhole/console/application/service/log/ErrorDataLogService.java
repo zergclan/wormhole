@@ -20,7 +20,7 @@ package com.zergclan.wormhole.console.application.service.log;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
 import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
-import com.zergclan.wormhole.console.application.domain.metrics.ErrorDataLog;
+import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 
 /**

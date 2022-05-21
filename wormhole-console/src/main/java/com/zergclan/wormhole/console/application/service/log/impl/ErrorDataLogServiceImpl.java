@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.console.application.service.log.impl;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.metrics.ErrorDataLog;
+import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
 import com.zergclan.wormhole.console.application.service.log.ErrorDataLogService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;

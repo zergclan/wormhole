@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.metrics;
+package com.zergclan.wormhole.console.application.domain.log;
 
 import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
 import lombok.Data;
@@ -29,8 +29,6 @@ import lombok.EqualsAndHashCode;
 public final class ErrorDataLog extends AbstractPO {
     
     private static final long serialVersionUID = -685034037667839493L;
-    
-    private Integer id;
     
     private String taskIdentifier;
     

@@ -20,7 +20,7 @@ package com.zergclan.wormhole.console.api.contorller.log;
 import com.zergclan.wormhole.console.api.contorller.AbstractRestController;
 import com.zergclan.wormhole.console.api.vo.HttpResult;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.metrics.ErrorDataLog;
+import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
 import com.zergclan.wormhole.console.application.service.log.ErrorDataLogService;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +34,7 @@ import javax.annotation.Resource;
  * Controller of {@link ErrorDataLog}.
  */
 @RestController
-@RequestMapping("/metrics/error/data")
+@RequestMapping("/log/error/data")
 public class ErrorDataLogController extends AbstractRestController {
     
     @Resource
