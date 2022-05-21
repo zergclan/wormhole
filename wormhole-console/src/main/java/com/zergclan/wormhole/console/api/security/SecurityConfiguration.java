@@ -41,7 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity httpSecurity) throws Exception {
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().cors().and().addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class)
+                .and().cors().configurationSource(corsConfigurationSource())
+                .and().addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/metrics/status").anonymous()
                 .antMatchers("/security/login").permitAll().anyRequest().authenticated()
@@ -57,9 +58,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedHeaders(Collections.singletonList(CorsConfiguration.ALL));
         corsConfiguration.setAllowedOrigins(Collections.singletonList(CorsConfiguration.ALL));
         corsConfiguration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE"));
-        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource result = new UrlBasedCorsConfigurationSource();
         result.registerCorsConfiguration("/**", corsConfiguration);
         return result;
