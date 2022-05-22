@@ -58,7 +58,7 @@ public final class DataNodeTypeMetaData implements MetaData {
      * @return {@link NodeType}
      */
     private static DataType initDataType(final ColumnMetaData columnMetadata) {
-        return DataType.valueOfType(columnMetadata.getDataType().toUpperCase(Locale.ROOT));
+        return DataType.valueOfColumnType(columnMetadata.getDataType().toUpperCase(Locale.ROOT));
     }
     
     /**
@@ -95,20 +95,20 @@ public final class DataNodeTypeMetaData implements MetaData {
          * @param dataType data type
          * @return {@link DataType}
          */
-        public static DataType valueOfType(final String dataType) {
-            if ("VARCHAR".equals(dataType)) {
+        public static DataType valueOfColumnType(final String dataType) {
+            if ("VARCHAR".equalsIgnoreCase(dataType)) {
                 return TEXT;
             }
-            if ("INT".equals(dataType)) {
+            if ("INT".equalsIgnoreCase(dataType)) {
                 return INT;
             }
-            if ("BIGINT".equals(dataType)) {
+            if ("BIGINT".equalsIgnoreCase(dataType)) {
                 return LONG;
             }
-            if ("DECIMAL".equals(dataType)) {
+            if ("DECIMAL".equalsIgnoreCase(dataType)) {
                 return MONETARY;
             }
-            if ("DATETIME".equals(dataType) || "TIMESTAMP".equals(dataType)) {
+            if ("DATETIME".equalsIgnoreCase(dataType) || "TIMESTAMP".equalsIgnoreCase(dataType)) {
                 return DATA_TIME;
             }
             throw new WormholeException("error : No enum constant in DataNodeTypeMetaData.DataType value of [%s]", dataType);

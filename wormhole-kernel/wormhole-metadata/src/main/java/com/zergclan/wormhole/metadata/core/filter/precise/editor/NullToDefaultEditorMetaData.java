@@ -70,6 +70,7 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
         Object defaultValue = props.get("defaultValue");
         Validator.notNull(defaultValue, "error : build NullToDefaultEditorMetadata failed defaultValue in props can not be null, task identifier: [%s]", taskIdentifier);
         String dataType = props.getProperty("dataType");
+        Validator.notNull(dataType, "error : build NullToDefaultEditorMetadata failed dataType in props can not be null, task identifier: [%s]", taskIdentifier);
         return builder(taskIdentifier, order, sourceName, String.valueOf(defaultValue), DataNodeTypeMetaData.DataType.valueOf(dataType));
     }
 

@@ -38,7 +38,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -91,7 +90,7 @@ public final class FilterMetadataFactory {
      * @return {@link FilterMetaData}
      */
     public static FilterMetaData getInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration) {
-        return createFilterMetadata(FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT)), taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
+        return createFilterMetadata(FilterType.valueOfIgnoreCase(filterConfiguration.getType()), taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
     }
 
     /**
@@ -102,7 +101,7 @@ public final class FilterMetadataFactory {
      * @return {@link FilterMetaData}
      */
     public static FilterMetaData getPreciseInstance(final String taskIdentifier, final FilterConfiguration filterConfiguration) {
-        FilterType filterType = FilterType.valueOf(filterConfiguration.getType().toUpperCase(Locale.ROOT));
+        FilterType filterType = FilterType.valueOfIgnoreCase(filterConfiguration.getType());
         boolean preState = FilterType.CONCAT_MERGER != filterType && FilterType.DELIMITER_SPLITTER != filterType;
         Validator.preState(preState, "error : create precise filter metadata failed filterType can not be: [%s] task identifier: [%s]", filterType.name(), taskIdentifier);
         return createFilterMetadata(filterType, taskIdentifier, filterConfiguration.getOrder(), filterConfiguration.getProps());
