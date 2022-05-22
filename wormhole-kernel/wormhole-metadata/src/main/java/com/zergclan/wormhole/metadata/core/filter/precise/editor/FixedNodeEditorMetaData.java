@@ -25,6 +25,7 @@ import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -71,7 +72,7 @@ public final class FixedNodeEditorMetaData implements FilterMetaData {
         Validator.notNull(defaultValue, "error : build FixedNodeEditorMetadata failed defaultValue in props can not be null, task identifier: [%s]", taskIdentifier);
         String dataType = props.getProperty("dataType");
         Validator.notNull(dataType, "error : build FixedNodeEditorMetadata failed dataType in props can not be null, task identifier: [%s]", taskIdentifier);
-        return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetaData.DataType.valueOf(dataType)).build();
+        return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetaData.DataType.valueOf(dataType.toUpperCase(Locale.ROOT))).build();
     }
 
     @RequiredArgsConstructor

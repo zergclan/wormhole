@@ -17,10 +17,22 @@
 
 package com.zergclan.wormhole.metadata.core.filter;
 
+import java.util.Locale;
+
 /**
  * Type of {@link FilterMetaData}.
  */
 public enum FilterType {
-    
-    NOT_NULL, NOT_BLANK, NULL_TO_DEFAULT, FIXED_NODE, VALUE_RANGE, VALUE_APPEND, NAME_CONVERTOR, CODE_CONVERTOR, DATA_TYPE_CONVERTOR, PATTERNED_DATA_TIME_CONVERTOR, CONCAT_MERGER, DELIMITER_SPLITTER
+
+    NOT_NULL, NOT_BLANK, NULL_TO_DEFAULT, FIXED_NODE, VALUE_RANGE, VALUE_APPEND, NAME_CONVERTOR, CODE_CONVERTOR, DATA_TYPE_CONVERTOR, PATTERNED_DATA_TIME_CONVERTOR, CONCAT_MERGER, DELIMITER_SPLITTER;
+
+    /**
+     * Get filterType enum by name ignore case.
+     *
+     * @param name Name.
+     * @return {@link FilterType}
+     */
+    public static FilterType valueOfIgnoreCase(final String name) {
+        return valueOf(name.toUpperCase(Locale.ROOT));
+    }
 }
