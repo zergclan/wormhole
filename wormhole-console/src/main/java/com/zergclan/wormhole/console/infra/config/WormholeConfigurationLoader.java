@@ -53,7 +53,7 @@ public final class WormholeConfigurationLoader {
     static {
         SWAPPER = new YamlWormholeConfigurationSwapper();
         String projectPath = System.getProperty("user.dir");
-        String modulePath = projectPath.endsWith("/wormhole") ? "/wormhole-console" : "";
+        String modulePath = projectPath.endsWith("wormhole") ? "/wormhole-console" : "";
         CONFIGURATION_PATH_PREFIX = projectPath + modulePath + "/src/main/resources/conf";
     }
     
