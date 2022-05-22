@@ -15,11 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service;
+package com.zergclan.wormhole.console.application.service.log;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
-import com.zergclan.wormhole.console.application.domain.entity.ErrorDataLog;
+import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
+import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 
 /**
@@ -28,12 +29,19 @@ import com.zergclan.wormhole.console.infra.repository.PageData;
 public interface ErrorDataLogService {
     
     /**
-     * Get {@link ErrorDataLog} by id.
+     * Add {@link ErrorDataLog}.
+     *
+     * @param errorDataLog {@link ErrorDataLog}
+     */
+    void add(ErrorDataLog errorDataLog);
+    
+    /**
+     * remove {@link PlanInfo} by id.
      *
      * @param id id
-     * @return {@link ErrorDataLog}
+     * @return is removed or not
      */
-    ErrorDataLog getById(Integer id);
+    boolean removeById(Integer id);
     
     /**
      * List {@link DatasourceInfo} by {@link PageQuery}.

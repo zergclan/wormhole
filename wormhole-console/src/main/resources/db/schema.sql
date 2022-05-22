@@ -27,7 +27,19 @@ CREATE TABLE `user_info` (
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '用户信息表';
 
--- TODO Implement basic CURD.
+DROP TABLE IF EXISTS `error_data_log`;
+CREATE TABLE error_data_log (
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `task_identifier` VARCHAR(64) NOT NULL COMMENT '所属任务ID',
+    `plan_batch` bigint(20) NOT NULL COMMENT '方案批次号',
+    `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
+    `code` VARCHAR(32) NOT NULL COMMENT '异常编码',
+    `message` VARCHAR(1024) NOT NULL COMMENT '异常信息',
+    `data_json` TEXT NOT NULL COMMENT '异常数据',
+    `owner_identifier` VARCHAR(1024) NOT NULL COMMENT '数据拥有者ID',
+    `create_timestamp` bigint(20) NOT NULL COMMENT '创建时间戳',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '异常数据日志表';
 
 DROP TABLE IF EXISTS `database_info`;
 CREATE TABLE database_info (
@@ -180,18 +192,3 @@ CREATE TABLE data_group_execution_log (
     `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '批次数据执行记录';
-
-DROP TABLE IF EXISTS `error_date_log`;
-CREATE TABLE error_date_log (
-    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
-    `plan_id` INT(11) NOT NULL COMMENT '关联方案ID',
-    `plan_batch` bigint(20) NOT NULL COMMENT '所属方案批次号',
-    `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
-    `task_id` INT(11) NOT NULL COMMENT '所属任务ID',
-    `error_code` VARCHAR(32) NOT NULL COMMENT '异常编码',
-    `error_date` VARCHAR(1024) NOT NULL COMMENT '异常数据',
-    `description` VARCHAR(1024) NOT NULL COMMENT '异常描述',
-    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
-    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`)
-)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '异常数据日志表';
