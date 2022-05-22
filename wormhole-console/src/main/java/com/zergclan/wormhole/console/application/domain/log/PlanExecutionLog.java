@@ -15,14 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository.mapper;
+package com.zergclan.wormhole.console.application.domain.log;
 
-import com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog;
-import org.apache.ibatis.annotations.Mapper;
+import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.Collection;
 
 /**
- * Mapper of {@link ExecutionPlanLog}.
+ * {@link PlanExecutionLog}.
  */
-@Mapper
-public interface ExecutionPlanLogMapper extends BaseMapper<ExecutionPlanLog> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public final class PlanExecutionLog extends AbstractPO {
+    
+    private static final long serialVersionUID = -9107170916332742939L;
+    
+    private Long planBatch;
+    
+    private String planIdentifier;
+    
+    private String triggerIdentifier;
+    
+    private String executionState;
+    
+    private Collection<String> successTasks;
+    
+    private Collection<String> failedTasks;
+    
+    private long startTimestamp;
+    
+    private long endTimestamp;
 }

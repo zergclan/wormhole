@@ -18,31 +18,52 @@
 package com.zergclan.wormhole.console.application.service.log.impl;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
+import com.zergclan.wormhole.console.api.vo.TaskExecutionDetail;
+import com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog;
 import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
-import com.zergclan.wormhole.console.application.service.log.ErrorDataLogService;
+import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
+import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
+import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-/**
- * Implemented Service of {@link ErrorDataLogService}.
- */
-@Service(value = "errorDataLogService")
-public class ErrorDataLogServiceImpl implements ErrorDataLogService {
+@Service("logMetricsService")
+public class LogMetricsServiceImpl implements LogMetricsService {
+    
+    @Resource
+    private BaseRepository<PlanExecutionLog> executionPlanLogRepository;
+    
+    @Resource
+    private BaseRepository<TaskExecutionLog> executionTaskLogRepository;
+    
+    @Resource
+    private BaseRepository<DataGroupExecutionLog> executionDataGroupLogRepository;
     
     @Resource
     private BaseRepository<ErrorDataLog> errorDataLogRepository;
     
     @Override
-    public void add(final ErrorDataLog errorDataLog) {
-        errorDataLogRepository.add(errorDataLog);
+    public PageData<PlanExecutionLog> pagePlanExecutionLog(final PageQuery<PlanExecutionLog> pageQuery) {
+        return executionPlanLogRepository.listByPage(pageQuery);
     }
     
     @Override
-    public boolean removeById(final Integer id) {
-        return errorDataLogRepository.remove(id);
+    public PageData<TaskExecutionLog> pageTaskExecutionLog(final PageQuery<TaskExecutionLog> pageQuery) {
+        return executionTaskLogRepository.listByPage(pageQuery);
+    }
+    
+    @Override
+    public TaskExecutionDetail getTaskExecutionDetail(final String taskBatch) {
+        // TODO
+        return null;
+    }
+    
+    @Override
+    public void add(final ErrorDataLog errorDataLog) {
+        errorDataLogRepository.add(errorDataLog);
     }
     
     @Override

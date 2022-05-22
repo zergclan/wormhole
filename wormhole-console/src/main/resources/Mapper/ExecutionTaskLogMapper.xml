@@ -18,7 +18,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.ExecutionTaskLogMapper">
-    <resultMap id="TaskLogResultMap" type="com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog">
+    <resultMap id="TaskLogResultMap" type="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog">
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="plan_batch" property="planBatch" jdbcType="BIGINT"/>
         <result column="plan_id" property="planId" jdbcType="INTEGER"/>
@@ -123,7 +123,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog">
+    <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog">
         INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
     </insert>
 
@@ -135,7 +135,7 @@
         </foreach>
     </insert>
 
-    <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog">
+    <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog">
         UPDATE <include refid="table_name"/>
         <set>
             <include refid="update_columns"/>
@@ -168,7 +168,7 @@
         </foreach>
     </select>
 
-    <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog" resultType="java.lang.Integer">
+    <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog" resultType="java.lang.Integer">
         SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
         <where>
             <include refid="where_fuzzy_query"/>

@@ -20,9 +20,9 @@
 <mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.ErrorDataLogMapper">
     <resultMap id="ErrorDataLogResultMap" type="com.zergclan.wormhole.console.application.domain.log.ErrorDataLog">
         <result column="id" property="id" jdbcType="INTEGER"/>
-        <result column="task_identifier" property="taskIdentifier" jdbcType="VARCHAR"/>
         <result column="plan_batch" property="planBatch" jdbcType="BIGINT"/>
         <result column="task_batch" property="taskBatch" jdbcType="BIGINT"/>
+        <result column="task_identifier" property="taskIdentifier" jdbcType="VARCHAR"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="message" property="message" jdbcType="VARCHAR"/>
         <result column="owner_identifier" property="ownerIdentifier" jdbcType="VARCHAR"/>
@@ -43,23 +43,17 @@
     </sql>
 
     <sql id="insert_columns">
-        task_identifier, plan_batch, task_batch, code, message, owner_identifier, data_json, create_timestamp
+        plan_batch, task_batch, task_identifier, code, message, owner_identifier, data_json, create_timestamp
     </sql>
 
     <sql id="insert_values">
-        #{task_identifier,jdbcType=VARCHAR}, #{plan_batch,jdbcType=BIGINT}, #{task_batch,jdbcType=BIGINT},
-        #{code,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{owner_identifier,jdbcType=BIGINT},
-        #{data_json,jdbcType=BIGINT}, #{create_timestamp,jdbcType=BIGINT}
-    </sql>
-
-    <sql id="insert_batch_values">
-        #{batch.task_identifier,jdbcType=VARCHAR}, #{batch.plan_batch,jdbcType=BIGINT}, #{batch.task_batch,jdbcType=BIGINT},
-        #{batch.code,jdbcType=VARCHAR}, #{batch.message,jdbcType=VARCHAR}, #{batch.owner_identifier,jdbcType=BIGINT},
-        #{batch.data_json,jdbcType=BIGINT}, #{batch.create_timestamp,jdbcType=BIGINT}
+        #{planBatch,jdbcType=BIGINT}, #{taskBatch,jdbcType=BIGINT}, #{taskIdentifier,jdbcType=VARCHAR},
+        #{code,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{ownerIdentifier,jdbcType=BIGINT},
+        #{dataJson,jdbcType=BIGINT}, #{createTimestamp,jdbcType=BIGINT}
     </sql>
 
     <sql id="select_columns">
-        id, task_identifier, plan_batch, task_batch, code, message, owner_identifier, data_json, create_timestamp
+        id, plan_batch, task_batch, task_identifier, code, message, owner_identifier, data_json, create_timestamp
     </sql>
 
     <sql id="select_count">
@@ -68,49 +62,37 @@
 
     <sql id="where_fuzzy_query">
         <if test="null != taskBatch">
-            OR task_batch = #{task_batch,jdbcType=BIGINT}
+            OR task_batch = #{taskBatch,jdbcType=BIGINT}
         </if>
         <if test="null != code">
-            OR code = #{username,jdbcType=VARCHAR}
+            OR code = #{code,jdbcType=VARCHAR}
         </if>
         <if test="null != message">
             OR message LIKE CONCAT('%', #{message,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != ownerIdentifier">
-            OR owner_identifier LIKE CONCAT('%', #{owner_identifier,jdbcType=VARCHAR}, '%')
+            OR owner_identifier LIKE CONCAT('%', #{ownerIdentifier,jdbcType=VARCHAR}, '%')
         </if>
     </sql>
 
     <sql id="where_fuzzy_query_page">
         <if test="null != query.taskBatch">
-            OR task_batch = #{query.task_batch,jdbcType=BIGINT}
+            OR task_batch = #{query.taskBatch,jdbcType=BIGINT}
         </if>
         <if test="null != query.code">
-            OR code = #{query.username,jdbcType=VARCHAR}
+            OR code = #{query.code,jdbcType=VARCHAR}
         </if>
         <if test="null != query.message">
             OR message LIKE CONCAT('%', #{query.message,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != query.ownerIdentifier">
-            OR owner_identifier LIKE CONCAT('%', #{query.owner_identifier,jdbcType=VARCHAR}, '%')
+            OR owner_identifier LIKE CONCAT('%', #{query.ownerIdentifier,jdbcType=VARCHAR}, '%')
         </if>
     </sql>
 
     <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.log.ErrorDataLog">
         INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
     </insert>
-
-    <insert id="insertBatch" parameterType="java.util.Collection">
-        INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>)
-        VALUES
-        <foreach collection="list" item="batch" separator=",">
-            (<include refid="insert_batch_values"/>)
-        </foreach>
-    </insert>
-
-    <delete id="deleteById" parameterType="java.lang.Integer">
-        DELETE FROM <include refid="table_name"/> WHERE <include refid="id"/>
-    </delete>
 
     <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.log.ErrorDataLog" resultType="java.lang.Integer">
         SELECT <include refid="select_count"/> FROM <include refid="table_name"/>

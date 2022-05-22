@@ -45,7 +45,7 @@ public final class DataNodeTypeMetaData implements MetaData {
     public DataNodeTypeMetaData(final String nodeTypeValue, final String dataTypeValue) {
         this(NodeType.valueOf(nodeTypeValue.toUpperCase(Locale.ROOT)), DataType.valueOf(dataTypeValue.toUpperCase(Locale.ROOT)));
     }
-
+    
     @Override
     public String getIdentifier() {
         return nodeType.name() + MarkConstant.COLON + dataType.name();

@@ -15,30 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service;
+package com.zergclan.wormhole.console.infra.repository.mapper;
 
-import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog;
-import com.zergclan.wormhole.console.infra.repository.PageData;
+import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Service interface of {@link ExecutionTaskLog}.
+ * Mapper of {@link PlanExecutionLog}.
  */
-public interface ExecutionTaskLogService {
-    
-    /**
-     * Get {@link ExecutionTaskLog} by id.
-     *
-     * @param id id
-     * @return {@link ExecutionTaskLog}
-     */
-    ExecutionTaskLog getById(Integer id);
-    
-    /**
-     * List {@link ExecutionTaskLog} by {@link PageQuery}.
-     *
-     * @param pageQuery {@link PageQuery}
-     * @return {@link PageData}
-     */
-    PageData<ExecutionTaskLog> listByPage(PageQuery<ExecutionTaskLog> pageQuery);
+@Mapper
+public interface PlanExecutionLogMapper extends BaseMapper<PlanExecutionLog> {
 }
