@@ -15,36 +15,36 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.entity;
+package com.zergclan.wormhole.console.application.domain.log;
 
+import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * {@link ExecutionTaskLog}.
+ * {@link DataGroupExecutionLog}.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class ExecutionTaskLog extends AbstractPO {
-
-    private static final long serialVersionUID = 1588145013457477060L;
-
-    private Integer id;
-
-    private Long planBatch;
-
-    private Integer planId;
-
-    private Integer status;
-
-    private String description;
-
-    private Long taskBatch;
-
-    private Integer taskId;
-
-    private Integer transDataNum;
-
-    private Integer errorDataNum;
-
+public final class DataGroupExecutionLog extends AbstractPO {
+    
+    private static final long serialVersionUID = 9145337134624590196L;
+    
+    private String taskBatch;
+    
+    private Integer batchIndex;
+    
+    private Integer totalRow;
+    
+    private Integer insertRow;
+    
+    private Integer updateRow;
+    
+    private Integer errorRow;
+    
+    private Integer sameRow;
+    
+    private Long startTimestamp;
+    
+    private Long endTimestamp;
 }

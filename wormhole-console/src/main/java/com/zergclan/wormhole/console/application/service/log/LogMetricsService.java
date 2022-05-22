@@ -18,15 +18,38 @@
 package com.zergclan.wormhole.console.application.service.log;
 
 import com.zergclan.wormhole.console.api.vo.PageQuery;
+import com.zergclan.wormhole.console.api.vo.TaskExecutionDetail;
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
-import com.zergclan.wormhole.console.application.domain.entity.PlanInfo;
 import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
+import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
+import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
 import com.zergclan.wormhole.console.infra.repository.PageData;
 
-/**
- * Service interface of {@link ErrorDataLog}.
- */
-public interface ErrorDataLogService {
+public interface LogMetricsService {
+    
+    /**
+     * List {@link PlanExecutionLog} by {@link PageQuery}.
+     *
+     * @param pageQuery {@link PageQuery}
+     * @return {@link PageData}
+     */
+    PageData<PlanExecutionLog> pagePlanExecutionLog(PageQuery<PlanExecutionLog> pageQuery);
+    
+    /**
+     * List {@link TaskExecutionLog} by {@link PageQuery}.
+     *
+     * @param pageQuery {@link PageQuery}
+     * @return {@link PageData}
+     */
+    PageData<TaskExecutionLog> pageTaskExecutionLog(PageQuery<TaskExecutionLog> pageQuery);
+    
+    /**
+     * Get {@link TaskExecutionDetail}.
+     *
+     * @param taskBatch taskBatch
+     * @return {@link TaskExecutionDetail}
+     */
+    TaskExecutionDetail getTaskExecutionDetail(String taskBatch);
     
     /**
      * Add {@link ErrorDataLog}.
@@ -34,14 +57,6 @@ public interface ErrorDataLogService {
      * @param errorDataLog {@link ErrorDataLog}
      */
     void add(ErrorDataLog errorDataLog);
-    
-    /**
-     * remove {@link PlanInfo} by id.
-     *
-     * @param id id
-     * @return is removed or not
-     */
-    boolean removeById(Integer id);
     
     /**
      * List {@link DatasourceInfo} by {@link PageQuery}.

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.PlanExecutionLogMapper">
+    <resultMap id="PlanExecutionLogResultMap" type="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="plan_batch" property="planBatch" jdbcType="BIGINT"/>
+        <result column="plan_identifier" property="planIdentifier" jdbcType="VARCHAR"/>
+        <result column="trigger_identifier" property="triggerIdentifier" jdbcType="VARCHAR"/>
+        <result column="execution_state" property="executionState" jdbcType="INTEGER"/>
+        <result column="start_timestamp" property="startTimestamp" jdbcType="BIGINT"/>
+        <result column="end_timestamp" property="endTimestamp" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="table_name">
+        plan_execution_log
+    </sql>
+
+    <sql id="id">
+        id = #{id,jdbcType=INTEGER}
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{start}, #{size}
+    </sql>
+
+    <sql id="insert_columns">
+        plan_batch, plan_identifier, trigger_identifier, execution_state, start_timestamp, end_timestamp
+    </sql>
+
+    <sql id="insert_values">
+        #{planBatch,jdbcType=BIGINT}, #{planIdentifier,jdbcType=VARCHAR}, #{triggerIdentifier,jdbcType=VARCHAR},
+        #{executionState,jdbcType=VARCHAR}, #{startTimestamp,jdbcType=BIGINT}, #{endTimestamp,jdbcType=BIGINT}
+    </sql>
+
+    <sql id="select_columns">
+        id, plan_batch, plan_identifier, trigger_identifier, execution_state, start_timestamp, end_timestamp
+    </sql>
+
+    <sql id="select_count">
+        COUNT(id) AS total
+    </sql>
+
+    <sql id="where_fuzzy_query">
+        <if test="null != planBatch">
+            OR plan_batch = #{planBatch,jdbcType=BIGINT}
+        </if>
+        <if test="null != planIdentifier">
+            OR plan_identifier LIKE CONCAT('%', #{planIdentifier,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="null != executionState">
+            OR execution_state = #{executionState,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <sql id="where_fuzzy_query_page">
+        <if test="null != query.planBatch">
+            OR plan_batch = #{query.planBatch,jdbcType=BIGINT}
+        </if>
+        <if test="null != query.planIdentifier">
+            OR plan_identifier LIKE CONCAT('%', #{query.planIdentifier,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="null != executionState">
+            OR execution_state = #{executionState,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog">
+        INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
+    </insert>
+
+    <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog" resultType="java.lang.Integer">
+        SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query"/>
+        </where>
+    </select>
+
+    <select id="page" parameterType="com.zergclan.wormhole.console.api.vo.PageQuery" resultMap="PlanExecutionLogResultMap">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query_page"/>
+        </where>
+        <include refid="limit"/>
+    </select>
+</mapper>

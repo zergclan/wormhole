@@ -15,30 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.service;
+package com.zergclan.wormhole.console.api.vo;
 
-import com.zergclan.wormhole.console.api.vo.PageQuery;
-import com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog;
-import com.zergclan.wormhole.console.infra.repository.PageData;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
- * Service interface of {@link ExecutionPlanLog}.
+ * {@link TaskExecutionDetail}.
  */
-public interface ExecutionPlanLogService {
+@Data
+public final class TaskExecutionDetail implements Serializable {
     
-    /**
-     * Get {@link ExecutionPlanLog} by id.
-     *
-     * @param id id
-     * @return {@link ExecutionPlanLog}
-     */
-    ExecutionPlanLog getById(Integer id);
+    private static final long serialVersionUID = 4733149348419977254L;
     
-    /**
-     * List {@link ExecutionPlanLog} by {@link PageQuery}.
-     *
-     * @param pageQuery {@link PageQuery}
-     * @return {@link PageData}
-     */
-    PageData<ExecutionPlanLog> listByPage(PageQuery<ExecutionPlanLog> pageQuery);
+    private String taskIdentifier;
+    
+    private String taskBatch;
+    
+    private Integer totalRow;
+    
+    private Integer insertRow;
+    
+    private Integer updateRow;
+    
+    private Integer errorRow;
+    
+    private Integer sameRow;
 }
