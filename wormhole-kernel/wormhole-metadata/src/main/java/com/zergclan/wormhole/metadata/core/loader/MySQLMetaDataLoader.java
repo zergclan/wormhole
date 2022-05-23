@@ -66,7 +66,6 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
                 collection.add(tableMetadata);
             }
         }
-        System.out.println(schema + " have " + collection.size() + " tables.");
         return collection;
     }
 
@@ -80,7 +79,6 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
                 collection.add(tableMetadata);
             }
         }
-        System.out.println(schema + " have " + collection.size() + " views.");
         return collection;
     }
 
@@ -97,7 +95,6 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
                 collection.add(columnMetadata);
             }
         }
-        System.out.println(table + " have " + collection.size() + " columns.");
         return collection;
     }
 
@@ -138,7 +135,6 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
                 }
             }
         }
-        System.out.println(table + " have " + indexMap.size() + " indexes.");
         return indexMap.values();
     }
 }

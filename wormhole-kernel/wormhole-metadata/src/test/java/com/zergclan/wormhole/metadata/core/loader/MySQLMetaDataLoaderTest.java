@@ -33,6 +33,8 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public final class MySQLMetaDataLoaderTest {
 
@@ -69,60 +71,37 @@ public final class MySQLMetaDataLoaderTest {
     @Test
     public void assertLoadSchemas() throws SQLException {
         Collection<SchemaMetaData> collection = metaDataLoader.loadSchemas(dataSourceIdentifier);
-        System.out.println("schemas:");
-        for (SchemaMetaData schemaMetadata : collection) {
-            System.out.println(schemaMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
     @Test
     public void assertLoadTables() throws SQLException {
         Collection<TableMetaData> collection = metaDataLoader.loadTables(dataSourceIdentifier, "TEST");
-
-        System.out.println("tables:");
-        for (TableMetaData tableMetadata : collection) {
-            System.out.println(tableMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
     @Test
     public void assertLoadViews() throws SQLException {
         Collection<TableMetaData> collection = metaDataLoader.loadViews(dataSourceIdentifier, "TEST");
-
-        System.out.println("views:");
-        for (TableMetaData tableMetadata : collection) {
-            System.out.println(tableMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
     @Test
     public void assertLoadColumns() throws SQLException {
         Collection<ColumnMetaData> collection = metaDataLoader.loadColumns(dataSourceIdentifier, "TEST", "TEST");
-
-        System.out.println("tables:");
-        for (ColumnMetaData columnMetadata : collection) {
-            System.out.println(columnMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
     @Test
     public void assertGetPrimaryKeys() throws SQLException {
         Optional<IndexMetaData> optional = metaDataLoader.getPrimaryKeys(dataSourceIdentifier, "TEST", "TEST");
-
-        System.out.println("PrimaryKey:");
-        if (optional.isPresent()) {
-            System.out.println(optional.get().getName());
-        }
+        assertNotNull(optional);
     }
 
     @Test
     public void assertLoadIndexes() throws SQLException {
         Collection<IndexMetaData> collection = metaDataLoader.loadIndexes(dataSourceIdentifier, "TEST", "TEST");
-
-        System.out.println("index:");
-        for (IndexMetaData columnMetadata : collection) {
-            System.out.println(columnMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
 }
