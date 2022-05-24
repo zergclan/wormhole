@@ -25,7 +25,6 @@ import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.H2DataSourceMetaData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -35,15 +34,14 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public final class MySQLMetaDataLoaderTest {
 
-    private String dataSourceIdentifier;
+    private static String dataSourceIdentifier;
 
-    private MetaDataLoader metaDataLoader;
+    private static MetaDataLoader metaDataLoader;
 
     @BeforeAll
-    public void init() throws SQLException {
+    public static void init() throws SQLException {
         DataSourceMetaData dataSourceMetaData = new H2DataSourceMetaData("org.h2.Driver",
                 "jdbc:h2:file:~/.h2/test;AUTO_SERVER=TRUE;MODE=mysql",
                 "root", "root");

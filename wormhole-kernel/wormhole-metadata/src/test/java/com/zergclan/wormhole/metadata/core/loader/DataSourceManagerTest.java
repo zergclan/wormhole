@@ -21,19 +21,17 @@ import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.H2DataSourceMetaData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public final class DataSourceManagerTest {
 
-    private DataSourceMetaData dataSourceMetaData;
+    private static DataSourceMetaData dataSourceMetaData;
 
     @BeforeAll
-    public void init() throws SQLException {
+    public static void init() throws SQLException {
         dataSourceMetaData = new H2DataSourceMetaData("org.h2.Driver",
                 "jdbc:h2:file:~/.h2/test;AUTO_SERVER=TRUE;MODE=mysql",
                 "root", "root");
