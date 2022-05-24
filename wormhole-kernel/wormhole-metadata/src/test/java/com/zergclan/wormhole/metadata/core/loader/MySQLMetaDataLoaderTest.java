@@ -25,7 +25,6 @@ import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 import com.zergclan.wormhole.metadata.core.resource.dialect.H2DataSourceMetaData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -33,15 +32,16 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public final class MySQLMetaDataLoaderTest {
 
-    private String dataSourceIdentifier;
+    private static String dataSourceIdentifier;
 
-    private MetaDataLoader metaDataLoader;
+    private static MetaDataLoader metaDataLoader;
 
     @BeforeAll
-    public void init() throws SQLException {
+    public static void init() throws SQLException {
         DataSourceMetaData dataSourceMetaData = new H2DataSourceMetaData("org.h2.Driver",
                 "jdbc:h2:file:~/.h2/test;AUTO_SERVER=TRUE;MODE=mysql",
                 "root", "root");
@@ -69,60 +69,37 @@ public final class MySQLMetaDataLoaderTest {
     @Test
     public void assertLoadSchemas() throws SQLException {
         Collection<SchemaMetaData> collection = metaDataLoader.loadSchemas(dataSourceIdentifier);
-        System.out.println("schemas:");
-        for (SchemaMetaData schemaMetadata : collection) {
-            System.out.println(schemaMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
     @Test
     public void assertLoadTables() throws SQLException {
         Collection<TableMetaData> collection = metaDataLoader.loadTables(dataSourceIdentifier, "TEST");
-
-        System.out.println("tables:");
-        for (TableMetaData tableMetadata : collection) {
-            System.out.println(tableMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
     @Test
     public void assertLoadViews() throws SQLException {
         Collection<TableMetaData> collection = metaDataLoader.loadViews(dataSourceIdentifier, "TEST");
-
-        System.out.println("views:");
-        for (TableMetaData tableMetadata : collection) {
-            System.out.println(tableMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
     @Test
     public void assertLoadColumns() throws SQLException {
         Collection<ColumnMetaData> collection = metaDataLoader.loadColumns(dataSourceIdentifier, "TEST", "TEST");
-
-        System.out.println("tables:");
-        for (ColumnMetaData columnMetadata : collection) {
-            System.out.println(columnMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
     @Test
     public void assertGetPrimaryKeys() throws SQLException {
         Optional<IndexMetaData> optional = metaDataLoader.getPrimaryKeys(dataSourceIdentifier, "TEST", "TEST");
-
-        System.out.println("PrimaryKey:");
-        if (optional.isPresent()) {
-            System.out.println(optional.get().getName());
-        }
+        assertNotNull(optional);
     }
 
     @Test
     public void assertLoadIndexes() throws SQLException {
         Collection<IndexMetaData> collection = metaDataLoader.loadIndexes(dataSourceIdentifier, "TEST", "TEST");
-
-        System.out.println("index:");
-        for (IndexMetaData columnMetadata : collection) {
-            System.out.println(columnMetadata.getName());
-        }
+        assertNotNull(collection);
     }
 
 }
