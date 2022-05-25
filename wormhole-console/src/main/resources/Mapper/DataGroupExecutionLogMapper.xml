@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.DataGroupExecutionLogMapper">
+    <resultMap id="DataGroupExecutionLogResultMap" type="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="task_batch" property="taskBatch" jdbcType="BIGINT"/>
+        <result column="batch_index" property="batchIndex" jdbcType="INTEGER"/>
+        <result column="total_row" property="totalRow" jdbcType="INTEGER"/>
+        <result column="insert_row" property="insertRow" jdbcType="INTEGER"/>
+        <result column="update_row" property="updateRow" jdbcType="INTEGER"/>
+        <result column="error_row" property="errorRow" jdbcType="INTEGER"/>
+        <result column="same_row" property="sameRow" jdbcType="INTEGER"/>
+        <result column="create_timestamp" property="createTimestamp" jdbcType="BIGINT"/>
+        <result column="end_timestamp" property="endTimestamp" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="table_name">data_group_execution_log</sql>
+
+    <sql id="id">id = #{id,jdbcType=INTEGER}</sql>
+
+    <sql id="limit">LIMIT #{start}, #{size}</sql>
+
+    <sql id="insert_columns">
+        task_batch, batch_index, total_row, insert_row, update_row, error_row, same_row, create_timestamp, end_timestamp
+    </sql>
+
+    <sql id="insert_values">
+        #{taskBatch,jdbcType=BIGINT}, #{batchIndex,jdbcType=INTEGER}, #{totalRow,jdbcType=INTEGER},
+        #{insertRow,jdbcType=BIGINT}, #{updateRow,jdbcType=INTEGER}, #{errorRow,jdbcType=INTEGER},
+        #{sameRow,jdbcType=BIGINT}, #{createTimestamp,jdbcType=BIGINT}, #{endTimestamp,jdbcType=BIGINT}
+    </sql>
+
+    <sql id="select_columns">
+        id, task_batch, batch_index, total_row, insert_row, update_row, error_row, same_row, create_timestamp, end_timestamp
+    </sql>
+
+    <sql id="select_count">
+        COUNT(id) AS total
+    </sql>
+
+    <sql id="where_fuzzy_query">
+        <if test="null != taskBatch">
+            OR task_batch = #{taskBatch,jdbcType=BIGINT}
+        </if>
+    </sql>
+
+    <sql id="where_fuzzy_query_page">
+        <if test="null != query.taskBatch">
+            OR task_batch = #{query.taskBatch,jdbcType=BIGINT}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog">
+        INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
+    </insert>
+
+    <select id="getOne" parameterType="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog" resultMap="DataGroupExecutionLogResultMap">
+        SELECT
+            SUM (total_row) AS total_row,
+            SUM (insert_row) AS insert_row,
+            SUM (update_row) AS update_row,
+            SUM (error_row) AS error_row,
+            SUM (same_row) AS same_row,
+        FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query"/>
+        </where>
+    </select>
+
+    <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog" resultType="java.lang.Integer">
+        SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query"/>
+        </where>
+    </select>
+
+    <select id="page" parameterType="com.zergclan.wormhole.console.api.vo.PageQuery" resultMap="DataGroupExecutionLogResultMap">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query_page"/>
+        </where>
+        <include refid="limit"/>
+    </select>
+</mapper>

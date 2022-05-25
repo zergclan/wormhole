@@ -22,6 +22,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * {@link PlanExecutionLog}.
@@ -40,11 +41,29 @@ public final class PlanExecutionLog extends AbstractPO {
     
     private String executionState;
     
-    private Collection<String> successTasks;
-    
-    private Collection<String> failedTasks;
-    
-    private long startTimestamp;
+    private long createTimestamp;
     
     private long endTimestamp;
+    
+    private Collection<String> successTasks = new LinkedList<>();
+    
+    private Collection<String> failedTasks = new LinkedList<>();
+    
+    /**
+     * Add success task identifier.
+     *
+     * @param taskIdentifier task identifier
+     */
+    public void addSuccessTasks(final String taskIdentifier) {
+        successTasks.add(taskIdentifier);
+    }
+    
+    /**
+     * Add failed task identifier.
+     *
+     * @param taskIdentifier task identifier
+     */
+    public void addFailedTasks(final String taskIdentifier) {
+        failedTasks.add(taskIdentifier);
+    }
 }
