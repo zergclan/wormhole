@@ -74,16 +74,19 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     
     @Override
     public TaskExecutionDetail getTaskExecutionDetail(final String taskBatch) {
-        DataGroupExecutionLog query = new DataGroupExecutionLog();
-        query.setTaskBatch(taskBatch);
-        DataGroupExecutionLog one = executionDataGroupLogRepository.getOne(query);
         TaskExecutionDetail result = new TaskExecutionDetail();
         result.setTaskBatch(taskBatch);
-        result.setTotalRow(one.getTotalRow());
-        result.setInsertRow(one.getInsertRow());
-        result.setUpdateRow(one.getUpdateRow());
-        result.setErrorRow(one.getErrorRow());
-        result.setSameRow(one.getSameRow());
+        DataGroupExecutionLog query = new DataGroupExecutionLog();
+        query.setTaskBatch(taskBatch);
+        DataGroupExecutionLog dataGroupExecutionLog = executionDataGroupLogRepository.getOne(query);
+        if (null == dataGroupExecutionLog) {
+            return result;
+        }
+        result.setTotalRow(dataGroupExecutionLog.getTotalRow());
+        result.setInsertRow(dataGroupExecutionLog.getInsertRow());
+        result.setUpdateRow(dataGroupExecutionLog.getUpdateRow());
+        result.setErrorRow(dataGroupExecutionLog.getErrorRow());
+        result.setSameRow(dataGroupExecutionLog.getSameRow());
         return result;
     }
     
