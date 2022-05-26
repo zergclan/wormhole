@@ -17,19 +17,19 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.PlanExecutionLogMapper">
-    <resultMap id="PlanExecutionLogResultMap" type="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog">
+<mapper namespace="com.zergclan.wormhole.console.infra.repository.mapper.TaskExecutionLogMapper">
+    <resultMap id="TaskExecutionLogResultMap" type="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog">
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="plan_batch" property="planBatch" jdbcType="BIGINT"/>
-        <result column="plan_identifier" property="planIdentifier" jdbcType="VARCHAR"/>
-        <result column="trigger_identifier" property="triggerIdentifier" jdbcType="VARCHAR"/>
+        <result column="task_batch" property="taskBatch" jdbcType="BIGINT"/>
+        <result column="task_identifier" property="taskIdentifier" jdbcType="VARCHAR"/>
         <result column="execution_state" property="executionState" jdbcType="VARCHAR"/>
         <result column="create_timestamp" property="createTimestamp" jdbcType="BIGINT"/>
         <result column="end_timestamp" property="endTimestamp" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="table_name">
-        plan_execution_log
+        task_execution_log
     </sql>
 
     <sql id="id">
@@ -41,16 +41,16 @@
     </sql>
 
     <sql id="insert_columns">
-        plan_batch, plan_identifier, trigger_identifier, execution_state, create_timestamp, end_timestamp
+        plan_batch, task_batch, task_identifier, execution_state, create_timestamp, end_timestamp
     </sql>
 
     <sql id="insert_values">
-        #{planBatch,jdbcType=BIGINT}, #{planIdentifier,jdbcType=VARCHAR}, #{triggerIdentifier,jdbcType=VARCHAR},
+        #{planBatch,jdbcType=BIGINT}, #{taskBatch,jdbcType=BIGINT}, #{taskIdentifier,jdbcType=VARCHAR},
         #{executionState,jdbcType=VARCHAR}, #{createTimestamp,jdbcType=BIGINT}, #{endTimestamp,jdbcType=BIGINT}
     </sql>
 
     <sql id="select_columns">
-        id, plan_batch, plan_identifier, trigger_identifier, execution_state, create_timestamp, end_timestamp
+        id, plan_batch, task_batch, task_identifier, execution_state, create_timestamp, end_timestamp
     </sql>
 
     <sql id="select_count">
@@ -61,8 +61,11 @@
         <if test="null != planBatch">
             OR plan_batch = #{planBatch,jdbcType=BIGINT}
         </if>
-        <if test="null != planIdentifier">
-            OR plan_identifier LIKE CONCAT('%', #{planIdentifier,jdbcType=VARCHAR}, '%')
+        <if test="null != taskBatch">
+            OR task_batch = #{taskBatch,jdbcType=BIGINT}
+        </if>
+        <if test="null != taskIdentifier">
+            OR task_identifier LIKE CONCAT('%', #{taskIdentifier,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != executionState">
             OR execution_state = #{executionState,jdbcType=VARCHAR}
@@ -73,26 +76,36 @@
         <if test="null != query.planBatch">
             OR plan_batch = #{query.planBatch,jdbcType=BIGINT}
         </if>
-        <if test="null != query.planIdentifier">
-            OR plan_identifier LIKE CONCAT('%', #{query.planIdentifier,jdbcType=VARCHAR}, '%')
+        <if test="null != query.taskBatch">
+            OR task_batch = #{query.taskBatch,jdbcType=BIGINT}
+        </if>
+        <if test="null != query.taskIdentifier">
+            OR task_identifier LIKE CONCAT('%', #{query.taskIdentifier,jdbcType=VARCHAR}, '%')
         </if>
         <if test="null != query.executionState">
             OR execution_state = #{query.executionState,jdbcType=VARCHAR}
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog">
+    <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog">
         INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
     </insert>
 
-    <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog" resultType="java.lang.Integer">
+    <select id="listByQuery" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog" resultMap="TaskExecutionLogResultMap">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query"/>
+        </where>
+    </select>
+
+    <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog" resultType="java.lang.Integer">
         SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
         <where>
             <include refid="where_fuzzy_query"/>
         </where>
     </select>
 
-    <select id="page" parameterType="com.zergclan.wormhole.console.api.vo.PageQuery" resultMap="PlanExecutionLogResultMap">
+    <select id="page" parameterType="com.zergclan.wormhole.console.api.vo.PageQuery" resultMap="TaskExecutionLogResultMap">
         SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
         <where>
             <include refid="where_fuzzy_query_page"/>

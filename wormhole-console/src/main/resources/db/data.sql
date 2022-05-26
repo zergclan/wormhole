@@ -26,6 +26,27 @@ VALUES (1, 'test_task_1', 1653140066101L, 1653140066102L, 'NOT_NULL', '不能为
     (3, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L),
     (4, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L);
 
+DELETE FROM plan_execution_log;
+INSERT INTO plan_execution_log (id, plan_identifier, plan_batch, trigger_identifier, execution_state, create_timestamp, end_timestamp)
+VALUES (1, 'test_plan', 1653140066101L, 'ONE_OFF#1653140066102', 'F', 1653140066104L, 1653140066104L),
+       (2, 'test_plan', 1653140066102L, 'ONE_OFF#1653140066102', 'F', 1653140066104L, 1653140066104L),
+       (3, 'test_plan', 1653140066103L, 'ONE_OFF#1653140066102', 'F', 1653140066104L, 1653140066104L),
+       (4, 'test_plan', 1653140066104L, 'ONE_OFF#1653140066102', 'F', 1653140066104L, 1653140066104L);
+
+DELETE FROM task_execution_log;
+INSERT INTO task_execution_log (id, plan_batch, task_batch, task_identifier, execution_state, create_timestamp, end_timestamp)
+VALUES (1, 1653140066101L, 1653140066107L, 'test_plan#task_aaa', 'S', 1653140066104L, 1653140066104L),
+       (2, 1653140066101L, 1653140066108L, 'test_plan#task_bbb', 'S', 1653140066104L, 1653140066104L),
+       (3, 1653140066101L, 1653140066109L, 'test_plan#task_ccc', 'F', 1653140066104L, 1653140066104L),
+       (4, 1653140066102L, 1653140066114L, 'test_plan#task_ccc', 'S', 1653140066104L, 1653140066104L);
+
+DELETE FROM data_group_execution_log;
+INSERT INTO data_group_execution_log (id, task_batch, `batch_index`, total_row, insert_row, update_row, error_row, same_row, create_timestamp, end_timestamp)
+VALUES (1, 1653140066107L, 1, 10, 3, 2, 2, 3, 1653140066104L, 1653140066104L),
+       (2, 1653140066107L, 2, 10, 3, 2, 2, 3, 1653140066104L, 1653140066104L),
+       (3, 1653140066107L, 3, 10, 3, 2, 2, 3, 1653140066104L, 1653140066104L),
+       (4, 1653140066107L, 4, 10, 3, 2, 2, 3, 1653140066104L, 1653140066104L);
+
 DELETE FROM database_info;
 INSERT INTO database_info (id, host, port, catalog, type, username, password, description, operator, create_time, modify_time)
 VALUES ( 1, '127.0.0.1', 3306, 'source_db', 0, 'root', '123456', 'MySQL测试源数据库', 0, {ts '2012-12-01 10:30:30.00'}, {ts '2012-12-01 10:30:30.00'}),

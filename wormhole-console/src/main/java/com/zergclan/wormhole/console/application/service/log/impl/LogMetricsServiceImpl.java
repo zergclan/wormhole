@@ -29,6 +29,7 @@ import com.zergclan.wormhole.console.infra.repository.PageData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 
 @Service("logMetricsService")
 public class LogMetricsServiceImpl implements LogMetricsService {
@@ -47,7 +48,23 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     
     @Override
     public PageData<PlanExecutionLog> pagePlanExecutionLog(final PageQuery<PlanExecutionLog> pageQuery) {
-        return executionPlanLogRepository.listByPage(pageQuery);
+        PageData<PlanExecutionLog> result = executionPlanLogRepository.listByPage(pageQuery);
+        Collection<PlanExecutionLog> items = result.getItems();
+        for (PlanExecutionLog each : items) {
+            Long planBatch = each.getPlanBatch();
+            TaskExecutionLog query = new TaskExecutionLog();
+            query.setPlanBatch(planBatch);
+            Collection<TaskExecutionLog> list = executionTaskLogRepository.list(query);
+            for (TaskExecutionLog task : list) {
+                if ("S".equals(task.getExecutionState())) {
+                    each.addSuccessTasks(task.getTaskIdentifier());
+                }
+                if ("F".equals(task.getExecutionState())) {
+                    each.addFailedTasks(task.getTaskIdentifier());
+                }
+            }
+        }
+        return result;
     }
     
     @Override
@@ -57,8 +74,20 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     
     @Override
     public TaskExecutionDetail getTaskExecutionDetail(final String taskBatch) {
-        // TODO
-        return null;
+        TaskExecutionDetail result = new TaskExecutionDetail();
+        result.setTaskBatch(taskBatch);
+        DataGroupExecutionLog query = new DataGroupExecutionLog();
+        query.setTaskBatch(taskBatch);
+        DataGroupExecutionLog dataGroupExecutionLog = executionDataGroupLogRepository.getOne(query);
+        if (null == dataGroupExecutionLog) {
+            return result;
+        }
+        result.setTotalRow(dataGroupExecutionLog.getTotalRow());
+        result.setInsertRow(dataGroupExecutionLog.getInsertRow());
+        result.setUpdateRow(dataGroupExecutionLog.getUpdateRow());
+        result.setErrorRow(dataGroupExecutionLog.getErrorRow());
+        result.setSameRow(dataGroupExecutionLog.getSameRow());
+        return result;
     }
     
     @Override

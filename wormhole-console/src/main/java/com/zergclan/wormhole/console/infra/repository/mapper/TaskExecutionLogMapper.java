@@ -24,5 +24,5 @@ import org.apache.ibatis.annotations.Mapper;
  * Mapper of {@link TaskExecutionLog}.
  */
 @Mapper
-public interface ExecutionTaskLogMapper extends BaseMapper<TaskExecutionLog> {
+public interface TaskExecutionLogMapper extends BaseMapper<TaskExecutionLog> {
 }

@@ -30,9 +30,9 @@ CREATE TABLE `user_info` (
 DROP TABLE IF EXISTS `error_data_log`;
 CREATE TABLE error_data_log (
     `id` INT(11) AUTO_INCREMENT COMMENT '主键',
-    `task_identifier` VARCHAR(64) NOT NULL COMMENT '所属任务ID',
     `plan_batch` bigint(20) NOT NULL COMMENT '方案批次号',
     `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
+    `task_identifier` VARCHAR(64) NOT NULL COMMENT '所属任务ID',
     `code` VARCHAR(32) NOT NULL COMMENT '异常编码',
     `message` VARCHAR(1024) NOT NULL COMMENT '异常信息',
     `data_json` TEXT NOT NULL COMMENT '异常数据',
@@ -40,6 +40,47 @@ CREATE TABLE error_data_log (
     `create_timestamp` bigint(20) NOT NULL COMMENT '创建时间戳',
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '异常数据日志表';
+
+DROP TABLE IF EXISTS `plan_execution_log`;
+CREATE TABLE plan_execution_log (
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `plan_batch` bigint(20) NOT NULL COMMENT '方案批次号',
+    `plan_identifier` VARCHAR(64) NOT NULL COMMENT '方案ID',
+    `trigger_identifier` VARCHAR(64) NOT NULL COMMENT '触发类型ID',
+    `execution_state` VARCHAR(32) NOT NULL COMMENT '执行状态',
+    `create_timestamp` bigint(20) NOT NULL COMMENT '创建时间戳',
+    `end_timestamp` bigint(20) NOT NULL COMMENT '结束时间戳',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '方案执行日志表';
+
+DROP TABLE IF EXISTS `task_execution_log`;
+CREATE TABLE task_execution_log (
+    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+    `plan_batch` bigint(20) NOT NULL COMMENT '方案批次号',
+    `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
+    `task_identifier` VARCHAR(64) NOT NULL COMMENT '任务ID',
+    `execution_state` VARCHAR(32) NOT NULL COMMENT '执行状态',
+    `create_timestamp` bigint(20) NOT NULL COMMENT '创建时间戳',
+    `end_timestamp` bigint(20) NOT NULL COMMENT '结束时间戳',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '任务执行日志表';
+
+DROP TABLE IF EXISTS `data_group_execution_log`;
+CREATE TABLE data_group_execution_log (
+  `id` INT(11) AUTO_INCREMENT COMMENT '主键',
+  `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
+  `batch_index` INT(11) NOT NULL COMMENT '批次索引',
+  `total_row` INT(11) DEFAULT 0 COMMENT '总条数',
+  `insert_row` INT(11) DEFAULT 0 COMMENT '插入条数',
+  `update_row` INT(11) DEFAULT 0 COMMENT '更新条数',
+  `error_row` INT(11) DEFAULT 0 COMMENT '异常条数',
+  `same_row` INT(11) DEFAULT 0 COMMENT '重复条数',
+  `create_timestamp` bigint(20) NOT NULL COMMENT '创建时间戳',
+  `end_timestamp` bigint(20) NOT NULL COMMENT '结束时间戳',
+  PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '数据批次执行日志';
+
+-- TODO
 
 DROP TABLE IF EXISTS `database_info`;
 CREATE TABLE database_info (
@@ -153,42 +194,3 @@ CREATE TABLE conversion_strategy(
     UNIQUE INDEX `uk_code`(`code`),
     UNIQUE INDEX `uk_code_action_code`(`code`, `action_code`)
 )ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '转换策略信息表';
-
-DROP TABLE IF EXISTS `plan_execution_log`;
-CREATE TABLE plan_execution_log (
-    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
-    `plan_batch` bigint(20) NOT NULL COMMENT '方案批次号',
-    `plan_id` INT(11) NOT NULL COMMENT '关联方案ID',
-    `status` INT(11) NOT NULL COMMENT '执行状态',
-    `description` VARCHAR(255) COMMENT '执行描述',
-    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
-    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`)
-)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '方案执行日志表';
-
-DROP TABLE IF EXISTS `task_execution_log`;
-CREATE TABLE task_execution_log (
-    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
-    `plan_batch` bigint(20) NOT NULL COMMENT '方案批次号',
-    `plan_id` INT(11) NOT NULL COMMENT '关联方案ID',
-    `status` INT(11) NOT NULL COMMENT '执行状态',
-    `description` VARCHAR(255) NOT NULL COMMENT '执行描述',
-    `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
-    `task_id` INT(11) NOT NULL COMMENT '所属任务ID',
-    `trans_data_num` INT(11) DEFAULT 0 COMMENT '转换数据条数',
-    `error_data_num` INT(11) DEFAULT 0 COMMENT '错误数据条数',
-    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
-    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`)
-)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '任务执行日志表';
-
-DROP TABLE IF EXISTS `data_group_execution_log`;
-CREATE TABLE data_group_execution_log (
-    `id` INT(11) AUTO_INCREMENT COMMENT '主键',
-    `task_batch` bigint(20) NOT NULL COMMENT '任务批次号',
-    `trans_data_num` INT(11) DEFAULT 0 COMMENT '转换数据条数',
-    `error_data_num` INT(11) DEFAULT 0 COMMENT '错误数据条数',
-    `create_time` datetime(0) NOT NULL COMMENT '创建时间',
-    `modify_time` datetime(0) NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`)
-)ENGINE = InnoDB CHARACTER SET = utf8 COMMENT = '批次数据执行记录';

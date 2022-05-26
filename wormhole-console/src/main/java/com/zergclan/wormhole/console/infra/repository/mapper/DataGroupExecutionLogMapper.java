@@ -24,5 +24,5 @@ import org.apache.ibatis.annotations.Mapper;
  * Mapper of {@link DataGroupExecutionLog}.
  */
 @Mapper
-public interface ExecutionDataGroupLogMapper extends BaseMapper<DataGroupExecutionLog> {
+public interface DataGroupExecutionLogMapper extends BaseMapper<DataGroupExecutionLog> {
 }
