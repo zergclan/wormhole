@@ -20,6 +20,7 @@ package com.zergclan.wormhole.plugin.mysql.loader;
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.data.core.node.LongDataNode;
 import com.zergclan.wormhole.data.core.node.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
 import com.zergclan.wormhole.data.core.result.MysqlLoadResult;
@@ -40,6 +41,7 @@ import java.sql.SQLTimeoutException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Batched loader of MySQL.
@@ -56,6 +58,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         Map<DataGroup, String> errMap = new LinkedHashMap<>();
         for (DataGroup each : dataGroups) {
             try {
+                preFix(each, cachedTarget);
                 boolean isLoaded = loadDataGroup(each, cachedTarget);
                 if (isLoaded) {
                     successNum++;
@@ -71,6 +74,14 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         mysqlLoadResult.setFailNum(failNum);
         mysqlLoadResult.setErrInfo(errMap);
         return new BatchedLoadResult<>(true, mysqlLoadResult);
+    }
+    
+    private void preFix(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) {
+        Collection<String> ignoreNodes = cachedTarget.getIgnoreNodes();
+        for (String each : ignoreNodes) {
+            dataGroup.remove(each);
+        }
+        dataGroup.register(new LongDataNode(cachedTarget.getVersionNode(), cachedTarget.getTaskBatch()));
     }
     
     private boolean loadDataGroup(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
@@ -136,15 +147,18 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     
     private String initInsertSQL(final CachedTargetMetaData cachedTarget) {
         String insertExpression = MySQLExpressionBuilder.buildInsertTable(cachedTarget.getTable());
-        String columnsValuesExpression = MySQLExpressionBuilder.buildInsertColumnsValues(cachedTarget.getDataNodes().keySet());
+        Set<String> columns = cachedTarget.getDataNodes().keySet();
+        columns.add(cachedTarget.getVersionNode());
+        String columnsValuesExpression = MySQLExpressionBuilder.buildInsertColumnsValues(columns);
         return insertExpression + columnsValuesExpression;
     }
     
     private String[] initInsertParameter(final CachedTargetMetaData cachedTarget) {
-        Collection<String> uniqueNodes = cachedTarget.getDataNodes().keySet();
-        String[] result = new String[uniqueNodes.size()];
+        Collection<String> dataNodes = cachedTarget.getDataNodes().keySet();
+        dataNodes.add(cachedTarget.getVersionNode());
+        String[] result = new String[dataNodes.size()];
         int index = 0;
-        for (String each : uniqueNodes) {
+        for (String each : dataNodes) {
             result[index] = each;
             index++;
         }
@@ -187,13 +201,16 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     
     private String initUpdateSQL(final CachedTargetMetaData cachedTarget) {
         String updateExpression = MySQLExpressionBuilder.buildUpdateTable(cachedTarget.getTable());
-        String setColumnsExpression = MySQLExpressionBuilder.buildSetColumns(cachedTarget.getDataNodes().keySet());
+        Set<String> columns = cachedTarget.getDataNodes().keySet();
+        columns.add(cachedTarget.getVersionNode());
+        String setColumnsExpression = MySQLExpressionBuilder.buildSetColumns(columns);
         String whereExpression = MySQLExpressionBuilder.buildAllEqualsWhere(cachedTarget.getUniqueNodes());
         return updateExpression + setColumnsExpression + whereExpression;
     }
     
     private String[] initUpdateParameter(final CachedTargetMetaData cachedTarget) {
         Collection<String> dataNodes = cachedTarget.getDataNodes().keySet();
+        dataNodes.add(cachedTarget.getVersionNode());
         Collection<String> uniqueNodes = cachedTarget.getUniqueNodes();
         String[] result = new String[dataNodes.size() + uniqueNodes.size()];
         int index = 0;

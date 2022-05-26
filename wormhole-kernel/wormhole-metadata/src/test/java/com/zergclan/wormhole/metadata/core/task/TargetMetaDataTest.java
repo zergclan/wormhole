@@ -39,8 +39,9 @@ public final class TargetMetaDataTest {
         Collection<String> uniqueNodes = new LinkedList<>();
         Collection<String> compareNodes = new LinkedList<>();
         Collection<String> ignoreNodes = new LinkedList<>();
+        String versionNode = "taskBatch";
         Map<String, DataNodeMetaData> dataNodes = new LinkedHashMap<>();
-        metaData = new TargetMetaData(dataSourceIdentifier, table, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
+        metaData = new TargetMetaData(dataSourceIdentifier, table, uniqueNodes, compareNodes, ignoreNodes, versionNode, dataNodes);
     }
     
     @Test

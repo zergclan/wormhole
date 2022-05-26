@@ -26,6 +26,8 @@ import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -105,5 +107,10 @@ public final class MySQLDataSourceMetaData implements DataSourceMetaData {
     @Override
     public String getIdentifier() {
         return TYPE.getName() + MarkConstant.SPACE + host + MarkConstant.COLON + port + MarkConstant.COLON + catalog + MarkConstant.SPACE + username + MarkConstant.AT + password;
+    }
+    
+    @Override
+    public Collection<String> getRelatedSchemaNames() {
+        return Collections.singletonList(catalog);
     }
 }

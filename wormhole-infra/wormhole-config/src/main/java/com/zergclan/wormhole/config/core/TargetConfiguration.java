@@ -42,6 +42,8 @@ public final class TargetConfiguration implements Configuration {
     private final Collection<String> compareNodes;
 
     private final Collection<String> ignoreNodes;
+    
+    private final String versionNode;
 
     private final Map<String, DataNodeConfiguration> dataNodes;
 }

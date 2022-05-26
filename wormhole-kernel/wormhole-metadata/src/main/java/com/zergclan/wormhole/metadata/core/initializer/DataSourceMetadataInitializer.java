@@ -92,9 +92,12 @@ public final class DataSourceMetadataInitializer {
     }
     
     private static void initDataSource(final DataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {
+        Collection<String> relatedSchemaNames = dataSource.getRelatedSchemaNames();
         for (SchemaMetaData each : metadataLoader.loadSchemas(dataSource.getIdentifier())) {
-            initSchema(each, metadataLoader);
-            dataSource.registerSchema(each);
+            if (relatedSchemaNames.contains(each.getName())) {
+                initSchema(each, metadataLoader);
+                dataSource.registerSchema(each);
+            }
         }
     }
     

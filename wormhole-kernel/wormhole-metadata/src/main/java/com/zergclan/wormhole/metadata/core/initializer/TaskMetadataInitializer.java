@@ -69,8 +69,9 @@ public final class TaskMetadataInitializer {
         Collection<String> uniqueNodes = targetConfiguration.getUniqueNodes();
         Collection<String> compareNodes = targetConfiguration.getCompareNodes();
         Collection<String> ignoreNodes = targetConfiguration.getIgnoreNodes();
+        String versionNode = targetConfiguration.getVersionNode();
         Map<String, DataNodeMetaData> dataNodes = createConfiguredDataNodes(targetConfiguration.getDataNodes());
-        return new TargetMetaData(targetDataSource.getIdentifier(), table, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
+        return new TargetMetaData(targetDataSource.getIdentifier(), table, uniqueNodes, compareNodes, ignoreNodes, versionNode, dataNodes);
     }
 
     private Map<String, DataNodeMetaData> createConfiguredDataNodes(final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
