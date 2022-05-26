@@ -25,26 +25,38 @@ import java.util.Map;
  * The interface of Load result.
  */
 public interface LoadResult {
+    
     /**
-     * get total data.
-     * @return int
+     * get total row.
+     *
+     * @return total row
      */
-    int getDataNum();
+    int getTotalRow();
 
     /**
-     * get success data num.
-     * @return int
+     * Get insert row.
+     *
+     * @return insert row
      */
-    int getSuccessNum();
+    int getInsertRow();
 
     /**
-     * get fail data num.
-     * @return int
+     * Get error row.
+     *
+     * @return error row
      */
-    int getFailNum();
-
+    int getErrorRow();
+    
+    /**
+     * Get same row.
+     *
+     * @return same row
+     */
+    int getSameRow();
+    
     /**
      * get error info.
+     *
      * @return map
      */
     Map<DataGroup, String> getErrInfo();

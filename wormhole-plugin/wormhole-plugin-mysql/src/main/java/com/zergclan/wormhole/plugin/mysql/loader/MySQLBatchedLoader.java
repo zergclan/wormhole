@@ -20,6 +20,7 @@ package com.zergclan.wormhole.plugin.mysql.loader;
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.data.core.node.BigDecimalDataNode;
 import com.zergclan.wormhole.data.core.node.LongDataNode;
 import com.zergclan.wormhole.data.core.node.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
@@ -33,6 +34,7 @@ import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,27 +54,19 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     protected BatchedLoadResult<MysqlLoadResult> standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
         MysqlLoadResult mysqlLoadResult = new MysqlLoadResult();
         Collection<DataGroup> dataGroups = batchedDataGroup.getDataGroups();
-        mysqlLoadResult.setDataNum(dataGroups.size());
-        int successNum = 0;
-        int failNum = 0;
         Map<DataGroup, String> errMap = new LinkedHashMap<>();
         for (DataGroup each : dataGroups) {
+            preFix(each, cachedTarget);
             try {
-                preFix(each, cachedTarget);
-                boolean isLoaded = loadDataGroup(each, cachedTarget);
-                if (isLoaded) {
-                    successNum++;
-                }
+                loadDataGroup(each, cachedTarget, mysqlLoadResult);
             } catch (final SQLException ex) {
-                System.out.println(ex.getErrorCode());
-                System.out.println(ex.getSQLState());
                 errMap.put(each, ex.getErrorCode() + ex.getSQLState());
-                failNum++;
+                mysqlLoadResult.incrementErrorRow();
             }
         }
-        mysqlLoadResult.setSuccessNum(successNum);
-        mysqlLoadResult.setFailNum(failNum);
+        mysqlLoadResult.setTotalRow(dataGroups.size());
         mysqlLoadResult.setErrInfo(errMap);
+        System.out.println(mysqlLoadResult);
         return new BatchedLoadResult<>(true, mysqlLoadResult);
     }
     
@@ -84,13 +78,22 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         dataGroup.register(new LongDataNode(cachedTarget.getVersionNode(), cachedTarget.getTaskBatch()));
     }
     
-    private boolean loadDataGroup(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
+    private void loadDataGroup(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget, final MysqlLoadResult loadResult) throws SQLException {
         Connection connection = createConnection(cachedTarget.getDataSource());
         ResultSet resultSet = executeSelect(connection, dataGroup, cachedTarget);
-        if (resultSet.next() && !compare(dataGroup, resultSet, cachedTarget)) {
-            return executeUpdate(connection, dataGroup, cachedTarget);
+        if (!resultSet.next()) {
+            if (executeInsert(connection, dataGroup, cachedTarget)) {
+                loadResult.incrementInsertRow();
+                return;
+            }
         }
-        return executeInsert(connection, dataGroup, cachedTarget);
+        if (!compare(dataGroup, resultSet, cachedTarget)) {
+            if (executeUpdate(connection, dataGroup, cachedTarget)) {
+                loadResult.incrementUpdateRow();
+                return;
+            }
+        }
+        loadResult.incrementSameRow();
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
@@ -181,7 +184,10 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         if (dataNode instanceof PatternedDataTimeDataNode) {
             return ((PatternedDataTimeDataNode) dataNode).getPatternedValue().equals(String.valueOf(object));
         }
-        return dataNode.getValue().equals(String.valueOf(object));
+        if (dataNode instanceof BigDecimalDataNode) {
+            return 0 == ((BigDecimalDataNode) dataNode).getValue().compareTo(new BigDecimal(String.valueOf(object)));
+        }
+        return String.valueOf(dataNode.getValue()).equals(String.valueOf(object));
     }
     
     private boolean executeUpdate(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
