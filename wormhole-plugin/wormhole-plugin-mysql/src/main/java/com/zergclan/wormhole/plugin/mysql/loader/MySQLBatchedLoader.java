@@ -38,10 +38,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * Batched loader of MySQL.
@@ -147,18 +147,18 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     
     private String initInsertSQL(final CachedTargetMetaData cachedTarget) {
         String insertExpression = MySQLExpressionBuilder.buildInsertTable(cachedTarget.getTable());
-        Set<String> columns = cachedTarget.getDataNodes().keySet();
+        Collection<String> columns = new HashSet<>(cachedTarget.getDataNodes().keySet());
         columns.add(cachedTarget.getVersionNode());
         String columnsValuesExpression = MySQLExpressionBuilder.buildInsertColumnsValues(columns);
         return insertExpression + columnsValuesExpression;
     }
     
     private String[] initInsertParameter(final CachedTargetMetaData cachedTarget) {
-        Collection<String> dataNodes = cachedTarget.getDataNodes().keySet();
-        dataNodes.add(cachedTarget.getVersionNode());
-        String[] result = new String[dataNodes.size()];
+        Collection<String> columns = new HashSet<>(cachedTarget.getDataNodes().keySet());
+        columns.add(cachedTarget.getVersionNode());
+        String[] result = new String[columns.size()];
         int index = 0;
-        for (String each : dataNodes) {
+        for (String each : columns) {
             result[index] = each;
             index++;
         }
@@ -201,7 +201,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     
     private String initUpdateSQL(final CachedTargetMetaData cachedTarget) {
         String updateExpression = MySQLExpressionBuilder.buildUpdateTable(cachedTarget.getTable());
-        Set<String> columns = cachedTarget.getDataNodes().keySet();
+        Collection<String> columns = new HashSet<>(cachedTarget.getDataNodes().keySet());
         columns.add(cachedTarget.getVersionNode());
         String setColumnsExpression = MySQLExpressionBuilder.buildSetColumns(columns);
         String whereExpression = MySQLExpressionBuilder.buildAllEqualsWhere(cachedTarget.getUniqueNodes());
@@ -209,12 +209,12 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     }
     
     private String[] initUpdateParameter(final CachedTargetMetaData cachedTarget) {
-        Collection<String> dataNodes = cachedTarget.getDataNodes().keySet();
-        dataNodes.add(cachedTarget.getVersionNode());
+        Collection<String> columns = new HashSet<>(cachedTarget.getDataNodes().keySet());
+        columns.add(cachedTarget.getVersionNode());
         Collection<String> uniqueNodes = cachedTarget.getUniqueNodes();
-        String[] result = new String[dataNodes.size() + uniqueNodes.size()];
+        String[] result = new String[columns.size() + uniqueNodes.size()];
         int index = 0;
-        for (String each : dataNodes) {
+        for (String each : columns) {
             result[index] = each;
             index++;
         }
