@@ -54,7 +54,7 @@ target:
   table: target_user
   uniqueNodes: user_code,identity_number,identity_type
   compareNodes: full_name,gender,age,birthday,admission_date,admission_season,academic_system
-  ignoreNodes: create_time
+  ignoreNodes: task_batch, create_time
   versionNode: task_batch
   dataNodes:
     full_name:

@@ -115,6 +115,7 @@ public final class CachedTaskMetaData implements MetaData {
             Map<String, DataNodeMetaData[]> result = new LinkedHashMap<>();
             Map<String, DataNodeMetaData> initializationTargetDataNodes = target.getDataNodes();
             Collection<String> ignoreNodes = target.getIgnoreNodes();
+            String versionNode = target.getVersionNode();
             Map<String, ColumnMetaData> targetColumns = targetTable.getColumns();
             Iterator<Map.Entry<String, ColumnMetaData>> targetIterator = targetColumns.entrySet().iterator();
             while (targetIterator.hasNext()) {

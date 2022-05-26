@@ -28,11 +28,43 @@ import java.util.Map;
 @Data
 public final class MysqlLoadResult implements LoadResult {
 
-    private int dataNum;
-
-    private int successNum;
-
-    private int failNum;
-
+    private int totalRow;
+    
+    private int insertRow;
+    
+    private int updateRow;
+    
+    private int errorRow;
+    
+    private int sameRow;
+    
     private Map<DataGroup, String> errInfo;
+    
+    /**
+     * Increment insert row.
+     */
+    public void incrementInsertRow() {
+        insertRow++;
+    }
+    
+    /**
+     * Increment update row.
+     */
+    public void incrementUpdateRow() {
+        updateRow++;
+    }
+    
+    /**
+     * Increment same row.
+     */
+    public void incrementSameRow() {
+        sameRow++;
+    }
+    
+    /**
+     * Increment error row.
+     */
+    public void incrementErrorRow() {
+        errorRow++;
+    }
 }
