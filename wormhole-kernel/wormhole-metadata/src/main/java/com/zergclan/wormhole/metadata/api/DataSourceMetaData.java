@@ -20,6 +20,9 @@ package com.zergclan.wormhole.metadata.api;
 import com.zergclan.wormhole.metadata.core.resource.SchemaMetaData;
 import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * The root interface from which all data source metadata objects shall be derived in Wormhole.
  */
@@ -83,4 +86,13 @@ public interface DataSourceMetaData extends MetaData {
      * @return {@link TableMetaData}
      */
     TableMetaData getTable(String name);
+    
+    /**
+     * Get related schema names.
+     *
+     * @return related schema names
+     */
+    default Collection<String> getRelatedSchemaNames() {
+        return Collections.emptyList();
+    }
 }

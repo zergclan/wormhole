@@ -36,6 +36,8 @@ public final class CachedSourceMetaData implements MetaData {
     
     private final String identifier;
     
+    private final long taskBatch;
+    
     private final DataSourceMetaData dataSource;
 
     private final String actualSql;
@@ -50,25 +52,28 @@ public final class CachedSourceMetaData implements MetaData {
      * Builder for {@link CachedSourceMetaData}.
      *
      * @param cachedTaskIdentifier cached task identifier
+     * @param taskBatch task batch
      * @param source {@link SourceMetaData}
      * @param dataSource {@link DataSourceMetaData}
      * @return {@link CachedSourceMetaData}
      */
-    public static CachedSourceMetaData builder(final String cachedTaskIdentifier, final SourceMetaData source, final DataSourceMetaData dataSource) {
-        return new CachedBuilder(cachedTaskIdentifier, source, dataSource).build();
+    public static CachedSourceMetaData builder(final String cachedTaskIdentifier, final long taskBatch, final SourceMetaData source, final DataSourceMetaData dataSource) {
+        return new CachedBuilder(cachedTaskIdentifier, taskBatch, source, dataSource).build();
     }
     
     @RequiredArgsConstructor
     private static class CachedBuilder {
     
         private final String cachedTaskIdentifier;
+    
+        private final long taskBatch;
         
         private final SourceMetaData source;
         
         private final DataSourceMetaData dataSource;
     
         private CachedSourceMetaData build() {
-            return new CachedSourceMetaData(generateIdentifier(), dataSource, source.getActualSql(), source.getTable(), source.getConditionSql(), source.getDataNodes());
+            return new CachedSourceMetaData(generateIdentifier(), taskBatch, dataSource, source.getActualSql(), source.getTable(), source.getConditionSql(), source.getDataNodes());
         }
         
         private String generateIdentifier() {

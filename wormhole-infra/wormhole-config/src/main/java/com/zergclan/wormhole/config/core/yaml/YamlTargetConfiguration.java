@@ -41,5 +41,7 @@ public final class YamlTargetConfiguration implements YamlConfiguration {
     
     private String ignoreNodes;
     
+    private String versionNode;
+    
     private Map<String, YamlDataNodeConfiguration> dataNodes = new LinkedHashMap<>();
 }

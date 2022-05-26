@@ -102,10 +102,11 @@ public final class CachedTaskMetaData implements MetaData {
                 source.getDataNodes().put(dataNodeName, targetSourceDataNodes[1]);
                 task.getFilters().addAll(FilterMetadataFactory.getDefaultInstance(task.getIdentifier(), targetSourceDataNodes[0], targetSourceDataNodes[1]));
             }
-            CachedTargetMetaData cachedTarget = CachedTargetMetaData.builder(generateIdentifier(), target, dataSources.get(target.getDataSourceIdentifier()));
-            CachedSourceMetaData cachedSource = CachedSourceMetaData.builder(generateIdentifier(), source, dataSources.get(source.getDataSourceIdentifier()));
+            Long taskBatch = SequenceGenerator.generateId();
+            CachedTargetMetaData cachedTarget = CachedTargetMetaData.builder(generateIdentifier(), taskBatch, target, dataSources.get(target.getDataSourceIdentifier()));
+            CachedSourceMetaData cachedSource = CachedSourceMetaData.builder(generateIdentifier(), taskBatch, source, dataSources.get(source.getDataSourceIdentifier()));
             Map<Integer, Map<FilterType, Collection<FilterMetaData>>> groupedFilters = groupFilters(task.getFilters());
-            return new CachedTaskMetaData(task.getIdentifier(), SequenceGenerator.generateId(), task.getOrder(), task.getBatchSize(), cachedSource, cachedTarget, groupedFilters);
+            return new CachedTaskMetaData(task.getIdentifier(), taskBatch, task.getOrder(), task.getBatchSize(), cachedSource, cachedTarget, groupedFilters);
         }
         
         private Map<String, DataNodeMetaData[]> createDefaultDataNodes(final TargetMetaData target, final SourceMetaData source) throws SQLException {

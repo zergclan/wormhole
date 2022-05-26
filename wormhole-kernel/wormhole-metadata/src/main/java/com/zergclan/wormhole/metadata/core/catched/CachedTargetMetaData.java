@@ -36,6 +36,8 @@ import java.util.Map;
 public final class CachedTargetMetaData implements MetaData {
     
     private final String identifier;
+    
+    private final long taskBatch;
 
     private final DataSourceMetaData dataSource;
 
@@ -44,6 +46,10 @@ public final class CachedTargetMetaData implements MetaData {
     private final Collection<String> uniqueNodes;
 
     private final Collection<String> compareNodes;
+    
+    private final Collection<String> ignoreNodes;
+    
+    private final String versionNode;
 
     private final Map<String, DataNodeMetaData> dataNodes;
     
@@ -51,25 +57,34 @@ public final class CachedTargetMetaData implements MetaData {
      * Builder for {@link CachedTargetMetaData}.
      *
      * @param cachedTaskIdentifier cached task identifier
+     * @param taskBatch task batch
      * @param target {@link TargetMetaData}
      * @param dataSource {@link DataSourceMetaData}
      * @return {@link CachedTargetMetaData}
      */
-    public static CachedTargetMetaData builder(final String cachedTaskIdentifier, final TargetMetaData target, final DataSourceMetaData dataSource) {
-        return new CachedBuilder(cachedTaskIdentifier, target, dataSource).build();
+    public static CachedTargetMetaData builder(final String cachedTaskIdentifier, final long taskBatch, final TargetMetaData target, final DataSourceMetaData dataSource) {
+        return new CachedBuilder(cachedTaskIdentifier, taskBatch, target, dataSource).build();
     }
     
     @RequiredArgsConstructor
     private static class CachedBuilder {
         
         private final String cachedTaskIdentifier;
+    
+        private final long taskBatch;
         
         private final TargetMetaData target;
         
         private final DataSourceMetaData dataSource;
         
         private CachedTargetMetaData build() {
-            return new CachedTargetMetaData(generateIdentifier(), dataSource, target.getTable(), target.getUniqueNodes(), target.getCompareNodes(), target.getDataNodes());
+            String table = target.getTable();
+            Collection<String> uniqueNodes = target.getUniqueNodes();
+            Collection<String> compareNodes = target.getCompareNodes();
+            Collection<String> ignoreNodes = target.getIgnoreNodes();
+            String versionNode = target.getVersionNode();
+            Map<String, DataNodeMetaData> dataNodes = target.getDataNodes();
+            return new CachedTargetMetaData(generateIdentifier(), taskBatch, dataSource, table, uniqueNodes, compareNodes, ignoreNodes, versionNode, dataNodes);
         }
         
         private String generateIdentifier() {

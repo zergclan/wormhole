@@ -50,8 +50,9 @@ public final class TaskMetaDataTest {
         Collection<String> uniqueNodes = new LinkedList<>();
         Collection<String> compareNodes = new LinkedList<>();
         Collection<String> ignoreNodes = new LinkedList<>();
+        String versionNode = "taskBatch";
         Map<String, DataNodeMetaData> dataNodes = new LinkedHashMap<>();
-        return new TargetMetaData(dataSourceIdentifier, table, uniqueNodes, compareNodes, ignoreNodes, dataNodes);
+        return new TargetMetaData(dataSourceIdentifier, table, uniqueNodes, compareNodes, ignoreNodes, versionNode, dataNodes);
     }
     
     private static SourceMetaData createSource() {
