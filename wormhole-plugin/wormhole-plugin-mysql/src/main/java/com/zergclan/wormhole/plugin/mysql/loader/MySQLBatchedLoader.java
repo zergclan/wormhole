@@ -31,6 +31,7 @@ import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
 import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -48,6 +49,7 @@ import java.util.Collection;
 /**
  * Batched loader of MySQL.
  */
+@Slf4j
 public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadResult> {
 
     @Override
@@ -66,7 +68,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         }
         mysqlLoadResult.setTotalRow(dataGroups.size());
         mysqlLoadResult.setErrInfo(errMap);
-        System.out.println(mysqlLoadResult);
+        log.info("MySQL batched loader standard load success, load result: [{}]", mysqlLoadResult);
         return new BatchedLoadResult<>(true, mysqlLoadResult);
     }
     

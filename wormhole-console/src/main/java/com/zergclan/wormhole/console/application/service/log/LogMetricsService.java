@@ -59,6 +59,20 @@ public interface LogMetricsService {
     void add(ErrorDataLog errorDataLog);
     
     /**
+     * Add {@link PlanExecutionLog}.
+     *
+     * @param planExecutionLog {@link PlanExecutionLog}
+     */
+    void add(PlanExecutionLog planExecutionLog);
+    
+    /**
+     * Add {@link TaskExecutionLog}.
+     *
+     * @param taskExecutionLog {@link TaskExecutionLog}
+     */
+    void add(TaskExecutionLog taskExecutionLog);
+    
+    /**
      * List {@link DatasourceInfo} by {@link PageQuery}.
      *
      * @param pageQuery {@link PageQuery}

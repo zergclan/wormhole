@@ -17,18 +17,30 @@
 
 package com.zergclan.wormhole.console.application.listener;
 
+import com.google.common.eventbus.Subscribe;
+import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
 import com.zergclan.wormhole.bus.api.EventListener;
-import com.zergclan.wormhole.console.application.listener.event.TaskEvent;
+import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
+import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
+import com.zergclan.wormhole.console.infra.util.BeanMapper;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * Task event listener.
  */
 @Component
-public final class TaskEventListener implements EventListener<TaskEvent> {
+public final class TaskEventListener implements EventListener<TaskExecutionEvent> {
     
+    @Resource
+    private LogMetricsService logMetricsService;
+    
+    @Subscribe
     @Override
-    public void onEvent(final TaskEvent event) {
-        // TODO on event
+    public void onEvent(final TaskExecutionEvent event) {
+        TaskExecutionLog added = new TaskExecutionLog();
+        BeanMapper.shallowCopy(event, added);
+        logMetricsService.add(added);
     }
 }

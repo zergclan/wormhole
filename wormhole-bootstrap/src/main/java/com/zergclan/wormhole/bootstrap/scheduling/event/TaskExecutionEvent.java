@@ -15,12 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.listener.event;
+package com.zergclan.wormhole.bootstrap.scheduling.event;
 
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bus.api.Event;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-/**
- * Data event.
- */
-public final class DataEvent implements Event {
+@RequiredArgsConstructor
+@Getter
+public final class TaskExecutionEvent implements Event {
+    
+    private static final long serialVersionUID = -3200589002588431821L;
+    
+    private final String taskIdentifier;
+    
+    private final Long planBatch;
+    
+    private final Long taskBatch;
+    
+    private final ExecutionState executionState;
+    
+    private final Long createTimestamp;
+    
+    private final Long endTimestamp;
 }

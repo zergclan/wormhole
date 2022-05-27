@@ -18,19 +18,30 @@
 package com.zergclan.wormhole.console.application.listener;
 
 import com.google.common.eventbus.Subscribe;
+import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
 import com.zergclan.wormhole.bus.api.EventListener;
-import com.zergclan.wormhole.console.application.listener.event.PlanEvent;
+import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
+import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
+import com.zergclan.wormhole.console.infra.util.BeanMapper;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * Plan event listener.
  */
 @Component
-public final class PlanEventListener implements EventListener<PlanEvent> {
+public final class PlanEventListener implements EventListener<PlanExecutionEvent> {
+    
+    @Resource
+    private LogMetricsService logMetricsService;
     
     @Subscribe
     @Override
-    public void onEvent(final PlanEvent event) {
-        // TODO on event
+    public void onEvent(final PlanExecutionEvent event) {
+        PlanExecutionLog added = new PlanExecutionLog();
+        BeanMapper.shallowCopy(event, added);
+        added.setExecutionState(event.getExecutionState().name());
+        logMetricsService.add(added);
     }
 }
