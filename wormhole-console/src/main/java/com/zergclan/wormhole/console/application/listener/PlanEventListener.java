@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.console.application.listener;
 
 import com.google.common.eventbus.Subscribe;
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
 import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
@@ -39,9 +40,15 @@ public final class PlanEventListener implements EventListener<PlanExecutionEvent
     @Subscribe
     @Override
     public void onEvent(final PlanExecutionEvent event) {
-        PlanExecutionLog added = new PlanExecutionLog();
-        BeanMapper.shallowCopy(event, added);
-        added.setExecutionState(event.getExecutionState().name());
-        logMetricsService.add(added);
+        PlanExecutionLog planLog = new PlanExecutionLog();
+        BeanMapper.shallowCopy(event, planLog);
+        ExecutionStep executionStep = event.getExecutionStep();
+        planLog.setExecutionStep(executionStep.name());
+        planLog.setExecutionState(event.getExecutionState().name());
+        if (ExecutionStep.NEW == executionStep) {
+            logMetricsService.add(planLog);
+        } else {
+            logMetricsService.syncExecutionLog(planLog);
+        }
     }
 }

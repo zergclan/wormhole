@@ -17,12 +17,12 @@
 
 package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
+import com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog;
 import org.springframework.stereotype.Repository;
 
 /**
- * Transactional repository of {@link TaskExecutionLog}.
+ * Transactional repository of {@link DataGroupExecutionLog}.
  */
-@Repository(value = "executionTaskLogRepository")
-public class ExecutionTaskLogRepository extends AbstractTransactionalRepository<TaskExecutionLog> {
+@Repository(value = "dataGroupExecutionLogRepository")
+public class DataGroupExecutionLogRepository extends AbstractTransactionalRepository<DataGroupExecutionLog> {
 }

@@ -18,7 +18,9 @@
 package com.zergclan.wormhole.bootstrap.scheduling.event;
 
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
 import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.common.util.DateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -33,13 +35,27 @@ public final class PlanExecutionEvent implements Event {
     
     private final String planIdentifier;
     
-    private final String planTriggerIdentifier;
+    private final String triggerIdentifier;
     
     private final Long planBatch;
+    
+    private final ExecutionStep executionStep;
     
     private final ExecutionState executionState;
     
     private final Long createTimestamp;
     
     private final Long endTimestamp;
+    
+    /**
+     * Build new step {@link PlanExecutionEvent}.
+     *
+     * @param planIdentifier plan identifier
+     * @param triggerIdentifier plan trigger identifier
+     * @param executionState {@link ExecutionState}
+     * @return {@link PlanExecutionEvent}
+     */
+    public static PlanExecutionEvent buildNewStateEvent(final String planIdentifier, final String triggerIdentifier, final ExecutionState executionState) {
+        return new PlanExecutionEvent(planIdentifier, triggerIdentifier, 0L, ExecutionStep.NEW, executionState, DateUtil.currentTimeMillis(), 0L);
+    }
 }

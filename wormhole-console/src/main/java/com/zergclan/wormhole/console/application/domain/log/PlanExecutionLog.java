@@ -39,6 +39,8 @@ public final class PlanExecutionLog extends AbstractPO {
     
     private String triggerIdentifier;
     
+    private String executionStep;
+    
     private String executionState;
     
     private long createTimestamp;

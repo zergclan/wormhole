@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.bootstrap.scheduling.event;
 
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
 import com.zergclan.wormhole.bus.api.Event;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,8 @@ public final class TaskExecutionEvent implements Event {
     private final Long planBatch;
     
     private final Long taskBatch;
+    
+    private final ExecutionStep executionStep;
     
     private final ExecutionState executionState;
     

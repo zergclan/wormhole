@@ -15,14 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.repository.transaction;
-
-import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
-import org.springframework.stereotype.Repository;
+package com.zergclan.wormhole.bootstrap.scheduling;
 
 /**
- * Transactional repository of {@link PlanExecutionLog}.
+ * Execution step.
  */
-@Repository(value = "executionPlanLogRepository")
-public class ExecutionPlanLogRepository extends AbstractTransactionalRepository<PlanExecutionLog> {
+public enum ExecutionStep {
+    
+    NEW, READY, EXECUTION, COMPLETE, ERROR
 }

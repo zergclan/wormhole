@@ -36,26 +36,26 @@ import java.util.Collection;
 public class LogMetricsServiceImpl implements LogMetricsService {
     
     @Resource
-    private BaseRepository<PlanExecutionLog> executionPlanLogRepository;
+    private BaseRepository<PlanExecutionLog> planExecutionLogRepository;
     
     @Resource
-    private BaseRepository<TaskExecutionLog> executionTaskLogRepository;
+    private BaseRepository<TaskExecutionLog> taskExecutionLogRepository;
     
     @Resource
-    private BaseRepository<DataGroupExecutionLog> executionDataGroupLogRepository;
+    private BaseRepository<DataGroupExecutionLog> dataGroupExecutionLogRepository;
     
     @Resource
     private BaseRepository<ErrorDataLog> errorDataLogRepository;
     
     @Override
     public PageData<PlanExecutionLog> pagePlanExecutionLog(final PageQuery<PlanExecutionLog> pageQuery) {
-        PageData<PlanExecutionLog> result = executionPlanLogRepository.listByPage(pageQuery);
+        PageData<PlanExecutionLog> result = planExecutionLogRepository.listByPage(pageQuery);
         Collection<PlanExecutionLog> items = result.getItems();
         for (PlanExecutionLog each : items) {
             Long planBatch = each.getPlanBatch();
             TaskExecutionLog query = new TaskExecutionLog();
             query.setPlanBatch(planBatch);
-            Collection<TaskExecutionLog> list = executionTaskLogRepository.list(query);
+            Collection<TaskExecutionLog> list = taskExecutionLogRepository.list(query);
             for (TaskExecutionLog task : list) {
                 if ("S".equals(task.getExecutionState())) {
                     each.addSuccessTasks(task.getTaskIdentifier());
@@ -70,7 +70,7 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     
     @Override
     public PageData<TaskExecutionLog> pageTaskExecutionLog(final PageQuery<TaskExecutionLog> pageQuery) {
-        return executionTaskLogRepository.listByPage(pageQuery);
+        return taskExecutionLogRepository.listByPage(pageQuery);
     }
     
     @Override
@@ -78,7 +78,7 @@ public class LogMetricsServiceImpl implements LogMetricsService {
         TaskExecutionDetail result = new TaskExecutionDetail();
         DataGroupExecutionLog query = new DataGroupExecutionLog();
         query.setTaskBatch(taskBatch);
-        DataGroupExecutionLog dataGroupExecutionLog = executionDataGroupLogRepository.getOne(query);
+        DataGroupExecutionLog dataGroupExecutionLog = dataGroupExecutionLogRepository.getOne(query);
         if (null == dataGroupExecutionLog) {
             return result;
         }
@@ -94,12 +94,26 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     
     @Override
     public void add(final PlanExecutionLog planExecutionLog) {
-        // TODO
+        planExecutionLogRepository.add(planExecutionLog);
     }
     
     @Override
     public void add(final TaskExecutionLog taskExecutionLog) {
-        // TODO
+        taskExecutionLogRepository.add(taskExecutionLog);
+    }
+    
+    @Override
+    public void syncExecutionLog(final PlanExecutionLog planExecutionLog) {
+        Integer id = planExecutionLogRepository.getOne(planExecutionLog).getId();
+        planExecutionLog.setId(id);
+        planExecutionLogRepository.edit(id, planExecutionLog);
+    }
+    
+    @Override
+    public void syncExecutionLog(final TaskExecutionLog taskExecutionLog) {
+        Integer id = taskExecutionLogRepository.getOne(taskExecutionLog).getId();
+        taskExecutionLog.setId(id);
+        taskExecutionLogRepository.edit(id, taskExecutionLog);
     }
     
     @Override

@@ -73,6 +73,20 @@ public interface LogMetricsService {
     void add(TaskExecutionLog taskExecutionLog);
     
     /**
+     * Sync {@link PlanExecutionLog}.
+     *
+     * @param planExecutionLog {@link PlanExecutionLog}
+     */
+    void syncExecutionLog(PlanExecutionLog planExecutionLog);
+    
+    /**
+     * Sync {@link TaskExecutionLog}.
+     *
+     * @param taskExecutionLog {@link TaskExecutionLog}
+     */
+    void syncExecutionLog(TaskExecutionLog taskExecutionLog);
+    
+    /**
      * List {@link DatasourceInfo} by {@link PageQuery}.
      *
      * @param pageQuery {@link PageQuery}

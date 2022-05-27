@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.console.application.listener;
 
 import com.google.common.eventbus.Subscribe;
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
 import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
@@ -39,8 +40,15 @@ public final class TaskEventListener implements EventListener<TaskExecutionEvent
     @Subscribe
     @Override
     public void onEvent(final TaskExecutionEvent event) {
-        TaskExecutionLog added = new TaskExecutionLog();
-        BeanMapper.shallowCopy(event, added);
-        logMetricsService.add(added);
+        TaskExecutionLog taskLog = new TaskExecutionLog();
+        BeanMapper.shallowCopy(event, taskLog);
+        ExecutionStep executionStep = event.getExecutionStep();
+        taskLog.setExecutionStep(executionStep.name());
+        taskLog.setExecutionState(event.getExecutionState().name());
+        if (ExecutionStep.NEW == executionStep) {
+            logMetricsService.add(taskLog);
+        } else {
+            logMetricsService.syncExecutionLog(taskLog);
+        }
     }
 }
