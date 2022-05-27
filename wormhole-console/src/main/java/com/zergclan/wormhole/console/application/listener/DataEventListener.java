@@ -17,18 +17,30 @@
 
 package com.zergclan.wormhole.console.application.listener;
 
+import com.google.common.eventbus.Subscribe;
+import com.zergclan.wormhole.bootstrap.scheduling.event.ErrorDataEvent;
 import com.zergclan.wormhole.bus.api.EventListener;
-import com.zergclan.wormhole.console.application.listener.event.DataEvent;
+import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
+import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
+import com.zergclan.wormhole.console.infra.util.BeanMapper;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * Data event listener.
  */
 @Component
-public final class DataEventListener implements EventListener<DataEvent> {
+public final class DataEventListener implements EventListener<ErrorDataEvent> {
     
+    @Resource
+    private LogMetricsService logMetricsService;
+    
+    @Subscribe
     @Override
-    public void onEvent(final DataEvent event) {
-    
+    public void onEvent(final ErrorDataEvent event) {
+        ErrorDataLog added = new ErrorDataLog();
+        BeanMapper.shallowCopy(event, added);
+        logMetricsService.add(added);
     }
 }

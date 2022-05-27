@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.listener.event;
-
-import com.zergclan.wormhole.bus.api.Event;
+package com.zergclan.wormhole.bootstrap.scheduling;
 
 /**
- * Plan event.
+ * Execution state.
  */
-public final class PlanEvent implements Event {
-
+public enum ExecutionState {
+    
+    NEW, READY, EXECUTION, COMPLETE, ERROR
 }

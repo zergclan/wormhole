@@ -15,34 +15,38 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.log;
+package com.zergclan.wormhole.bootstrap.scheduling.event;
 
-import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.bus.api.Event;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * {@link ErrorDataLog}.
+ * Data group execution event.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class ErrorDataLog extends AbstractPO {
+@RequiredArgsConstructor
+@Getter
+public final class DataGroupExecutionEvent implements Event {
     
-    private static final long serialVersionUID = -685034037667839493L;
+    private static final long serialVersionUID = 8476838490487796654L;
     
-    private String taskIdentifier;
+    private final String taskId;
     
-    private Long planBatch;
+    private final Long taskBatch;
     
-    private Long taskBatch;
+    private final Integer batchIndex;
     
-    private String code;
+    private final Integer totalRow;
     
-    private String message;
+    private final Integer insertRow;
     
-    private Long createTimestamp;
+    private final Integer updateRow;
     
-    private String ownerIdentifier;
+    private final Integer errorRow;
     
-    private String dataJson;
+    private final Integer sameRow;
+    
+    private final Long createTimestamp;
+    
+    private final Long endTimestamp;
 }

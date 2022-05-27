@@ -81,6 +81,7 @@ public final class PlanContext {
      * @param planTrigger {@link PlanTrigger}
      */
     public void handleTrigger(final PlanTrigger planTrigger) {
+        //PlanExecutionEvent
         // TODO plan execution init state
     }
     

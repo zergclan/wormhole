@@ -93,6 +93,16 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     }
     
     @Override
+    public void add(final PlanExecutionLog planExecutionLog) {
+        // TODO
+    }
+    
+    @Override
+    public void add(final TaskExecutionLog taskExecutionLog) {
+        // TODO
+    }
+    
+    @Override
     public PageData<ErrorDataLog> listByPage(final PageQuery<ErrorDataLog> pageQuery) {
         return errorDataLogRepository.listByPage(pageQuery);
     }
