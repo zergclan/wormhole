@@ -15,32 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.log;
+package com.zergclan.wormhole.console.infra.repository.transaction;
 
-import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
+import org.springframework.stereotype.Repository;
 
 /**
- * {@link TaskExecutionLog}.
+ * Transactional repository of {@link TaskExecutionLog}.
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class TaskExecutionLog extends AbstractPO {
-    
-    private static final long serialVersionUID = 1562803981177512970L;
-    
-    private Long planBatch;
-    
-    private Long taskBatch;
-    
-    private String taskIdentifier;
-    
-    private String executionStep;
-    
-    private String executionState;
-    
-    private long createTimestamp;
-    
-    private long endTimestamp;
+@Repository(value = "taskExecutionLogRepository")
+public class TaskExecutionLogRepository extends AbstractTransactionalRepository<TaskExecutionLog> {
 }

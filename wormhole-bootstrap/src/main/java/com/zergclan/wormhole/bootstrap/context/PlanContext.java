@@ -19,8 +19,11 @@ package com.zergclan.wormhole.bootstrap.context;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
+import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.disruptor.event.ExecutionEvent;
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
@@ -81,8 +84,10 @@ public final class PlanContext {
      * @param planTrigger {@link PlanTrigger}
      */
     public void handleTrigger(final PlanTrigger planTrigger) {
-        //PlanExecutionEvent
-        // TODO plan execution init state
+        String planIdentifier = planTrigger.getPlanIdentifier();
+        String planTriggerIdentifier = planTrigger.getIdentifier();
+        PlanExecutionEvent event = PlanExecutionEvent.buildNewStateEvent(planIdentifier, planTriggerIdentifier, ExecutionState.SUCCESS);
+        WormholeEventBus.post(event);
     }
     
     /**

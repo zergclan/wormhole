@@ -23,6 +23,7 @@
         <result column="plan_batch" property="planBatch" jdbcType="BIGINT"/>
         <result column="plan_identifier" property="planIdentifier" jdbcType="VARCHAR"/>
         <result column="trigger_identifier" property="triggerIdentifier" jdbcType="VARCHAR"/>
+        <result column="execution_step" property="executionStep" jdbcType="VARCHAR"/>
         <result column="execution_state" property="executionState" jdbcType="VARCHAR"/>
         <result column="create_timestamp" property="createTimestamp" jdbcType="BIGINT"/>
         <result column="end_timestamp" property="endTimestamp" jdbcType="BIGINT"/>
@@ -41,16 +42,40 @@
     </sql>
 
     <sql id="insert_columns">
-        plan_batch, plan_identifier, trigger_identifier, execution_state, create_timestamp, end_timestamp
+        plan_batch, plan_identifier, trigger_identifier, execution_step, execution_state, create_timestamp, end_timestamp
     </sql>
 
     <sql id="insert_values">
         #{planBatch,jdbcType=BIGINT}, #{planIdentifier,jdbcType=VARCHAR}, #{triggerIdentifier,jdbcType=VARCHAR},
-        #{executionState,jdbcType=VARCHAR}, #{createTimestamp,jdbcType=BIGINT}, #{endTimestamp,jdbcType=BIGINT}
+        #{executionStep,jdbcType=VARCHAR}, #{executionState,jdbcType=VARCHAR}, #{createTimestamp,jdbcType=BIGINT}, #{endTimestamp,jdbcType=BIGINT}
+    </sql>
+
+    <sql id="update_columns">
+        <if test="null != planBatch">
+            plan_batch = #{planBatch,jdbcType=BIGINT},
+        </if>
+        <if test="null != planIdentifier">
+            plan_identifier = #{planIdentifier,jdbcType=VARCHAR},
+        </if>
+        <if test="null != triggerIdentifier">
+            trigger_identifier = #{triggerIdentifier,jdbcType=VARCHAR},
+        </if>
+        <if test="null != executionStep">
+            execution_step = #{executionStep,jdbcType=VARCHAR},
+        </if>
+        <if test="null != executionState">
+            execution_state = #{executionState,jdbcType=VARCHAR},
+        </if>
+        <if test="null != createTimestamp">
+            create_timestamp = #{createTimestamp,jdbcType=BIGINT},
+        </if>
+        <if test="null != endTimestamp">
+            end_timestamp = #{endTimestamp,jdbcType=BIGINT},
+        </if>
     </sql>
 
     <sql id="select_columns">
-        id, plan_batch, plan_identifier, trigger_identifier, execution_state, create_timestamp, end_timestamp
+        id, plan_batch, plan_identifier, trigger_identifier, execution_step, execution_state, create_timestamp, end_timestamp
     </sql>
 
     <sql id="select_count">
@@ -84,6 +109,14 @@
     <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog">
         INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
     </insert>
+
+    <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog">
+        UPDATE <include refid="table_name"/>
+        <set>
+            <include refid="update_columns"/>
+        </set>
+        WHERE <include refid="id"/>
+    </update>
 
     <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog" resultType="java.lang.Integer">
         SELECT <include refid="select_count"/> FROM <include refid="table_name"/>

@@ -27,18 +27,18 @@ VALUES (1, 'test_task_1', 1653140066101L, 1653140066102L, 'NOT_NULL', '不能为
     (4, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L);
 
 DELETE FROM plan_execution_log;
-INSERT INTO plan_execution_log (id, plan_identifier, plan_batch, trigger_identifier, execution_state, create_timestamp, end_timestamp)
-VALUES (1, 'test_plan', 1653140066101L, 'ONE_OFF#1653140066102', 'F', 1653140066104L, 1653140066104L),
-       (2, 'test_plan', 1653140066102L, 'ONE_OFF#1653140066102', 'F', 1653140066104L, 1653140066104L),
-       (3, 'test_plan', 1653140066103L, 'ONE_OFF#1653140066102', 'F', 1653140066104L, 1653140066104L),
-       (4, 'test_plan', 1653140066104L, 'ONE_OFF#1653140066102', 'F', 1653140066104L, 1653140066104L);
+INSERT INTO plan_execution_log (id, plan_identifier, plan_batch, trigger_identifier, execution_step, execution_state, create_timestamp, end_timestamp)
+VALUES (1, 'test_plan', 1653140066101L, 'ONE_OFF#1653140066102', 'N', 'S', 1653140066104L, 1653140066104L),
+       (2, 'test_plan', 1653140066102L, 'ONE_OFF#1653140066102', 'N', 'S', 1653140066104L, 1653140066104L),
+       (3, 'test_plan', 1653140066103L, 'ONE_OFF#1653140066102', 'N', 'S', 1653140066104L, 1653140066104L),
+       (4, 'test_plan', 1653140066104L, 'ONE_OFF#1653140066102', 'N', 'S', 1653140066104L, 1653140066104L);
 
 DELETE FROM task_execution_log;
-INSERT INTO task_execution_log (id, plan_batch, task_batch, task_identifier, execution_state, create_timestamp, end_timestamp)
-VALUES (1, 1653140066101L, 1653140066107L, 'test_plan#task_aaa', 'S', 1653140066104L, 1653140066104L),
-       (2, 1653140066101L, 1653140066108L, 'test_plan#task_bbb', 'S', 1653140066104L, 1653140066104L),
-       (3, 1653140066101L, 1653140066109L, 'test_plan#task_ccc', 'F', 1653140066104L, 1653140066104L),
-       (4, 1653140066102L, 1653140066114L, 'test_plan#task_ccc', 'S', 1653140066104L, 1653140066104L);
+INSERT INTO task_execution_log (id, plan_batch, task_batch, task_identifier, execution_step, execution_state, create_timestamp, end_timestamp)
+VALUES (1, 1653140066101L, 1653140066107L, 'test_plan#task_aaa', 'N', 'S', 1653140066104L, 1653140066104L),
+       (2, 1653140066101L, 1653140066108L, 'test_plan#task_bbb', 'N', 'S', 1653140066104L, 1653140066104L),
+       (3, 1653140066101L, 1653140066109L, 'test_plan#task_ccc', 'N', 'F', 1653140066104L, 1653140066104L),
+       (4, 1653140066102L, 1653140066114L, 'test_plan#task_ccc', 'N', 'S', 1653140066104L, 1653140066104L);
 
 DELETE FROM data_group_execution_log;
 INSERT INTO data_group_execution_log (id, task_batch, `batch_index`, total_row, insert_row, update_row, error_row, same_row, create_timestamp, end_timestamp)
