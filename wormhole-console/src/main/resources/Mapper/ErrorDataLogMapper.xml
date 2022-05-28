@@ -70,9 +70,6 @@
         <if test="null != message">
             OR message LIKE CONCAT('%', #{message,jdbcType=VARCHAR}, '%')
         </if>
-        <if test="null != ownerIdentifier">
-            OR owner_identifier LIKE CONCAT('%', #{ownerIdentifier,jdbcType=VARCHAR}, '%')
-        </if>
     </sql>
 
     <sql id="where_fuzzy_query_page">
@@ -84,9 +81,6 @@
         </if>
         <if test="null != query.message">
             OR message LIKE CONCAT('%', #{query.message,jdbcType=VARCHAR}, '%')
-        </if>
-        <if test="null != query.ownerIdentifier">
-            OR owner_identifier LIKE CONCAT('%', #{query.ownerIdentifier,jdbcType=VARCHAR}, '%')
         </if>
     </sql>
 
