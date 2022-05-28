@@ -52,23 +52,22 @@ public final class PlanExecutionEvent implements Event {
      *
      * @param planIdentifier plan identifier
      * @param triggerIdentifier plan trigger identifier
-     * @param executionState {@link ExecutionState}
+     * @param planBatch plan batch
      * @return {@link PlanExecutionEvent}
      */
-    public static PlanExecutionEvent buildNewStateEvent(final String planIdentifier, final String triggerIdentifier, final ExecutionState executionState) {
-        return new PlanExecutionEvent(planIdentifier, triggerIdentifier, 0L, ExecutionStep.NEW, executionState, DateUtil.currentTimeMillis(), 0L);
+    public static PlanExecutionEvent buildNewStateEvent(final String planIdentifier, final String triggerIdentifier, final long planBatch) {
+        return new PlanExecutionEvent(planIdentifier, triggerIdentifier, planBatch, ExecutionStep.NEW, ExecutionState.SUCCESS, DateUtil.currentTimeMillis(), 0L);
     }
     
     /**
      * Build ready step {@link PlanExecutionEvent}.
      *
-     * @param planIdentifier plan identifier
-     * @param triggerIdentifier plan trigger identifier
+     * @param planBatch plan batch
      * @param executionState {@link ExecutionState}
      * @return {@link PlanExecutionEvent}
      */
-    public static PlanExecutionEvent buildReadyStateEvent(final String planIdentifier, final String triggerIdentifier, final ExecutionState executionState) {
-        return new PlanExecutionEvent(planIdentifier, triggerIdentifier, 0L, ExecutionStep.READY, executionState, DateUtil.currentTimeMillis(), 0L);
+    public static PlanExecutionEvent buildReadyStateEvent(final long planBatch, final ExecutionState executionState) {
+        return new PlanExecutionEvent(null, null, planBatch, ExecutionStep.READY, executionState, null, null);
     }
     
     /**

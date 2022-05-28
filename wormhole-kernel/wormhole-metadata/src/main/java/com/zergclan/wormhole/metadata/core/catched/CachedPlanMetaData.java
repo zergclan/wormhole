@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.metadata.core.catched;
 
-import com.zergclan.wormhole.common.SequenceGenerator;
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
@@ -61,11 +60,12 @@ public final class CachedPlanMetaData implements MetaData {
      *
      * @param planMetadata {@link PlanMetaData}
      * @param dataSources data sources {@link DataSourceMetaData}
+     * @param planBatch plan batch
      * @return {@link CachedPlanMetaData}
      * @throws SQLException SQL exception
      */
-    public static CachedPlanMetaData builder(final PlanMetaData planMetadata, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
-        return new CachedBuilder(planMetadata, dataSources).build();
+    public static CachedPlanMetaData builder(final long planBatch, final PlanMetaData planMetadata, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
+        return new CachedBuilder(planBatch, planMetadata, dataSources).build();
     }
     
     /**
@@ -82,6 +82,8 @@ public final class CachedPlanMetaData implements MetaData {
     @RequiredArgsConstructor
     private static class CachedBuilder {
     
+        private final long planBatch;
+        
         private final PlanMetaData planMetadata;
         
         private final Map<String, DataSourceMetaData> dataSources;
@@ -90,7 +92,7 @@ public final class CachedPlanMetaData implements MetaData {
         
         private CachedPlanMetaData build() throws SQLException {
             Collection<CachedTaskMetaData> cachedTasks = createCachedTasks();
-            return new CachedPlanMetaData(planMetadata.getIdentifier(), SequenceGenerator.generateId(), planMetadata.isAtomic(), ordered(cachedTasks), taskIdentifiers);
+            return new CachedPlanMetaData(planMetadata.getIdentifier(), planBatch, planMetadata.isAtomic(), ordered(cachedTasks), taskIdentifiers);
         }
         
         private Collection<CachedTaskMetaData> createCachedTasks() throws SQLException {

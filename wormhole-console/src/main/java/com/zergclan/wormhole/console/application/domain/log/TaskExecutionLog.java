@@ -40,7 +40,7 @@ public final class TaskExecutionLog extends AbstractPO {
     
     private String executionState;
     
-    private long createTimestamp;
+    private Long createTimestamp;
     
-    private long endTimestamp;
+    private Long endTimestamp;
 }

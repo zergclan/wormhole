@@ -18,11 +18,13 @@
 package com.zergclan.wormhole.bootstrap.engine;
 
 import com.zergclan.wormhole.bootstrap.context.PlanContext;
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutor;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutorFactory;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.common.SequenceGenerator;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
@@ -68,14 +70,15 @@ public final class PlanExecutionEngine implements EventListener<TaskCompletedEve
      * @param planTrigger {@link PlanTrigger}
      */
     public void execute(final PlanTrigger planTrigger) {
-        planContext.handleTrigger(planTrigger);
+        Long planBatch = SequenceGenerator.generateId();
+        planContext.handleTrigger(planBatch, planTrigger);
         try {
-            Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
+            Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(planBatch, wormholeMetadata, planTrigger);
             if (!cachedPlanMetadata.isPresent()) {
-                planContext.handleCachedEvent(planTrigger, false);
+                planContext.handleCachedEvent(planBatch, ExecutionState.FAILED);
                 return;
             }
-            planContext.handleCachedEvent(planTrigger, true);
+            planContext.handleCachedEvent(planBatch, ExecutionState.SUCCESS);
             PlanExecutor planExecutor = PlanExecutorFactory.create(cachedPlanMetadata.get());
             planExecutor.execute();
         } catch (final SQLException ex) {

@@ -58,23 +58,24 @@ public final class PlanContext {
      *
      * @param wormholeMetaData {@link WormholeMetaData}
      * @param planTrigger plan identifier
+     * @param planBatch plan batch
      * @return {@link CachedPlanMetaData}
      * @exception SQLException SQL exception
      */
-    public synchronized Optional<CachedPlanMetaData> cachedMetadata(final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) throws SQLException {
+    public synchronized Optional<CachedPlanMetaData> cachedMetadata(final long planBatch, final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) throws SQLException {
         String planIdentifier = planTrigger.getPlanIdentifier();
         if (isExecuting(planIdentifier)) {
             return Optional.empty();
         }
         Optional<PlanMetaData> plan = wormholeMetaData.getPlan(planIdentifier);
         if (plan.isPresent()) {
-            return Optional.of(cachedMetaData(plan.get(), wormholeMetaData.getDataSources()));
+            return Optional.of(cachedMetaData(planBatch, plan.get(), wormholeMetaData.getDataSources()));
         }
         throw new WormholeException("error: can not find plan meta data named: [%s]", planIdentifier);
     }
     
-    private CachedPlanMetaData cachedMetaData(final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
-        CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planMetaData, dataSources);
+    private CachedPlanMetaData cachedMetaData(final long planBatch, final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
+        CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planBatch, planMetaData, dataSources);
         cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
         return planMetadata;
     }
@@ -82,26 +83,24 @@ public final class PlanContext {
     /**
      * Handle trigger.
      *
+     * @param planBatch plan batch
      * @param planTrigger {@link PlanTrigger}
      */
-    public void handleTrigger(final PlanTrigger planTrigger) {
+    public void handleTrigger(final long planBatch, final PlanTrigger planTrigger) {
         String planIdentifier = planTrigger.getPlanIdentifier();
         String planTriggerIdentifier = planTrigger.getIdentifier();
-        PlanExecutionEvent event = PlanExecutionEvent.buildNewStateEvent(planIdentifier, planTriggerIdentifier, ExecutionState.SUCCESS);
+        PlanExecutionEvent event = PlanExecutionEvent.buildNewStateEvent(planIdentifier, planTriggerIdentifier, planBatch);
         WormholeEventBus.post(event);
     }
     
     /**
      * Handle cached failed.
      *
-     * @param planTrigger {@link PlanTrigger}
-     * @param state state
+     * @param planBatch plan batch
+     * @param executionState {@link ExecutionState}
      */
-    public void handleCachedEvent(final PlanTrigger planTrigger, final boolean state) {
-        ExecutionState executionState = state ? ExecutionState.SUCCESS : ExecutionState.FAILED;
-        String planIdentifier = planTrigger.getPlanIdentifier();
-        String planTriggerIdentifier = planTrigger.getIdentifier();
-        PlanExecutionEvent event = PlanExecutionEvent.buildReadyStateEvent(planIdentifier, planTriggerIdentifier, executionState);
+    public void handleCachedEvent(final long planBatch, final ExecutionState executionState) {
+        PlanExecutionEvent event = PlanExecutionEvent.buildReadyStateEvent(planBatch, executionState);
         WormholeEventBus.post(event);
     }
     
