@@ -24,7 +24,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class NodeValueConcatMergerHelperTest {
@@ -49,7 +48,5 @@ public final class NodeValueConcatMergerHelperTest {
         assertTrue(node instanceof TextDataNode);
         assertEquals("nameAge", node.getName());
         assertEquals("jack:19", node.getValue());
-        assertNull(dataGroup.getDataNode("name"));
-        assertNull(dataGroup.getDataNode("age"));
     }
 }
