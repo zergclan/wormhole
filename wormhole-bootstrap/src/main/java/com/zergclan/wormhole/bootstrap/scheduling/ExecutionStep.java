@@ -22,5 +22,5 @@ package com.zergclan.wormhole.bootstrap.scheduling;
  */
 public enum ExecutionStep {
     
-    NEW, READY, EXECUTION, COMPLETE, ERROR
+    NEW, READY, EXECUTION, COMPLETE
 }

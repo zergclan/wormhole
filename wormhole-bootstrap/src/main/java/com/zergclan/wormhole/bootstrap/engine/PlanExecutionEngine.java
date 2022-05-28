@@ -18,10 +18,13 @@
 package com.zergclan.wormhole.bootstrap.engine;
 
 import com.zergclan.wormhole.bootstrap.context.PlanContext;
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
+import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
+import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutor;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutorFactory;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.api.EventListener;
-import com.zergclan.wormhole.bus.disruptor.event.ExecutionEvent;
+import com.zergclan.wormhole.common.SequenceGenerator;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
@@ -35,7 +38,7 @@ import java.util.Optional;
  * Plan execution engine.
  */
 @RequiredArgsConstructor
-public final class PlanExecutionEngine implements EventListener<ExecutionEvent> {
+public final class PlanExecutionEngine implements EventListener<TaskCompletedEvent> {
     
     private final PlanContext planContext = new PlanContext();
     
@@ -67,21 +70,24 @@ public final class PlanExecutionEngine implements EventListener<ExecutionEvent> 
      * @param planTrigger {@link PlanTrigger}
      */
     public void execute(final PlanTrigger planTrigger) {
-//        planContext.handleTrigger(planTrigger);
+        Long planBatch = SequenceGenerator.generateId();
+        planContext.handleTrigger(planBatch, planTrigger);
         try {
-            Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
+            Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(planBatch, wormholeMetadata, planTrigger);
             if (!cachedPlanMetadata.isPresent()) {
-                planContext.handleCachedFailed(planTrigger);
+                planContext.handleCachedEvent(planBatch, ExecutionState.FAILED);
                 return;
             }
-            PlanExecutorFactory.create(cachedPlanMetadata.get()).execute();
+            planContext.handleCachedEvent(planBatch, ExecutionState.SUCCESS);
+            PlanExecutor planExecutor = PlanExecutorFactory.create(cachedPlanMetadata.get());
+            planExecutor.execute();
         } catch (final SQLException ex) {
             planContext.handleExecuteException(ex);
         }
     }
     
     @Override
-    public void onEvent(final ExecutionEvent event) {
-        planContext.handleExecuteEvent(event);
+    public void onEvent(final TaskCompletedEvent event) {
+        planContext.handleTaskCompletedEvent(event);
     }
 }

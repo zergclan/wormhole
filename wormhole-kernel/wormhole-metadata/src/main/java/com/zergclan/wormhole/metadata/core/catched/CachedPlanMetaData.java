@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.metadata.core.catched;
 
-import com.zergclan.wormhole.common.SequenceGenerator;
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
@@ -46,8 +45,10 @@ public final class CachedPlanMetaData implements MetaData {
     private final long planBatch;
     
     private final boolean atomic;
-
-    private final Collection<Map<String, CachedTaskMetaData>> cachedTasks;
+    
+    private final Collection<Map<String, CachedTaskMetaData>> cachedOrderedTasks;
+    
+    private final Collection<String> taskIdentifiers;
     
     @Override
     public String getIdentifier() {
@@ -59,29 +60,48 @@ public final class CachedPlanMetaData implements MetaData {
      *
      * @param planMetadata {@link PlanMetaData}
      * @param dataSources data sources {@link DataSourceMetaData}
+     * @param planBatch plan batch
      * @return {@link CachedPlanMetaData}
      * @throws SQLException SQL exception
      */
-    public static CachedPlanMetaData builder(final PlanMetaData planMetadata, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
-        return new CachedBuilder(planMetadata, dataSources).build();
+    public static CachedPlanMetaData builder(final long planBatch, final PlanMetaData planMetadata, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
+        return new CachedBuilder(planBatch, planMetadata, dataSources).build();
+    }
+    
+    /**
+     * Task completed.
+     *
+     * @param taskIdentifier task identifier
+     * @return remaining task number
+     */
+    public synchronized int taskCompleted(final String taskIdentifier) {
+        taskIdentifiers.remove(taskIdentifier);
+        return taskIdentifiers.size();
     }
     
     @RequiredArgsConstructor
     private static class CachedBuilder {
     
+        private final long planBatch;
+        
         private final PlanMetaData planMetadata;
         
         private final Map<String, DataSourceMetaData> dataSources;
+    
+        private final Collection<String> taskIdentifiers = new LinkedList<>();
         
         private CachedPlanMetaData build() throws SQLException {
-            return new CachedPlanMetaData(planMetadata.getIdentifier(), SequenceGenerator.generateId(), planMetadata.isAtomic(), ordered(createCachedTasks()));
+            Collection<CachedTaskMetaData> cachedTasks = createCachedTasks();
+            return new CachedPlanMetaData(planMetadata.getIdentifier(), planBatch, planMetadata.isAtomic(), ordered(cachedTasks), taskIdentifiers);
         }
         
         private Collection<CachedTaskMetaData> createCachedTasks() throws SQLException {
             Collection<CachedTaskMetaData> result = new LinkedList<>();
             Iterator<Map.Entry<String, TaskMetaData>> iterator = planMetadata.getTasks().entrySet().iterator();
             while (iterator.hasNext()) {
-                result.add(CachedTaskMetaData.builder(iterator.next().getValue(), dataSources));
+                CachedTaskMetaData cachedTaskMetaData = CachedTaskMetaData.builder(iterator.next().getValue(), dataSources);
+                result.add(cachedTaskMetaData);
+                taskIdentifiers.add(cachedTaskMetaData.getIdentifier());
             }
             return result;
         }

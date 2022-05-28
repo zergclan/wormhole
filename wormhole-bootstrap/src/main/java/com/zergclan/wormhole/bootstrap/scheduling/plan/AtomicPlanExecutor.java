@@ -43,7 +43,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
     public void execute() {
         String planIdentifier = cachedPlanMetadata.getIdentifier();
         final long planBatch = SequenceGenerator.generateId();
-        for (Map<String, CachedTaskMetaData> each : cachedPlanMetadata.getCachedTasks()) {
+        for (Map<String, CachedTaskMetaData> each : cachedPlanMetadata.getCachedOrderedTasks()) {
             Optional<String> failedTask = transactionalExecute(each, planIdentifier, planBatch);
             if (failedTask.isPresent()) {
                 // TODO send plan execute failed event

@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
 
+import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
@@ -45,8 +46,14 @@ public final class NullToDefaultEditor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<Map.Entry<String, NodeValueHelper>> iterator = defaultValueHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            if (Objects.isNull(dataGroup.getDataNode(iterator.next().getKey())) || dataGroup.getDataNode(iterator.next().getKey()).isNull()) {
+            DataNode<?> dataNode = dataGroup.getDataNode(iterator.next().getKey());
+            if (Objects.isNull(dataNode)) {
                 dataGroup.refresh(iterator.next().getValue().getDefaultValue());
+                continue;
+            }
+            if (dataNode.isNull()) {
+                dataGroup.refresh(iterator.next().getValue().getDefaultValue());
+                continue;
             }
         }
         return true;

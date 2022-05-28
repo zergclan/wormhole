@@ -21,6 +21,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
+import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.disruptor.event.ExecutionEvent;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
@@ -57,23 +58,24 @@ public final class PlanContext {
      *
      * @param wormholeMetaData {@link WormholeMetaData}
      * @param planTrigger plan identifier
+     * @param planBatch plan batch
      * @return {@link CachedPlanMetaData}
      * @exception SQLException SQL exception
      */
-    public synchronized Optional<CachedPlanMetaData> cachedMetadata(final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) throws SQLException {
+    public synchronized Optional<CachedPlanMetaData> cachedMetadata(final long planBatch, final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) throws SQLException {
         String planIdentifier = planTrigger.getPlanIdentifier();
         if (isExecuting(planIdentifier)) {
             return Optional.empty();
         }
         Optional<PlanMetaData> plan = wormholeMetaData.getPlan(planIdentifier);
         if (plan.isPresent()) {
-            return Optional.of(cachedMetaData(plan.get(), wormholeMetaData.getDataSources()));
+            return Optional.of(cachedMetaData(planBatch, plan.get(), wormholeMetaData.getDataSources()));
         }
         throw new WormholeException("error: can not find plan meta data named: [%s]", planIdentifier);
     }
     
-    private CachedPlanMetaData cachedMetaData(final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
-        CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planMetaData, dataSources);
+    private CachedPlanMetaData cachedMetaData(final long planBatch, final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
+        CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planBatch, planMetaData, dataSources);
         cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
         return planMetadata;
     }
@@ -81,22 +83,41 @@ public final class PlanContext {
     /**
      * Handle trigger.
      *
+     * @param planBatch plan batch
      * @param planTrigger {@link PlanTrigger}
      */
-    public void handleTrigger(final PlanTrigger planTrigger) {
+    public void handleTrigger(final long planBatch, final PlanTrigger planTrigger) {
         String planIdentifier = planTrigger.getPlanIdentifier();
         String planTriggerIdentifier = planTrigger.getIdentifier();
-        PlanExecutionEvent event = PlanExecutionEvent.buildNewStateEvent(planIdentifier, planTriggerIdentifier, ExecutionState.SUCCESS);
+        PlanExecutionEvent event = PlanExecutionEvent.buildNewStateEvent(planIdentifier, planTriggerIdentifier, planBatch);
         WormholeEventBus.post(event);
     }
     
     /**
      * Handle cached failed.
      *
-     * @param planTrigger {@link PlanTrigger}
+     * @param planBatch plan batch
+     * @param executionState {@link ExecutionState}
      */
-    public void handleCachedFailed(final PlanTrigger planTrigger) {
-        // TODO plan cached failed
+    public void handleCachedEvent(final long planBatch, final ExecutionState executionState) {
+        PlanExecutionEvent event = PlanExecutionEvent.buildReadyStateEvent(planBatch, executionState);
+        WormholeEventBus.post(event);
+    }
+    
+    /**
+     * Handle task completed event.
+     *
+     * @param event {@link ExecutionEvent}
+     */
+    public void handleTaskCompletedEvent(final TaskCompletedEvent event) {
+        String planIdentifier = event.getPlanIdentifier();
+        CachedPlanMetaData cachedPlanMetaData = cachedMetadata.asMap().get(planIdentifier);
+        int row = cachedPlanMetaData.taskCompleted(event.getTaskIdentifier());
+        if (0 == row) {
+            cachedMetadata.asMap().remove(planIdentifier, cachedPlanMetaData);
+        }
+        PlanExecutionEvent planEvent = PlanExecutionEvent.buildCompleteStepEvent(cachedPlanMetaData.getPlanBatch(), ExecutionState.SUCCESS);
+        WormholeEventBus.post(planEvent);
     }
     
     /**
@@ -105,16 +126,6 @@ public final class PlanContext {
      * @param exception {@link SQLException}
      */
     public void handleExecuteException(final SQLException exception) {
-        // TODO plan failed by exception
         throw new WormholeException("error: can not cached plan meta data by SQL exception", exception);
-    }
-    
-    /**
-     * Handle execute event.
-     *
-     * @param event {@link ExecutionEvent}
-     */
-    public void handleExecuteEvent(final ExecutionEvent event) {
-        // TODO handle plan&task execute event
     }
 }

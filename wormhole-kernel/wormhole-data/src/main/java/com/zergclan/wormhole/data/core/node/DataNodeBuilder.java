@@ -46,7 +46,7 @@ public final class DataNodeBuilder {
         String name = metaData.getName();
         DataNodeTypeMetaData.DataType dataType = metaData.getType().getDataType();
         if (Objects.isNull(data)) {
-            new ObjectDataNode(name, null);
+            return new ObjectDataNode(name, null);
         }
         switch (dataType) {
             case OBJECT:
@@ -74,9 +74,6 @@ public final class DataNodeBuilder {
     }
     
     private static IntegerDataNode createIntegerDataNode(final String name, final Object data) {
-        if (null == data) {
-            return new IntegerDataNode(name, null);
-        }
         return new IntegerDataNode(name, Integer.parseInt(data.toString()));
     }
     

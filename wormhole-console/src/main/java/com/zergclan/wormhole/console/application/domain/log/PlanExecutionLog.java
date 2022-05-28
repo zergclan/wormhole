@@ -43,9 +43,9 @@ public final class PlanExecutionLog extends AbstractPO {
     
     private String executionState;
     
-    private long createTimestamp;
+    private Long createTimestamp;
     
-    private long endTimestamp;
+    private Long endTimestamp;
     
     private Collection<String> successTasks = new LinkedList<>();
     

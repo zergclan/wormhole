@@ -118,6 +118,10 @@
         WHERE <include refid="id"/>
     </update>
 
+    <select id="getOne" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog"  resultMap="PlanExecutionLogResultMap">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/> WHERE plan_batch = #{planBatch,jdbcType=BIGINT}
+    </select>
+
     <select id="countByPage" parameterType="com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog" resultType="java.lang.Integer">
         SELECT <include refid="select_count"/> FROM <include refid="table_name"/>
         <where>

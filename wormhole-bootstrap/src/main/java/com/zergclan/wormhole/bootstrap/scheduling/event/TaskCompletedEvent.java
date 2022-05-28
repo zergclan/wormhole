@@ -15,32 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.application.domain.log;
+package com.zergclan.wormhole.bootstrap.scheduling.event;
 
-import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-/**
- * {@link TaskExecutionLog}.
- */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class TaskExecutionLog extends AbstractPO {
+@RequiredArgsConstructor
+@Getter
+public final class TaskCompletedEvent implements Event {
     
-    private static final long serialVersionUID = 1562803981177512970L;
+    private static final long serialVersionUID = -5984266540485867999L;
     
-    private Long planBatch;
+    private final String taskIdentifier;
     
-    private Long taskBatch;
-    
-    private String taskIdentifier;
-    
-    private String executionStep;
-    
-    private String executionState;
-    
-    private Long createTimestamp;
-    
-    private Long endTimestamp;
+    /**
+     * Get plan identifier.
+     *
+     * @return plan identifier
+     */
+    public String getPlanIdentifier() {
+        String[] split = taskIdentifier.split(MarkConstant.SPACE);
+        return split[0];
+    }
 }
