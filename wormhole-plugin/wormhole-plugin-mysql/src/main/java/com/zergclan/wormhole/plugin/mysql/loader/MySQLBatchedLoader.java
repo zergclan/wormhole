@@ -82,20 +82,24 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     
     private void loadDataGroup(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget, final MysqlLoadResult loadResult) throws SQLException {
         Connection connection = createConnection(cachedTarget.getDataSource());
-        ResultSet resultSet = executeSelect(connection, dataGroup, cachedTarget);
-        if (!resultSet.next()) {
-            if (executeInsert(connection, dataGroup, cachedTarget)) {
-                loadResult.incrementInsertRow();
-                return;
+        try {
+            ResultSet resultSet = executeSelect(connection, dataGroup, cachedTarget);
+            if (!resultSet.next()) {
+                if (executeInsert(connection, dataGroup, cachedTarget)) {
+                    loadResult.incrementInsertRow();
+                    return;
+                }
             }
-        }
-        if (!compare(dataGroup, resultSet, cachedTarget)) {
-            if (executeUpdate(connection, dataGroup, cachedTarget)) {
-                loadResult.incrementUpdateRow();
-                return;
+            if (!compare(dataGroup, resultSet, cachedTarget)) {
+                if (executeUpdate(connection, dataGroup, cachedTarget)) {
+                    loadResult.incrementUpdateRow();
+                    return;
+                }
             }
+            loadResult.incrementSameRow();
+        } finally {
+            connection.close();
         }
-        loadResult.incrementSameRow();
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {

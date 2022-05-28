@@ -74,6 +74,9 @@ public final class DataNodeBuilder {
     }
     
     private static IntegerDataNode createIntegerDataNode(final String name, final Object data) {
+        if (null == data) {
+            return new IntegerDataNode(name, null);
+        }
         return new IntegerDataNode(name, Integer.parseInt(data.toString()));
     }
     
