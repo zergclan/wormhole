@@ -42,10 +42,9 @@ public final class TextDataNode implements DataNode<String> {
         this.name = name;
         return true;
     }
-
+    
     @Override
-    public boolean refreshValue(final String value) {
-        this.value = value;
-        return true;
+    public DataNode<String> cloneNode() {
+        return new TextDataNode(name, value);
     }
 }

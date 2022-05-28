@@ -46,8 +46,7 @@ public final class BigDecimalDataNode implements DataNode<BigDecimal> {
     }
     
     @Override
-    public boolean refreshValue(final BigDecimal value) {
-        this.value = value;
-        return true;
+    public DataNode<BigDecimal> cloneNode() {
+        return new BigDecimalDataNode(name, value);
     }
 }

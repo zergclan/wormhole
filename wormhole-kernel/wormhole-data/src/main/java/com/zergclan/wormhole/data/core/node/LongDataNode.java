@@ -42,10 +42,9 @@ public final class LongDataNode implements DataNode<Long> {
         this.name = name;
         return true;
     }
-
+    
     @Override
-    public boolean refreshValue(final Long value) {
-        this.value = value;
-        return true;
+    public DataNode<Long> cloneNode() {
+        return new LongDataNode(name, value);
     }
 }

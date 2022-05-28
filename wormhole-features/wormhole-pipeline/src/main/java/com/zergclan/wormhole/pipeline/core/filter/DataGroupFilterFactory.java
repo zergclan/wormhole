@@ -28,6 +28,7 @@ import com.zergclan.wormhole.metadata.core.filter.precise.convertor.DataTypeConv
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.NodeNameConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.PatternedDataTimeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.FixedNodeEditorMetaData;
+import com.zergclan.wormhole.metadata.core.filter.precise.editor.NodeCopyEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.NullToDefaultEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueAppendEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueRangeEditorMetaData;
@@ -41,6 +42,7 @@ import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.DataTypeConv
 import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.NodeNameConvertor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.convertor.PatternedDataTimeConvertor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.FixedNodeEditor;
+import com.zergclan.wormhole.pipeline.core.filter.precise.editor.NodeCopyEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.NullToDefaultEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.ValueAppendEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.ValueRangeEditor;
@@ -101,6 +103,9 @@ public final class DataGroupFilterFactory {
                 case VALUE_APPEND:
                     result.add(createValueAppendFilters(order, type, entry.getValue()));
                     break;
+                case NODE_COPY:
+                    result.add(createNodeCopyFilters(order, type, entry.getValue()));
+                    break;
                 case NAME_CONVERTOR:
                     result.add(createNodeNameConvertorFilters(order, type, entry.getValue()));
                     break;
@@ -124,6 +129,16 @@ public final class DataGroupFilterFactory {
             }
         }
         return result;
+    }
+    
+    private static Filter<DataGroup> createNodeCopyFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+        Map<String, String> sourceTargetNameMappings = new LinkedHashMap<>();
+        Iterator<FilterMetaData> iterator = filters.iterator();
+        while (iterator.hasNext()) {
+            NodeCopyEditorMetaData filterMetaData = (NodeCopyEditorMetaData) iterator.next();
+            sourceTargetNameMappings.put(filterMetaData.getSourceName(), filterMetaData.getTargetName());
+        }
+        return new NodeCopyEditor(order, type, sourceTargetNameMappings);
     }
     
     private static Filter<DataGroup> createDelimiterSplitterFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {

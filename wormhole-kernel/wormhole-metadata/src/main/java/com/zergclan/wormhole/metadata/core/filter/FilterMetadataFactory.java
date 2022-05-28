@@ -26,6 +26,7 @@ import com.zergclan.wormhole.metadata.core.filter.precise.convertor.DataTypeConv
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.NodeNameConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.convertor.PatternedDataTimeConvertorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.FixedNodeEditorMetaData;
+import com.zergclan.wormhole.metadata.core.filter.precise.editor.NodeCopyEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.NullToDefaultEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueAppendEditorMetaData;
 import com.zergclan.wormhole.metadata.core.filter.precise.editor.ValueRangeEditorMetaData;
@@ -121,6 +122,8 @@ public final class FilterMetadataFactory {
                 return ValueRangeEditorMetaData.builder(taskIdentifier, order, props);
             case VALUE_APPEND:
                 return ValueAppendEditorMetaData.builder(taskIdentifier, order, props);
+            case NODE_COPY:
+                return NodeCopyEditorMetaData.builder(taskIdentifier, order, props);
             case NAME_CONVERTOR:
                 return NodeNameConvertorMetaData.builder(taskIdentifier, order, props);
             case CODE_CONVERTOR:
