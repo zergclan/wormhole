@@ -46,8 +46,10 @@ public final class CachedPlanMetaData implements MetaData {
     private final long planBatch;
     
     private final boolean atomic;
-
-    private final Collection<Map<String, CachedTaskMetaData>> cachedTasks;
+    
+    private final Collection<Map<String, CachedTaskMetaData>> cachedOrderedTasks;
+    
+    private final Collection<String> taskIdentifiers;
     
     @Override
     public String getIdentifier() {
@@ -66,22 +68,38 @@ public final class CachedPlanMetaData implements MetaData {
         return new CachedBuilder(planMetadata, dataSources).build();
     }
     
+    /**
+     * Task completed.
+     *
+     * @param taskIdentifier task identifier
+     * @return remaining task number
+     */
+    public synchronized int taskCompleted(final String taskIdentifier) {
+        taskIdentifiers.remove(taskIdentifier);
+        return taskIdentifiers.size();
+    }
+    
     @RequiredArgsConstructor
     private static class CachedBuilder {
     
         private final PlanMetaData planMetadata;
         
         private final Map<String, DataSourceMetaData> dataSources;
+    
+        private final Collection<String> taskIdentifiers = new LinkedList<>();
         
         private CachedPlanMetaData build() throws SQLException {
-            return new CachedPlanMetaData(planMetadata.getIdentifier(), SequenceGenerator.generateId(), planMetadata.isAtomic(), ordered(createCachedTasks()));
+            Collection<CachedTaskMetaData> cachedTasks = createCachedTasks();
+            return new CachedPlanMetaData(planMetadata.getIdentifier(), SequenceGenerator.generateId(), planMetadata.isAtomic(), ordered(cachedTasks), taskIdentifiers);
         }
         
         private Collection<CachedTaskMetaData> createCachedTasks() throws SQLException {
             Collection<CachedTaskMetaData> result = new LinkedList<>();
             Iterator<Map.Entry<String, TaskMetaData>> iterator = planMetadata.getTasks().entrySet().iterator();
             while (iterator.hasNext()) {
-                result.add(CachedTaskMetaData.builder(iterator.next().getValue(), dataSources));
+                CachedTaskMetaData cachedTaskMetaData = CachedTaskMetaData.builder(iterator.next().getValue(), dataSources);
+                result.add(cachedTaskMetaData);
+                taskIdentifiers.add(cachedTaskMetaData.getIdentifier());
             }
             return result;
         }

@@ -15,12 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bootstrap.scheduling;
+package com.zergclan.wormhole.bootstrap.scheduling.event;
 
-/**
- * Execution step.
- */
-public enum ExecutionStep {
+import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
+public final class TaskCompletedEvent implements Event {
     
-    NEW, READY, EXECUTION, COMPLETE
+    private static final long serialVersionUID = -5984266540485867999L;
+    
+    private final String taskIdentifier;
+    
+    /**
+     * Get plan identifier.
+     *
+     * @return plan identifier
+     */
+    public String getPlanIdentifier() {
+        String[] split = taskIdentifier.split(MarkConstant.SPACE);
+        return split[0];
+    }
 }

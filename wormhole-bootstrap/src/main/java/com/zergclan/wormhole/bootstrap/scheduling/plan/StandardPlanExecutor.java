@@ -42,7 +42,7 @@ public final class StandardPlanExecutor implements PlanExecutor {
     public void execute() {
         String planIdentifier = cachedPlanMetadata.getIdentifier();
         final long planBatch = SequenceGenerator.generateId();
-        cachedPlanMetadata.getCachedTasks().forEach(each -> parallelExecute(each, planIdentifier, planBatch));
+        cachedPlanMetadata.getCachedOrderedTasks().forEach(each -> parallelExecute(each, planIdentifier, planBatch));
         // TODO send plan execute success event
         /**
          * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog

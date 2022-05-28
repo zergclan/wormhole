@@ -80,6 +80,7 @@ public final class WormholeExecutionEngine {
     private void init(final WormholeConfiguration configuration) throws SQLException {
         WormholeMetaData wormholeMetadata = INITIALIZER.init(configuration);
         planExecutionEngine = new PlanExecutionEngine(wormholeMetadata);
+        WormholeEventBus.register(planExecutionEngine);
         initPlanTriggerManager(wormholeMetadata.getPlans());
     }
     

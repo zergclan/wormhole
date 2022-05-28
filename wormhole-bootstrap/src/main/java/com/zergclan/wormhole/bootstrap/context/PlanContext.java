@@ -21,6 +21,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
+import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.disruptor.event.ExecutionEvent;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
@@ -94,9 +95,30 @@ public final class PlanContext {
      * Handle cached failed.
      *
      * @param planTrigger {@link PlanTrigger}
+     * @param state state
      */
-    public void handleCachedFailed(final PlanTrigger planTrigger) {
-        // TODO plan cached failed
+    public void handleCachedEvent(final PlanTrigger planTrigger, final boolean state) {
+        ExecutionState executionState = state ? ExecutionState.SUCCESS : ExecutionState.FAILED;
+        String planIdentifier = planTrigger.getPlanIdentifier();
+        String planTriggerIdentifier = planTrigger.getIdentifier();
+        PlanExecutionEvent event = PlanExecutionEvent.buildReadyStateEvent(planIdentifier, planTriggerIdentifier, executionState);
+        WormholeEventBus.post(event);
+    }
+    
+    /**
+     * Handle task completed event.
+     *
+     * @param event {@link ExecutionEvent}
+     */
+    public void handleTaskCompletedEvent(final TaskCompletedEvent event) {
+        String planIdentifier = event.getPlanIdentifier();
+        CachedPlanMetaData cachedPlanMetaData = cachedMetadata.asMap().get(planIdentifier);
+        int row = cachedPlanMetaData.taskCompleted(event.getTaskIdentifier());
+        if (0 == row) {
+            cachedMetadata.asMap().remove(planIdentifier, cachedPlanMetaData);
+        }
+        PlanExecutionEvent planEvent = PlanExecutionEvent.buildCompleteStepEvent(cachedPlanMetaData.getPlanBatch(), ExecutionState.SUCCESS);
+        WormholeEventBus.post(planEvent);
     }
     
     /**
@@ -105,16 +127,6 @@ public final class PlanContext {
      * @param exception {@link SQLException}
      */
     public void handleExecuteException(final SQLException exception) {
-        // TODO plan failed by exception
         throw new WormholeException("error: can not cached plan meta data by SQL exception", exception);
-    }
-    
-    /**
-     * Handle execute event.
-     *
-     * @param event {@link ExecutionEvent}
-     */
-    public void handleExecuteEvent(final ExecutionEvent event) {
-        // TODO handle plan&task execute event
     }
 }

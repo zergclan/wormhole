@@ -124,6 +124,13 @@
         WHERE <include refid="id"/>
     </update>
 
+    <select id="getOne" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog"  resultMap="TaskExecutionLogResultMap">
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/> WHERE task_batch = #{taskBatch,jdbcType=BIGINT}
+        <where>
+            <include refid="where_fuzzy_query"/>
+        </where>
+    </select>
+
     <select id="listByQuery" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog" resultMap="TaskExecutionLogResultMap">
         SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
         <where>
