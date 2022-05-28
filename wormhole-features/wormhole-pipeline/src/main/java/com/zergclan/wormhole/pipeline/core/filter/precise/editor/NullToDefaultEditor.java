@@ -45,8 +45,8 @@ public final class NullToDefaultEditor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<Map.Entry<String, NodeValueHelper>> iterator = defaultValueHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            if (Objects.isNull(dataGroup.getDataNode(iterator.next().getKey()))) {
-                dataGroup.register(iterator.next().getValue().getDefaultValue());
+            if (Objects.isNull(dataGroup.getDataNode(iterator.next().getKey())) || dataGroup.getDataNode(iterator.next().getKey()).isNull()) {
+                dataGroup.refresh(iterator.next().getValue().getDefaultValue());
             }
         }
         return true;

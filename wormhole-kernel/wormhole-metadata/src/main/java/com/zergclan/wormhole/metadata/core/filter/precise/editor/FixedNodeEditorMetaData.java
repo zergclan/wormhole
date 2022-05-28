@@ -68,7 +68,7 @@ public final class FixedNodeEditorMetaData implements FilterMetaData {
     public static FixedNodeEditorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
         String sourceName = props.getProperty("sourceName");
         Validator.notNull(sourceName, "error : build FixedNodeEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String defaultValue = props.getProperty("defaultValue");
+        String defaultValue = String.valueOf(props.get("defaultValue"));
         Validator.notNull(defaultValue, "error : build FixedNodeEditorMetadata failed defaultValue in props can not be null, task identifier: [%s]", taskIdentifier);
         String dataType = props.getProperty("dataType");
         Validator.notNull(dataType, "error : build FixedNodeEditorMetadata failed dataType in props can not be null, task identifier: [%s]", taskIdentifier);

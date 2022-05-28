@@ -67,7 +67,7 @@ public final class PlanExecutionEngine implements EventListener<ExecutionEvent> 
      * @param planTrigger {@link PlanTrigger}
      */
     public void execute(final PlanTrigger planTrigger) {
-        planContext.handleTrigger(planTrigger);
+//        planContext.handleTrigger(planTrigger);
         try {
             Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(wormholeMetadata, planTrigger);
             if (!cachedPlanMetadata.isPresent()) {

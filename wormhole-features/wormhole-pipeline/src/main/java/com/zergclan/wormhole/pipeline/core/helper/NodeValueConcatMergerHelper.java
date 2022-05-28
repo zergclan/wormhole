@@ -50,12 +50,11 @@ public final class NodeValueConcatMergerHelper {
             boolean state = null != dataNode && !dataNode.isNull();
             Validator.preState(state, "error : merge node value failed node name [%s] can not be null", String.valueOf(sourceNames[i]));
             stringBuilder.append(dataNode.getValue());
-            dataGroup.remove(sourceNames[i]);
             if (length == ++count) {
                 break;
             }
             stringBuilder.append(delimiter);
         }
-        return dataGroup.register(new TextDataNode(targetName, stringBuilder.toString()));
+        return dataGroup.refresh(new TextDataNode(targetName, stringBuilder.toString()));
     }
 }
