@@ -42,10 +42,9 @@ public final class ObjectDataNode implements DataNode<Object> {
         this.name = name;
         return true;
     }
-
+    
     @Override
-    public boolean refreshValue(final Object value) {
-        this.value = value;
-        return true;
+    public DataNode<Object> cloneNode() {
+        return new ObjectDataNode(name, value);
     }
 }

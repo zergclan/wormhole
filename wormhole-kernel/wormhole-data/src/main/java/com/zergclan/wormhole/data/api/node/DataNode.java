@@ -69,12 +69,11 @@ public interface DataNode<V> extends Serializable {
      * @return is refreshed or not
      */
     boolean refreshName(String name);
-
+    
     /**
-     * Refresh {@link DataNode}.
+     * Clone {@link DataNode}.
      *
-     * @param value data node value
-     * @return is refreshed or not
+     * @return cloned {@link DataNode}
      */
-    boolean refreshValue(V value);
+    DataNode<V> cloneNode();
 }

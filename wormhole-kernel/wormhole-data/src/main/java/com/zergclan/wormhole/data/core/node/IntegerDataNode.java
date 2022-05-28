@@ -42,10 +42,9 @@ public final class IntegerDataNode implements DataNode<Integer> {
         this.name = name;
         return true;
     }
-
+    
     @Override
-    public boolean refreshValue(final Integer value) {
-        this.value = value;
-        return true;
+    public DataNode<Integer> cloneNode() {
+        return new IntegerDataNode(name, value);
     }
 }

@@ -42,11 +42,10 @@ public final class PatternedDataTimeDataNode implements DataNode<PatternedDataTi
         this.name = name;
         return false;
     }
-
+    
     @Override
-    public boolean refreshValue(final PatternedDataTime value) {
-        this.value = value;
-        return false;
+    public DataNode<PatternedDataTime> cloneNode() {
+        return new PatternedDataTimeDataNode(name, new PatternedDataTime(value.getValue(), value.getPattern()));
     }
     
     /**
