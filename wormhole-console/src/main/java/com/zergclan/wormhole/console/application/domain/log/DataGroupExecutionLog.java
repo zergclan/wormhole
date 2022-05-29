@@ -17,20 +17,24 @@
 
 package com.zergclan.wormhole.console.application.domain.log;
 
+import com.zergclan.wormhole.bootstrap.scheduling.event.DataGroupExecutionEvent;
 import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
+import com.zergclan.wormhole.console.infra.util.BeanMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * {@link DataGroupExecutionLog}.
  */
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public final class DataGroupExecutionLog extends AbstractPO {
     
     private static final long serialVersionUID = 9145337134624590196L;
     
-    private String taskBatch;
+    private Long taskBatch;
     
     private Integer batchIndex;
     
@@ -44,7 +48,12 @@ public final class DataGroupExecutionLog extends AbstractPO {
     
     private Integer sameRow;
     
-    private Long startTimestamp;
+    private Long createTimestamp;
     
     private Long endTimestamp;
+
+    public DataGroupExecutionLog(final DataGroupExecutionEvent dataGroupExecutionEvent) {
+        BeanMapper.shallowCopy(dataGroupExecutionEvent, this);
+    }
+
 }

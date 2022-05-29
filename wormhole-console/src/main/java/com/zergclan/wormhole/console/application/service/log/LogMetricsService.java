@@ -20,6 +20,7 @@ package com.zergclan.wormhole.console.application.service.log;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.api.vo.TaskExecutionDetail;
 import com.zergclan.wormhole.console.application.domain.entity.DatasourceInfo;
+import com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog;
 import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
 import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
 import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
@@ -49,7 +50,7 @@ public interface LogMetricsService {
      * @param taskBatch taskBatch
      * @return {@link TaskExecutionDetail}
      */
-    TaskExecutionDetail getTaskExecutionDetail(String taskBatch);
+    TaskExecutionDetail getTaskExecutionDetail(Long taskBatch);
     
     /**
      * Add {@link ErrorDataLog}.
@@ -71,7 +72,13 @@ public interface LogMetricsService {
      * @param taskExecutionLog {@link TaskExecutionLog}
      */
     void add(TaskExecutionLog taskExecutionLog);
-    
+
+    /**
+     * Add {@link DataGroupExecutionLog}.
+     * @param dataGroupExecutionLog {@link DataGroupExecutionLog}
+     */
+    void add(DataGroupExecutionLog dataGroupExecutionLog);
+
     /**
      * Sync {@link PlanExecutionLog}.
      *
@@ -93,4 +100,5 @@ public interface LogMetricsService {
      * @return {@link PageData}
      */
     PageData<ErrorDataLog> listByPage(PageQuery<ErrorDataLog> pageQuery);
+
 }

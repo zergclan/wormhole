@@ -38,7 +38,9 @@ public final class TaskExecutionEvent implements Event {
     private final ExecutionStep executionStep;
     
     private final ExecutionState executionState;
-    
+
+    private final Integer remainingRow;
+
     private final Long createTimestamp;
     
     private final Long endTimestamp;

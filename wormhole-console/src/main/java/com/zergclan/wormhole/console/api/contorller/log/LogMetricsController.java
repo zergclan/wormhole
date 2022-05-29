@@ -74,7 +74,7 @@ public class LogMetricsController extends AbstractRestController {
      * @return {@link PageData}
      */
     @GetMapping("/task/execution/detail/{taskBatch}")
-    public HttpResult<TaskExecutionDetail> getTaskExecutionDetail(@PathVariable(value = "taskBatch")final String taskBatch) {
+    public HttpResult<TaskExecutionDetail> getTaskExecutionDetail(@PathVariable(value = "taskBatch")final Long taskBatch) {
         return success(logMetricsService.getTaskExecutionDetail(taskBatch));
     }
     
@@ -84,7 +84,7 @@ public class LogMetricsController extends AbstractRestController {
      * @param pageQuery {@link PageQuery}
      * @return {@link PageData}
      */
-    @PostMapping("/error/data/page")
+    @PostMapping("/error/data/page1")
     public HttpResult<PageData<ErrorDataLog>> pageErrorData(@RequestBody final PageQuery<ErrorDataLog> pageQuery) {
         return success(logMetricsService.listByPage(pageQuery));
     }

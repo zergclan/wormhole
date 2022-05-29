@@ -25,6 +25,7 @@
         <result column="task_identifier" property="taskIdentifier" jdbcType="VARCHAR"/>
         <result column="execution_step" property="executionStep" jdbcType="VARCHAR"/>
         <result column="execution_state" property="executionState" jdbcType="VARCHAR"/>
+        <result column="remaining_row" property="remainingRow" jdbcType="INTEGER"/>
         <result column="create_timestamp" property="createTimestamp" jdbcType="BIGINT"/>
         <result column="end_timestamp" property="endTimestamp" jdbcType="BIGINT"/>
     </resultMap>
@@ -42,12 +43,12 @@
     </sql>
 
     <sql id="insert_columns">
-        plan_batch, task_batch, task_identifier, execution_step, execution_state, create_timestamp, end_timestamp
+        plan_batch, task_batch, task_identifier, execution_step, execution_state, remaining_row, create_timestamp, end_timestamp
     </sql>
 
     <sql id="insert_values">
         #{planBatch,jdbcType=BIGINT}, #{taskBatch,jdbcType=BIGINT}, #{taskIdentifier,jdbcType=VARCHAR}, #{executionStep,jdbcType=VARCHAR},
-        #{executionState,jdbcType=VARCHAR}, #{createTimestamp,jdbcType=BIGINT}, #{endTimestamp,jdbcType=BIGINT}
+        #{executionState,jdbcType=VARCHAR}, #{remainingRow,jdbcType=INTEGER}, #{createTimestamp,jdbcType=BIGINT}, #{endTimestamp,jdbcType=BIGINT}
     </sql>
 
     <sql id="update_columns">
@@ -66,6 +67,9 @@
         <if test="null != executionState">
             execution_state = #{executionState,jdbcType=VARCHAR},
         </if>
+        <if test="null != remainingRow">
+            remaining_row = #{remainingRow,jdbcType=INTEGER},
+        </if>
         <if test="null != createTimestamp">
             create_timestamp = #{createTimestamp,jdbcType=BIGINT},
         </if>
@@ -75,7 +79,7 @@
     </sql>
 
     <sql id="select_columns">
-        id, plan_batch, task_batch, task_identifier, execution_step, execution_state, create_timestamp, end_timestamp
+        id, plan_batch, task_batch, task_identifier, execution_step, execution_state, remaining_row, create_timestamp, end_timestamp
     </sql>
 
     <sql id="select_count">
@@ -125,7 +129,7 @@
     </update>
 
     <select id="getOne" parameterType="com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog"  resultMap="TaskExecutionLogResultMap">
-        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/> WHERE task_batch = #{taskBatch,jdbcType=BIGINT}
+        SELECT <include refid="select_columns"/> FROM <include refid="table_name"/>
         <where>
             <include refid="where_fuzzy_query"/>
         </where>

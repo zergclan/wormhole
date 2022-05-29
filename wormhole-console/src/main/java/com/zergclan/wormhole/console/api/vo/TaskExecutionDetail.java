@@ -29,7 +29,7 @@ public final class TaskExecutionDetail implements Serializable {
     
     private static final long serialVersionUID = 4733149348419977254L;
     
-    private String taskBatch;
+    private Long taskBatch;
     
     private Integer totalRow;
     

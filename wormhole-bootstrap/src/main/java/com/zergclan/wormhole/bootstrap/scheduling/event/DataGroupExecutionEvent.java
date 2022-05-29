@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public final class DataGroupExecutionEvent implements Event {
-    
+
     private static final long serialVersionUID = 8476838490487796654L;
     
     private final String taskId;

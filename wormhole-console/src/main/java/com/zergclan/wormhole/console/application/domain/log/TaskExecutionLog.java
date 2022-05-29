@@ -39,6 +39,8 @@ public final class TaskExecutionLog extends AbstractPO {
     private String executionStep;
     
     private String executionState;
+
+    private Integer remainingRow;
     
     private Long createTimestamp;
     
