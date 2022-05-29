@@ -17,8 +17,10 @@
 
 package com.zergclan.wormhole.bootstrap.engine;
 
+import com.google.common.eventbus.Subscribe;
 import com.zergclan.wormhole.bootstrap.context.PlanContext;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
+import com.zergclan.wormhole.bootstrap.scheduling.event.PlanCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutor;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutorFactory;
@@ -86,8 +88,19 @@ public final class PlanExecutionEngine implements EventListener<TaskCompletedEve
         }
     }
     
+    @Subscribe
     @Override
     public void onEvent(final TaskCompletedEvent event) {
-        planContext.handleTaskCompletedEvent(event);
+        planContext.handleCompletedEvent(event);
+    }
+    
+    /**
+     * On event.
+     *
+     * @param event {@link PlanCompletedEvent}
+     */
+    @Subscribe
+    public void onEvent(final PlanCompletedEvent event) {
+        planContext.handleCompletedEvent(event);
     }
 }

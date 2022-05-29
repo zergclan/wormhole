@@ -17,9 +17,12 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.task;
 
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.concurrent.ProcessTask;
+import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.data.core.event.ErrorDataEvent;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.api.Handler;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +35,6 @@ import java.util.Iterator;
  */
 @RequiredArgsConstructor
 public final class BatchedDataGroupHandler implements ProcessTask {
-    
-    private final String planIdentifier;
-    
-    private final long planBatch;
-    
-    private final String taskIdentifier;
-    
-    private final long taskBatchId;
     
     private final BatchedDataGroup batchedDataGroup;
     
@@ -63,12 +58,26 @@ public final class BatchedDataGroupHandler implements ProcessTask {
         Iterator<Filter<DataGroup>> iterator = filters.iterator();
         while (iterator.hasNext()) {
             Filter<DataGroup> filter = iterator.next();
-            boolean isFiltered = filter.doFilter(dataGroup);
-            if (!isFiltered) {
-                // TODO send error data event
+            boolean isFiltered;
+            try {
+                isFiltered = filter.doFilter(dataGroup);
+                if (!isFiltered) {
+                    handleErrorDataEvent(filter.getType(), filter.getType(), dataGroup.toString());
+                    return false;
+                }
+                // CHECKSTYLE:OFF
+            } catch (Exception ex) {
+                // CHECKSTYLE:ON
+                handleErrorDataEvent(filter.getType(), filter.getType(), dataGroup.toString());
+                ex.printStackTrace();
                 return false;
             }
         }
         return true;
+    }
+    
+    private void handleErrorDataEvent(final String code, final String message, final String dataJson) {
+        WormholeEventBus.post(new ErrorDataEvent(batchedDataGroup.getPlanIdentifier(), batchedDataGroup.getPlanBatch(), batchedDataGroup.getTaskIdentifier(), batchedDataGroup.getTaskBatch(),
+                code, message, DateUtil.currentTimeMillis(), batchedDataGroup.getOwnerIdentifier(), dataJson));
     }
 }

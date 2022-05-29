@@ -17,11 +17,15 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.task;
 
+import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
+import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.concurrent.ExecutorServiceManager;
 import com.zergclan.wormhole.common.concurrent.PromiseTask;
 import com.zergclan.wormhole.data.api.result.Result;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
 import com.zergclan.wormhole.data.core.DataGroup;
+import com.zergclan.wormhole.data.core.result.LoadResult;
 import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTaskMetaData;
@@ -29,6 +33,7 @@ import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.api.Handler;
+import com.zergclan.wormhole.pipeline.core.event.DataGroupExecutionEvent;
 import com.zergclan.wormhole.pipeline.core.filter.DataGroupFilterFactory;
 import com.zergclan.wormhole.pipeline.core.handler.LoadedHandler;
 import com.zergclan.wormhole.plugin.api.Extractor;
@@ -44,7 +49,6 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Promise task executor.
@@ -62,26 +66,33 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
     public PromiseTaskResult call() throws Exception {
         CachedSourceMetaData source = cachedTaskMetadata.getSource();
         CachedTargetMetaData target = cachedTaskMetadata.getTarget();
-        Optional<Extractor> extractor = ExtractorFactory.getExtractor(source);
-        Optional<Loader> loader = LoaderFactory.getLoader(target);
-        if (extractor.isPresent() && loader.isPresent()) {
-            return handleTask(extractor.get(), loader.get());
+        try {
+            Optional<Extractor> extractor = ExtractorFactory.getExtractor(source);
+            Optional<Loader> loader = LoaderFactory.getLoader(target);
+            if (extractor.isPresent() && loader.isPresent()) {
+                handeEvent(TaskExecutionEvent.buildReadyStepEvent(cachedTaskMetadata.getTaskBatch(), -1));
+                return handleTask(extractor.get(), loader.get());
+            }
+            // CHECKSTYLE:OFF
+        } catch (final Exception ex) {
+            // CHECKSTYLE:ON
+            ex.printStackTrace();
         }
-        return PromiseTaskResult.newError(new TaskResult(cachedTaskMetadata.getIdentifier()));
+        return PromiseTaskResult.newError(createTaskResult(-1));
     }
     
-    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, Result<?>> loader) throws SQLException {
+    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, Result<LoadResult>> loader) throws SQLException {
         Collection<DataGroup> dataGroups = extractor.extract();
         if (dataGroups.isEmpty()) {
-            return PromiseTaskResult.newSuccess(createTaskResult());
+            return PromiseTaskResult.newSuccess(createTaskResult(0));
         }
-        int size = dataGroups.size();
+        int totalRow = dataGroups.size();
         int batchSize = cachedTaskMetadata.getBatchSize();
-        Handler<BatchedDataGroup> nextHandler = new LoadedHandler(loader, new AtomicReference<>());
+        Handler<BatchedDataGroup> nextHandler = new LoadedHandler(loader);
         Collection<Filter<DataGroup>> filters = createFilters(cachedTaskMetadata);
-        if (size <= batchSize) {
-            handleBatchedTask(dataGroups, nextHandler, filters);
-            return PromiseTaskResult.newSuccess(createTaskResult());
+        if (totalRow <= batchSize) {
+            handleBatchedTask(dataGroups, nextHandler, filters, 0);
+            return PromiseTaskResult.newSuccess(createTaskResult(totalRow));
         }
         int count = 0;
         Iterator<DataGroup> iterator = dataGroups.iterator();
@@ -89,12 +100,12 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         while (iterator.hasNext()) {
             count++;
             batchedEach.add(iterator.next());
-            if (batchSize == batchedEach.size() || size == count) {
-                handleBatchedTask(batchedEach, nextHandler, filters);
+            if (batchSize == batchedEach.size() || totalRow == count) {
+                handleBatchedTask(batchedEach, nextHandler, filters, count - 1);
                 batchedEach = new LinkedList<>();
             }
         }
-        return PromiseTaskResult.newSuccess(createTaskResult());
+        return PromiseTaskResult.newSuccess(createTaskResult(totalRow));
     }
     
     private Collection<Filter<DataGroup>> createFilters(final CachedTaskMetaData cachedTaskMetadata) {
@@ -111,15 +122,25 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         return result;
     }
     
-    private void handleBatchedTask(final Collection<DataGroup> dataGroups, final Handler<BatchedDataGroup> nextHandler, final Collection<Filter<DataGroup>> filters) {
+    private void handleBatchedTask(final Collection<DataGroup> dataGroups, final Handler<BatchedDataGroup> nextHandler, final Collection<Filter<DataGroup>> filters, final int batchIndex) {
         String taskIdentifier = cachedTaskMetadata.getIdentifier();
         long taskBatch = cachedTaskMetadata.getTaskBatch();
-        BatchedDataGroup batchedDataGroup = new BatchedDataGroup(cachedTaskMetadata.getBatchSize(), dataGroups);
-        BatchedDataGroupHandler batchedDataGroupHandler = new BatchedDataGroupHandler(planIdentifier, planBatch, taskIdentifier, taskBatch, batchedDataGroup, filters, nextHandler);
+        int batchSize = cachedTaskMetadata.getBatchSize();
+        String ownerIdentifier = cachedTaskMetadata.getSource().getDataSource().getIdentifier();
+        handeEvent(DataGroupExecutionEvent.buildNewStateEvent(planIdentifier, planBatch, taskIdentifier, taskBatch, batchIndex, batchSize));
+        BatchedDataGroup batchedDataGroup = new BatchedDataGroup(planIdentifier, planBatch, taskIdentifier, taskBatch, ownerIdentifier, batchIndex, batchSize, dataGroups);
+        BatchedDataGroupHandler batchedDataGroupHandler = new BatchedDataGroupHandler(batchedDataGroup, filters, nextHandler);
         ExecutorServiceManager.getComputingExecutor().submit(batchedDataGroupHandler);
     }
     
-    private TaskResult createTaskResult() {
-        return new TaskResult(cachedTaskMetadata.getIdentifier());
+    private TaskResult createTaskResult(final int totalRow) {
+        String cachedTaskIdentifier = cachedTaskMetadata.getIdentifier();
+        String taskIdentifier = cachedTaskMetadata.getTaskIdentifier();
+        long taskBatch = cachedTaskMetadata.getTaskBatch();
+        return new TaskResult(cachedTaskIdentifier, taskIdentifier, taskBatch, totalRow);
+    }
+    
+    private void handeEvent(final Event event) {
+        WormholeEventBus.post(event);
     }
 }

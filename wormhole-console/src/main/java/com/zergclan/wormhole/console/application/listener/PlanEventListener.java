@@ -18,9 +18,12 @@
 package com.zergclan.wormhole.console.application.listener;
 
 import com.google.common.eventbus.Subscribe;
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
+import com.zergclan.wormhole.bootstrap.scheduling.event.PlanCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
 import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
 import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
 import com.zergclan.wormhole.console.infra.util.BeanMapper;
@@ -44,11 +47,15 @@ public final class PlanEventListener implements EventListener<PlanExecutionEvent
         BeanMapper.shallowCopy(event, planLog);
         ExecutionStep executionStep = event.getExecutionStep();
         planLog.setExecutionStep(executionStep.name());
-        planLog.setExecutionState(event.getExecutionState().name());
+        ExecutionState executionState = event.getExecutionState();
+        planLog.setExecutionState(executionState.name());
         if (ExecutionStep.NEW == executionStep) {
             logMetricsService.add(planLog);
         } else {
             logMetricsService.syncExecutionLog(planLog);
+        }
+        if (ExecutionState.FAILED == executionState) {
+            WormholeEventBus.post(new PlanCompletedEvent(event.getPlanIdentifier()));
         }
     }
 }

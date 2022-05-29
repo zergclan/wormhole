@@ -30,6 +30,18 @@ import java.util.LinkedList;
 @Getter
 public final class BatchedDataGroup {
     
+    private final String planIdentifier;
+    
+    private final Long planBatch;
+    
+    private final String taskIdentifier;
+    
+    private final Long taskBatch;
+    
+    private final String ownerIdentifier;
+    
+    private final int batchIndex;
+    
     private final int batchSize;
     
     private final Collection<DataGroup> dataGroups;

@@ -54,6 +54,8 @@ public final class CachedTaskMetaData implements MetaData {
 
     private final String identifier;
     
+    private final String taskIdentifier;
+    
     private final long taskBatch;
 
     private final int order;
@@ -106,7 +108,7 @@ public final class CachedTaskMetaData implements MetaData {
             CachedTargetMetaData cachedTarget = CachedTargetMetaData.builder(generateIdentifier(), taskBatch, target, dataSources.get(target.getDataSourceIdentifier()));
             CachedSourceMetaData cachedSource = CachedSourceMetaData.builder(generateIdentifier(), taskBatch, source, dataSources.get(source.getDataSourceIdentifier()));
             Map<Integer, Map<FilterType, Collection<FilterMetaData>>> groupedFilters = groupFilters(task.getFilters());
-            return new CachedTaskMetaData(task.getIdentifier(), taskBatch, task.getOrder(), task.getBatchSize(), cachedSource, cachedTarget, groupedFilters);
+            return new CachedTaskMetaData(task.getIdentifier(), task.getIdentifier(), taskBatch, task.getOrder(), task.getBatchSize(), cachedSource, cachedTarget, groupedFilters);
         }
         
         private Map<String, DataNodeMetaData[]> createDefaultDataNodes(final TargetMetaData target, final SourceMetaData source) throws SQLException {

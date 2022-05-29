@@ -17,9 +17,14 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.plan;
 
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
+import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
+import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.task.PromiseTaskExecutor;
 import com.zergclan.wormhole.bootstrap.scheduling.task.PromiseTaskResult;
-import com.zergclan.wormhole.common.SequenceGenerator;
+import com.zergclan.wormhole.bootstrap.scheduling.task.TaskResult;
+import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.concurrent.ExecutorServiceManager;
 import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTaskMetaData;
@@ -41,21 +46,18 @@ public final class StandardPlanExecutor implements PlanExecutor {
     @Override
     public void execute() {
         String planIdentifier = cachedPlanMetadata.getIdentifier();
-        final long planBatch = SequenceGenerator.generateId();
+        long planBatch = cachedPlanMetadata.getPlanBatch();
+        handeEvent(PlanExecutionEvent.buildExecutionStateEvent(planBatch, ExecutionState.RUN));
         cachedPlanMetadata.getCachedOrderedTasks().forEach(each -> parallelExecute(each, planIdentifier, planBatch));
-        // TODO send plan execute success event
-        /**
-         * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionPlanLog
-         * planBatch
-         * planId
-         * status 计划执行成功的状态
-         * createTime，modifyTime
-         */
     }
 
     private void parallelExecute(final Map<String, CachedTaskMetaData> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
         CompletionService<PromiseTaskResult> completionService = new ExecutorCompletionService<>(ExecutorServiceManager.getSchedulingExecutor());
         for (Map.Entry<String, CachedTaskMetaData> entry : cachedTaskMetadata.entrySet()) {
+            CachedTaskMetaData cachedTaskMetaData = entry.getValue();
+            String taskIdentifier = cachedTaskMetaData.getIdentifier();
+            long taskBatch = cachedTaskMetaData.getTaskBatch();
+            handeEvent(TaskExecutionEvent.buildNewStateEvent(cachedPlanMetadata.getPlanIdentifier(), planBatch, taskIdentifier, taskBatch));
             PromiseTaskExecutor promiseTaskExecutor = new PromiseTaskExecutor(planIdentifier, planBatch, entry.getValue());
             completionService.submit(promiseTaskExecutor);
         }
@@ -64,30 +66,23 @@ public final class StandardPlanExecutor implements PlanExecutor {
         for (int i = 0; i < size; i++) {
             try {
                 promiseTaskResult = completionService.take().get();
-                // TODO send task execute success event
-                /**
-                 * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog
-                 * planBatch
-                 * planId
-                 * taskBatch
-                 * taskId
-                 * status 任务执行成功的状态
-                 * createTime，modifyTime
-                 */
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                // TODO send task execute failed event
-                /**
-                 * recode com.zergclan.wormhole.console.application.domain.entity.ExecutionTaskLog
-                 * planBatch
-                 * planId
-                 * taskBatch
-                 * taskId
-                 * status 任务执行失败的状态
-                 * description 错误的原因
-                 * createTime，modifyTime
-                 */
+                if (!promiseTaskResult.isSuccess()) {
+                    handeEvent(TaskExecutionEvent.buildCompleteStateEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.FAILED));
+                    continue;
+                }
+                TaskResult result = promiseTaskResult.getResult();
+                if (0 == result.getTotalRow()) {
+                    handeEvent(TaskExecutionEvent.buildCompleteStateEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.SUCCESS));
+                } else {
+                    handeEvent(TaskExecutionEvent.buildExecutionStepEvent(promiseTaskResult.getResult().getTaskBatch(), promiseTaskResult.getResult().getTotalRow()));
+                }
+            } catch (final InterruptedException | ExecutionException ex) {
+                ex.printStackTrace();
             }
         }
+    }
+    
+    private void handeEvent(final Event event) {
+        WormholeEventBus.post(event);
     }
 }

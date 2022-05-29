@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.data.core.result;
 
-import com.zergclan.wormhole.data.core.DataGroup;
 import lombok.Data;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Result value of database loader.
@@ -38,7 +38,7 @@ public final class MysqlLoadResult implements LoadResult {
     
     private int sameRow;
     
-    private Map<DataGroup, String> errInfo;
+    private final Collection<ErrorDataGroup> errorData = new LinkedList<>();
     
     /**
      * Increment insert row.
@@ -66,5 +66,14 @@ public final class MysqlLoadResult implements LoadResult {
      */
     public void incrementErrorRow() {
         errorRow++;
+    }
+    
+    /**
+     * Add error data.
+     *
+     * @param errorDataGroup {@link ErrorDataGroup}
+     */
+    public void addErrorData(final ErrorDataGroup errorDataGroup) {
+        errorData.add(errorDataGroup);
     }
 }

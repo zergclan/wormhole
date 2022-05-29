@@ -35,6 +35,8 @@ import java.util.Collections;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
+    private static final String[] IGNORE_URL = {"/", "/assets/**", "/security/login", "/metrics/status"};
+    
     @Resource
     private LoginFilter loginFilter;
     
@@ -44,8 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().cors().configurationSource(corsConfigurationSource())
                 .and().addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/metrics/status").anonymous()
-                .antMatchers("/security/login").permitAll().anyRequest().authenticated()
+                .antMatchers(IGNORE_URL).permitAll().anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage()))
                 .and().csrf().disable();
     }

@@ -47,6 +47,36 @@
         #{sameRow,jdbcType=BIGINT}, #{createTimestamp,jdbcType=BIGINT}, #{endTimestamp,jdbcType=BIGINT}
     </sql>
 
+    <sql id="update_columns">
+        <if test="null != taskBatch">
+            task_batch = #{taskBatch,jdbcType=BIGINT},
+        </if>
+        <if test="null != batchIndex">
+            batch_index = #{batchIndex,jdbcType=INTEGER},
+        </if>
+        <if test="null != totalRow">
+            total_row = #{totalRow,jdbcType=INTEGER},
+        </if>
+        <if test="null != insertRow">
+            insert_row = #{insertRow,jdbcType=INTEGER},
+        </if>
+        <if test="null != updateRow">
+            update_row = #{updateRow,jdbcType=INTEGER},
+        </if>
+        <if test="null != errorRow">
+            error_row = #{errorRow,jdbcType=INTEGER},
+        </if>
+        <if test="null != sameRow">
+            same_row = #{sameRow,jdbcType=INTEGER},
+        </if>
+        <if test="null != createTimestamp">
+            create_timestamp = #{createTimestamp,jdbcType=BIGINT},
+        </if>
+        <if test="null != endTimestamp">
+            end_timestamp = #{endTimestamp,jdbcType=BIGINT},
+        </if>
+    </sql>
+
     <sql id="select_columns">
         id, task_batch, batch_index, total_row, insert_row, update_row, error_row, same_row, create_timestamp, end_timestamp
     </sql>
@@ -57,19 +87,33 @@
 
     <sql id="where_fuzzy_query">
         <if test="null != taskBatch">
-            OR task_batch = #{taskBatch,jdbcType=BIGINT}
+            AND task_batch = #{taskBatch,jdbcType=BIGINT}
+        </if>
+        <if test="null != batchIndex">
+            AND batch_index = #{batchIndex,jdbcType=INTEGER}
         </if>
     </sql>
 
     <sql id="where_fuzzy_query_page">
         <if test="null != query.taskBatch">
-            OR task_batch = #{query.taskBatch,jdbcType=BIGINT}
+            AND task_batch = #{query.taskBatch,jdbcType=BIGINT}
+        </if>
+        <if test="null != query.batchIndex">
+            AND batch_index = #{query.batchIndex,jdbcType=INTEGER}
         </if>
     </sql>
 
     <insert id="insert" parameterType="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog">
         INSERT INTO <include refid="table_name"/> (<include refid="insert_columns"/>) VALUES (<include refid="insert_values"/>)
     </insert>
+
+    <update id="updateById" parameterType="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog">
+        UPDATE <include refid="table_name"/>
+        <set>
+            <include refid="update_columns"/>
+        </set>
+        WHERE <include refid="id"/>
+    </update>
 
     <select id="getOne" parameterType="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog" resultMap="DataGroupExecutionLogResultMap">
         SELECT

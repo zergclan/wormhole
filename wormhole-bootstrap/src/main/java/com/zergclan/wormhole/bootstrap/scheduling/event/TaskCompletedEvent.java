@@ -22,6 +22,9 @@ import com.zergclan.wormhole.common.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Task completed event.
+ */
 @RequiredArgsConstructor
 @Getter
 public final class TaskCompletedEvent implements Event {

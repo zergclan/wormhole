@@ -20,18 +20,24 @@ package com.zergclan.wormhole.bootstrap.scheduling.event;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
 import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.common.util.DateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Task execution event.
+ */
 @RequiredArgsConstructor
 @Getter
 public final class TaskExecutionEvent implements Event {
     
     private static final long serialVersionUID = -3200589002588431821L;
     
-    private final String taskIdentifier;
+    private final String planIdentifier;
     
     private final Long planBatch;
+    
+    private final String taskIdentifier;
     
     private final Long taskBatch;
     
@@ -44,4 +50,49 @@ public final class TaskExecutionEvent implements Event {
     private final Long createTimestamp;
     
     private final Long endTimestamp;
+    
+    /**
+     * Build new step {@link TaskExecutionEvent}.
+     * @param planIdentifier plan identifier
+     * @param planBatch plan batch
+     * @param taskIdentifier task identifier
+     * @param taskBatch task batch
+     * @return {@link TaskExecutionEvent}
+     */
+    public static TaskExecutionEvent buildNewStateEvent(final String planIdentifier, final Long planBatch, final String taskIdentifier, final long taskBatch) {
+        return new TaskExecutionEvent(planIdentifier, planBatch, taskIdentifier, taskBatch, ExecutionStep.NEW, ExecutionState.SUCCESS, null, DateUtil.currentTimeMillis(), 0L);
+    }
+    
+    /**
+     * Build ready step {@link TaskExecutionEvent}.
+     *
+     * @param taskBatch task batch
+     * @param remainingRow remaining row
+     * @return {@link TaskExecutionEvent}
+     */
+    public static TaskExecutionEvent buildReadyStepEvent(final long taskBatch, final int remainingRow) {
+        return new TaskExecutionEvent(null, null, null, taskBatch, ExecutionStep.READY, ExecutionState.SUCCESS, remainingRow, null, null);
+    }
+    
+    /**
+     * Build execution step {@link TaskExecutionEvent}.
+     *
+     * @param taskBatch task batch
+     * @param remainingRow remaining row
+     * @return {@link TaskExecutionEvent}
+     */
+    public static TaskExecutionEvent buildExecutionStepEvent(final long taskBatch, final int remainingRow) {
+        return new TaskExecutionEvent(null, null, null, taskBatch, ExecutionStep.READY, ExecutionState.SUCCESS, remainingRow, null, null);
+    }
+    
+    /**
+     * Build complete step {@link TaskExecutionEvent}.
+     *
+     * @param taskBatch plan batch
+     * @param executionState execution state
+     * @return {@link TaskExecutionEvent}
+     */
+    public static TaskExecutionEvent buildCompleteStateEvent(final long taskBatch, final ExecutionState executionState) {
+        return new TaskExecutionEvent(null, null, null, taskBatch, ExecutionStep.COMPLETE, executionState, null, DateUtil.currentTimeMillis(), 0L);
+    }
 }
