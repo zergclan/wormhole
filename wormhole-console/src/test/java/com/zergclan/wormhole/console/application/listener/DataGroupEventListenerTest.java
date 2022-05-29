@@ -20,21 +20,15 @@ package com.zergclan.wormhole.console.application.listener;
 import com.zergclan.wormhole.bootstrap.scheduling.event.DataGroupExecutionEvent;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
-import com.zergclan.wormhole.console.infra.repository.transaction.TaskExecutionLogRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.annotation.Resource;
 
 /**
  * Data group listener test.
  */
 @SpringBootTest
 public final class DataGroupEventListenerTest {
-
-    @Resource
-    private TaskExecutionLogRepository taskExecutionLogRepository;
 
     @Test
     public void assertEvent() {
