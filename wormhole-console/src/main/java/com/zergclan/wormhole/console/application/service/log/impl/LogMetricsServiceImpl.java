@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.console.application.service.log.impl;
 
+import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.api.vo.TaskExecutionDetail;
 import com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog;
@@ -74,7 +76,7 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     }
     
     @Override
-    public TaskExecutionDetail getTaskExecutionDetail(final String taskBatch) {
+    public TaskExecutionDetail getTaskExecutionDetail(final Long taskBatch) {
         TaskExecutionDetail result = new TaskExecutionDetail();
         DataGroupExecutionLog query = new DataGroupExecutionLog();
         query.setTaskBatch(taskBatch);
@@ -101,6 +103,21 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     public void add(final TaskExecutionLog taskExecutionLog) {
         taskExecutionLogRepository.add(taskExecutionLog);
     }
+
+    @Override
+    public void add(final DataGroupExecutionLog dataGroupExecutionLog) {
+        dataGroupExecutionLogRepository.add(dataGroupExecutionLog);
+        TaskExecutionLog query = new TaskExecutionLog();
+        query.setTaskBatch(dataGroupExecutionLog.getTaskBatch());
+        TaskExecutionLog taskExecutionLog = taskExecutionLogRepository.getOne(query);
+        int remainingRow = Math.subtractExact(taskExecutionLog.getRemainingRow(), dataGroupExecutionLog.getTotalRow());
+        taskExecutionLog.setRemainingRow(remainingRow);
+        taskExecutionLogRepository.edit(taskExecutionLog.getId(), taskExecutionLog);
+        if (remainingRow > 0) {
+            return;
+        }
+        WormholeEventBus.post(new TaskCompletedEvent(taskExecutionLog.getTaskIdentifier()));
+    }
     
     @Override
     public void syncExecutionLog(final PlanExecutionLog planExecutionLog) {
@@ -120,4 +137,5 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     public PageData<ErrorDataLog> listByPage(final PageQuery<ErrorDataLog> pageQuery) {
         return errorDataLogRepository.listByPage(pageQuery);
     }
+
 }

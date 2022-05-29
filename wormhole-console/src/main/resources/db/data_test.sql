@@ -26,3 +26,8 @@ VALUES ( 1, '127.0.0.1', 3306, 'test_db', 0, 'root', '123456', 'database_info_te
 DELETE FROM datasource_info;
 INSERT INTO datasource_info (id, database_id, schema, username, password, extend_parameters, description, operator, create_time, modify_time)
 VALUES ( 1, 1, 'test_source_ds', 'root', '123456', 'characterEncoding=UTF-8,serverTimezone=UTC', 'test_datasource_info_description', 0, {ts '2012-12-31 00:00:00.00'}, {ts '2012-12-31 00:00:00.00'});
+
+DELETE FROM task_execution_log;
+INSERT INTO task_execution_log (id, plan_batch, task_batch, task_identifier, execution_step, execution_state, remaining_row, create_timestamp, end_timestamp)
+VALUES (1, 1653140066101L, 1653140066107L, 'test_plan#task_aaa', 'N', 'S', 30, 1653140066104L, 1653140066104L),
+       (2, 1653140066101L, 1653140066108L, 'test_plan#task_bbb', 'N', 'S', 20, 1653140066104L, 1653140066104L);
