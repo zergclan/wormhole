@@ -17,9 +17,9 @@
 
 package com.zergclan.wormhole.console.application.domain.log;
 
-import com.zergclan.wormhole.bootstrap.scheduling.event.DataGroupExecutionEvent;
 import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
 import com.zergclan.wormhole.console.infra.util.BeanMapper;
+import com.zergclan.wormhole.pipeline.core.event.DataGroupExecutionEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -51,9 +51,8 @@ public final class DataGroupExecutionLog extends AbstractPO {
     private Long createTimestamp;
     
     private Long endTimestamp;
-
+    
     public DataGroupExecutionLog(final DataGroupExecutionEvent dataGroupExecutionEvent) {
         BeanMapper.shallowCopy(dataGroupExecutionEvent, this);
     }
-
 }

@@ -20,10 +20,10 @@ package com.zergclan.wormhole.bootstrap.context;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
+import com.zergclan.wormhole.bootstrap.scheduling.event.PlanCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
-import com.zergclan.wormhole.bus.disruptor.event.ExecutionEvent;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
@@ -87,10 +87,7 @@ public final class PlanContext {
      * @param planTrigger {@link PlanTrigger}
      */
     public void handleTrigger(final long planBatch, final PlanTrigger planTrigger) {
-        String planIdentifier = planTrigger.getPlanIdentifier();
-        String planTriggerIdentifier = planTrigger.getIdentifier();
-        PlanExecutionEvent event = PlanExecutionEvent.buildNewStateEvent(planIdentifier, planTriggerIdentifier, planBatch);
-        WormholeEventBus.post(event);
+        WormholeEventBus.post(PlanExecutionEvent.buildNewStateEvent(planTrigger.getPlanIdentifier(), planTrigger.getIdentifier(), planBatch));
     }
     
     /**
@@ -100,24 +97,31 @@ public final class PlanContext {
      * @param executionState {@link ExecutionState}
      */
     public void handleCachedEvent(final long planBatch, final ExecutionState executionState) {
-        PlanExecutionEvent event = PlanExecutionEvent.buildReadyStateEvent(planBatch, executionState);
-        WormholeEventBus.post(event);
+        WormholeEventBus.post(PlanExecutionEvent.buildReadyStateEvent(planBatch, executionState));
     }
     
     /**
-     * Handle task completed event.
+     * Handle completed event.
      *
-     * @param event {@link ExecutionEvent}
+     * @param event {@link TaskCompletedEvent}
      */
-    public void handleTaskCompletedEvent(final TaskCompletedEvent event) {
+    public void handleCompletedEvent(final TaskCompletedEvent event) {
         String planIdentifier = event.getPlanIdentifier();
         CachedPlanMetaData cachedPlanMetaData = cachedMetadata.asMap().get(planIdentifier);
         int row = cachedPlanMetaData.taskCompleted(event.getTaskIdentifier());
         if (0 == row) {
             cachedMetadata.asMap().remove(planIdentifier, cachedPlanMetaData);
+            WormholeEventBus.post(PlanExecutionEvent.buildCompleteStepEvent(cachedPlanMetaData.getPlanBatch(), ExecutionState.SUCCESS));
         }
-        PlanExecutionEvent planEvent = PlanExecutionEvent.buildCompleteStepEvent(cachedPlanMetaData.getPlanBatch(), ExecutionState.SUCCESS);
-        WormholeEventBus.post(planEvent);
+    }
+    
+    /**
+     * Handle completed event.
+     *
+     * @param event {@link PlanCompletedEvent}
+     */
+    public void handleCompletedEvent(final PlanCompletedEvent event) {
+        cachedMetadata.asMap().remove(event.getPlanIdentifier());
     }
     
     /**

@@ -17,9 +17,7 @@
 
 package com.zergclan.wormhole.data.core.result;
 
-import com.zergclan.wormhole.data.core.DataGroup;
-
-import java.util.Map;
+import java.util.Collection;
 
 /**
  * The interface of Load result.
@@ -39,7 +37,14 @@ public interface LoadResult {
      * @return insert row
      */
     int getInsertRow();
-
+    
+    /**
+     * Get update row.
+     *
+     * @return update row
+     */
+    int getUpdateRow();
+    
     /**
      * Get error row.
      *
@@ -59,5 +64,5 @@ public interface LoadResult {
      *
      * @return map
      */
-    Map<DataGroup, String> getErrInfo();
+    Collection<ErrorDataGroup> getErrorData();
 }

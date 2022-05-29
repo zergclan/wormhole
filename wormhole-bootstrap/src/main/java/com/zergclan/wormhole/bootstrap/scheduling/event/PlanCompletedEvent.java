@@ -15,20 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bootstrap.scheduling.task;
+package com.zergclan.wormhole.bootstrap.scheduling.event;
 
+import com.zergclan.wormhole.bus.api.Event;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Plan completed event.
+ */
 @RequiredArgsConstructor
 @Getter
-public final class TaskResult {
+public final class PlanCompletedEvent implements Event {
     
-    private final String cachedTaskIdentifier;
+    private static final long serialVersionUID = 364969649523189726L;
     
-    private final String taskIdentifier;
-    
-    private final long taskBatch;
-    
-    private final int totalRow;
+    private final String planIdentifier;
 }

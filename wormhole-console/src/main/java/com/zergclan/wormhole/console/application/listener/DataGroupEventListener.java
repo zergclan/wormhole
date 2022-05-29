@@ -18,10 +18,10 @@
 package com.zergclan.wormhole.console.application.listener;
 
 import com.google.common.eventbus.Subscribe;
-import com.zergclan.wormhole.bootstrap.scheduling.event.DataGroupExecutionEvent;
 import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog;
 import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
+import com.zergclan.wormhole.pipeline.core.event.DataGroupExecutionEvent;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

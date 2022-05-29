@@ -15,34 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bootstrap.scheduling.event;
+package com.zergclan.wormhole.data.core.result;
 
-import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.data.core.DataGroup;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Error data event.
+ * Error data group.
  */
 @RequiredArgsConstructor
 @Getter
-public final class ErrorDataEvent implements Event {
+public final class ErrorDataGroup {
     
-    private static final long serialVersionUID = -3777226091757149095L;
+    private final String code;
     
-    private final String taskIdentifier;
+    private final String message;
     
-    private final Long planBatch;
-    
-    private final Long taskBatch;
-    
-    private final Long code;
-    
-    private final Long message;
-    
-    private final Long createTimestamp;
-    
-    private String ownerIdentifier;
-    
-    private String dataJson;
+    private final DataGroup dataGroup;
 }

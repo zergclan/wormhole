@@ -22,5 +22,5 @@ package com.zergclan.wormhole.bootstrap.scheduling;
  */
 public enum ExecutionState {
     
-    SUCCESS, FAILED, ERROR, RETRY
+    RUN, SUCCESS, FAILED, ERROR, RETRY
 }

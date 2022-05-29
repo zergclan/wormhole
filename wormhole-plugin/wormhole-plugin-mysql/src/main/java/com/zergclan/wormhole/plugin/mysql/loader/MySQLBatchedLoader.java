@@ -24,6 +24,7 @@ import com.zergclan.wormhole.data.core.node.BigDecimalDataNode;
 import com.zergclan.wormhole.data.core.node.LongDataNode;
 import com.zergclan.wormhole.data.core.node.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.data.core.result.BatchedLoadResult;
+import com.zergclan.wormhole.data.core.result.ErrorDataGroup;
 import com.zergclan.wormhole.data.core.result.MysqlLoadResult;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
@@ -42,8 +43,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Collection;
 
 /**
@@ -56,18 +55,17 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     protected BatchedLoadResult<MysqlLoadResult> standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
         MysqlLoadResult mysqlLoadResult = new MysqlLoadResult();
         Collection<DataGroup> dataGroups = batchedDataGroup.getDataGroups();
-        Map<DataGroup, String> errMap = new LinkedHashMap<>();
         for (DataGroup each : dataGroups) {
             preFix(each, cachedTarget);
             try {
                 loadDataGroup(each, cachedTarget, mysqlLoadResult);
             } catch (final SQLException ex) {
-                errMap.put(each, ex.getErrorCode() + ex.getSQLState());
+                mysqlLoadResult.addErrorData(new ErrorDataGroup(ex.getSQLState(), ex.getMessage(), each));
                 mysqlLoadResult.incrementErrorRow();
+                log.info("MySQL batched loader error, error data: [{}]", each);
             }
         }
         mysqlLoadResult.setTotalRow(dataGroups.size());
-        mysqlLoadResult.setErrInfo(errMap);
         log.info("MySQL batched loader standard load success, load result: [{}]", mysqlLoadResult);
         return new BatchedLoadResult<>(true, mysqlLoadResult);
     }

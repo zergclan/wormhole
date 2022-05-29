@@ -71,6 +71,17 @@ public final class PlanExecutionEvent implements Event {
     }
     
     /**
+     * Build execution step {@link PlanExecutionEvent}.
+     *
+     * @param planBatch plan batch
+     * @param executionState {@link ExecutionState}
+     * @return {@link PlanExecutionEvent}
+     */
+    public static PlanExecutionEvent buildExecutionStateEvent(final long planBatch, final ExecutionState executionState) {
+        return new PlanExecutionEvent(null, null, planBatch, ExecutionStep.EXECUTION, executionState, null, null);
+    }
+    
+    /**
      * Build complete step {@link PlanExecutionEvent}.
      *
      * @param planBatch plan batch

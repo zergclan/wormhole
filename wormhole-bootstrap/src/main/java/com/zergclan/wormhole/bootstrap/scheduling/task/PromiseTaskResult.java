@@ -46,7 +46,6 @@ public final class PromiseTaskResult implements Result<TaskResult> {
      * @return {@link PromiseTaskResult}
      */
     public static PromiseTaskResult newSuccess(final TaskResult result) {
-        
         return new PromiseTaskResult(true, result);
     }
     

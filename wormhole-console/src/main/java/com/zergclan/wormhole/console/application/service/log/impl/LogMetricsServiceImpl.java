@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Objects;
 
 @Service("logMetricsService")
 public class LogMetricsServiceImpl implements LogMetricsService {
@@ -106,10 +107,20 @@ public class LogMetricsServiceImpl implements LogMetricsService {
 
     @Override
     public void add(final DataGroupExecutionLog dataGroupExecutionLog) {
-        dataGroupExecutionLogRepository.add(dataGroupExecutionLog);
-        TaskExecutionLog query = new TaskExecutionLog();
-        query.setTaskBatch(dataGroupExecutionLog.getTaskBatch());
-        TaskExecutionLog taskExecutionLog = taskExecutionLogRepository.getOne(query);
+        Long taskBatch = dataGroupExecutionLog.getTaskBatch();
+        Integer batchIndex = dataGroupExecutionLog.getBatchIndex();
+        DataGroupExecutionLog queryDataGroup = new DataGroupExecutionLog();
+        queryDataGroup.setTaskBatch(taskBatch);
+        queryDataGroup.setBatchIndex(batchIndex);
+        DataGroupExecutionLog dataGroupLog = dataGroupExecutionLogRepository.getOne(queryDataGroup);
+        if (Objects.isNull(dataGroupLog)) {
+            dataGroupExecutionLogRepository.add(dataGroupExecutionLog);
+            return;
+        }
+        dataGroupExecutionLogRepository.edit(dataGroupLog.getId(), dataGroupExecutionLog);
+        TaskExecutionLog queryTask = new TaskExecutionLog();
+        queryTask.setTaskBatch(taskBatch);
+        TaskExecutionLog taskExecutionLog = taskExecutionLogRepository.getOne(queryTask);
         int remainingRow = Math.subtractExact(taskExecutionLog.getRemainingRow(), dataGroupExecutionLog.getTotalRow());
         taskExecutionLog.setRemainingRow(remainingRow);
         taskExecutionLogRepository.edit(taskExecutionLog.getId(), taskExecutionLog);

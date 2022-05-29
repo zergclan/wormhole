@@ -17,10 +17,13 @@
 
 package com.zergclan.wormhole.data.core;
 
+import com.zergclan.wormhole.common.util.JsonUtil;
 import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.node.PatternedDataTime;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -80,5 +83,20 @@ public final class DataGroup implements Serializable {
      */
     public void remove(final String name) {
         dataNodes.remove(name);
+    }
+    
+    @Override
+    public String toString() {
+        Map<String, Object> result = new HashMap<>(dataNodes.size(), 1);
+        for (DataNode<?> each : dataNodes.values()) {
+            Object value = each.getValue();
+            if (value instanceof PatternedDataTime) {
+                PatternedDataTime time = (PatternedDataTime) value;
+                result.put(each.getName(), time.getPatternedValue());
+                continue;
+            }
+            result.put(each.getName(), String.valueOf(each.getValue()));
+        }
+        return JsonUtil.toJson(result);
     }
 }

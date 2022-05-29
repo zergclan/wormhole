@@ -15,38 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.bootstrap.scheduling.event;
+package com.zergclan.wormhole.common.util;
 
-import com.zergclan.wormhole.bus.api.Event;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.google.gson.Gson;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * Data group execution event.
+ * Util tools for json.
  */
-@RequiredArgsConstructor
-@Getter
-public final class DataGroupExecutionEvent implements Event {
-
-    private static final long serialVersionUID = 8476838490487796654L;
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class JsonUtil {
     
-    private final String taskId;
-    
-    private final Long taskBatch;
-    
-    private final Integer batchIndex;
-    
-    private final Integer totalRow;
-    
-    private final Integer insertRow;
-    
-    private final Integer updateRow;
-    
-    private final Integer errorRow;
-    
-    private final Integer sameRow;
-    
-    private final Long createTimestamp;
-    
-    private final Long endTimestamp;
+    /**
+     * To json.
+     *
+     * @param object object
+     * @return json
+     */
+    public static String toJson(final Object object) {
+        return new Gson().toJson(object);
+    }
 }

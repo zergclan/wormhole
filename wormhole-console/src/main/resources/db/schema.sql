@@ -62,7 +62,7 @@ CREATE TABLE task_execution_log (
     `task_identifier` VARCHAR(64) NOT NULL COMMENT '任务ID',
     `execution_step` VARCHAR(32) NOT NULL COMMENT '执行阶段',
     `execution_state` VARCHAR(32) NOT NULL COMMENT '执行状态',
-    `remaining_row` INT(11) DEFAULT 0 COMMENT '剩余条数',
+    `remaining_row` INT(11) DEFAULT -1 COMMENT '剩余条数',
     `create_timestamp` bigint(20) NOT NULL COMMENT '创建时间戳',
     `end_timestamp` bigint(20) NOT NULL COMMENT '结束时间戳',
     PRIMARY KEY (`id`)
