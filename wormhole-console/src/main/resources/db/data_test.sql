@@ -29,5 +29,5 @@ VALUES ( 1, 1, 'test_source_ds', 'root', '123456', 'characterEncoding=UTF-8,serv
 
 DELETE FROM task_execution_log;
 INSERT INTO task_execution_log (id, plan_batch, task_batch, task_identifier, execution_step, execution_state, remaining_row, create_timestamp, end_timestamp)
-VALUES (1, 1653140066101L, 1653140066107L, 'test_plan#task_aaa', 'N', 'S', 30, 1653140066104L, 1653140066104L),
-       (2, 1653140066101L, 1653140066108L, 'test_plan#task_bbb', 'N', 'S', 20, 1653140066104L, 1653140066104L);
+VALUES (1, 1653140066101L, 1653140066107L, 'test_plan#task_aaa', 'N', 'S', 20, 1653140066104L, 1653140066104L),
+       (2, 1653140066101L, 1653140066108L, 'test_plan#task_bbb', 'N', 'S', 10, 1653140066104L, 1653140066104L);
