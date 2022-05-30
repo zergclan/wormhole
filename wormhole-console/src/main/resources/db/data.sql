@@ -21,10 +21,10 @@ INSERT INTO user_info (id, username, password, email, is_enable, create_time, mo
 
 DELETE FROM error_data_log;
 INSERT INTO error_data_log (id, task_identifier, plan_batch, task_batch, code, message, owner_identifier, data_json, create_timestamp)
-VALUES (1, 'test_task_1', 1653140066101L, 1653140066102L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L),
-    (2, 'test_task_1', 1653140066101L, 1653140066102L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L),
-    (3, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L),
-    (4, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name","test_name"}', 1653140066104L);
+VALUES (1, 'test_task_1', 1653140066101L, 1653140066102L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name":"jack","password":"123456"}', 1653140066104L),
+    (2, 'test_task_1', 1653140066101L, 1653140066102L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name":"jack","password":"123456"}', 1653140066104L),
+    (3, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name":"jack","password":"123456"}', 1653140066104L),
+    (4, 'test_task_2', 1653140066105L, 1653140066106L, 'NOT_NULL', '不能为空', 'mysql#127.0.0.1@3307', '{"name":"jack","password":"123456"}', 1653140066104L);
 
 DELETE FROM plan_execution_log;
 INSERT INTO plan_execution_log (id, plan_identifier, plan_batch, trigger_identifier, execution_step, execution_state, create_timestamp, end_timestamp)

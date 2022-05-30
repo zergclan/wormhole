@@ -55,7 +55,7 @@ public final class StandardPlanExecutor implements PlanExecutor {
         CompletionService<PromiseTaskResult> completionService = new ExecutorCompletionService<>(ExecutorServiceManager.getSchedulingExecutor());
         for (Map.Entry<String, CachedTaskMetaData> entry : cachedTaskMetadata.entrySet()) {
             CachedTaskMetaData cachedTaskMetaData = entry.getValue();
-            String taskIdentifier = cachedTaskMetaData.getIdentifier();
+            String taskIdentifier = cachedTaskMetaData.getTaskIdentifier();
             long taskBatch = cachedTaskMetaData.getTaskBatch();
             handeEvent(TaskExecutionEvent.buildNewStateEvent(cachedPlanMetadata.getPlanIdentifier(), planBatch, taskIdentifier, taskBatch));
             PromiseTaskExecutor promiseTaskExecutor = new PromiseTaskExecutor(planIdentifier, planBatch, entry.getValue());

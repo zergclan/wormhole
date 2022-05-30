@@ -51,8 +51,6 @@ import java.util.TreeMap;
 @RequiredArgsConstructor
 @Getter
 public final class CachedTaskMetaData implements MetaData {
-
-    private final String identifier;
     
     private final String taskIdentifier;
     
@@ -67,6 +65,11 @@ public final class CachedTaskMetaData implements MetaData {
     private final CachedTargetMetaData target;
     
     private final Map<Integer, Map<FilterType, Collection<FilterMetaData>>> filters;
+    
+    @Override
+    public String getIdentifier() {
+        return taskIdentifier;
+    }
     
     /**
      * Builder for {@link CachedTaskMetaData}.
@@ -108,7 +111,7 @@ public final class CachedTaskMetaData implements MetaData {
             CachedTargetMetaData cachedTarget = CachedTargetMetaData.builder(generateIdentifier(), taskBatch, target, dataSources.get(target.getDataSourceIdentifier()));
             CachedSourceMetaData cachedSource = CachedSourceMetaData.builder(generateIdentifier(), taskBatch, source, dataSources.get(source.getDataSourceIdentifier()));
             Map<Integer, Map<FilterType, Collection<FilterMetaData>>> groupedFilters = groupFilters(task.getFilters());
-            return new CachedTaskMetaData(task.getIdentifier(), task.getIdentifier(), taskBatch, task.getOrder(), task.getBatchSize(), cachedSource, cachedTarget, groupedFilters);
+            return new CachedTaskMetaData(task.getIdentifier(), taskBatch, task.getOrder(), task.getBatchSize(), cachedSource, cachedTarget, groupedFilters);
         }
         
         private Map<String, DataNodeMetaData[]> createDefaultDataNodes(final TargetMetaData target, final SourceMetaData source) throws SQLException {
@@ -117,7 +120,6 @@ public final class CachedTaskMetaData implements MetaData {
             Map<String, DataNodeMetaData[]> result = new LinkedHashMap<>();
             Map<String, DataNodeMetaData> initializationTargetDataNodes = target.getDataNodes();
             Collection<String> ignoreNodes = target.getIgnoreNodes();
-            String versionNode = target.getVersionNode();
             Map<String, ColumnMetaData> targetColumns = targetTable.getColumns();
             Iterator<Map.Entry<String, ColumnMetaData>> targetIterator = targetColumns.entrySet().iterator();
             while (targetIterator.hasNext()) {

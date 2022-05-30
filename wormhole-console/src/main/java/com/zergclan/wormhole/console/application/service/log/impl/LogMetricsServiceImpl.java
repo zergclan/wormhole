@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.console.application.service.log.impl;
 
+import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
@@ -60,10 +61,13 @@ public class LogMetricsServiceImpl implements LogMetricsService {
             query.setPlanBatch(planBatch);
             Collection<TaskExecutionLog> list = taskExecutionLogRepository.list(query);
             for (TaskExecutionLog task : list) {
-                if ("S".equals(task.getExecutionState())) {
-                    each.addSuccessTasks(task.getTaskIdentifier());
+                if (ExecutionState.RUN.name().equals(task.getExecutionState())) {
+                    continue;
+                    
                 }
-                if ("F".equals(task.getExecutionState())) {
+                if (ExecutionState.SUCCESS.name().equals(task.getExecutionState())) {
+                    each.addSuccessTasks(task.getTaskIdentifier());
+                } else {
                     each.addFailedTasks(task.getTaskIdentifier());
                 }
             }
@@ -83,6 +87,12 @@ public class LogMetricsServiceImpl implements LogMetricsService {
         query.setTaskBatch(taskBatch);
         DataGroupExecutionLog dataGroupExecutionLog = dataGroupExecutionLogRepository.getOne(query);
         if (null == dataGroupExecutionLog) {
+            result.setTaskBatch(taskBatch);
+            result.setTotalRow(0);
+            result.setInsertRow(0);
+            result.setUpdateRow(0);
+            result.setErrorRow(0);
+            result.setSameRow(0);
             return result;
         }
         BeanMapper.shallowCopy(dataGroupExecutionLog, result);
