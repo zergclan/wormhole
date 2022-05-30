@@ -76,7 +76,7 @@ public final class PlanContext {
     
     private CachedPlanMetaData cachedMetaData(final long planBatch, final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
         CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planBatch, planMetaData, dataSources);
-        cachedMetadata.put(planMetadata.getIdentifier(), planMetadata);
+        cachedMetadata.put(planMetadata.getPlanIdentifier(), planMetadata);
         return planMetadata;
     }
     

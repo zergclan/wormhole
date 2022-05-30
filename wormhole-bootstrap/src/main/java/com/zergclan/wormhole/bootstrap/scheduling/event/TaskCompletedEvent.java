@@ -39,7 +39,7 @@ public final class TaskCompletedEvent implements Event {
      * @return plan identifier
      */
     public String getPlanIdentifier() {
-        String[] split = taskIdentifier.split(MarkConstant.SPACE);
+        String[] split = taskIdentifier.split(MarkConstant.FORWARD_SLASH);
         return split[0];
     }
 }

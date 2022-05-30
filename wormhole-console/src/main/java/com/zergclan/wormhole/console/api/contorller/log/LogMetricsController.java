@@ -84,7 +84,7 @@ public class LogMetricsController extends AbstractRestController {
      * @param pageQuery {@link PageQuery}
      * @return {@link PageData}
      */
-    @PostMapping("/error/data/page1")
+    @PostMapping("/error/data/page")
     public HttpResult<PageData<ErrorDataLog>> pageErrorData(@RequestBody final PageQuery<ErrorDataLog> pageQuery) {
         return success(logMetricsService.listByPage(pageQuery));
     }

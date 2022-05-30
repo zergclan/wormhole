@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.metadata.core.catched;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
@@ -52,7 +51,7 @@ public final class CachedPlanMetaData implements MetaData {
     
     @Override
     public String getIdentifier() {
-        return planIdentifier + MarkConstant.SPACE + planBatch;
+        return planIdentifier;
     }
     
     /**
@@ -101,7 +100,7 @@ public final class CachedPlanMetaData implements MetaData {
             while (iterator.hasNext()) {
                 CachedTaskMetaData cachedTaskMetaData = CachedTaskMetaData.builder(iterator.next().getValue(), dataSources);
                 result.add(cachedTaskMetaData);
-                taskIdentifiers.add(cachedTaskMetaData.getIdentifier());
+                taskIdentifiers.add(cachedTaskMetaData.getTaskIdentifier());
             }
             return result;
         }
