@@ -118,7 +118,7 @@ public final class FilterMetadataFactory {
                 return NullToDefaultEditorMetaData.builder(taskIdentifier, order, props);
             case FIXED_NODE:
                 return FixedNodeEditorMetaData.builder(taskIdentifier, order, props);
-            case VALUE_RANGE:
+            case VALUE_SUB:
                 return ValueRangeEditorMetaData.builder(taskIdentifier, order, props);
             case VALUE_APPEND:
                 return ValueAppendEditorMetaData.builder(taskIdentifier, order, props);

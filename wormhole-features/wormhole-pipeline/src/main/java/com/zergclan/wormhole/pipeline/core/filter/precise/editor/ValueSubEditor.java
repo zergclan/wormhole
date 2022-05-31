@@ -22,39 +22,41 @@ import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
-import com.zergclan.wormhole.pipeline.core.helper.ValueRangeHelper;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
+import com.zergclan.wormhole.pipeline.core.helper.ValueSubHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
- * Data node value range editor implemented of {@link Filter}.
+ * Data node value sub editor implemented of {@link Filter}.
  */
 @RequiredArgsConstructor
 @Getter
-public final class ValueRangeEditor implements Filter<DataGroup> {
+public final class ValueSubEditor implements Filter<DataGroup> {
     
     private final int order;
     
     private final FilterType filterType;
 
-    private final Map<String, ValueRangeHelper> valueRangeHelpers;
+    private final Map<String, ValueSubHelper> valueRangeHelpers;
 
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<Map.Entry<String, ValueRangeHelper>> iterator = valueRangeHelpers.entrySet().iterator();
+        Iterator<Map.Entry<String, ValueSubHelper>> iterator = valueRangeHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, ValueRangeHelper> entry = iterator.next();
-            String name = entry.getKey();
-            DataNode<?> dataNode = dataGroup.getDataNode(name);
-            String value = dataNode.getValue().toString();
-            ValueRangeHelper valueRangeHelper = entry.getValue();
-            String sub = valueRangeHelper.sub(value);
-            if (!dataGroup.refresh(new TextDataNode(name, sub))) {
-                return false;
+            Entry<String, ValueSubHelper> entry = iterator.next();
+            String nodeName = entry.getKey();
+            DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
+            if (dataNode instanceof TextDataNode) {
+                ValueSubHelper valueSubHelper = entry.getValue();
+                dataGroup.refresh(valueSubHelper.sub((TextDataNode) dataNode));
+                continue;
             }
+            throw new WormholeFilterException("value sub editor failed data node must be text data node, node name: [%s]", nodeName);
         }
         return true;
     }

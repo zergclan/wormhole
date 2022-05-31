@@ -21,7 +21,6 @@ import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.data.api.result.Result;
 import com.zergclan.wormhole.data.core.BatchedDataGroup;
-import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.event.ErrorDataEvent;
 import com.zergclan.wormhole.data.core.result.ErrorDataGroup;
 import com.zergclan.wormhole.data.core.result.LoadResult;
@@ -29,8 +28,6 @@ import com.zergclan.wormhole.pipeline.api.Handler;
 import com.zergclan.wormhole.pipeline.core.event.DataGroupExecutionEvent;
 import com.zergclan.wormhole.plugin.api.Loader;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
 
 /**
  * Loaded handler.
@@ -42,11 +39,17 @@ public final class LoadedHandler implements Handler<BatchedDataGroup> {
     
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {
-        Collection<DataGroup> errors = batchedDataGroup.getErrors();
-        batchedDataGroup.getDataGroups().removeAll(errors);
-        LoadResult loadResult = loader.load(batchedDataGroup).getResult();
-        loadResult.getErrorData().forEach(each -> handleErrorDataEvent(batchedDataGroup, each));
-        WormholeEventBus.post(DataGroupExecutionEvent.buildCompleteStateEvent(batchedDataGroup.getTaskBatch(), batchedDataGroup.getBatchIndex(), loadResult));
+        batchedDataGroup.clearErrors();
+        try {
+            LoadResult loadResult = loader.load(batchedDataGroup).getResult();
+            loadResult.getErrorData().forEach(each -> handleErrorDataEvent(batchedDataGroup, each));
+            WormholeEventBus.post(DataGroupExecutionEvent.buildCompleteEvent(batchedDataGroup.getTaskBatch(), batchedDataGroup.getBatchIndex(), loadResult));
+            // CHECKSTYLE:OFF
+        } catch (final Exception ex) {
+            // CHECKSTYLE:ON
+            WormholeEventBus.post(DataGroupExecutionEvent.buildErrorEvent(batchedDataGroup.getTaskBatch(), batchedDataGroup.getBatchIndex(), batchedDataGroup.getBatchSize()));
+            ex.printStackTrace();
+        }
     }
     
     private void handleErrorDataEvent(final BatchedDataGroup batchedDataGroup, final ErrorDataGroup errorDataGroup) {

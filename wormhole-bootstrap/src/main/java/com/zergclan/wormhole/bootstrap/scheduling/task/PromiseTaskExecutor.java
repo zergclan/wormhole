@@ -70,7 +70,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
             Optional<Extractor> extractor = ExtractorFactory.getExtractor(source);
             Optional<Loader> loader = LoaderFactory.getLoader(target);
             if (extractor.isPresent() && loader.isPresent()) {
-                handeEvent(TaskExecutionEvent.buildReadyStepEvent(cachedTaskMetadata.getTaskBatch(), -1));
+                handeEvent(TaskExecutionEvent.buildReadyEvent(cachedTaskMetadata.getTaskBatch(), -1));
                 return handleTask(extractor.get(), loader.get());
             }
             // CHECKSTYLE:OFF
@@ -127,7 +127,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         long taskBatch = cachedTaskMetadata.getTaskBatch();
         int batchSize = cachedTaskMetadata.getBatchSize();
         String ownerIdentifier = cachedTaskMetadata.getSource().getDataSource().getIdentifier();
-        handeEvent(DataGroupExecutionEvent.buildNewStateEvent(planIdentifier, planBatch, taskIdentifier, taskBatch, batchIndex, batchSize));
+        handeEvent(DataGroupExecutionEvent.buildNewEvent(planIdentifier, planBatch, taskIdentifier, taskBatch, batchIndex, batchSize));
         BatchedDataGroup batchedDataGroup = new BatchedDataGroup(planIdentifier, planBatch, taskIdentifier, taskBatch, ownerIdentifier, batchIndex, batchSize, dataGroups);
         BatchedDataGroupHandler batchedDataGroupHandler = new BatchedDataGroupHandler(batchedDataGroup, filters, nextHandler);
         ExecutorServiceManager.getComputingExecutor().submit(batchedDataGroupHandler);

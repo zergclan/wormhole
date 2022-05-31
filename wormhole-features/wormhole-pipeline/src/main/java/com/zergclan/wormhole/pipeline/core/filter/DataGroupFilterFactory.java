@@ -45,7 +45,7 @@ import com.zergclan.wormhole.pipeline.core.filter.precise.editor.FixedNodeEditor
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.NodeCopyEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.NullToDefaultEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.editor.ValueAppendEditor;
-import com.zergclan.wormhole.pipeline.core.filter.precise.editor.ValueRangeEditor;
+import com.zergclan.wormhole.pipeline.core.filter.precise.editor.ValueSubEditor;
 import com.zergclan.wormhole.pipeline.core.filter.precise.validator.NotBlankValidator;
 import com.zergclan.wormhole.pipeline.core.filter.precise.validator.NotNullValidator;
 import com.zergclan.wormhole.pipeline.core.helper.CodeConvertorHelper;
@@ -55,7 +55,7 @@ import com.zergclan.wormhole.pipeline.core.helper.NodeValueConcatMergerHelper;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueDelimiterSplitterHelper;
 import com.zergclan.wormhole.pipeline.core.helper.PatternedDataTimeConvertorHelper;
 import com.zergclan.wormhole.pipeline.core.helper.ValueAppendHelper;
-import com.zergclan.wormhole.pipeline.core.helper.ValueRangeHelper;
+import com.zergclan.wormhole.pipeline.core.helper.ValueSubHelper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -97,7 +97,7 @@ public final class DataGroupFilterFactory {
                 case FIXED_NODE:
                     result.add(createFixedNodeFilters(order, type, entry.getValue()));
                     break;
-                case VALUE_RANGE:
+                case VALUE_SUB:
                     result.add(createValueRangeFilters(order, type, entry.getValue()));
                     break;
                 case VALUE_APPEND:
@@ -208,13 +208,13 @@ public final class DataGroupFilterFactory {
     }
     
     private static Filter<DataGroup> createValueRangeFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
-        Map<String, ValueRangeHelper> valueRangeHelpers = new LinkedHashMap<>();
+        Map<String, ValueSubHelper> valueRangeHelpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
             ValueRangeEditorMetaData filterMetaData = (ValueRangeEditorMetaData) iterator.next();
-            valueRangeHelpers.put(filterMetaData.getSourceName(), new ValueRangeHelper(filterMetaData.getStartIndex(), filterMetaData.getEndIndex()));
+            valueRangeHelpers.put(filterMetaData.getSourceName(), new ValueSubHelper(filterMetaData.getStartIndex(), filterMetaData.getEndIndex()));
         }
-        return new ValueRangeEditor(order, type, valueRangeHelpers);
+        return new ValueSubEditor(order, type, valueRangeHelpers);
     }
     
     private static Filter<DataGroup> createValueAppendFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {

@@ -18,15 +18,16 @@
 package com.zergclan.wormhole.pipeline.core.helper;
 
 import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 
 /**
- * Value range helper.
+ * Value sub helper.
  */
 @RequiredArgsConstructor
-public final class ValueRangeHelper {
+public final class ValueSubHelper {
 
     private final int start;
 
@@ -35,15 +36,16 @@ public final class ValueRangeHelper {
     /**
      * Sub value.
      *
-     * @param value value
+     * @param textDataNode {@link TextDataNode}
      * @return sub value
      */
-    public String sub(final String value) {
+    public TextDataNode sub(final TextDataNode textDataNode) {
+        final String value = textDataNode.getValue();
         Validator.preState(!Objects.isNull(value), "error : range helper arg value can not be null");
         int length = value.length();
         int startIndex = computeIndex(start, length);
         int endIndex = computeIndex(end, length);
-        return value.substring(startIndex, endIndex);
+        return new TextDataNode(textDataNode.getName(), value.substring(startIndex, endIndex));
     }
     
     private int computeIndex(final int input, final int length) {

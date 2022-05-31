@@ -25,6 +25,7 @@ import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.event.ErrorDataEvent;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.api.Handler;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
@@ -65,10 +66,12 @@ public final class BatchedDataGroupHandler implements ProcessTask {
                     handleErrorDataEvent(filter.getType(), filter.getType(), dataGroup.toString());
                     return false;
                 }
+            } catch (WormholeFilterException wex) {
+                handleErrorDataEvent(filter.getType(), wex.getMessage(), dataGroup.toString());
                 // CHECKSTYLE:OFF
             } catch (Exception ex) {
                 // CHECKSTYLE:ON
-                handleErrorDataEvent(filter.getType(), filter.getType(), dataGroup.toString());
+                handleErrorDataEvent(filter.getType(), ex.getMessage(), dataGroup.toString());
                 ex.printStackTrace();
                 return false;
             }

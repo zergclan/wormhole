@@ -57,7 +57,7 @@ public final class DataGroupExecutionEvent implements Event {
     private final Long endTimestamp;
     
     /**
-     * Build new step {@link DataGroupExecutionEvent}.
+     * Build new {@link DataGroupExecutionEvent}.
      *
      * @param planIdentifier plan identifier
      * @param planBatch plan batch
@@ -67,21 +67,33 @@ public final class DataGroupExecutionEvent implements Event {
      * @param totalRow total row
      * @return {@link DataGroupExecutionEvent}
      */
-    public static DataGroupExecutionEvent buildNewStateEvent(final String planIdentifier, final long planBatch, final String taskIdentifier, final long taskBatch,
+    public static DataGroupExecutionEvent buildNewEvent(final String planIdentifier, final long planBatch, final String taskIdentifier, final long taskBatch,
                                                              final int batchIndex, final int totalRow) {
         return new DataGroupExecutionEvent(planIdentifier, planBatch, taskIdentifier, taskBatch, batchIndex, totalRow, -1, -1, -1, -1, DateUtil.currentTimeMillis(), 0L);
     }
     
     /**
-     * Build complete step {@link DataGroupExecutionEvent}.
+     * Build complete {@link DataGroupExecutionEvent}.
      *
      * @param taskBatch task batch
      * @param batchIndex batch index
      * @param loadResult {@link LoadResult}
      * @return {@link DataGroupExecutionEvent}
      */
-    public static DataGroupExecutionEvent buildCompleteStateEvent(final long taskBatch, final int batchIndex, final LoadResult loadResult) {
+    public static DataGroupExecutionEvent buildCompleteEvent(final long taskBatch, final int batchIndex, final LoadResult loadResult) {
         return new DataGroupExecutionEvent(null, null, null, taskBatch, batchIndex, loadResult.getTotalRow(), loadResult.getInsertRow(), loadResult.getUpdateRow(), loadResult.getErrorRow(),
                 loadResult.getSameRow(), null, DateUtil.currentTimeMillis());
+    }
+    
+    /**
+     * Build error {@link DataGroupExecutionEvent}.
+     *
+     * @param taskBatch task batch
+     * @param batchIndex batch index
+     * @param errorRow error row
+     * @return {@link DataGroupExecutionEvent}
+     */
+    public static Event buildErrorEvent(final long taskBatch, final int batchIndex, final int errorRow) {
+        return new DataGroupExecutionEvent(null, null, null, taskBatch, batchIndex, null, null, null, errorRow, null, null, DateUtil.currentTimeMillis());
     }
 }

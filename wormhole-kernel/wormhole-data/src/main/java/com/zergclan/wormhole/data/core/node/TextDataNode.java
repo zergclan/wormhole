@@ -30,7 +30,7 @@ public final class TextDataNode implements DataNode<String> {
 
     private String name;
 
-    private String value;
+    private final String value;
 
     public TextDataNode(final String name, final String value) {
         this.name = name;

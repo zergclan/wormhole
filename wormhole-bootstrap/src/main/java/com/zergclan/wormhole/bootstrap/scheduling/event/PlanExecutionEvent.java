@@ -48,47 +48,47 @@ public final class PlanExecutionEvent implements Event {
     private final Long endTimestamp;
     
     /**
-     * Build new step {@link PlanExecutionEvent}.
+     * Build new {@link PlanExecutionEvent}.
      *
      * @param planIdentifier plan identifier
      * @param triggerIdentifier plan trigger identifier
      * @param planBatch plan batch
      * @return {@link PlanExecutionEvent}
      */
-    public static PlanExecutionEvent buildNewStateEvent(final String planIdentifier, final String triggerIdentifier, final long planBatch) {
+    public static PlanExecutionEvent buildNewEvent(final String planIdentifier, final String triggerIdentifier, final long planBatch) {
         return new PlanExecutionEvent(planIdentifier, triggerIdentifier, planBatch, ExecutionStep.NEW, ExecutionState.SUCCESS, DateUtil.currentTimeMillis(), 0L);
     }
     
     /**
-     * Build ready step {@link PlanExecutionEvent}.
+     * Build ready {@link PlanExecutionEvent}.
      *
      * @param planBatch plan batch
      * @param executionState {@link ExecutionState}
      * @return {@link PlanExecutionEvent}
      */
-    public static PlanExecutionEvent buildReadyStateEvent(final long planBatch, final ExecutionState executionState) {
+    public static PlanExecutionEvent buildReadyEvent(final long planBatch, final ExecutionState executionState) {
         return new PlanExecutionEvent(null, null, planBatch, ExecutionStep.READY, executionState, null, null);
     }
     
     /**
-     * Build execution step {@link PlanExecutionEvent}.
+     * Build execution {@link PlanExecutionEvent}.
      *
      * @param planBatch plan batch
      * @param executionState {@link ExecutionState}
      * @return {@link PlanExecutionEvent}
      */
-    public static PlanExecutionEvent buildExecutionStateEvent(final long planBatch, final ExecutionState executionState) {
+    public static PlanExecutionEvent buildExecutionEvent(final long planBatch, final ExecutionState executionState) {
         return new PlanExecutionEvent(null, null, planBatch, ExecutionStep.EXECUTION, executionState, null, null);
     }
     
     /**
-     * Build complete step {@link PlanExecutionEvent}.
+     * Build complete {@link PlanExecutionEvent}.
      *
      * @param planBatch plan batch
      * @param executionState execution state
      * @return {@link PlanExecutionEvent}
      */
-    public static PlanExecutionEvent buildCompleteStepEvent(final long planBatch, final ExecutionState executionState) {
+    public static PlanExecutionEvent buildCompleteEvent(final long planBatch, final ExecutionState executionState) {
         return new PlanExecutionEvent(null, null, planBatch, ExecutionStep.COMPLETE, executionState, null, DateUtil.currentTimeMillis());
     }
 }

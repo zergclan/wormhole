@@ -17,10 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Objects;
 
 /**
  * Value appendValue helper.
@@ -31,13 +29,12 @@ public final class ValueAppendHelper {
     private final String appendValue;
     
     /**
-     * Sub value.
+     * Append value.
      *
-     * @param value value
-     * @return sub value
+     * @param textDataNode value
+     * @return append value
      */
-    public String appendValue(final String value) {
-        Validator.preState(!Objects.isNull(value), "error : appendValue helper arg value can not be null");
-        return value + appendValue;
+    public TextDataNode appendValue(final TextDataNode textDataNode) {
+        return new TextDataNode(textDataNode.getName(), textDataNode.getValue() + appendValue);
     }
 }

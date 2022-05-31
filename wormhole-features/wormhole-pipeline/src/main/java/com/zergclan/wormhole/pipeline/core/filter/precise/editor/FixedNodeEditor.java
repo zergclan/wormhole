@@ -44,9 +44,7 @@ public final class FixedNodeEditor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<NodeValueHelper> iterator = fixedValue.iterator();
         while (iterator.hasNext()) {
-            if (!dataGroup.refresh(iterator.next().getDefaultValue())) {
-                return false;
-            }
+            dataGroup.refresh(iterator.next().getDefaultValue());
         }
         return true;
     }
