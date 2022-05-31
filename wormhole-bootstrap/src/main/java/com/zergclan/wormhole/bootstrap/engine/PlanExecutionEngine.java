@@ -33,7 +33,6 @@ import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -72,7 +71,7 @@ public final class PlanExecutionEngine implements EventListener<TaskCompletedEve
      * @param planTrigger {@link PlanTrigger}
      */
     public void execute(final PlanTrigger planTrigger) {
-        Long planBatch = SequenceGenerator.generateId();
+        long planBatch = SequenceGenerator.generateId();
         planContext.handleTrigger(planBatch, planTrigger);
         try {
             Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(planBatch, wormholeMetadata, planTrigger);
@@ -83,8 +82,11 @@ public final class PlanExecutionEngine implements EventListener<TaskCompletedEve
             planContext.handleCachedEvent(planBatch, ExecutionState.SUCCESS);
             PlanExecutor planExecutor = PlanExecutorFactory.create(cachedPlanMetadata.get());
             planExecutor.execute();
-        } catch (final SQLException ex) {
-            planContext.handleExecuteException(ex);
+            // CHECKSTYLE:OFF
+        } catch (final Exception ex) {
+            // CHECKSTYLE:ON
+            planContext.handlePlanExecuteError(planBatch);
+            ex.printStackTrace();
         }
     }
     

@@ -45,7 +45,8 @@ public final class NodeNameConvertor implements Filter<DataGroup> {
         final Iterator<Map.Entry<String, String>> iterator = sourceTargetNameMappings.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, String> entry = iterator.next();
-            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
+            String nodeName = entry.getKey();
+            DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
             if (!dataNode.refreshName(entry.getValue())) {
                 return false;
             }

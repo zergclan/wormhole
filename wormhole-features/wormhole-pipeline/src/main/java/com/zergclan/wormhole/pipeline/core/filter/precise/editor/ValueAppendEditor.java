@@ -22,12 +22,14 @@ import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import com.zergclan.wormhole.pipeline.core.helper.ValueAppendHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Data node value appendValue editor implemented of {@link Filter}.
@@ -46,15 +48,15 @@ public final class ValueAppendEditor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<Map.Entry<String, ValueAppendHelper>> iterator = valueAppendHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, ValueAppendHelper> entry = iterator.next();
-            String name = entry.getKey();
-            DataNode<?> dataNode = dataGroup.getDataNode(name);
-            String value = dataNode.getValue().toString();
+            Entry<String, ValueAppendHelper> entry = iterator.next();
+            String nodeName = entry.getKey();
             ValueAppendHelper valueAppendHelper = entry.getValue();
-            String append = valueAppendHelper.appendValue(value);
-            if (!dataGroup.refresh(new TextDataNode(name, append))) {
-                return false;
+            DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
+            if (dataNode instanceof TextDataNode) {
+                dataGroup.refresh(valueAppendHelper.appendValue((TextDataNode) dataNode));
+                continue;
             }
+            throw new WormholeFilterException("value append editor failed data node must be text data node, node name: [%s]", nodeName);
         }
         return true;
     }

@@ -21,11 +21,12 @@ import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.IntegerDataNode;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class NotBlankValidatorTest {
@@ -51,7 +52,8 @@ public final class NotBlankValidatorTest {
         DataGroup dataGroup = new DataGroup();
         dataGroup.register(new TextDataNode("name", ""));
         dataGroup.register(new IntegerDataNode("age", 19));
-        assertFalse(validator.doFilter(dataGroup));
+        WormholeFilterException exception = assertThrows(WormholeFilterException.class, () -> validator.doFilter(dataGroup));
+        assertEquals("not blank validator failed data node value is blank, node name: [name]", exception.getMessage());
     }
     
     @Test

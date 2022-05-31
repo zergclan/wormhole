@@ -23,12 +23,14 @@ import com.zergclan.wormhole.data.core.node.PatternedDataTime;
 import com.zergclan.wormhole.data.core.node.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import com.zergclan.wormhole.pipeline.core.helper.PatternedDataTimeConvertorHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 /**
@@ -48,14 +50,18 @@ public final class PatternedDataTimeConvertor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<Map.Entry<String, PatternedDataTimeConvertorHelper>> iterator = patternedDataTimeConvertorHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, PatternedDataTimeConvertorHelper> entry = iterator.next();
-            String name = entry.getKey();
-            DataNode<?> dataNode = dataGroup.getDataNode(name);
-            Optional<PatternedDataTime> target = entry.getValue().convert((PatternedDataTime) dataNode.getValue());
-            if (!target.isPresent()) {
-                return false;
+            Entry<String, PatternedDataTimeConvertorHelper> entry = iterator.next();
+            String nodeName = entry.getKey();
+            DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
+            if (dataNode instanceof PatternedDataTimeDataNode) {
+                Optional<PatternedDataTime> target = entry.getValue().convert((PatternedDataTime) dataNode.getValue());
+                if (!target.isPresent()) {
+                    return false;
+                }
+                dataGroup.refresh(new PatternedDataTimeDataNode(nodeName, target.get()));
+                continue;
             }
-            dataGroup.refresh(new PatternedDataTimeDataNode(name, target.get()));
+            throw new WormholeFilterException("value append editor failed data node must be patterned data time data node, node name: [%s]", nodeName);
         }
         return true;
     }

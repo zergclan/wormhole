@@ -48,14 +48,20 @@ public final class AtomicPlanExecutor implements PlanExecutor {
     public void execute() {
         String planIdentifier = cachedPlanMetadata.getPlanIdentifier();
         long planBatch = cachedPlanMetadata.getPlanBatch();
-        handeEvent(PlanExecutionEvent.buildExecutionStateEvent(planBatch, ExecutionState.RUN));
-        WormholeEventBus.post(PlanExecutionEvent.buildExecutionStateEvent(planBatch, ExecutionState.RUN));
-        for (Map<String, CachedTaskMetaData> each : cachedPlanMetadata.getCachedOrderedTasks()) {
-            Optional<String> failedTask = transactionalExecute(planBatch, planIdentifier, each);
-            if (failedTask.isPresent()) {
-                handeEvent(PlanExecutionEvent.buildCompleteStepEvent(planBatch, ExecutionState.FAILED));
-                return;
+        handleEvent(PlanExecutionEvent.buildExecutionEvent(planBatch, ExecutionState.RUN));
+        WormholeEventBus.post(PlanExecutionEvent.buildExecutionEvent(planBatch, ExecutionState.RUN));
+        try {
+            for (Map<String, CachedTaskMetaData> each : cachedPlanMetadata.getCachedOrderedTasks()) {
+                Optional<String> failedTask = transactionalExecute(planBatch, planIdentifier, each);
+                if (failedTask.isPresent()) {
+                    handleEvent(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.FAILED));
+                    return;
+                }
             }
+            // CHECKSTYLE:OFF
+        } catch (final Exception ex) {
+            // CHECKSTYLE:ON
+            handleEvent(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.ERROR));
         }
     }
     
@@ -65,7 +71,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
             CachedTaskMetaData cachedTaskMetaData = entry.getValue();
             String taskIdentifier = cachedTaskMetaData.getTaskIdentifier();
             long taskBatch = cachedTaskMetaData.getTaskBatch();
-            handeEvent(TaskExecutionEvent.buildNewStateEvent(cachedPlanMetadata.getPlanIdentifier(), planBatch, taskIdentifier, taskBatch));
+            handleEvent(TaskExecutionEvent.buildNewEvent(cachedPlanMetadata.getPlanIdentifier(), planBatch, taskIdentifier, taskBatch));
             completionService.submit(new PromiseTaskExecutor(planIdentifier, planBatch, entry.getValue()));
         }
         int size = cachedTaskMetadata.size();
@@ -74,14 +80,14 @@ public final class AtomicPlanExecutor implements PlanExecutor {
             try {
                 promiseTaskResult = completionService.take().get();
                 if (!promiseTaskResult.isSuccess()) {
-                    handeEvent(TaskExecutionEvent.buildCompleteStateEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.FAILED));
+                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.FAILED));
                     return Optional.of(promiseTaskResult.getResult().getCachedTaskIdentifier());
                 }
                 TaskResult result = promiseTaskResult.getResult();
                 if (0 == result.getTotalRow()) {
-                    handeEvent(TaskExecutionEvent.buildCompleteStateEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.SUCCESS));
+                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.SUCCESS));
                 } else {
-                    handeEvent(TaskExecutionEvent.buildExecutionStepEvent(promiseTaskResult.getResult().getTaskBatch(), promiseTaskResult.getResult().getTotalRow()));
+                    handleEvent(TaskExecutionEvent.buildExecutionEvent(promiseTaskResult.getResult().getTaskBatch(), promiseTaskResult.getResult().getTotalRow()));
                 }
             } catch (final ExecutionException | InterruptedException ex) {
                 ex.printStackTrace();
@@ -90,7 +96,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
         return Optional.empty();
     }
     
-    private void handeEvent(final Event event) {
+    private void handleEvent(final Event event) {
         WormholeEventBus.post(event);
     }
 }

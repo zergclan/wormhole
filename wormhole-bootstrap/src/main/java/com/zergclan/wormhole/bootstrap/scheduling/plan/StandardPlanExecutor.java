@@ -47,8 +47,14 @@ public final class StandardPlanExecutor implements PlanExecutor {
     public void execute() {
         String planIdentifier = cachedPlanMetadata.getIdentifier();
         long planBatch = cachedPlanMetadata.getPlanBatch();
-        handeEvent(PlanExecutionEvent.buildExecutionStateEvent(planBatch, ExecutionState.RUN));
-        cachedPlanMetadata.getCachedOrderedTasks().forEach(each -> parallelExecute(each, planIdentifier, planBatch));
+        handleEvent(PlanExecutionEvent.buildExecutionEvent(planBatch, ExecutionState.RUN));
+        try {
+            cachedPlanMetadata.getCachedOrderedTasks().forEach(each -> parallelExecute(each, planIdentifier, planBatch));
+            // CHECKSTYLE:OFF
+        } catch (final Exception ex) {
+            // CHECKSTYLE:ON
+            handleEvent(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.ERROR));
+        }
     }
 
     private void parallelExecute(final Map<String, CachedTaskMetaData> cachedTaskMetadata, final String planIdentifier, final long planBatch) {
@@ -57,7 +63,7 @@ public final class StandardPlanExecutor implements PlanExecutor {
             CachedTaskMetaData cachedTaskMetaData = entry.getValue();
             String taskIdentifier = cachedTaskMetaData.getTaskIdentifier();
             long taskBatch = cachedTaskMetaData.getTaskBatch();
-            handeEvent(TaskExecutionEvent.buildNewStateEvent(cachedPlanMetadata.getPlanIdentifier(), planBatch, taskIdentifier, taskBatch));
+            handleEvent(TaskExecutionEvent.buildNewEvent(cachedPlanMetadata.getPlanIdentifier(), planBatch, taskIdentifier, taskBatch));
             PromiseTaskExecutor promiseTaskExecutor = new PromiseTaskExecutor(planIdentifier, planBatch, entry.getValue());
             completionService.submit(promiseTaskExecutor);
         }
@@ -67,14 +73,14 @@ public final class StandardPlanExecutor implements PlanExecutor {
             try {
                 promiseTaskResult = completionService.take().get();
                 if (!promiseTaskResult.isSuccess()) {
-                    handeEvent(TaskExecutionEvent.buildCompleteStateEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.FAILED));
+                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.FAILED));
                     continue;
                 }
                 TaskResult result = promiseTaskResult.getResult();
                 if (0 == result.getTotalRow()) {
-                    handeEvent(TaskExecutionEvent.buildCompleteStateEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.SUCCESS));
+                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.SUCCESS));
                 } else {
-                    handeEvent(TaskExecutionEvent.buildExecutionStepEvent(promiseTaskResult.getResult().getTaskBatch(), promiseTaskResult.getResult().getTotalRow()));
+                    handleEvent(TaskExecutionEvent.buildExecutionEvent(promiseTaskResult.getResult().getTaskBatch(), promiseTaskResult.getResult().getTotalRow()));
                 }
             } catch (final InterruptedException | ExecutionException ex) {
                 ex.printStackTrace();
@@ -82,7 +88,7 @@ public final class StandardPlanExecutor implements PlanExecutor {
         }
     }
     
-    private void handeEvent(final Event event) {
+    private void handleEvent(final Event event) {
         WormholeEventBus.post(event);
     }
 }

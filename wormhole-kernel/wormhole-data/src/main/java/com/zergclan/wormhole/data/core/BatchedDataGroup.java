@@ -57,4 +57,11 @@ public final class BatchedDataGroup {
     public boolean remove(final DataGroup dataGroup) {
         return errors.add(dataGroup);
     }
+    
+    /**
+     * Clear errors.
+     */
+    public void clearErrors() {
+        dataGroups.removeAll(errors);
+    }
 }

@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 /**
@@ -46,14 +47,16 @@ public final class NullToDefaultEditor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<Map.Entry<String, NodeValueHelper>> iterator = defaultValueHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            DataNode<?> dataNode = dataGroup.getDataNode(iterator.next().getKey());
+            Entry<String, NodeValueHelper> entry = iterator.next();
+            String nodeName = entry.getKey();
+            DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
+            NodeValueHelper nodeValueHelper = entry.getValue();
             if (Objects.isNull(dataNode)) {
-                dataGroup.refresh(iterator.next().getValue().getDefaultValue());
+                dataGroup.refresh(nodeValueHelper.getDefaultValue());
                 continue;
             }
             if (dataNode.isNull()) {
-                dataGroup.refresh(iterator.next().getValue().getDefaultValue());
-                continue;
+                dataGroup.refresh(nodeValueHelper.getDefaultValue());
             }
         }
         return true;

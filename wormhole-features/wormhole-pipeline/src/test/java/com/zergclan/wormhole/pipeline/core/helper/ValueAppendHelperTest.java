@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +27,9 @@ public final class ValueAppendHelperTest {
     @Test
     public void assertAppendValue() {
         ValueAppendHelper appendHelper = new ValueAppendHelper("+append");
-        assertEquals("value+append", appendHelper.appendValue("value"));
+        TextDataNode node = new TextDataNode("name", "value");
+        TextDataNode textDataNode = appendHelper.appendValue(node);
+        assertEquals("name", textDataNode.getName());
+        assertEquals("value+append", textDataNode.getValue());
     }
 }

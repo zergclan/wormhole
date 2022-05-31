@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 /**
@@ -47,13 +48,15 @@ public final class CodeConvertor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<Map.Entry<String, CodeConvertorHelper>> iterator = codeConvertorHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, CodeConvertorHelper> entry = iterator.next();
-            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
-            Optional<String> targetCode = entry.getValue().convert(String.valueOf(dataNode.getValue()));
+            Entry<String, CodeConvertorHelper> entry = iterator.next();
+            String nodeName = entry.getKey();
+            DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
+            CodeConvertorHelper codeConvertorHelper = entry.getValue();
+            Optional<String> targetCode = codeConvertorHelper.convert(String.valueOf(dataNode.getValue()));
             if (!targetCode.isPresent()) {
                 return false;
             }
-            refreshDataNode(dataGroup, dataNode.getName(), targetCode.get());
+            refreshDataNode(dataGroup, nodeName, targetCode.get());
         }
         return true;
     }

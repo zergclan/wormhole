@@ -87,7 +87,7 @@ public final class PlanContext {
      * @param planTrigger {@link PlanTrigger}
      */
     public void handleTrigger(final long planBatch, final PlanTrigger planTrigger) {
-        WormholeEventBus.post(PlanExecutionEvent.buildNewStateEvent(planTrigger.getPlanIdentifier(), planTrigger.getIdentifier(), planBatch));
+        WormholeEventBus.post(PlanExecutionEvent.buildNewEvent(planTrigger.getPlanIdentifier(), planTrigger.getIdentifier(), planBatch));
     }
     
     /**
@@ -97,7 +97,7 @@ public final class PlanContext {
      * @param executionState {@link ExecutionState}
      */
     public void handleCachedEvent(final long planBatch, final ExecutionState executionState) {
-        WormholeEventBus.post(PlanExecutionEvent.buildReadyStateEvent(planBatch, executionState));
+        WormholeEventBus.post(PlanExecutionEvent.buildReadyEvent(planBatch, executionState));
     }
     
     /**
@@ -111,7 +111,7 @@ public final class PlanContext {
         int row = cachedPlanMetaData.taskCompleted(event.getTaskIdentifier());
         if (0 == row) {
             cachedMetadata.asMap().remove(planIdentifier, cachedPlanMetaData);
-            WormholeEventBus.post(PlanExecutionEvent.buildCompleteStepEvent(cachedPlanMetaData.getPlanBatch(), ExecutionState.SUCCESS));
+            WormholeEventBus.post(PlanExecutionEvent.buildCompleteEvent(cachedPlanMetaData.getPlanBatch(), ExecutionState.SUCCESS));
         }
     }
     
@@ -125,11 +125,11 @@ public final class PlanContext {
     }
     
     /**
-     * Handle execute SQL exception.
+     * Handle plan execute error.
      *
-     * @param exception {@link SQLException}
+     * @param planBatch plan batch
      */
-    public void handleExecuteException(final SQLException exception) {
-        throw new WormholeException("error: can not cached plan meta data by SQL exception", exception);
+    public void handlePlanExecuteError(final long planBatch) {
+        WormholeEventBus.post(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.ERROR));
     }
 }

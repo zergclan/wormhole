@@ -21,11 +21,14 @@ import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Getter
@@ -41,12 +44,17 @@ public final class NodeCopyEditor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<Map.Entry<String, String>> iterator = sourceTargetNameMappings.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, String> entry = iterator.next();
-            DataNode<?> dataNode = dataGroup.getDataNode(entry.getKey());
+            Entry<String, String> entry = iterator.next();
+            String sourceNodeName = entry.getKey();
+            DataNode<?> dataNode = dataGroup.getDataNode(sourceNodeName);
+            if (Objects.isNull(dataNode)) {
+                throw new WormholeFilterException("node copy editor failed data node is null, node name: [%s]", sourceNodeName);
+            }
+            String targetNodeName = entry.getValue();
             DataNode<?> cloneDataNode = dataNode.cloneNode();
             cloneDataNode.refreshName(entry.getValue());
             if (!dataGroup.register(cloneDataNode)) {
-                return false;
+                throw new WormholeFilterException("node copy editor failed data node already exists, node name: [%s]", targetNodeName);
             }
         }
         return true;

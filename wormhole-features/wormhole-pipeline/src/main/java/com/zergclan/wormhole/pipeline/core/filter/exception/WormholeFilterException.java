@@ -15,23 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.helper;
+package com.zergclan.wormhole.pipeline.core.filter.exception;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.exception.WormholeException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public final class ValueRangeHelperTest {
+/**
+ * Filter exception of Wormhole.
+ */
+public final class WormholeFilterException extends WormholeException {
     
-    @Test
-    public void assertAppendValue() {
-        ValueRangeHelper name1Helper = new ValueRangeHelper(0, 4);
-        assertEquals("name", name1Helper.sub("name-age"));
-        ValueRangeHelper name2Helper = new ValueRangeHelper(-8, 4);
-        assertEquals("name", name1Helper.sub("name-age"));
-        ValueRangeHelper age1Helper = new ValueRangeHelper(5, 8);
-        assertEquals("age", age1Helper.sub("name-age"));
-        ValueRangeHelper age2Helper = new ValueRangeHelper(-3, 8);
-        assertEquals("age", age2Helper.sub("name-age"));
+    private static final long serialVersionUID = -7064031932976763178L;
+    
+    public WormholeFilterException(final String errorMessage, final Object... args) {
+        super(errorMessage, args);
+    }
+    
+    public WormholeFilterException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 }

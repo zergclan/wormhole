@@ -34,8 +34,6 @@ public final class MysqlLoadResult implements LoadResult {
     
     private int updateRow;
     
-    private int errorRow;
-    
     private int sameRow;
     
     private final Collection<ErrorDataGroup> errorData = new LinkedList<>();
@@ -62,18 +60,16 @@ public final class MysqlLoadResult implements LoadResult {
     }
     
     /**
-     * Increment error row.
-     */
-    public void incrementErrorRow() {
-        errorRow++;
-    }
-    
-    /**
      * Add error data.
      *
      * @param errorDataGroup {@link ErrorDataGroup}
      */
     public void addErrorData(final ErrorDataGroup errorDataGroup) {
         errorData.add(errorDataGroup);
+    }
+    
+    @Override
+    public int getErrorRow() {
+        return totalRow - insertRow - updateRow - sameRow;
     }
 }

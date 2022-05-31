@@ -15,49 +15,56 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.core.filter.precise.validator;
+package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
 
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.IntegerDataNode;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
+import com.zergclan.wormhole.pipeline.core.helper.ValueSubHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public final class NotNullValidatorTest {
+public final class ValueSubEditorTest {
     
-    private static NotNullValidator validator;
+    private static ValueSubEditor editor;
     
     @BeforeAll
     public static void init() {
-        String[] names = {"name", "age"};
-        validator = new NotNullValidator(0, FilterType.NOT_NULL, names);
+        Map<String, ValueSubHelper> helpers = new LinkedHashMap<>();
+        helpers.put("name", new ValueSubHelper(0, 4));
+        editor = new ValueSubEditor(0, FilterType.VALUE_APPEND, helpers);
     }
     
     @Test
     public void assertDoFilterSuccess() {
         DataGroup dataGroup = new DataGroup();
-        dataGroup.register(new TextDataNode("name", "jack"));
-        dataGroup.register(new IntegerDataNode("age", 19));
-        assertTrue(validator.doFilter(dataGroup));
+        dataGroup.register(new TextDataNode("name", "jack#append"));
+        assertTrue(editor.doFilter(dataGroup));
+        assertEquals("name", dataGroup.getDataNode("name").getName());
+        assertEquals("jack", dataGroup.getDataNode("name").getValue());
     }
     
     @Test
-    public void assertDoFilterFailed() {
+    public void assertDoFilterNullFailed() {
         DataGroup dataGroup = new DataGroup();
-        dataGroup.register(new TextDataNode("name", "jack"));
-        dataGroup.register(new IntegerDataNode("age", null));
-        WormholeFilterException exception = assertThrows(WormholeFilterException.class, () -> validator.doFilter(dataGroup));
-        assertEquals("not null validator failed data node value is null, node name: [age]", exception.getMessage());
+        WormholeFilterException exception = assertThrows(WormholeFilterException.class, () -> editor.doFilter(dataGroup));
+        assertEquals("value sub editor failed data node must be text data node, node name: [name]", exception.getMessage());
     }
     
     @Test
-    public void assertGetType() {
-        assertEquals(FilterType.NOT_NULL.name(), validator.getType());
+    public void assertDoFilterNodeTypeFailed() {
+        DataGroup dataGroup = new DataGroup();
+        dataGroup.register(new IntegerDataNode("name", 1));
+        WormholeFilterException exception = assertThrows(WormholeFilterException.class, () -> editor.doFilter(dataGroup));
+        assertEquals("value sub editor failed data node must be text data node, node name: [name]", exception.getMessage());
     }
 }

@@ -53,21 +53,20 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
 
     @Override
     protected BatchedLoadResult<MysqlLoadResult> standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
-        MysqlLoadResult mysqlLoadResult = new MysqlLoadResult();
+        MysqlLoadResult result = new MysqlLoadResult();
         Collection<DataGroup> dataGroups = batchedDataGroup.getDataGroups();
         for (DataGroup each : dataGroups) {
             preFix(each, cachedTarget);
             try {
-                loadDataGroup(each, cachedTarget, mysqlLoadResult);
+                loadDataGroup(each, cachedTarget, result);
             } catch (final SQLException ex) {
-                mysqlLoadResult.addErrorData(new ErrorDataGroup(ex.getSQLState(), ex.getMessage(), each));
-                mysqlLoadResult.incrementErrorRow();
+                result.addErrorData(new ErrorDataGroup(ex.getSQLState(), ex.getMessage(), each));
                 log.info("MySQL batched loader error, error data: [{}]", each);
             }
         }
-        mysqlLoadResult.setTotalRow(dataGroups.size());
-        log.info("MySQL batched loader standard load success, load result: [{}]", mysqlLoadResult);
-        return new BatchedLoadResult<>(true, mysqlLoadResult);
+        result.setTotalRow(batchedDataGroup.getBatchSize());
+        log.info("MySQL batched loader standard load success, load result: [{}]", result);
+        return new BatchedLoadResult<>(true, result);
     }
     
     private void preFix(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) {

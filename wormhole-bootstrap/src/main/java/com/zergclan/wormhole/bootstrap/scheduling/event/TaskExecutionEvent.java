@@ -52,47 +52,47 @@ public final class TaskExecutionEvent implements Event {
     private final Long endTimestamp;
     
     /**
-     * Build new step {@link TaskExecutionEvent}.
+     * Build new {@link TaskExecutionEvent}.
      * @param planIdentifier plan identifier
      * @param planBatch plan batch
      * @param taskIdentifier task identifier
      * @param taskBatch task batch
      * @return {@link TaskExecutionEvent}
      */
-    public static TaskExecutionEvent buildNewStateEvent(final String planIdentifier, final Long planBatch, final String taskIdentifier, final long taskBatch) {
+    public static TaskExecutionEvent buildNewEvent(final String planIdentifier, final Long planBatch, final String taskIdentifier, final long taskBatch) {
         return new TaskExecutionEvent(planIdentifier, planBatch, taskIdentifier, taskBatch, ExecutionStep.NEW, ExecutionState.SUCCESS, null, DateUtil.currentTimeMillis(), 0L);
     }
     
     /**
-     * Build ready step {@link TaskExecutionEvent}.
+     * Build ready {@link TaskExecutionEvent}.
      *
      * @param taskBatch task batch
      * @param remainingRow remaining row
      * @return {@link TaskExecutionEvent}
      */
-    public static TaskExecutionEvent buildReadyStepEvent(final long taskBatch, final int remainingRow) {
+    public static TaskExecutionEvent buildReadyEvent(final long taskBatch, final int remainingRow) {
         return new TaskExecutionEvent(null, null, null, taskBatch, ExecutionStep.READY, ExecutionState.SUCCESS, remainingRow, null, null);
     }
     
     /**
-     * Build execution step {@link TaskExecutionEvent}.
+     * Build execution {@link TaskExecutionEvent}.
      *
      * @param taskBatch task batch
      * @param remainingRow remaining row
      * @return {@link TaskExecutionEvent}
      */
-    public static TaskExecutionEvent buildExecutionStepEvent(final long taskBatch, final int remainingRow) {
+    public static TaskExecutionEvent buildExecutionEvent(final long taskBatch, final int remainingRow) {
         return new TaskExecutionEvent(null, null, null, taskBatch, ExecutionStep.READY, ExecutionState.SUCCESS, remainingRow, null, null);
     }
     
     /**
-     * Build complete step {@link TaskExecutionEvent}.
+     * Build complete {@link TaskExecutionEvent}.
      *
      * @param taskBatch plan batch
      * @param executionState execution state
      * @return {@link TaskExecutionEvent}
      */
-    public static TaskExecutionEvent buildCompleteStateEvent(final long taskBatch, final ExecutionState executionState) {
+    public static TaskExecutionEvent buildCompleteEvent(final long taskBatch, final ExecutionState executionState) {
         return new TaskExecutionEvent(null, null, null, taskBatch, ExecutionStep.COMPLETE, executionState, null, DateUtil.currentTimeMillis(), 0L);
     }
 }

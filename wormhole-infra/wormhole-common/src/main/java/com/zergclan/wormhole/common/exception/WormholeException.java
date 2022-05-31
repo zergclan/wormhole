@@ -20,7 +20,7 @@ package com.zergclan.wormhole.common.exception;
 /**
  * Base Exception in Wormhole.
  */
-public final class WormholeException extends RuntimeException {
+public class WormholeException extends RuntimeException {
     
     /**
      * Constructs an exception with formatted error message and args.

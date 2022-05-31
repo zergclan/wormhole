@@ -21,6 +21,7 @@ import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -42,9 +43,10 @@ public final class NotNullValidator implements Filter<DataGroup> {
         final int length = names.length;
         DataNode<?> dataNode;
         for (int i = 0; i < length; i++) {
+            final String nodeName = names[i];
             dataNode = dataGroup.getDataNode(names[i]);
             if (dataNode.isNull()) {
-                return false;
+                throw new WormholeFilterException("not null validator failed data node value is null, node name: [%s]", nodeName);
             }
         }
         return true;

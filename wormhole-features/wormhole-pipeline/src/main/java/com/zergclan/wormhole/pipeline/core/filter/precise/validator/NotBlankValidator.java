@@ -21,6 +21,7 @@ import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -39,12 +40,13 @@ public final class NotBlankValidator implements Filter<DataGroup> {
     
     @Override
     public boolean doFilter(final DataGroup dataGroup) {
-        final int length = names.length;
+        int length = names.length;
         DataNode<?> dataNode;
         for (int i = 0; i < length; i++) {
-            dataNode = dataGroup.getDataNode(names[i]);
+            String nodeName = names[i];
+            dataNode = dataGroup.getDataNode(nodeName);
             if (dataNode.isBlank()) {
-                return false;
+                throw new WormholeFilterException("not blank validator failed data node value is blank, node name: [%s]", nodeName);
             }
         }
         return true;

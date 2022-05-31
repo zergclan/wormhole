@@ -33,7 +33,7 @@ import java.util.Properties;
 @Getter
 public final class ValueRangeEditorMetaData implements FilterMetaData {
     
-    private static final FilterType FILTER_TYPE = FilterType.VALUE_RANGE;
+    private static final FilterType FILTER_TYPE = FilterType.VALUE_SUB;
     
     private final String taskIdentifier;
     

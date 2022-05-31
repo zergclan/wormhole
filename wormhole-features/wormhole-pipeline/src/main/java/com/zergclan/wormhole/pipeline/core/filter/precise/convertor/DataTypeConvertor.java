@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 /**
@@ -46,10 +47,10 @@ public final class DataTypeConvertor implements Filter<DataGroup> {
     public boolean doFilter(final DataGroup dataGroup) {
         Iterator<Map.Entry<String, DataTypeConvertorHelper>> iterator = dataTypeConvertorHelpers.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, DataTypeConvertorHelper> entry = iterator.next();
-            String name = entry.getKey();
+            Entry<String, DataTypeConvertorHelper> entry = iterator.next();
+            String nodeName = entry.getKey();
             DataTypeConvertorHelper dataTypeConvertorHelper = entry.getValue();
-            DataNode<?> sourceDataNode = dataGroup.getDataNode(name);
+            DataNode<?> sourceDataNode = dataGroup.getDataNode(nodeName);
             Optional<DataNode<?>> convertDataNode = dataTypeConvertorHelper.convert(sourceDataNode);
             if (!convertDataNode.isPresent()) {
                 return false;
