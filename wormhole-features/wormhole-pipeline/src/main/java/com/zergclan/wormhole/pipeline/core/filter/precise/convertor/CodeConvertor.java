@@ -21,6 +21,7 @@ import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import com.zergclan.wormhole.pipeline.core.helper.CodeConvertorHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,10 @@ public final class CodeConvertor implements Filter<DataGroup> {
             DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
             CodeConvertorHelper codeConvertorHelper = entry.getValue();
             Optional<DataNode<?>> targetCode = codeConvertorHelper.convert(dataNode);
-            targetCode.ifPresent(dataGroup::refresh);
+            if (!targetCode.isPresent()) {
+                throw new WormholeFilterException("code convertor failed source code: [%s] can not convertor to target code, node name: [%s]", dataNode.getValue(), nodeName);
+            }
+            dataGroup.refresh(targetCode.get());
         }
         return true;
     }

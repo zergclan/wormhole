@@ -18,9 +18,13 @@
 package com.zergclan.wormhole.pipeline.core.helper;
 
 import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.node.BigDecimalDataNode;
+import com.zergclan.wormhole.data.core.node.IntegerDataNode;
+import com.zergclan.wormhole.data.core.node.LongDataNode;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -44,13 +48,34 @@ public final class CodeConvertorHelper {
     public Optional<DataNode<?>> convert(final DataNode<?> source) {
         String nodeName = source.getName();
         if (source instanceof TextDataNode) {
-            String sourceCode = ((TextDataNode) source).getValue();
-            Optional<String> targetCode = getTargetCode(sourceCode);
-            if (targetCode.isPresent()) {
-                return Optional.of(new TextDataNode(nodeName, targetCode.get()));
-            }
+            return createTextTargetCode(nodeName, (TextDataNode) source);
+        }
+        if (source instanceof IntegerDataNode) {
+            return createIntegerTargetCode(nodeName, (IntegerDataNode) source);
+        }
+        if (source instanceof BigDecimalDataNode) {
+            return createBigDecimalTargetCode(nodeName, (BigDecimalDataNode) source);
+        }
+        if (source instanceof LongDataNode) {
+            return createLongTargetCode(nodeName, (LongDataNode) source);
         }
         return Optional.empty();
+    }
+    
+    private Optional<DataNode<?>> createLongTargetCode(final String nodeName, final LongDataNode source) {
+        return getTargetCode(source.getValue().toString()).map(targetCode -> new LongDataNode(nodeName, Long.parseLong(targetCode)));
+    }
+    
+    private Optional<DataNode<?>> createIntegerTargetCode(final String nodeName, final IntegerDataNode source) {
+        return getTargetCode(source.getValue().toString()).map(targetCode -> new IntegerDataNode(nodeName, Integer.parseInt(targetCode)));
+    }
+    
+    private Optional<DataNode<?>> createBigDecimalTargetCode(final String nodeName, final BigDecimalDataNode source) {
+        return getTargetCode(source.getValue().toString()).map(targetCode -> new BigDecimalDataNode(nodeName, new BigDecimal(targetCode)));
+    }
+    
+    private Optional<DataNode<?>> createTextTargetCode(final String nodeName, final TextDataNode source) {
+        return getTargetCode(source.getValue()).map(targetCode -> new TextDataNode(nodeName, targetCode));
     }
     
     private Optional<String> getTargetCode(final String sourceCode) {

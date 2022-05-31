@@ -142,14 +142,18 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     
     @Override
     public void syncExecutionLog(final PlanExecutionLog planExecutionLog) {
-        Integer id = planExecutionLogRepository.getOne(planExecutionLog).getId();
+        PlanExecutionLog query = new PlanExecutionLog();
+        query.setPlanBatch(planExecutionLog.getPlanBatch());
+        Integer id = planExecutionLogRepository.getOne(query).getId();
         planExecutionLog.setId(id);
         planExecutionLogRepository.edit(id, planExecutionLog);
     }
     
     @Override
     public void syncExecutionLog(final TaskExecutionLog taskExecutionLog) {
-        Integer id = taskExecutionLogRepository.getOne(taskExecutionLog).getId();
+        TaskExecutionLog query = new TaskExecutionLog();
+        query.setTaskBatch(taskExecutionLog.getTaskBatch());
+        Integer id = taskExecutionLogRepository.getOne(query).getId();
         taskExecutionLog.setId(id);
         taskExecutionLogRepository.edit(id, taskExecutionLog);
     }
