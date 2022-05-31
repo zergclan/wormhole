@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
+import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -42,20 +44,17 @@ public final class CodeConvertorHelperTest {
     
     @Test
     public void assertConvert() {
-        Optional<String> valueN = helper.convert("N");
+        Optional<DataNode<?>> valueN = helper.convert(new TextDataNode("sex", "N"));
         assertTrue(valueN.isPresent());
-        assertEquals("1", valueN.get());
-        Optional<String> valueW = helper.convert("W");
+        assertEquals("1", valueN.get().getValue());
+        Optional<DataNode<?>> valueW = helper.convert(new TextDataNode("sex", "W"));
         assertTrue(valueW.isPresent());
-        assertEquals("2", valueW.get());
-        Optional<String> valueNull = helper.convert(null);
-        assertTrue(valueNull.isPresent());
-        assertEquals("3", valueNull.get());
-        Optional<String> valueEmpty = helper.convert("");
+        assertEquals("2", valueW.get().getValue());
+        Optional<DataNode<?>> valueEmpty = helper.convert(new TextDataNode("sex", ""));
         assertTrue(valueEmpty.isPresent());
-        assertEquals("3", valueEmpty.get());
-        Optional<String> valueAuto = helper.convert("auto");
+        assertEquals("3", valueEmpty.get().getValue());
+        Optional<DataNode<?>> valueAuto = helper.convert(new TextDataNode("sex", ""));
         assertTrue(valueAuto.isPresent());
-        assertEquals("3", valueAuto.get());
+        assertEquals("3", valueAuto.get().getValue());
     }
 }

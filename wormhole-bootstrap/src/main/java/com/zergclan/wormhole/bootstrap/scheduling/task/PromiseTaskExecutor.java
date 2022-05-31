@@ -94,14 +94,16 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
             handleBatchedTask(dataGroups, nextHandler, filters, 0);
             return PromiseTaskResult.newSuccess(createTaskResult(totalRow));
         }
-        int count = 0;
         Iterator<DataGroup> iterator = dataGroups.iterator();
         Collection<DataGroup> batchedEach = new LinkedList<>();
+        int count = 0;
+        int batchIndex = 0;
         while (iterator.hasNext()) {
             count++;
             batchedEach.add(iterator.next());
             if (batchSize == batchedEach.size() || totalRow == count) {
-                handleBatchedTask(batchedEach, nextHandler, filters, count - 1);
+                handleBatchedTask(batchedEach, nextHandler, filters, batchIndex);
+                batchIndex++;
                 batchedEach = new LinkedList<>();
             }
         }

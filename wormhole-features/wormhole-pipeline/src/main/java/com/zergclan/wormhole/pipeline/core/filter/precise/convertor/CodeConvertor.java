@@ -19,9 +19,9 @@ package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
 
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
-import com.zergclan.wormhole.data.core.node.TextDataNode;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
+import com.zergclan.wormhole.pipeline.core.filter.exception.WormholeFilterException;
 import com.zergclan.wormhole.pipeline.core.helper.CodeConvertorHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -52,17 +52,13 @@ public final class CodeConvertor implements Filter<DataGroup> {
             String nodeName = entry.getKey();
             DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
             CodeConvertorHelper codeConvertorHelper = entry.getValue();
-            Optional<String> targetCode = codeConvertorHelper.convert(String.valueOf(dataNode.getValue()));
+            Optional<DataNode<?>> targetCode = codeConvertorHelper.convert(dataNode);
             if (!targetCode.isPresent()) {
-                return false;
+                throw new WormholeFilterException("code convertor failed source code: [%s] can not convertor to target code, node name: [%s]", dataNode.getValue(), nodeName);
             }
-            refreshDataNode(dataGroup, nodeName, targetCode.get());
+            dataGroup.refresh(targetCode.get());
         }
         return true;
-    }
-    
-    private void refreshDataNode(final DataGroup dataGroup, final String name, final String targetCode) {
-        dataGroup.refresh(new TextDataNode(name, targetCode));
     }
     
     @Override
