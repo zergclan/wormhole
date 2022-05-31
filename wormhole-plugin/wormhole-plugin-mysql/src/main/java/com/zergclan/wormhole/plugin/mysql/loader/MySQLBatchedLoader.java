@@ -41,9 +41,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLTimeoutException;
-import java.util.HashSet;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Batched loader of MySQL.
@@ -54,15 +53,19 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     @Override
     protected BatchedLoadResult<MysqlLoadResult> standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
         MysqlLoadResult result = new MysqlLoadResult();
-        Collection<DataGroup> dataGroups = batchedDataGroup.getDataGroups();
-        for (DataGroup each : dataGroups) {
-            preFix(each, cachedTarget);
-            try {
-                loadDataGroup(each, cachedTarget, result);
-            } catch (final SQLException ex) {
-                result.addErrorData(new ErrorDataGroup(ex.getSQLState(), ex.getMessage(), each));
-                log.info("MySQL batched loader error, error data: [{}]", each);
+        try (Connection connection = createConnection(cachedTarget.getDataSource())) {
+            Collection<DataGroup> dataGroups = batchedDataGroup.getDataGroups();
+            for (DataGroup each : dataGroups) {
+                preFix(each, cachedTarget);
+                try {
+                    loadDataGroup(connection, each, cachedTarget, result);
+                } catch (final SQLException ex) {
+                    result.addErrorData(new ErrorDataGroup(ex.getSQLState(), ex.getMessage(), each));
+                    log.info("MySQL batched loader error, error data: [{}]", each);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         result.setTotalRow(batchedDataGroup.getBatchSize());
         log.info("MySQL batched loader standard load success, load result: [{}]", result);
@@ -77,10 +80,8 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         dataGroup.register(new LongDataNode(cachedTarget.getVersionNode(), cachedTarget.getTaskBatch()));
     }
     
-    private void loadDataGroup(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget, final MysqlLoadResult loadResult) throws SQLException {
-        Connection connection = createConnection(cachedTarget.getDataSource());
-        try {
-            ResultSet resultSet = executeSelect(connection, dataGroup, cachedTarget);
+    private void loadDataGroup(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget, final MysqlLoadResult loadResult) throws SQLException {
+        try(ResultSet resultSet = executeSelect(connection, dataGroup, cachedTarget)) {
             if (!resultSet.next()) {
                 if (executeInsert(connection, dataGroup, cachedTarget)) {
                     loadResult.incrementInsertRow();
@@ -94,18 +95,13 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
                 }
             }
             loadResult.incrementSameRow();
-        } finally {
-            connection.close();
         }
     }
     
-    private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
+    public Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
         JdbcTemplate jdbcTemplate = JdbcTemplateCreator.create(dataSourceMetaData);
         DataSource dataSource = jdbcTemplate.getDataSource();
-        if (null != dataSource) {
-            return dataSource.getConnection();
-        }
-        throw new SQLTimeoutException();
+        return dataSource.getConnection();
     }
     
     private ResultSet executeSelect(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
