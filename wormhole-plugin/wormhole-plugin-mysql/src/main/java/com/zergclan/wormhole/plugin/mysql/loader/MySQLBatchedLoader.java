@@ -81,7 +81,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     }
     
     private void loadDataGroup(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget, final MysqlLoadResult loadResult) throws SQLException {
-        try(ResultSet resultSet = executeSelect(connection, dataGroup, cachedTarget)) {
+        try (ResultSet resultSet = executeSelect(connection, dataGroup, cachedTarget)) {
             if (!resultSet.next()) {
                 if (executeInsert(connection, dataGroup, cachedTarget)) {
                     loadResult.incrementInsertRow();
@@ -98,7 +98,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         }
     }
     
-    public Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
+    private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
         JdbcTemplate jdbcTemplate = JdbcTemplateCreator.create(dataSourceMetaData);
         DataSource dataSource = jdbcTemplate.getDataSource();
         return dataSource.getConnection();
