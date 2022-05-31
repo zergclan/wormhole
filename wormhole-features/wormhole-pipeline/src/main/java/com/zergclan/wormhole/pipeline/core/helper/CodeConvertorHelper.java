@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.core.helper;
 
+import com.zergclan.wormhole.data.api.node.DataNode;
+import com.zergclan.wormhole.data.core.node.TextDataNode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
@@ -36,15 +38,26 @@ public final class CodeConvertorHelper {
     /**
      * Get target code.
      *
-     * @param sourceCode source code
+     * @param source source {@link DataNode}
      * @return target code
      */
-    public Optional<String> convert(final String sourceCode) {
-        String targetCode = sourceTargetCodeMapping.get(sourceCode);
-        return Objects.isNull(targetCode) ? getDefault() : Optional.of(targetCode);
+    public Optional<DataNode<?>> convert(final DataNode<?> source) {
+        String nodeName = source.getName();
+        if (source instanceof TextDataNode) {
+            String sourceCode = ((TextDataNode) source).getValue();
+            Optional<String> targetCode = getTargetCode(sourceCode);
+            if (targetCode.isPresent()) {
+                return Optional.of(new TextDataNode(nodeName, targetCode.get()));
+            }
+        }
+        return Optional.empty();
     }
     
-    private Optional<String> getDefault() {
-        return Objects.isNull(defaultCode) ? Optional.empty() : Optional.of(defaultCode);
+    private Optional<String> getTargetCode(final String sourceCode) {
+        String result = sourceTargetCodeMapping.get(sourceCode);
+        if (Objects.isNull(result)) {
+            return Optional.ofNullable(defaultCode);
+        }
+        return Optional.of(result);
     }
 }
