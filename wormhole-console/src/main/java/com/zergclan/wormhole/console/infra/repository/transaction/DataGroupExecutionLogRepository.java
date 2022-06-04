@@ -18,11 +18,27 @@
 package com.zergclan.wormhole.console.infra.repository.transaction;
 
 import com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog;
+import com.zergclan.wormhole.console.infra.repository.mapper.DataGroupExecutionLogMapper;
 import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
 
 /**
  * Transactional repository of {@link DataGroupExecutionLog}.
  */
 @Repository(value = "dataGroupExecutionLogRepository")
 public class DataGroupExecutionLogRepository extends AbstractTransactionalRepository<DataGroupExecutionLog> {
+
+    @Resource
+    private DataGroupExecutionLogMapper dataGroupExecutionLogMapper;
+
+    /**
+     * Get sum one.
+     *
+     * @param dataGroupExecutionLog {@link DataGroupExecutionLog}
+     * @return {@link DataGroupExecutionLog}
+     */
+    public DataGroupExecutionLog getSumOne(final DataGroupExecutionLog dataGroupExecutionLog) {
+        return dataGroupExecutionLogMapper.getSumOne(dataGroupExecutionLog);
+    }
 }

@@ -127,7 +127,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
     private void handleBatchedTask(final Collection<DataGroup> dataGroups, final Handler<BatchedDataGroup> nextHandler, final Collection<Filter<DataGroup>> filters, final int batchIndex) {
         String taskIdentifier = cachedTaskMetadata.getIdentifier();
         long taskBatch = cachedTaskMetadata.getTaskBatch();
-        int batchSize = cachedTaskMetadata.getBatchSize();
+        int batchSize = dataGroups.size();
         String ownerIdentifier = cachedTaskMetadata.getSource().getDataSource().getIdentifier();
         handeEvent(DataGroupExecutionEvent.buildNewEvent(planIdentifier, planBatch, taskIdentifier, taskBatch, batchIndex, batchSize));
         BatchedDataGroup batchedDataGroup = new BatchedDataGroup(planIdentifier, planBatch, taskIdentifier, taskBatch, ownerIdentifier, batchIndex, batchSize, dataGroups);

@@ -32,6 +32,8 @@ public final class TaskCompletedEvent implements Event {
     private static final long serialVersionUID = -5984266540485867999L;
     
     private final String taskIdentifier;
+
+    private final Long taskBatch;
     
     /**
      * Get plan identifier.
