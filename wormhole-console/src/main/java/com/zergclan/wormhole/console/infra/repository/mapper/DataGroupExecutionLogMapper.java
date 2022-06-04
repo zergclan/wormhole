@@ -25,4 +25,12 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DataGroupExecutionLogMapper extends BaseMapper<DataGroupExecutionLog> {
+
+    /**
+     * Get sum one.
+     *
+     * @param dataGroupExecutionLog {@link DataGroupExecutionLog}
+     * @return {@link DataGroupExecutionLog}
+     */
+    DataGroupExecutionLog getSumOne(DataGroupExecutionLog dataGroupExecutionLog);
 }

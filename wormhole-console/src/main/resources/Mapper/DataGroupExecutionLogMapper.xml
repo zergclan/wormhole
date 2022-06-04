@@ -117,11 +117,20 @@
 
     <select id="getOne" parameterType="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog" resultMap="DataGroupExecutionLogResultMap">
         SELECT
-            SUM(total_row) AS total_row,
-            SUM(insert_row) AS insert_row,
-            SUM(update_row) AS update_row,
-            SUM(error_row) AS error_row,
-            SUM(same_row) AS same_row
+        <include refid="select_columns"/>
+        FROM <include refid="table_name"/>
+        <where>
+            <include refid="where_fuzzy_query"/>
+        </where>
+    </select>
+
+    <select id="getSumOne" parameterType="com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog" resultMap="DataGroupExecutionLogResultMap">
+        SELECT
+        SUM(total_row) AS total_row,
+        SUM(insert_row) AS insert_row,
+        SUM(update_row) AS update_row,
+        SUM(error_row) AS error_row,
+        SUM(same_row) AS same_row
         FROM <include refid="table_name"/>
         <where>
             <include refid="where_fuzzy_query"/>

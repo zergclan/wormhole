@@ -29,6 +29,7 @@ import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
 import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
 import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import com.zergclan.wormhole.console.infra.repository.PageData;
+import com.zergclan.wormhole.console.infra.repository.transaction.DataGroupExecutionLogRepository;
 import com.zergclan.wormhole.console.infra.util.BeanMapper;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,7 @@ public class LogMetricsServiceImpl implements LogMetricsService {
     private BaseRepository<TaskExecutionLog> taskExecutionLogRepository;
     
     @Resource
-    private BaseRepository<DataGroupExecutionLog> dataGroupExecutionLogRepository;
+    private DataGroupExecutionLogRepository dataGroupExecutionLogRepository;
     
     @Resource
     private BaseRepository<ErrorDataLog> errorDataLogRepository;
@@ -85,7 +86,7 @@ public class LogMetricsServiceImpl implements LogMetricsService {
         TaskExecutionDetail result = new TaskExecutionDetail();
         DataGroupExecutionLog query = new DataGroupExecutionLog();
         query.setTaskBatch(taskBatch);
-        DataGroupExecutionLog dataGroupExecutionLog = dataGroupExecutionLogRepository.getOne(query);
+        DataGroupExecutionLog dataGroupExecutionLog = dataGroupExecutionLogRepository.getSumOne(query);
         if (null == dataGroupExecutionLog) {
             result.setTaskBatch(taskBatch);
             result.setTotalRow(0);
