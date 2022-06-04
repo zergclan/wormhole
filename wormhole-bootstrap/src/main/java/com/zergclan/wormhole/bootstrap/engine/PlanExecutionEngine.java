@@ -22,10 +22,12 @@ import com.zergclan.wormhole.bootstrap.context.PlanContext;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
+import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutor;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutorFactory;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.SequenceGenerator;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.WormholeMetaData;
@@ -93,6 +95,7 @@ public final class PlanExecutionEngine implements EventListener<TaskCompletedEve
     @Subscribe
     @Override
     public void onEvent(final TaskCompletedEvent event) {
+        WormholeEventBus.post(TaskExecutionEvent.buildCompleteEvent(event.getTaskBatch(), ExecutionState.SUCCESS));
         planContext.handleCompletedEvent(event);
     }
     

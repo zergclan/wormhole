@@ -138,7 +138,7 @@ public class LogMetricsServiceImpl implements LogMetricsService {
         if (remainingRow > 0) {
             return;
         }
-        WormholeEventBus.post(new TaskCompletedEvent(taskExecutionLog.getTaskIdentifier()));
+        WormholeEventBus.post(new TaskCompletedEvent(taskExecutionLog.getTaskIdentifier(), taskBatch));
     }
     
     @Override
