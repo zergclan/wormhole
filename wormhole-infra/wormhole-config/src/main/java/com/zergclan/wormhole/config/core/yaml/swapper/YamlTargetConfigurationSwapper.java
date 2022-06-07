@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core.swapper;
+package com.zergclan.wormhole.config.core.yaml.swapper;
 
 import com.zergclan.wormhole.config.api.Swapper;
 import com.zergclan.wormhole.common.constant.MarkConstant;

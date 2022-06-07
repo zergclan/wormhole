@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.core.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.PropertiesExtractor;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
@@ -67,13 +67,10 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
      * @return {@link FilterMetaData}
      */
     public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build DataTypeConvertorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String sourceDataType = props.getProperty("sourceDataType");
-        Validator.notNull(sourceDataType, "error : build DataTypeConvertorMetadata failed sourceDataType in props can not be null, task identifier: [%s]", taskIdentifier);
-        String targetDataType = props.getProperty("targetDataType");
-        Validator.notNull(targetDataType, "error : build DataTypeConvertorMetadata failed targetDataType in props can not be null, task identifier: [%s]", taskIdentifier);
-        String pattern = props.getProperty("pattern");
+        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        String sourceDataType = PropertiesExtractor.extractRequiredString(props, "sourceDataType");
+        String targetDataType = PropertiesExtractor.extractRequiredString(props, "targetDataType");
+        String pattern = PropertiesExtractor.extractRequiredString(props, "pattern", "");
         return builder(taskIdentifier, order, sourceName, DataNodeTypeMetaData.DataType.valueOf(sourceDataType), DataNodeTypeMetaData.DataType.valueOf(targetDataType), pattern);
     }
     

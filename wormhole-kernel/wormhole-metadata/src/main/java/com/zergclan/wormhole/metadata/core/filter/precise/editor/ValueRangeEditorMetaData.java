@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.core.filter.precise.editor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.PropertiesExtractor;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import lombok.Getter;
@@ -64,12 +64,10 @@ public final class ValueRangeEditorMetaData implements FilterMetaData {
      * @return {@link ValueRangeEditorMetaData}
      */
     public static FilterMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build ValueRangeEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String endIndex = props.getProperty("endIndex");
-        Validator.notNull(endIndex, "error : build ValueRangeEditorMetadata failed endIndex in props can not be null, task identifier: [%s]", taskIdentifier);
-        String startIndex = props.getProperty("startIndex", "0");
-        return new FilterBuilder(taskIdentifier, order, sourceName, Integer.parseInt(startIndex), Integer.parseInt(endIndex)).build();
+        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        Integer startIndex = PropertiesExtractor.extractRequiredInt(props, "startIndex", 0);
+        Integer endIndex = PropertiesExtractor.extractRequiredInt(props, "endIndex");
+        return new FilterBuilder(taskIdentifier, order, sourceName, startIndex, endIndex).build();
     }
     
     @RequiredArgsConstructor

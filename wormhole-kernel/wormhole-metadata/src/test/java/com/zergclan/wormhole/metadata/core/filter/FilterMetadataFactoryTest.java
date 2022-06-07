@@ -72,7 +72,7 @@ public final class FilterMetadataFactoryTest {
     private void assertTargetDeAndSourceStan(final DataNodeMetaData finalSourceDataNode) {
         DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.DEFAULT_ABLE, DataNodeTypeMetaData.DataType.TEXT);
         DataNodeMetaData defaultTargetDataNode = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType);
-        Assertions.assertThrows(NullPointerException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, defaultTargetDataNode));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, defaultTargetDataNode));
         DataNodeMetaData defaultTargetDataNodeT = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType, "mark");
         Assertions.assertEquals(2, FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, defaultTargetDataNodeT).size());
     }
@@ -90,7 +90,7 @@ public final class FilterMetadataFactoryTest {
     private void assertFilterNotNull() {
         Properties properties = new Properties();
         FilterConfiguration notNullFilterConfiguration = new FilterConfiguration("not_null", 1, properties);
-        Assertions.assertThrows(NullPointerException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, notNullFilterConfiguration));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, notNullFilterConfiguration));
         properties.setProperty("sourceName", "name");
         Assertions.assertInstanceOf(NotNullValidatorMetaData.class, FilterMetadataFactory.getInstance(taskIdentifier, notNullFilterConfiguration));
     }
@@ -98,7 +98,7 @@ public final class FilterMetadataFactoryTest {
     private void assertFilterNotBlank() {
         Properties properties = new Properties();
         FilterConfiguration notBlankFilterConfiguration = new FilterConfiguration("not_blank", 1, properties);
-        Assertions.assertThrows(NullPointerException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, notBlankFilterConfiguration));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, notBlankFilterConfiguration));
         properties.setProperty("sourceName", "name");
         Assertions.assertInstanceOf(NotBlankValidatorMetaData.class, FilterMetadataFactory.getInstance(taskIdentifier, notBlankFilterConfiguration));
     }
@@ -106,11 +106,11 @@ public final class FilterMetadataFactoryTest {
     private void assetNullToDefaultFilter() {
         Properties properties = new Properties();
         FilterConfiguration nullToDefaultFilterConfiguration = new FilterConfiguration("null_to_default", 1, properties);
-        Assertions.assertThrows(NullPointerException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
         properties.setProperty("sourceName", "name");
-        Assertions.assertThrows(NullPointerException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
         properties.setProperty("defaultValue", "tyron");
-        Assertions.assertThrows(NullPointerException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
         properties.setProperty("dataType", "TEXT");
         Assertions.assertInstanceOf(NullToDefaultEditorMetaData.class, FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
     }

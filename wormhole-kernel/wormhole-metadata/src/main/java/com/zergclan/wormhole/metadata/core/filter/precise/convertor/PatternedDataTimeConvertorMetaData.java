@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.core.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.PropertiesExtractor;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import lombok.Getter;
@@ -64,12 +64,9 @@ public final class PatternedDataTimeConvertorMetaData implements FilterMetaData 
      * @return {@link PatternedDataTimeConvertorMetaData}
      */
     public static PatternedDataTimeConvertorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build PatternedDataTimeConvertorMetaData failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String sourcePattern = props.getProperty("sourcePattern");
-        Validator.notNull(sourcePattern, "error : build PatternedDataTimeConvertorMetaData failed sourcePattern in props can not be null, task identifier: [%s]", taskIdentifier);
-        String targetPattern = props.getProperty("targetPattern");
-        Validator.notNull(targetPattern, "error : build PatternedDataTimeConvertorMetaData failed targetPattern in props can not be null, task identifier: [%s]", taskIdentifier);
+        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        String sourcePattern = PropertiesExtractor.extractRequiredString(props, "sourcePattern");
+        String targetPattern = PropertiesExtractor.extractRequiredString(props, "targetPattern");
         return new PatternedDataTimeConvertorMetaData.FilterBuilder(taskIdentifier, order, sourceName, sourcePattern, targetPattern).build();
     }
     

@@ -30,10 +30,11 @@ public final class JsonUtil {
     /**
      * To json.
      *
-     * @param object object
+     * @param input input
      * @return json
      */
-    public static String toJson(final Object object) {
-        return new Gson().toJson(object);
+    public static String toJson(final Object input) {
+        Validator.notNull(input, "error: to json arg input can not be null");
+        return new Gson().toJson(input);
     }
 }
