@@ -20,8 +20,6 @@ package com.zergclan.wormhole.common.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
-
 /**
  * Util tools for Validator.
  * <p>
@@ -40,21 +38,22 @@ public final class Validator {
      * @param message error message
      * @param args args
      * @param <T> class type of object
-     * @return object
      */
-    public static <T> T notNull(final T object, final String message, final Object... args) {
-        return Objects.requireNonNull(object, () -> String.format(message, args));
+    public static <T> void notNull(final T object, final String message, final Object... args) {
+        if (null == object) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
     }
     
     /**
-     * Validate is true.
+     * Validate not null.
      *
-     * @param expression expression
+     * @param input input
      * @param message error message
-     * @param args error args
+     * @param args args
      */
-    public static void isTrue(final boolean expression, final String message, final Object... args) {
-        if (!expression) {
+    public static void notBlank(final String input, final String message, final Object... args) {
+        if (StringUtil.isBlank(input)) {
             throw new IllegalArgumentException(String.format(message, args));
         }
     }

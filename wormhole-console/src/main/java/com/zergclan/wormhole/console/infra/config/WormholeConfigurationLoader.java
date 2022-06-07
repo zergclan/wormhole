@@ -19,7 +19,7 @@ package com.zergclan.wormhole.console.infra.config;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.config.core.WormholeConfiguration;
-import com.zergclan.wormhole.config.core.swapper.YamlWormholeConfigurationSwapper;
+import com.zergclan.wormhole.config.core.yaml.swapper.YamlWormholeConfigurationSwapper;
 import com.zergclan.wormhole.config.core.yaml.YamlTaskConfiguration;
 import com.zergclan.wormhole.config.core.yaml.YamlWormholeConfiguration;
 import com.zergclan.wormhole.console.infra.util.YamlUtil;

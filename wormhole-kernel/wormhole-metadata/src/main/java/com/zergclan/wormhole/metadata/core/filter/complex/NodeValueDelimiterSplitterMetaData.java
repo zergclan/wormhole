@@ -18,14 +18,12 @@
 package com.zergclan.wormhole.metadata.core.filter.complex;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.PropertiesExtractor;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
 import java.util.Properties;
 
 /**
@@ -41,12 +39,12 @@ public final class NodeValueDelimiterSplitterMetaData implements FilterMetaData 
 
     private final int order;
     
-    private final String delimiter;
-    
     private final String sourceName;
     
     private final String[] targetNames;
-
+    
+    private final String delimiter;
+    
     @Override
     public String getIdentifier() {
         return taskIdentifier + MarkConstant.SPACE + FILTER_TYPE.name() + MarkConstant.SPACE + order;
@@ -66,23 +64,10 @@ public final class NodeValueDelimiterSplitterMetaData implements FilterMetaData 
      * @return {@link NodeValueDelimiterSplitterMetaData}
      */
     public static NodeValueDelimiterSplitterMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build DelimiterSplitterMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String targetNames = props.getProperty("targetNames");
-        Validator.notNull(targetNames, "error : build DelimiterSplitterMetadata failed targetNames in props can not be null, task identifier: [%s]", taskIdentifier);
-        String delimiter = props.getProperty("delimiter", "");
-        return new FilterBuilder(taskIdentifier, order, delimiter, sourceName, parseTargetNames(targetNames)).build();
-    }
-    
-    private static String[] parseTargetNames(final String sourceNames) {
-        Collection<String> names = StringUtil.deduplicateSplit(sourceNames, MarkConstant.COMMA);
-        String[] result = new String[names.size()];
-        int index = 0;
-        for (String each : names) {
-            result[index] = each;
-            index++;
-        }
-        return result;
+        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        String[] targetNames = PropertiesExtractor.extractRequiredArray(props, "targetNames", MarkConstant.COMMA);
+        String delimiter = PropertiesExtractor.extractRequiredString(props, "delimiter", "");
+        return new FilterBuilder(taskIdentifier, order, sourceName, targetNames, delimiter).build();
     }
     
     @RequiredArgsConstructor
@@ -91,15 +76,15 @@ public final class NodeValueDelimiterSplitterMetaData implements FilterMetaData 
         private final String taskIdentifier;
         
         private final int order;
-        
+    
+        private final String sourceName;
+    
+        private final String[] targetNames;
+    
         private final String delimiter;
         
-        private final String targetName;
-        
-        private final String[] sourceNames;
-        
         private NodeValueDelimiterSplitterMetaData build() {
-            return new NodeValueDelimiterSplitterMetaData(taskIdentifier, order, delimiter, targetName, sourceNames);
+            return new NodeValueDelimiterSplitterMetaData(taskIdentifier, order, sourceName, targetNames, delimiter);
         }
     }
 }

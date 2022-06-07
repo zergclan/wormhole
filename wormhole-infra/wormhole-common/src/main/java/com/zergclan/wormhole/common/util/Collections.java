@@ -40,8 +40,8 @@ public final class Collections {
      * @return partitioned collection
      */
     public static <T> Collection<Collection<T>> partition(final Collection<T> collection, final int size) {
-        Validator.notNull(collection, "Error : collection partition input collection can not be null");
-        Validator.isTrue(size > 0, "Error : collection partition input size [size] less than 0");
+        Validator.notNull(collection, "error : collection partition input collection can not be null");
+        Validator.preState(size > 0, "error : collection partition input size [size] less than 0");
         Collection<Collection<T>> result = new LinkedList<>();
         int collectionSize = collection.size();
         if (size >= collectionSize) {
@@ -71,8 +71,8 @@ public final class Collections {
      * @return is same or not
      */
     public static <T> boolean isSame(final Collection<T> source, final Collection<T> target) {
-        Validator.notNull(source, "Error : collections is same source collection can not be null");
-        Validator.notNull(target, "Error : collections is same target collection can not be null");
+        Validator.notNull(source, "error : collections is same source collection can not be null");
+        Validator.notNull(target, "error : collections is same target collection can not be null");
         int sourceSize = source.size();
         int targetSize = target.size();
         if (0 == targetSize && 0 == sourceSize) {
@@ -102,8 +102,8 @@ public final class Collections {
      * @return Has same element or not
      */
     public static <T> boolean hasSameElement(final Collection<T> source, final Collection<T> target) {
-        Validator.notNull(source, "Error : collection compare source collection can not be null");
-        Validator.notNull(target, "Error : collection compare target collection can not be null");
+        Validator.notNull(source, "error : collection compare source collection can not be null");
+        Validator.notNull(target, "error : collection compare target collection can not be null");
         int sourceSize = source.size();
         int targetSize = target.size();
         if (0 == targetSize && 0 == sourceSize) {

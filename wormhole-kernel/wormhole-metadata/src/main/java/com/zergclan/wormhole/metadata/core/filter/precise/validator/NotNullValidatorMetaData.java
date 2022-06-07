@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.core.filter.precise.validator;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.PropertiesExtractor;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import lombok.Getter;
@@ -60,8 +60,7 @@ public final class NotNullValidatorMetaData implements FilterMetaData {
      * @return {@link NotNullValidatorMetaData}
      */
     public static NotNullValidatorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build NotNullValidatorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
+        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
         return builder(taskIdentifier, order, sourceName);
     }
 

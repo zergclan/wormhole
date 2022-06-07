@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.core.filter.precise.editor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.PropertiesExtractor;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import lombok.Getter;
@@ -62,10 +62,8 @@ public final class NodeCopyEditorMetaData implements FilterMetaData {
      * @return {@link NodeCopyEditorMetaData}
      */
     public static NodeCopyEditorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build NodeCopyEditorMetaData failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String targetName = String.valueOf(props.get("targetName"));
-        Validator.notNull(targetName, "error : build NodeCopyEditorMetaData failed targetName in props can not be null, task identifier: [%s]", taskIdentifier);
+        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        String targetName = PropertiesExtractor.extractRequiredString(props, "targetName");
         return new NodeCopyEditorMetaData.FilterBuilder(taskIdentifier, order, sourceName, targetName).build();
     }
     

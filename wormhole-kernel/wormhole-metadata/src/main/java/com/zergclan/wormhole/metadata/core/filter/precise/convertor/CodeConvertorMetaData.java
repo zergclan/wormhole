@@ -18,14 +18,12 @@
 package com.zergclan.wormhole.metadata.core.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.PropertiesExtractor;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -67,24 +65,12 @@ public final class CodeConvertorMetaData implements FilterMetaData {
      * @return {@link CodeConvertorMetaData}
      */
     public static CodeConvertorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build CodeConvertorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        Map<String, String> sourceTargetCodeMappings = createSourceTargetCodeMappings(props);
-        Validator.preState(!sourceTargetCodeMappings.isEmpty(),
-                "error : build CodeConvertorMetadata failed source target code mappings in props can not be empty, task identifier: [%s]", taskIdentifier);
-        return new FilterBuilder(taskIdentifier, order, sourceName, sourceTargetCodeMappings, props.getProperty("defaultCode")).build();
+        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        String defaultCode = props.getProperty("defaultCode");
+        Map<String, String> sourceTargetCodeMappings = PropertiesExtractor.extractRequiredMap(props, "sourceName", "defaultCode");
+        return new FilterBuilder(taskIdentifier, order, sourceName, sourceTargetCodeMappings, defaultCode).build();
     }
-
-    private static Map<String, String> createSourceTargetCodeMappings(final Properties props) {
-        Map<String, String> result = new LinkedHashMap<>();
-        Iterator<Map.Entry<Object, Object>> iterator = props.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Object, Object> entry = iterator.next();
-            result.put(entry.getKey().toString(), entry.getValue().toString());
-        }
-        return result;
-    }
-
+    
     @RequiredArgsConstructor
     private static class FilterBuilder {
     

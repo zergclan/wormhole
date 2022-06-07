@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.core.filter.precise.editor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.PropertiesExtractor;
 import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.core.filter.FilterType;
 import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
@@ -66,12 +66,9 @@ public final class FixedNodeEditorMetaData implements FilterMetaData {
      * @return {@link FixedNodeEditorMetaData}
      */
     public static FixedNodeEditorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = props.getProperty("sourceName");
-        Validator.notNull(sourceName, "error : build FixedNodeEditorMetadata failed sourceName in props can not be null, task identifier: [%s]", taskIdentifier);
-        String defaultValue = String.valueOf(props.get("defaultValue"));
-        Validator.notNull(defaultValue, "error : build FixedNodeEditorMetadata failed defaultValue in props can not be null, task identifier: [%s]", taskIdentifier);
-        String dataType = props.getProperty("dataType");
-        Validator.notNull(dataType, "error : build FixedNodeEditorMetadata failed dataType in props can not be null, task identifier: [%s]", taskIdentifier);
+        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        String defaultValue = PropertiesExtractor.extractRequiredString(props, "defaultValue");
+        String dataType = PropertiesExtractor.extractRequiredString(props, "defaultValue");
         return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetaData.DataType.valueOf(dataType.toUpperCase(Locale.ROOT))).build();
     }
 
