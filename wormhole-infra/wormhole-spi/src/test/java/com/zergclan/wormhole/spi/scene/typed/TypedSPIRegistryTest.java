@@ -17,6 +17,42 @@
 
 package com.zergclan.wormhole.spi.scene.typed;
 
-public final class TypedSPIRegistryTest {
+import com.zergclan.wormhole.spi.WormholeServiceLoader;
+import com.zergclan.wormhole.spi.exception.WormholeSPIException;
+import com.zergclan.wormhole.spi.scene.typed.fixture.TypedSPIFixture;
+import com.zergclan.wormhole.spi.scene.typed.fixture.TypedSPIFixtureProperties;
+import com.zergclan.wormhole.spi.scene.typed.fixture.TypedSPIFixturePropertiesImpl;
+import org.junit.jupiter.api.Test;
 
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public final class TypedSPIRegistryTest {
+    
+    static {
+        WormholeServiceLoader.register(TypedSPIFixture.class);
+        WormholeServiceLoader.register(TypedSPIFixtureProperties.class);
+    }
+    
+    @Test
+    public void assertGetRegisteredService() {
+        assertNotNull(TypedSPIRegistry.getRegisteredService(TypedSPIFixture.class, "FIXTURE_TYPE"));
+        assertNotNull(TypedSPIRegistry.getRegisteredService(TypedSPIFixture.class, "FIXTURE_TYPE_ALIASES"));
+        WormholeSPIException exception = assertThrows(WormholeSPIException.class, () -> TypedSPIRegistry.getRegisteredService(TypedSPIFixture.class, "FIXTURE_TYPE_ERROR"));
+        assertNotNull(exception);
+        assertEquals("No service provider of SPI [com.zergclan.wormhole.spi.scene.typed.fixture.TypedSPIFixture], with type [FIXTURE_TYPE_ERROR]", exception.getMessage());
+    }
+    
+    @Test
+    public void assertGetRegisteredServiceProperties() {
+        Properties props = new Properties();
+        props.put("key", "value");
+        TypedSPIFixtureProperties typedSPIFixtureProperties = TypedSPIRegistry.getRegisteredService(TypedSPIFixtureProperties.class, "FIXTURE_PROPERTIES", props);
+        assertInstanceOf(TypedSPIFixturePropertiesImpl.class, typedSPIFixtureProperties);
+        assertEquals("value", ((TypedSPIFixturePropertiesImpl) typedSPIFixtureProperties).getValue());
+    }
 }

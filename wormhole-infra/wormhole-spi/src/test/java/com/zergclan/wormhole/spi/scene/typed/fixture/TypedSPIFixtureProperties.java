@@ -17,19 +17,8 @@
 
 package com.zergclan.wormhole.spi.scene.typed.fixture;
 
-import com.google.common.collect.Sets;
+import com.zergclan.wormhole.spi.SPIPostProcessor;
+import com.zergclan.wormhole.spi.scene.typed.TypedSPI;
 
-import java.util.Collection;
-
-public class TypedSPIFixtureImpl implements TypedSPIFixture {
-    
-    @Override
-    public String getType() {
-        return "FIXTURE_TYPE";
-    }
-    
-    @Override
-    public Collection<String> getAliases() {
-        return Sets.newHashSet("FIXTURE_TYPE_ALIASES");
-    }
+public interface TypedSPIFixtureProperties extends TypedSPI, SPIPostProcessor {
 }

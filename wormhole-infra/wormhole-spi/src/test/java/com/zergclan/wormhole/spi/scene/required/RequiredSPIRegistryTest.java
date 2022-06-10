@@ -36,8 +36,7 @@ public class RequiredSPIRegistryTest {
     
     @Test
     public void assertGetRegisteredService() {
-        RequiredSPIFixture registeredService = RequiredSPIRegistry.getRegisteredService(RequiredSPIFixture.class);
-        assertNotNull(registeredService);
+        assertNotNull(RequiredSPIRegistry.getRegisteredService(RequiredSPIFixture.class));
     }
     
     @Test

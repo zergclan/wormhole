@@ -17,19 +17,22 @@
 
 package com.zergclan.wormhole.spi.scene.typed.fixture;
 
-import com.google.common.collect.Sets;
+import lombok.Getter;
 
-import java.util.Collection;
+import java.util.Properties;
 
-public class TypedSPIFixtureImpl implements TypedSPIFixture {
+public class TypedSPIFixturePropertiesImpl implements TypedSPIFixtureProperties {
+    
+    @Getter
+    private String value;
     
     @Override
-    public String getType() {
-        return "FIXTURE_TYPE";
+    public void postProcessInitialization(final Properties props) {
+        value = props.getProperty("key");
     }
     
     @Override
-    public Collection<String> getAliases() {
-        return Sets.newHashSet("FIXTURE_TYPE_ALIASES");
+    public String getType() {
+        return "FIXTURE_PROPERTIES";
     }
 }
