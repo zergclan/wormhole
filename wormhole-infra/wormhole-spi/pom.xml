@@ -21,19 +21,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>wormhole-infra</artifactId>
         <groupId>com.zergclan</groupId>
-        <artifactId>wormhole</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>wormhole-infra</artifactId>
-    <packaging>pom</packaging>
+
+    <artifactId>wormhole-spi</artifactId>
     <name>${project.artifactId}</name>
 
-    <modules>
-        <module>wormhole-common</module>
-        <module>wormhole-spi</module>
-        <module>wormhole-config</module>
-        <module>wormhole-bus</module>
-        <module>wormhole-binder</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
