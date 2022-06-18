@@ -34,6 +34,5 @@
         <module>wormhole-spi</module>
         <module>wormhole-config</module>
         <module>wormhole-bus</module>
-        <module>wormhole-binder</module>
     </modules>
 </project>

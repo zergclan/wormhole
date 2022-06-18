@@ -40,7 +40,6 @@
         <dependency>
             <groupId>com.cronutils</groupId>
             <artifactId>cron-utils</artifactId>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

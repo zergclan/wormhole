@@ -34,5 +34,10 @@
             <artifactId>wormhole-data</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

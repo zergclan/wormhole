@@ -35,5 +35,10 @@
             <artifactId>wormhole-metadata</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-bus</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

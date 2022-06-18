@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.plugin.factory;
 
-import com.zergclan.wormhole.binder.spi.WormholeServiceLoader;
-import com.zergclan.wormhole.binder.spi.typed.TypedSPIRegistry;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.plugin.api.Loader;
+import com.zergclan.wormhole.spi.WormholeServiceLoader;
+import com.zergclan.wormhole.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
