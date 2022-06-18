@@ -32,17 +32,14 @@
     <dependencies>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-binder</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zergclan</groupId>
             <artifactId>wormhole-config</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- TODO Refactoring into wormhole test model -->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
