@@ -1,4 +1,4 @@
-![banner](https://github.com/zergclan/wormhole/tree/main/src/image/wormhole_banner.png)
+![banner](https://github.com/zergclan/wormhole/tree/main/src/image/wormhole_banner.png/?raw=true)
 
 # Wormhole
 
