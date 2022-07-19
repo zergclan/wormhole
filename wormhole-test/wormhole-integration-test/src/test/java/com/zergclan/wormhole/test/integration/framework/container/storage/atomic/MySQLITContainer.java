@@ -15,15 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.container.storage.atomic;
+package com.zergclan.wormhole.test.integration.framework.container.storage.atomic;
 
-import com.zergclan.wormhole.test.integration.container.DockerContainerDefinition;
-import com.zergclan.wormhole.test.integration.container.storage.DatabaseITContainer;
-import com.zergclan.wormhole.test.integration.container.wait.ConnectionWaitStrategy;
+import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
+import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
+import com.zergclan.wormhole.test.integration.framework.container.wait.ConnectionWaitStrategy;
 
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Database IT container of MySQL.
+ */
 public final class MySQLITContainer extends DatabaseITContainer {
     
     private static final int DEFAULT_PORT = 3306;
@@ -40,6 +43,8 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     private static final List<String> DEFAULT_ENV = Collections.singletonList("LANG=C.UTF-8");
     
+    private final String scenario;
+    
     private final String[] commands;
     
     private final List<String> env;
@@ -48,6 +53,7 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     public MySQLITContainer(final DockerContainerDefinition dockerDefinition) {
         super(dockerDefinition.getIdentifier(), dockerDefinition.getImageName(), dockerDefinition.getPortOrDefault(DEFAULT_PORT));
+        scenario = dockerDefinition.getScenario();
         commands = null == dockerDefinition.getCommands() ? DEFAULT_COMMANDS : dockerDefinition.getCommands();
         env = dockerDefinition.getEnv().isEmpty() ? DEFAULT_ENV : dockerDefinition.getEnv();
         url = initUrl();
@@ -66,6 +72,7 @@ public final class MySQLITContainer extends DatabaseITContainer {
     protected void configure() {
         withCommand(commands);
         setEnv(env);
+        initDatabase(scenario, "mysql");
         super.configure();
     }
     

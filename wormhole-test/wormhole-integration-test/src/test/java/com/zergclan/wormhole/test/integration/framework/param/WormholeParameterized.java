@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.container;
+package com.zergclan.wormhole.test.integration.framework.param;
 
-import org.testcontainers.lifecycle.Startable;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
-/**
- * Root interface of IT container.
- */
-public interface ITContainer extends Startable {
+@RequiredArgsConstructor
+@ToString
+public final class WormholeParameterized {
 }

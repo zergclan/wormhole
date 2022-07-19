@@ -15,10 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.container.governance;
+package com.zergclan.wormhole.test.integration.framework.data.node;
 
-/**
- * Abstract governance IT container.
- */
-public abstract class GovernanceITContainer {
+public final class ColumnNode {
 }

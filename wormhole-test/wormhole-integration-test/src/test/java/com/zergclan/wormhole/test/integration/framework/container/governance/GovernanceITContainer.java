@@ -15,42 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.container;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-import java.util.Map;
+package com.zergclan.wormhole.test.integration.framework.container.governance;
 
 /**
- * Container definition.
+ * Abstract governance IT container.
  */
-@RequiredArgsConstructor
-@Getter
-public final class DockerContainerDefinition {
-
-    private final String identifier;
-    
-    private final String imageName;
-    
-    private final String networkAlias;
-    
-    private final Integer port;
-    
-    private final String[] commands;
-    
-    private final List<String> env;
-    
-    private final Map<String, String> resourceMapping;
-    
-    /**
-     * Get port or default.
-     *
-     * @param defaultPort default port
-     * @return port
-     */
-    public Integer getPortOrDefault(final int defaultPort) {
-        return null == port ? defaultPort : port;
-    }
+public abstract class GovernanceITContainer {
 }
