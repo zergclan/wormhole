@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.container.wait;
+package com.zergclan.wormhole.test.integration.framework.container.wait;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

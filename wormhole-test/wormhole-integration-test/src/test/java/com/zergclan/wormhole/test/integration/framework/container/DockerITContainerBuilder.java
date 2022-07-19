@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.container;
+package com.zergclan.wormhole.test.integration.framework.container;
 
 import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
-import com.zergclan.wormhole.test.integration.container.storage.DatabaseITContainer;
+import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

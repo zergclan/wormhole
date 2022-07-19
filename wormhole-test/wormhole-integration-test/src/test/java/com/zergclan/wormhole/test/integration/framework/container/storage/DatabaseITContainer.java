@@ -15,10 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.container.storage;
+package com.zergclan.wormhole.test.integration.framework.container.storage;
 
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.test.integration.container.DockerITContainer;
+import com.zergclan.wormhole.test.integration.framework.container.ContainerPathGenerator;
+import com.zergclan.wormhole.test.integration.framework.container.DockerITContainer;
+import org.testcontainers.containers.BindMode;
 
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
@@ -29,10 +31,16 @@ import java.util.Map;
  */
 public abstract class DatabaseITContainer extends DockerITContainer {
     
+    private static final String CONTAINER_PATH = "/docker-entrypoint-initdb.d/";
+    
     private final Map<String, DataSource> dataSources = new LinkedHashMap<>();
     
     public DatabaseITContainer(final String identifier, final String dockerImageName, final int port) {
         super(identifier, dockerImageName, port);
+    }
+    
+    protected void initDatabase(final String scenario, final String databaseType) {
+        withClasspathResourceMapping(ContainerPathGenerator.generateInitSqlPath(scenario, databaseType), CONTAINER_PATH, BindMode.READ_ONLY);
     }
     
     /**

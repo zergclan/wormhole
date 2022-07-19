@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.container;
+package com.zergclan.wormhole.test.integration.framework.container;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

@@ -1,0 +1,178 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+order: 0
+batchSize: 2
+source:
+  dataSource: ds-source
+  table: source_user
+  dataNodes:
+    frist_name:
+      nodeType: STANDARD
+      dataType: TEXT
+    family_name:
+      nodeType: STANDARD
+      dataType: TEXT
+    sex:
+      nodeType: STANDARD
+      dataType: TEXT
+    birthday:
+      nodeType: STANDARD
+      dataType: TEXT
+    identity_number:
+      nodeType: STANDARD
+      dataType: TEXT
+    identity_type:
+      nodeType: STANDARD
+      dataType: TEXT
+    admission_date:
+      nodeType: STANDARD
+      dataType: TEXT
+    academic_system:
+      nodeType: STANDARD
+      dataType: TEXT
+
+target:
+  dataSource: ds-target
+  table: target_user
+  uniqueNodes: user_code,identity_number,identity_type
+  compareNodes: full_name,gender,age,birthday,admission_date,admission_season,academic_system
+  ignoreNodes: task_batch, create_time
+  versionNode: task_batch
+  dataNodes:
+    full_name:
+      nodeType: REQUIRED
+      dataType: TEXT
+    gender:
+      nodeType: REQUIRED
+      dataType: CODE
+    birthday:
+      nodeType: REQUIRED
+      dataType: DATA_TIME
+    identity_number:
+      nodeType: REQUIRED
+      dataType: TEXT
+    identity_type:
+      nodeType: DEFAULT_ABLE
+      dataType: TEXT
+    admission_date:
+      nodeType: REQUIRED
+      dataType: PATTERNED_DATA_TIME
+    academic_system:
+      nodeType: DEFAULT_ABLE
+      dataType: MONETARY
+
+dataNodeMappings:
+  - targetNames: full_name
+    sourceNames: frist_name,family_name
+    filters:
+      - type: CONCAT_MERGER
+        order: 1
+        prop:
+          targetName: full_name
+          sourceNames: family_name,frist_name
+      - type: NOT_BLANK
+        order: 2
+        prop:
+          sourceName: full_name
+
+  - targetNames: gender
+    sourceNames: sex
+    filters:
+      - type: NAME_CONVERTOR
+        order: 1
+        prop:
+          sourceName: sex
+          targetName: gender
+      - type: CODE_CONVERTOR
+        order: 2
+        prop:
+          sourceName: gender
+          N: 1
+          W: 2
+          defaultCode: 3
+
+  - targetNames: birthday
+    sourceNames: birthday
+    filters:
+      - type: NOT_BLANK
+        order: 1
+        prop:
+          sourceName: birthday
+      - type: DATA_TYPE_CONVERTOR
+        order: 2
+        prop:
+          sourceName: birthday
+          sourceDataType: TEXT
+          targetDataType: DATA_TIME
+          pattern: yyyy-MM-dd
+
+  - targetNames: identity_number
+    sourceNames: identity_number
+    filters:
+      - type: NOT_BLANK
+        order: 1
+        prop:
+          sourceName: birthday
+
+  - targetNames: identity_type
+    sourceNames: identity_type
+    filters:
+      - type: NULL_TO_DEFAULT
+        order: 1
+        prop:
+          sourceName: identity_type
+          defaultValue: IDENTITY_CARD
+          dataType: TEXT
+
+  - targetNames: admission_date
+    sourceNames: admission_date
+    filters:
+      - type: VALUE_APPEND
+        order: 1
+        prop:
+          sourceName: admission_date
+          appendValue: /09/01
+      - type: DATA_TYPE_CONVERTOR
+        order: 2
+        prop:
+          sourceName: admission_date
+          sourceDataType: TEXT
+          targetDataType: PATTERNED_DATA_TIME
+          pattern: yyyy/MM/dd
+      - type: PATTERNED_DATA_TIME_CONVERTOR
+        order: 3
+        prop:
+          sourceName: admission_date
+          sourcePattern: yyyy/MM/dd
+          targetPattern: yyyy-MM-dd
+
+  - targetNames: academic_system
+    sourceNames: academic_system
+    filters:
+      - type: DATA_TYPE_CONVERTOR
+        order: 1
+        prop:
+          sourceName: academic_system
+          sourceDataType: TEXT
+          targetDataType: MONETARY
+      - type: NULL_TO_DEFAULT
+        order: 2
+        prop:
+          sourceName: academic_system
+          defaultValue: 4
+          dataType: MONETARY
