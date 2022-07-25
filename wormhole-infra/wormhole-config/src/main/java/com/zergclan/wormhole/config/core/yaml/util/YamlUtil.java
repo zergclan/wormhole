@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.util;
+package com.zergclan.wormhole.config.core.yaml.util;
 
 import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.AccessLevel;

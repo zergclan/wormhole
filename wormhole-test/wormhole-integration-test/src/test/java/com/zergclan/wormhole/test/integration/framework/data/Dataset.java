@@ -17,21 +17,22 @@
 
 package com.zergclan.wormhole.test.integration.framework.data;
 
-import com.zergclan.wormhole.test.integration.framework.data.node.MetadataNode;
+import com.zergclan.wormhole.test.integration.framework.data.config.DataSourceConfiguration;
+import com.zergclan.wormhole.test.integration.framework.data.config.DatasetConfiguration;
+import com.zergclan.wormhole.test.integration.framework.data.node.DataSourceNode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.LinkedList;
-import java.util.List;
-
+@RequiredArgsConstructor
 @Getter
-@XmlRootElement(name = "dataset")
 public final class Dataset {
     
-    @XmlElement(name = "metadata")
-    private final List<MetadataNode> metaDataNodes = new LinkedList<>();
+    private final DataSourceNode source;
     
-    @XmlElement(name = "row")
-    private final List<MetadataNode> rowNodes = new LinkedList<>();
+    private final DataSourceNode target;
+    
+    public Dataset(final DatasetConfiguration datasetConfiguration) {
+        source = new DataSourceNode(datasetConfiguration.getSource());
+        target = new DataSourceNode(datasetConfiguration.getTarget());
+    }
 }

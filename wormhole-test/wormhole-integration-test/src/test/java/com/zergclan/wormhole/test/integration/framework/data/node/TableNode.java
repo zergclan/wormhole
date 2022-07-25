@@ -17,26 +17,39 @@
 
 package com.zergclan.wormhole.test.integration.framework.data.node;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.test.integration.framework.data.config.TableConfiguration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Column node.
- */
+import java.util.Collection;
+import java.util.LinkedList;
+
 @RequiredArgsConstructor
 @Getter
-public final class ColumnNode {
+public final class TableNode {
     
-    private final String name;
+    private final Collection<ColumnNode> columns;
     
-    private final String type;
+    private final Collection<RowNode> rows;
     
-    public ColumnNode(final String column) {
-        int index = column.indexOf(MarkConstant.COLON);
-        Validator.preState(index > 0 && index < column.length() -2, "Error configuration dataset about column");
-        name = column.substring(0, index);
-        type = column.substring(index + 1);
+    public TableNode(final TableConfiguration table) {
+        columns = initColumns(table.getColumns());
+        rows = initRows(table.getRows());
+    }
+    
+    private Collection<ColumnNode> initColumns(final Collection<String> columns) {
+        Collection<ColumnNode> result = new LinkedList<>();
+        for (String each : columns) {
+            result.add(new ColumnNode(each));
+        }
+        return result;
+    }
+    
+    private Collection<RowNode> initRows(final Collection<String> rows) {
+        Collection<RowNode> result = new LinkedList<>();
+        for (String each : rows) {
+            result.add(new RowNode(each));
+        }
+        return result;
     }
 }

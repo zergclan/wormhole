@@ -17,10 +17,17 @@
 
 package com.zergclan.wormhole.test.integration.framework.param;
 
+import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+
+import java.util.Collection;
 
 @RequiredArgsConstructor
-@ToString
+@Getter
 public final class WormholeParameterized {
+    
+    private final String scenario;
+    
+    private final Collection<DataSourceEnvironment> dataSources;
 }

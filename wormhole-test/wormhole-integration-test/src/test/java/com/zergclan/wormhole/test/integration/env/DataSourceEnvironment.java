@@ -15,28 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.framework.data.node;
+package com.zergclan.wormhole.test.integration.env;
 
+import com.zergclan.wormhole.common.util.Validator;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import java.util.Collection;
-
+@RequiredArgsConstructor
 @Getter
-@Setter
-@XmlAccessorType(XmlAccessType.FIELD)
-public final class MetadataNode {
+public final class DataSourceEnvironment {
     
-    @XmlAttribute(name = "database")
-    private String database;
+    private final String databaseType;
     
-    @XmlAttribute(name = "table")
-    private String table;
+    private final int port;
     
-    @XmlElement(name = "column")
-    private Collection<String> columns;
+    public DataSourceEnvironment(String datasource) {
+        int index = datasource.indexOf(":");
+        Validator.preState(index > 0 && index < datasource.length() -2, "Error configuration datasource source about source datasource");
+        databaseType = datasource.substring(0, index);
+        port = Integer.parseInt(datasource.substring(index + 1));
+    }
 }

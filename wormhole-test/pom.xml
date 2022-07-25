@@ -35,6 +35,8 @@
 
     <properties>
         <testcontainers.version>1.17.3</testcontainers.version>
+        <mysql.version>8.0.28</mysql.version>
+        <postgresql.version>42.3.3</postgresql.version>
     </properties>
 
     <dependencyManagement>
@@ -49,6 +51,19 @@
                 <groupId>org.testcontainers</groupId>
                 <artifactId>mysql</artifactId>
                 <version>${testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

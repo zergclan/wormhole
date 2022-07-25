@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.framework.container;
+package com.zergclan.wormhole.test.integration.framework.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
  * Container path generator.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ContainerPathGenerator {
+public final class PathGenerator {
     
     private static final String DELIMITER = "/";
     
@@ -33,6 +33,16 @@ public final class ContainerPathGenerator {
     private static final String DATA_PATH = "data";
     
     private static final String INIT_SQL_PATH = "init-sql";
+    
+    /**
+     * Generate dataset path.
+     *
+     * @param scenario scenario
+     * @return dataset path
+     */
+    public static String generateDatasetPath(final String scenario) {
+        return String.join("/", getBasicPath(scenario), DATA_PATH, INIT_SQL_PATH);
+    }
     
     /**
      * Generate init SQL path.

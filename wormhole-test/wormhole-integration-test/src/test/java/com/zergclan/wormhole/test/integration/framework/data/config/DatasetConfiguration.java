@@ -15,9 +15,17 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.framework.data;
+package com.zergclan.wormhole.test.integration.framework.data.config;
 
-public final class DatasetManager {
+import com.zergclan.wormhole.config.api.YamlConfiguration;
+import lombok.Getter;
+import lombok.Setter;
 
-
+@Getter
+@Setter
+public final class DatasetConfiguration implements YamlConfiguration {
+    
+    private DataSourceConfiguration source;
+    
+    private DataSourceConfiguration target;
 }

@@ -17,5 +17,20 @@
 
 package com.zergclan.wormhole.test.integration.framework.data.node;
 
+import com.google.common.base.Splitter;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+@Getter
 public final class RowNode {
+    
+    private final List<String> values;
+    
+    public RowNode(final String values) {
+        this.values = Splitter.on(MarkConstant.COMMA).trimResults().splitToList(values);
+    }
 }

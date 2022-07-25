@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.test.integration.framework.container;
 
-import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
 import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
+import com.zergclan.wormhole.test.integration.framework.container.storage.atomic.MySQLITContainer;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -32,11 +32,9 @@ public final class DockerITContainerBuilder {
      * New {@link DatabaseITContainer}.
      *
      * @param dockerContainerDefinition {@link DockerContainerDefinition}
-     * @param databaseType {@link DatabaseType}
      * @return {@link DatabaseITContainer}
      */
-    public static DatabaseITContainer newStorageContainer(final DockerContainerDefinition dockerContainerDefinition, final DatabaseType databaseType) {
-        // TODO new StorageITContainer by DatabaseType
-        return null;
+    public static DatabaseITContainer newStorageContainer(final DockerContainerDefinition dockerContainerDefinition) {
+        return new MySQLITContainer(dockerContainerDefinition);
     }
 }

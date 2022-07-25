@@ -35,6 +35,8 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     private static final String DEFAULT_PASSWORD = "root";
     
+    private static final String DEFAULT_IMAGE_NAME = "mysql:5.7";
+    
     private static final String DEFAULT_JDBC_URL_SUFFIX = "?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&useServerPrepStmts=true&useLocalSessionState=true";
     
     private static final String[] DEFAULT_COMMANDS = new String[] {"--default-authentication-plugin=mysql_native_password", "explicit_defaults_for_timestamp=true"};
@@ -45,17 +47,11 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     private final String scenario;
     
-    private final String[] commands;
-    
-    private final List<String> env;
-    
     private final String url;
     
     public MySQLITContainer(final DockerContainerDefinition dockerDefinition) {
-        super(dockerDefinition.getIdentifier(), dockerDefinition.getImageName(), dockerDefinition.getPortOrDefault(DEFAULT_PORT));
+        super(dockerDefinition.getIdentifier(), DEFAULT_IMAGE_NAME, dockerDefinition.getPortOrDefault(DEFAULT_PORT));
         scenario = dockerDefinition.getScenario();
-        commands = null == dockerDefinition.getCommands() ? DEFAULT_COMMANDS : dockerDefinition.getCommands();
-        env = dockerDefinition.getEnv().isEmpty() ? DEFAULT_ENV : dockerDefinition.getEnv();
         url = initUrl();
         setWaitStrategy(ConnectionWaitStrategy.buildJDBCConnectionWaitStrategy(url, DEFAULT_USER, DEFAULT_PASSWORD));
     }
@@ -70,8 +66,8 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     @Override
     protected void configure() {
-        withCommand(commands);
-        setEnv(env);
+        withCommand(DEFAULT_COMMANDS);
+        setEnv(DEFAULT_ENV);
         initDatabase(scenario, "mysql");
         super.configure();
     }

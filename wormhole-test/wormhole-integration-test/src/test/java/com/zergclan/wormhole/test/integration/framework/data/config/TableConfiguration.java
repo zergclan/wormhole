@@ -15,41 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.framework.container;
+package com.zergclan.wormhole.test.integration.framework.data.config;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-/**
- * Container definition.
- */
-@RequiredArgsConstructor
+import java.util.Collection;
+
 @Getter
-public final class DockerContainerDefinition {
+@Setter
+public final class TableConfiguration implements YamlConfiguration {
     
-    private final String scenario;
+    private Collection<String> columns;
     
-    private final String databaseType;
-    
-    private final Integer port;
-    
-    /**
-     * Get identifier.
-     *
-     * @return identifier
-     */
-    public String getIdentifier() {
-        return scenario + MarkConstant.COLON + databaseType + MarkConstant.COLON + port;
-    }
-    
-    /**
-     * Get port or default.
-     *
-     * @param defaultPort default port
-     * @return port
-     */
-    public Integer getPortOrDefault(final int defaultPort) {
-        return null == port ? defaultPort : port;
-    }
+    private Collection<String> rows;
 }

@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.test.integration.framework.container.storage;
 
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.test.integration.framework.container.ContainerPathGenerator;
+import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
 import com.zergclan.wormhole.test.integration.framework.container.DockerITContainer;
 import org.testcontainers.containers.BindMode;
 
@@ -40,7 +40,7 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     }
     
     protected void initDatabase(final String scenario, final String databaseType) {
-        withClasspathResourceMapping(ContainerPathGenerator.generateInitSqlPath(scenario, databaseType), CONTAINER_PATH, BindMode.READ_ONLY);
+        withClasspathResourceMapping(PathGenerator.generateInitSqlPath(scenario, databaseType), CONTAINER_PATH, BindMode.READ_ONLY);
     }
     
     /**

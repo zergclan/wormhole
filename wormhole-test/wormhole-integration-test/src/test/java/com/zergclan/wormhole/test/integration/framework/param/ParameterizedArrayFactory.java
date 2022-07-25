@@ -15,14 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.framework.data;
+package com.zergclan.wormhole.test.integration.framework.param;
 
+import com.zergclan.wormhole.test.integration.env.IntegrationTestEnvironment;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**
- * Dataset loader.
+ * Parameterized array factory
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DatasetLoader {
+public final class ParameterizedArrayFactory {
+    
+    private static final IntegrationTestEnvironment ENV = IntegrationTestEnvironment.getInstance();
+    
+    public static Collection<WormholeParameterized> getParameterizedArray() {
+        Collection<WormholeParameterized> result = new LinkedList<>();
+        for (String each : ENV.getScenarios()) {
+            result.add(new WormholeParameterized(each, ENV.getDataSources()));
+        }
+        return result;
+    }
 }

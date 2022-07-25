@@ -17,26 +17,33 @@
 
 package com.zergclan.wormhole.test.integration.framework.data.node;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.test.integration.framework.data.config.DataSourceConfiguration;
+import com.zergclan.wormhole.test.integration.framework.data.config.TableConfiguration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Column node.
- */
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 @RequiredArgsConstructor
 @Getter
-public final class ColumnNode {
+public final class DataSourceNode {
     
-    private final String name;
+    private final String identifier;
     
-    private final String type;
+    private final Map<String, TableNode> tables;
     
-    public ColumnNode(final String column) {
-        int index = column.indexOf(MarkConstant.COLON);
-        Validator.preState(index > 0 && index < column.length() -2, "Error configuration dataset about column");
-        name = column.substring(0, index);
-        type = column.substring(index + 1);
+    public DataSourceNode(final DataSourceConfiguration dataSource) {
+        identifier = dataSource.getIdentifier();
+        this.tables = initTables(dataSource.getTables());
+    }
+    
+    private Map<String, TableNode> initTables(final Map<String, TableConfiguration> tables) {
+        Map<String, TableNode> result = new LinkedHashMap<>();
+        for (Entry<String, TableConfiguration> entry : tables.entrySet()) {
+            result.put(entry.getKey(), new TableNode(entry.getValue()));
+        }
+        return result;
     }
 }
