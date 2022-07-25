@@ -25,13 +25,18 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * Parameterized array factory
+ * Parameterized array factory.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ParameterizedArrayFactory {
     
     private static final IntegrationTestEnvironment ENV = IntegrationTestEnvironment.getInstance();
     
+    /**
+     * Get parameterized array.
+     *
+     * @return {@link WormholeParameterized}
+     */
     public static Collection<WormholeParameterized> getParameterizedArray() {
         Collection<WormholeParameterized> result = new LinkedList<>();
         for (String each : ENV.getScenarios()) {

@@ -53,7 +53,7 @@ public final class IntegrationTestEnvironment {
         String type = System.getProperties().getProperty("it.run.type", "NATIVE");
         if ("NATIVE".equalsIgnoreCase(type)) {
             return loadNativeProperties();
-        } else if ("DOCKER".equalsIgnoreCase(type)){
+        } else if ("DOCKER".equalsIgnoreCase(type)) {
             return loadRuntimeProperties();
         } else {
             throw new UnsupportedOperationException();

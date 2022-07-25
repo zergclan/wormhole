@@ -25,7 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
- * IT life cycle Watcher
+ * Watcher of IT life cycle.
  */
 @Slf4j
 public final class ITLifeCycleWatcher extends TestWatcher {

@@ -35,6 +35,7 @@ public final class DatasetConfigurationLoader {
     /**
      * Load {@link DatasetConfiguration}.
      *
+     * @param scenario scenario
      * @return {@link DatasetConfiguration}
      * @throws IOException IO exception
      */

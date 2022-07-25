@@ -29,14 +29,28 @@ public final class DatabaseITContainerManager {
     
     private final Map<String, DatabaseITContainer> databases = new LinkedHashMap<>();
     
+    /**
+     * Register.
+     *
+     * @param containerDefinition {@link DatabaseITContainer}
+     */
     public void register(final DockerContainerDefinition containerDefinition) {
         databases.put(containerDefinition.getIdentifier(), DockerITContainerBuilder.newStorageContainer(containerDefinition));
     }
     
+    /**
+     * Get container.
+     *
+     * @param identifier identifier
+     * @return {@link DatabaseITContainer}
+     */
     public Optional<DatabaseITContainer> getContainer(final String identifier) {
         return Optional.ofNullable(databases.get(identifier));
     }
     
+    /**
+     * Start.
+     */
     public void start() {
         for (DatabaseITContainer each : databases.values()) {
             each.start();
@@ -44,6 +58,9 @@ public final class DatabaseITContainerManager {
         }
     }
     
+    /**
+     * Close.
+     */
     public void close() {
         for (DatabaseITContainer each : databases.values()) {
             each.close();

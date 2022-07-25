@@ -35,7 +35,7 @@ public final class ColumnNode {
     
     public ColumnNode(final String column) {
         int index = column.indexOf(MarkConstant.COLON);
-        Validator.preState(index > 0 && index < column.length() -2, "Error configuration dataset about column");
+        Validator.preState(index > 0 && index < column.length() - 2, "Error configuration dataset about column");
         name = column.substring(0, index);
         type = column.substring(index + 1);
     }
