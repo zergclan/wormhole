@@ -22,7 +22,7 @@ import com.zergclan.wormhole.config.core.WormholeConfiguration;
 import com.zergclan.wormhole.config.core.yaml.swapper.YamlWormholeConfigurationSwapper;
 import com.zergclan.wormhole.config.core.yaml.YamlTaskConfiguration;
 import com.zergclan.wormhole.config.core.yaml.YamlWormholeConfiguration;
-import com.zergclan.wormhole.console.infra.util.YamlUtil;
+import com.zergclan.wormhole.config.core.yaml.util.YamlUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
