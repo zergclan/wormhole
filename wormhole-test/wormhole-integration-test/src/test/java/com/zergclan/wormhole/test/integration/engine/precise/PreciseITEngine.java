@@ -27,6 +27,9 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Collection;
 
+/**
+ * Precise IT engine.
+ */
 @RunWith(Parameterized.class)
 public final class PreciseITEngine extends BaseITEngine {
     
@@ -41,15 +44,9 @@ public final class PreciseITEngine extends BaseITEngine {
     
     @Test
     public void assertPreciseCases() {
-        initEnv();
-        setData();
+        preProcess();
         executeProcess();
-        assertResult();
-        releaseEnv();
-    }
-    
-    private void assertResult() {
-        System.out.println("assertResult");
+        postProcess();
     }
     
     private void executeProcess() {

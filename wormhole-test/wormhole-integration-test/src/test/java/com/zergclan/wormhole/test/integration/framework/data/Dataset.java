@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.test.integration.framework.data;
 
 import com.zergclan.wormhole.test.integration.framework.data.config.DatasetConfiguration;
-import com.zergclan.wormhole.test.integration.framework.data.node.DataSourceNode;
+import com.zergclan.wormhole.test.integration.framework.data.node.DatabaseNode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -26,12 +26,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public final class Dataset {
     
-    private final DataSourceNode source;
+    private final DatabaseNode source;
     
-    private final DataSourceNode target;
+    private final DatabaseNode target;
     
     public Dataset(final DatasetConfiguration datasetConfiguration) {
-        source = new DataSourceNode(datasetConfiguration.getSource());
-        target = new DataSourceNode(datasetConfiguration.getTarget());
+        source = new DatabaseNode(datasetConfiguration.getSource());
+        target = new DatabaseNode(datasetConfiguration.getTarget());
     }
 }

@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Dataset loader.
+ * Dataset configuration loader.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DatasetConfigurationLoader {
