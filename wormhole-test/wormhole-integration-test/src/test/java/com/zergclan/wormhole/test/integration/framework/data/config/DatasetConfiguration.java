@@ -21,11 +21,14 @@ import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Dataset configuration.
+ */
 @Getter
 @Setter
 public final class DatasetConfiguration implements YamlConfiguration {
     
-    private DataSourceConfiguration source;
+    private DatabaseConfiguration source;
     
-    private DataSourceConfiguration target;
+    private DatabaseConfiguration target;
 }

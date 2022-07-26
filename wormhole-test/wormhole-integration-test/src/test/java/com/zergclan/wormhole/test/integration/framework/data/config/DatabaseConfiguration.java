@@ -21,16 +21,16 @@ import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
+import java.util.Map;
 
 /**
- * Table configuration.
+ * Database configuration.
  */
 @Getter
 @Setter
-public final class TableConfiguration implements YamlConfiguration {
+public final class DatabaseConfiguration implements YamlConfiguration {
     
-    private Collection<String> columns;
+    private String identifier;
     
-    private Collection<String> rows;
+    private Map<String, DataSourceConfiguration> dataSources;
 }

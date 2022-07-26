@@ -23,11 +23,12 @@ import lombok.Setter;
 
 import java.util.Map;
 
+/**
+ * Data source configuration.
+ */
 @Getter
 @Setter
 public final class DataSourceConfiguration implements YamlConfiguration {
-    
-    private String identifier;
     
     private Map<String, TableConfiguration> tables;
 }

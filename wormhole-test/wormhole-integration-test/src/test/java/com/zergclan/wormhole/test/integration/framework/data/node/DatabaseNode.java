@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.test.integration.framework.data.node;
 
 import com.zergclan.wormhole.test.integration.framework.data.config.DataSourceConfiguration;
-import com.zergclan.wormhole.test.integration.framework.data.config.TableConfiguration;
+import com.zergclan.wormhole.test.integration.framework.data.config.DatabaseConfiguration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -27,22 +27,25 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Data source node.
+ * Database node.
  */
 @RequiredArgsConstructor
 @Getter
-public final class DataSourceNode {
+public final class DatabaseNode {
     
-    private final Map<String, TableNode> tables;
+    private final String identifier;
     
-    public DataSourceNode(final DataSourceConfiguration dataSource) {
-        this.tables = initTables(dataSource.getTables());
+    private final Map<String, DataSourceNode> dataSources;
+    
+    public DatabaseNode(final DatabaseConfiguration database) {
+        identifier = database.getIdentifier();
+        dataSources = initDataSources(database.getDataSources());
     }
     
-    private Map<String, TableNode> initTables(final Map<String, TableConfiguration> tables) {
-        Map<String, TableNode> result = new LinkedHashMap<>();
-        for (Entry<String, TableConfiguration> entry : tables.entrySet()) {
-            result.put(entry.getKey(), new TableNode(entry.getKey(), entry.getValue()));
+    private Map<String, DataSourceNode> initDataSources(final Map<String, DataSourceConfiguration> dataSources) {
+        Map<String, DataSourceNode> result = new LinkedHashMap<>();
+        for (Entry<String, DataSourceConfiguration> entry : dataSources.entrySet()) {
+            result.put(entry.getKey(), new DataSourceNode(entry.getValue()));
         }
         return result;
     }

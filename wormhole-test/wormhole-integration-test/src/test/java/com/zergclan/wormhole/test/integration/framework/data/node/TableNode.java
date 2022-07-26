@@ -28,13 +28,16 @@ import java.util.LinkedList;
 @Getter
 public final class TableNode {
     
+    private final String name;
+    
     private final Collection<ColumnNode> columns;
     
-    private final Collection<RowNode> rows;
+    private final Collection<RowsNode> rows;
     
-    public TableNode(final TableConfiguration table) {
+    public TableNode(final String name, final TableConfiguration table) {
+        this.name = name;
         columns = initColumns(table.getColumns());
-        rows = initRows(table.getRows());
+        rows = initRows(columns, table.getRows());
     }
     
     private Collection<ColumnNode> initColumns(final Collection<String> columns) {
@@ -45,10 +48,10 @@ public final class TableNode {
         return result;
     }
     
-    private Collection<RowNode> initRows(final Collection<String> rows) {
-        Collection<RowNode> result = new LinkedList<>();
+    private Collection<RowsNode> initRows(final Collection<ColumnNode> columns, final Collection<String> rows) {
+        Collection<RowsNode> result = new LinkedList<>();
         for (String each : rows) {
-            result.add(new RowNode(each));
+            result.add(new RowsNode(each, columns));
         }
         return result;
     }

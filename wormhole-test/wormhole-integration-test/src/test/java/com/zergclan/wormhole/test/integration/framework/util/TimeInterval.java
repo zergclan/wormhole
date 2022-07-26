@@ -15,22 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.framework.data.node;
+package com.zergclan.wormhole.test.integration.framework.util;
 
-import com.google.common.base.Splitter;
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * Time interval.
+ */
 @RequiredArgsConstructor
-@Getter
-public final class RowNode {
+public final class TimeInterval {
     
-    private final List<String> values;
+    private final long time;
     
-    public RowNode(final String values) {
-        this.values = Splitter.on(MarkConstant.COMMA).trimResults().splitToList(values);
+    /**
+     * Interval.
+     */
+    @SneakyThrows
+    public void interval() {
+        TimeUnit.MILLISECONDS.sleep(time);
     }
 }
