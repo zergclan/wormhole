@@ -19,18 +19,26 @@ package com.zergclan.wormhole.test.integration.framework.util;
 
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
 import com.zergclan.wormhole.test.integration.framework.container.storage.atomic.MySQLITContainer;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
+import org.testcontainers.images.RemoteDockerImage;
+import org.testcontainers.utility.DockerImageName;
 
 public final class JDBCExecutor {
     
     public static void main(String[] args) {
-        DockerContainerDefinition dockerContainerDefinition = new DockerContainerDefinition("mirror", "MySQL", 3306);
-        MySQLITContainer mySQLITContainer = new MySQLITContainer(dockerContainerDefinition);
-        mySQLITContainer.setNetwork(Network.newNetwork());
-        mySQLITContainer.start();
+        GenericContainer<?> container = new GenericContainer<>(new RemoteDockerImage(DockerImageName.parse("mysql:5.7")));
+        container.addExposedPorts(3306);
+        container.withCommand("--default-authentication-plugin=mysql_native_password");
+        container.addEnv("LANG", "C.UTF-8");
+        container.addEnv("MYSQL_ROOT_PASSWORD", "root");
+        container.addEnv("MYSQL_ROOT_HOST", "%");
+        container.start();
+        
+        
     
-        final String host = mySQLITContainer.getHost();
-        final Integer firstMappedPort = mySQLITContainer.getFirstMappedPort();
+        final String host = container.getHost();
+        final Integer firstMappedPort = container.getFirstMappedPort();
     
         System.out.println(host);
         System.out.println(firstMappedPort);

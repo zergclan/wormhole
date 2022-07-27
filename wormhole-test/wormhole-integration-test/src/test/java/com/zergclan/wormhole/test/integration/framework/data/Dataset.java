@@ -17,21 +17,49 @@
 
 package com.zergclan.wormhole.test.integration.framework.data;
 
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.test.integration.framework.data.config.DataSourceConfiguration;
 import com.zergclan.wormhole.test.integration.framework.data.config.DatasetConfiguration;
-import com.zergclan.wormhole.test.integration.framework.data.node.DatabaseNode;
+import com.zergclan.wormhole.test.integration.framework.data.node.DataSourceNode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Getter
 public final class Dataset {
     
-    private final DatabaseNode source;
+    private final String scenario;
     
-    private final DatabaseNode target;
+    private final String databaseType;
     
-    public Dataset(final DatasetConfiguration datasetConfiguration) {
-        source = new DatabaseNode(datasetConfiguration.getSource());
-        target = new DatabaseNode(datasetConfiguration.getTarget());
+    private final int port;
+    
+    private final Map<String, DataSourceNode> dataSources;
+    
+    public Dataset(final String scenario, final DatasetConfiguration datasetConfiguration) {
+        this.scenario = scenario;
+        databaseType = datasetConfiguration.getDatabaseType();
+        port = datasetConfiguration.getPort();
+        dataSources = initDataSources(datasetConfiguration.getDataSources());
+    }
+    
+    private Map<String, DataSourceNode> initDataSources(final Map<String, DataSourceConfiguration> dataSources) {
+        Map<String, DataSourceNode> result = new LinkedHashMap<>();
+        for (Map.Entry<String, DataSourceConfiguration> entry : dataSources.entrySet()) {
+            result.put(entry.getKey(), new DataSourceNode(entry.getValue()));
+        }
+        return result;
+    }
+    
+    /**
+     * Get identifier of data source.
+     *
+     * @return identifier
+     */
+    public String getDataSourceIdentifier() {
+        return scenario + MarkConstant.COLON + databaseType + MarkConstant.COLON + port;
     }
 }

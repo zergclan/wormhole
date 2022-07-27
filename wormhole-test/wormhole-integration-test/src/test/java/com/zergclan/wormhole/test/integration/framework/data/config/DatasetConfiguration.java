@@ -21,6 +21,8 @@ import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
+
 /**
  * Dataset configuration.
  */
@@ -28,7 +30,9 @@ import lombok.Setter;
 @Setter
 public final class DatasetConfiguration implements YamlConfiguration {
     
-    private DatabaseConfiguration source;
+    private String databaseType;
     
-    private DatabaseConfiguration target;
+    private Integer port;
+    
+    private Map<String, DataSourceConfiguration> dataSources;
 }

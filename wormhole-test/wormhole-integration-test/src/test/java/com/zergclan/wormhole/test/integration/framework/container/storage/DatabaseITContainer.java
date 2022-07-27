@@ -57,9 +57,9 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     
     @Override
     protected void configure() {
-        withClasspathResourceMapping(PathGenerator.generateInitSqlPath(getScenario(), getDatabaseType()), CONTAINER_PATH, BindMode.READ_ONLY);
         withExposedPorts(getPort());
-        // setWaitStrategy(ConnectionWaitStrategy.buildJDBCConnectionWaitStrategy(jdbcUrl, getUsername(), getPassword()));
+        withClasspathResourceMapping(PathGenerator.generateInitSqlPath(getScenario(), getDatabaseType()), CONTAINER_PATH, BindMode.READ_ONLY);
+//        setWaitStrategy(ConnectionWaitStrategy.buildJDBCConnectionWaitStrategy(getJdbcUrl(getFirstMappedPort()), getUsername(), getPassword()));
     }
     
     private DataSource createDataSource(final String dataSourceName) {

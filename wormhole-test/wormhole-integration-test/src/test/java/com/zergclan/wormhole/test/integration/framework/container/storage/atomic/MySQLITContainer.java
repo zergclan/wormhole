@@ -37,7 +37,7 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     private static final String DEFAULT_JDBC_URL_SUFFIX = "?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&useServerPrepStmts=true&useLocalSessionState=true";
     
-    private static final String[] DEFAULT_COMMANDS = new String[] {"--default-authentication-plugin=mysql_native_password", "explicit_defaults_for_timestamp=true"};
+    private static final String[] DEFAULT_COMMANDS = new String[] {"--default-authentication-plugin=mysql_native_password"};
     
     private static final String DEFAULT_TRANSACTION_ISOLATION = "TRANSACTION_REPEATABLE_READ";
     

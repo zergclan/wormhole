@@ -26,7 +26,6 @@ import com.zergclan.wormhole.test.integration.framework.data.Dataset;
 import com.zergclan.wormhole.test.integration.framework.data.config.DatasetConfigurationLoader;
 import com.zergclan.wormhole.test.integration.framework.data.node.ColumnNode;
 import com.zergclan.wormhole.test.integration.framework.data.node.DataSourceNode;
-import com.zergclan.wormhole.test.integration.framework.data.node.DatabaseNode;
 import com.zergclan.wormhole.test.integration.framework.data.node.RowsNode;
 import com.zergclan.wormhole.test.integration.framework.data.node.TableNode;
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
@@ -87,11 +86,9 @@ public abstract class BaseITEngine {
     
     @SneakyThrows(IOException.class)
     protected void setData() {
-        Dataset dataset = new Dataset(DatasetConfigurationLoader.load(scenario));
-        DatabaseNode sourceDatabase = dataset.getSource();
-        containerManager.getContainer(sourceDatabase.getIdentifier()).ifPresent(databaseITContainer -> setData(databaseITContainer, sourceDatabase.getDataSources()));
-        DatabaseNode targetDatabase = dataset.getTarget();
-        containerManager.getContainer(targetDatabase.getIdentifier()).ifPresent(databaseITContainer -> setData(databaseITContainer, targetDatabase.getDataSources()));
+        Dataset dataset = new Dataset(scenario, DatasetConfigurationLoader.load(scenario));
+        System.out.println("====");
+        containerManager.getContainer(dataset.getDataSourceIdentifier()).ifPresent(databaseITContainer -> setData(databaseITContainer, dataset.getDataSources()));
     }
     
     @SneakyThrows(SQLException.class)
