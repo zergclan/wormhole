@@ -30,14 +30,25 @@ import java.util.LinkedList;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ParameterizedArrayFactory {
     
+    private static final ParameterizedArrayFactory INSTANCE = new ParameterizedArrayFactory();
+    
     private static final IntegrationTestEnvironment ENV = IntegrationTestEnvironment.getInstance();
+    
+    /**
+     * Get instance.
+     *
+     * @return {@link ParameterizedArrayFactory}
+     */
+    public static ParameterizedArrayFactory getInstance() {
+        return INSTANCE;
+    }
     
     /**
      * Get parameterized array.
      *
      * @return {@link WormholeParameterized}
      */
-    public static Collection<WormholeParameterized> getParameterizedArray() {
+    public Collection<WormholeParameterized> getParameterizedArray() {
         Collection<WormholeParameterized> result = new LinkedList<>();
         for (String each : ENV.getScenarios()) {
             result.add(new WormholeParameterized(each, ENV.getDataSources()));

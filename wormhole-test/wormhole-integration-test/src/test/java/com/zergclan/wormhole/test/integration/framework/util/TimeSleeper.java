@@ -23,18 +23,18 @@ import lombok.SneakyThrows;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Time interval.
+ * Time sleeper.
  */
 @RequiredArgsConstructor
-public final class TimeInterval {
+public final class TimeSleeper {
     
     private final long time;
     
     /**
-     * Interval.
+     * sleep.
      */
     @SneakyThrows
-    public void interval() {
+    public void sleep() {
         TimeUnit.MILLISECONDS.sleep(time);
     }
 }

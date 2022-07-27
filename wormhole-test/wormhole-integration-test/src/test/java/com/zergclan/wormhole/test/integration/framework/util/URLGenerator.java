@@ -15,13 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.scenarios;
+package com.zergclan.wormhole.test.integration.framework.util;
 
-import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
+import lombok.NoArgsConstructor;
 
-public abstract class BaseITCase {
+@NoArgsConstructor
+public final class URLGenerator {
     
-    public BaseITCase(final WormholeParameterized parameterized) {
+    private static final String DEFAULT_MYSQL_JDBC_URL_SUFFIX = "?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&useServerPrepStmts=true&useLocalSessionState=true";
     
+    /**
+     * Generate JDBC url.
+     *
+     * @param databaseType database type
+     * @param port port
+     * @return JDBC url
+     */
+    public static String generateJDBCUrl(final String databaseType, final int port) {
+        if ("MySQL".equalsIgnoreCase(databaseType)) {
+            return "jdbc:mysql://localhost:" + port + DEFAULT_MYSQL_JDBC_URL_SUFFIX;
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 }

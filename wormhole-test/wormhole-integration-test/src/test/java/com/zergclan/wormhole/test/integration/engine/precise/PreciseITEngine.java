@@ -39,7 +39,7 @@ public final class PreciseITEngine extends BaseITEngine {
     
     @Parameters(name = "{0}")
     public static Collection<WormholeParameterized> getParameters() {
-        return ParameterizedArrayFactory.getParameterizedArray();
+        return ParameterizedArrayFactory.getInstance().getParameterizedArray();
     }
     
     @Test

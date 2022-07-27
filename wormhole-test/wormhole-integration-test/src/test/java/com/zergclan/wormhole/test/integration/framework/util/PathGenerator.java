@@ -28,7 +28,7 @@ public final class PathGenerator {
     
     private static final String DELIMITER = "/";
     
-    private static final String ROOT_PATH = "evn/scenario";
+    private static final String ROOT_PATH = "env/scenario";
     
     private static final String DATA_PATH = "data";
     
@@ -41,7 +41,7 @@ public final class PathGenerator {
      * @return dataset path
      */
     public static String generateDatasetPath(final String scenario) {
-        return String.join("/", getBasicPath(scenario), DATA_PATH, INIT_SQL_PATH);
+        return String.join("/", getBasicPath(scenario), DATA_PATH);
     }
     
     /**

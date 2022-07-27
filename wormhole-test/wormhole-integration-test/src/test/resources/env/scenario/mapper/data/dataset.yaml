@@ -15,24 +15,10 @@
 # limitations under the License.
 #
 
-source:
-  identifier: mapper:mysql:3306
+databaseType: MySQL
+port: 3306
+dataSources:
   source_ds:
-    tables:
-      t_user:
-        columns:
-          - id:int
-          - username:varchar
-          - password:varchar
-        rows:
-          - 1, jack1, 123456
-          - 2, jack2, 123456
-          - 3, jack3, 123456
-          - 4, jack4, 123456
-          - 5, jack5, 123456
-target:
-  identifier: mapper:mysql:3306
-  target_ds:
     tables:
       t_user:
         columns:

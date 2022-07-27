@@ -18,11 +18,14 @@
 package com.zergclan.wormhole.test.integration.framework.container.storage;
 
 import com.zaxxer.hikari.HikariDataSource;
+import com.zergclan.wormhole.test.integration.framework.container.wait.ConnectionWaitStrategy;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
 import com.zergclan.wormhole.test.integration.framework.container.DockerITContainer;
+import com.zergclan.wormhole.test.integration.framework.util.URLGenerator;
 import org.testcontainers.containers.BindMode;
 
 import javax.sql.DataSource;
+import java.sql.DriverManager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -35,12 +38,8 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     
     private final Map<String, DataSource> dataSources = new LinkedHashMap<>();
     
-    public DatabaseITContainer(final String identifier, final String dockerImageName, final int port) {
-        super(identifier, dockerImageName, port);
-    }
-    
-    protected void initDatabase(final String scenario, final String databaseType) {
-        withClasspathResourceMapping(PathGenerator.generateInitSqlPath(scenario, databaseType), CONTAINER_PATH, BindMode.READ_ONLY);
+    public DatabaseITContainer(final String identifier, final String scenario, final String dockerImageName, final int port) {
+        super(identifier, scenario, dockerImageName, port);
     }
     
     /**
@@ -58,15 +57,24 @@ public abstract class DatabaseITContainer extends DockerITContainer {
         return result;
     }
     
+    @Override
+    protected void configure() {
+        withExposedPorts(getPort());
+        withClasspathResourceMapping(PathGenerator.generateInitSqlPath(getScenario(), getDatabaseType()), CONTAINER_PATH, BindMode.READ_ONLY);
+        setWaitStrategy(new ConnectionWaitStrategy(() -> DriverManager.getConnection(URLGenerator.generateJDBCUrl(getDatabaseType(), getFirstMappedPort()), getUsername(), getPassword())));
+    }
+    
     private DataSource createDataSource(final String dataSourceName) {
         HikariDataSource result = new HikariDataSource();
         result.setDriverClassName(getDriverClassName());
         result.setJdbcUrl(getJdbcUrl(dataSourceName));
         result.setUsername(getUsername());
-        result.setPassword(setPassword());
+        result.setPassword(getPassword());
         result.setTransactionIsolation(getTransactionIsolation());
         return result;
     }
+    
+    protected abstract String getDatabaseType();
     
     protected abstract String getDriverClassName();
     
@@ -74,7 +82,7 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     
     protected abstract String getUsername();
     
-    protected abstract String setPassword();
+    protected abstract String getPassword();
     
     protected abstract String getTransactionIsolation();
 }

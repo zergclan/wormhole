@@ -21,6 +21,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.DockerHealthcheckWaitStrategy;
+import org.testcontainers.images.RemoteDockerImage;
+import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -34,11 +36,14 @@ public abstract class DockerITContainer extends GenericContainer<DockerITContain
     
     private final String identifier;
     
+    private final String scenario;
+    
     private final int port;
     
-    public DockerITContainer(final String identifier, final String dockerImageName, final int port) {
-        super(dockerImageName);
+    public DockerITContainer(final String identifier, final String scenario, final String dockerImageName, final int port) {
+        super(new RemoteDockerImage(DockerImageName.parse(dockerImageName)));
         this.identifier = identifier;
+        this.scenario = scenario;
         this.port = port;
     }
     

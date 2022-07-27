@@ -17,14 +17,12 @@
 
 package com.zergclan.wormhole.test.integration.framework.container.wait;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.rnorth.ducttape.unreliables.Unreliables;
 import org.testcontainers.containers.wait.strategy.AbstractWaitStrategy;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -32,22 +30,10 @@ import java.util.concurrent.TimeUnit;
  * Wait strategy implemented via connection checking.
  */
 @Slf4j
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public final class ConnectionWaitStrategy extends AbstractWaitStrategy {
     
     private final Callable<Connection> connectionSupplier;
-    
-    /**
-     * build wait strategy of JDBC connection.
-     *
-     * @param jdbcUrl jdbc url
-     * @param user user
-     * @param password password
-     * @return {@link ConnectionWaitStrategy}
-     */
-    public static ConnectionWaitStrategy buildJDBCConnectionWaitStrategy(final String jdbcUrl, final String user, final String password) {
-        return new ConnectionWaitStrategy(() -> DriverManager.getConnection(jdbcUrl, user, password));
-    }
     
     @Override
     protected void waitUntilReady() {

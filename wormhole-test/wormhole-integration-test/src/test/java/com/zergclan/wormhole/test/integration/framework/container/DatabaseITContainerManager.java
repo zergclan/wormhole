@@ -18,16 +18,19 @@
 package com.zergclan.wormhole.test.integration.framework.container;
 
 import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
-import lombok.SneakyThrows;
+import com.zergclan.wormhole.test.integration.framework.util.TimeSleeper;
+import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
+@RequiredArgsConstructor
 public final class DatabaseITContainerManager {
     
-    private final Map<String, DatabaseITContainer> databases = new LinkedHashMap<>();
+    private final TimeSleeper sleeper;
+    
+    private final Map<String, DatabaseITContainer> databasesContainers = new LinkedHashMap<>();
     
     /**
      * Register.
@@ -35,7 +38,7 @@ public final class DatabaseITContainerManager {
      * @param containerDefinition {@link DatabaseITContainer}
      */
     public void register(final DockerContainerDefinition containerDefinition) {
-        databases.put(containerDefinition.getIdentifier(), DockerITContainerBuilder.newStorageContainer(containerDefinition));
+        databasesContainers.put(containerDefinition.getIdentifier(), DockerITContainerBuilder.newStorageContainer(containerDefinition));
     }
     
     /**
@@ -45,16 +48,16 @@ public final class DatabaseITContainerManager {
      * @return {@link DatabaseITContainer}
      */
     public Optional<DatabaseITContainer> getContainer(final String identifier) {
-        return Optional.ofNullable(databases.get(identifier));
+        return Optional.ofNullable(databasesContainers.get(identifier));
     }
     
     /**
      * Start.
      */
     public void start() {
-        for (DatabaseITContainer each : databases.values()) {
+        for (DatabaseITContainer each : databasesContainers.values()) {
             each.start();
-            intervalTime();
+            sleeper.sleep();
         }
     }
     
@@ -62,14 +65,9 @@ public final class DatabaseITContainerManager {
      * Close.
      */
     public void close() {
-        for (DatabaseITContainer each : databases.values()) {
+        for (DatabaseITContainer each : databasesContainers.values()) {
             each.close();
-            intervalTime();
+            sleeper.sleep();
         }
-    }
-    
-    @SneakyThrows(InterruptedException.class)
-    private void intervalTime() {
-        TimeUnit.MILLISECONDS.sleep(500);
     }
 }
