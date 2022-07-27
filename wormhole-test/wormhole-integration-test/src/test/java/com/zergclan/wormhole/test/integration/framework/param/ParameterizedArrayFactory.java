@@ -34,6 +34,11 @@ public final class ParameterizedArrayFactory {
     
     private static final IntegrationTestEnvironment ENV = IntegrationTestEnvironment.getInstance();
     
+    /**
+     * Get instance.
+     *
+     * @return {@link ParameterizedArrayFactory}
+     */
     public static ParameterizedArrayFactory getInstance() {
         return INSTANCE;
     }

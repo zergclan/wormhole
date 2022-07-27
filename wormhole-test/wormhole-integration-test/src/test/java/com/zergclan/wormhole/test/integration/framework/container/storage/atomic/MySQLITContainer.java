@@ -65,11 +65,6 @@ public final class MySQLITContainer extends DatabaseITContainer {
     }
     
     @Override
-    protected String getJdbcUrl(int port) {
-        return "jdbc:mysql://localhost:" + port + DEFAULT_JDBC_URL_SUFFIX;
-    }
-    
-    @Override
     protected String getJdbcUrl(final String dataSourceName) {
         return "jdbc:mysql://localhost:" + getPort() + "/" + dataSourceName + DEFAULT_JDBC_URL_SUFFIX;
     }

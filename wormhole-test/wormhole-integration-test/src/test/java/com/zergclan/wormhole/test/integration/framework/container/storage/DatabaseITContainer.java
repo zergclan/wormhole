@@ -21,9 +21,11 @@ import com.zaxxer.hikari.HikariDataSource;
 import com.zergclan.wormhole.test.integration.framework.container.wait.ConnectionWaitStrategy;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
 import com.zergclan.wormhole.test.integration.framework.container.DockerITContainer;
+import com.zergclan.wormhole.test.integration.framework.util.URLGenerator;
 import org.testcontainers.containers.BindMode;
 
 import javax.sql.DataSource;
+import java.sql.DriverManager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -59,7 +61,7 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     protected void configure() {
         withExposedPorts(getPort());
         withClasspathResourceMapping(PathGenerator.generateInitSqlPath(getScenario(), getDatabaseType()), CONTAINER_PATH, BindMode.READ_ONLY);
-//        setWaitStrategy(ConnectionWaitStrategy.buildJDBCConnectionWaitStrategy(getJdbcUrl(getFirstMappedPort()), getUsername(), getPassword()));
+        setWaitStrategy(new ConnectionWaitStrategy(() -> DriverManager.getConnection(URLGenerator.generateJDBCUrl(getDatabaseType(), getFirstMappedPort()), getUsername(), getPassword())));
     }
     
     private DataSource createDataSource(final String dataSourceName) {
@@ -75,8 +77,6 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     protected abstract String getDatabaseType();
     
     protected abstract String getDriverClassName();
-    
-    protected abstract String getJdbcUrl(int port);
     
     protected abstract String getJdbcUrl(String dataSourceName);
     
