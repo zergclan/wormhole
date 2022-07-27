@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public final class RandomGenerator {
     
     /**
-     * Generate random int equal probability in interval [0, Integer.MAX_VALUE).
+     * Generate random int equal probability in sleep [0, Integer.MAX_VALUE).
      *
      * @return random int
      */
@@ -34,7 +34,7 @@ public final class RandomGenerator {
     }
     
     /**
-     * Generate random long equal probability in interval [0, Long.MAX_VALUE).
+     * Generate random long equal probability in sleep [0, Long.MAX_VALUE).
      *
      * @return random long
      */
@@ -43,7 +43,7 @@ public final class RandomGenerator {
     }
     
     /**
-     * Generate random int equal probability in interval [min, max).
+     * Generate random int equal probability in sleep [min, max).
      *
      * @param min min
      * @param max max
@@ -54,7 +54,7 @@ public final class RandomGenerator {
     }
     
     /**
-     * Generate random long equal probability in interval [min, max).
+     * Generate random long equal probability in sleep [min, max).
      *
      * @param min min
      * @param max max

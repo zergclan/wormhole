@@ -30,6 +30,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-bootstrap</artifactId>
             <version>${project.version}</version>
@@ -46,15 +50,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>mysql</artifactId>
         </dependency>
     </dependencies>
 </project>

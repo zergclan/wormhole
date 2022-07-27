@@ -30,7 +30,7 @@ import com.zergclan.wormhole.test.integration.framework.data.node.DatabaseNode;
 import com.zergclan.wormhole.test.integration.framework.data.node.RowsNode;
 import com.zergclan.wormhole.test.integration.framework.data.node.TableNode;
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
-import com.zergclan.wormhole.test.integration.framework.util.TimeInterval;
+import com.zergclan.wormhole.test.integration.framework.util.TimeSleeper;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -53,17 +53,19 @@ import java.util.stream.Collectors;
 @Getter(AccessLevel.PROTECTED)
 public abstract class BaseITEngine {
     
-    private static final TimeInterval INTERVAL = new TimeInterval(200);
+    private final TimeSleeper sleeper;
     
     private final String scenario;
     
     private final Collection<DataSourceEnvironment> dataSources;
     
-    private final DatabaseITContainerManager containerManager = new DatabaseITContainerManager();
+    private final DatabaseITContainerManager containerManager;
     
     public BaseITEngine(final WormholeParameterized parameterized) {
         scenario = parameterized.getScenario();
         dataSources = parameterized.getDataSources();
+        sleeper = new TimeSleeper(200L);
+        containerManager = new DatabaseITContainerManager(sleeper);
     }
     
     protected void preProcess() {
@@ -73,11 +75,13 @@ public abstract class BaseITEngine {
     
     protected void postProcess() {
         containerManager.close();
-        INTERVAL.interval();
+        sleeper.sleep();
     }
     
     private void initEnv() {
-        dataSources.forEach(each -> containerManager.register(new DockerContainerDefinition(scenario, each.getDatabaseType(), each.getPort())));
+        for (DataSourceEnvironment each : dataSources) {
+            containerManager.register(new DockerContainerDefinition(scenario, each.getDatabaseType(), each.getPort()));
+        }
         containerManager.start();
     }
     

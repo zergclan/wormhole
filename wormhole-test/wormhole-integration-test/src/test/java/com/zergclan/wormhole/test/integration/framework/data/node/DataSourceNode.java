@@ -36,7 +36,7 @@ public final class DataSourceNode {
     private final Map<String, TableNode> tables;
     
     public DataSourceNode(final DataSourceConfiguration dataSource) {
-        this.tables = initTables(dataSource.getTables());
+        tables = initTables(dataSource.getTables());
     }
     
     private Map<String, TableNode> initTables(final Map<String, TableConfiguration> tables) {

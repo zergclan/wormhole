@@ -19,10 +19,6 @@ package com.zergclan.wormhole.test.integration.framework.container.storage.atomi
 
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
 import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
-import com.zergclan.wormhole.test.integration.framework.container.wait.ConnectionWaitStrategy;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Database IT container of MySQL.
@@ -37,49 +33,45 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     private static final String DEFAULT_IMAGE_NAME = "mysql:5.7";
     
+    private static final String DEFAULT_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
+    
     private static final String DEFAULT_JDBC_URL_SUFFIX = "?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&useServerPrepStmts=true&useLocalSessionState=true";
     
     private static final String[] DEFAULT_COMMANDS = new String[] {"--default-authentication-plugin=mysql_native_password", "explicit_defaults_for_timestamp=true"};
     
     private static final String DEFAULT_TRANSACTION_ISOLATION = "TRANSACTION_REPEATABLE_READ";
     
-    private static final List<String> DEFAULT_ENV = Collections.singletonList("LANG=C.UTF-8");
-    
-    private final String scenario;
-    
-    private final String url;
-    
     public MySQLITContainer(final DockerContainerDefinition dockerDefinition) {
-        super(dockerDefinition.getIdentifier(), DEFAULT_IMAGE_NAME, dockerDefinition.getPortOrDefault(DEFAULT_PORT));
-        scenario = dockerDefinition.getScenario();
-        url = initUrl();
-        setWaitStrategy(ConnectionWaitStrategy.buildJDBCConnectionWaitStrategy(url, DEFAULT_USER, DEFAULT_PASSWORD));
-    }
-    
-    private String initUrl() {
-        return "jdbc:mysql://localhost:" + getPort() + DEFAULT_JDBC_URL_SUFFIX;
-    }
-    
-    private String initJdbcUrl(final String dataSourceName) {
-        return url + "/" + dataSourceName + DEFAULT_JDBC_URL_SUFFIX;
+        super(dockerDefinition.getIdentifier(), dockerDefinition.getScenario(), DEFAULT_IMAGE_NAME, dockerDefinition.getPortOrDefault(DEFAULT_PORT));
     }
     
     @Override
     protected void configure() {
         withCommand(DEFAULT_COMMANDS);
-        setEnv(DEFAULT_ENV);
-        initDatabase(scenario, "mysql");
+        addEnv("LANG", "C.UTF-8");
+        addEnv("MYSQL_ROOT_PASSWORD", DEFAULT_PASSWORD);
+        addEnv("MYSQL_ROOT_HOST", "%");
         super.configure();
     }
     
     @Override
+    protected String getDatabaseType() {
+        return "MySQL";
+    }
+    
+    @Override
     protected String getDriverClassName() {
-        return null;
+        return DEFAULT_DRIVER_CLASS_NAME;
+    }
+    
+    @Override
+    protected String getJdbcUrl(int port) {
+        return "jdbc:mysql://localhost:" + port + DEFAULT_JDBC_URL_SUFFIX;
     }
     
     @Override
     protected String getJdbcUrl(final String dataSourceName) {
-        return initJdbcUrl(dataSourceName);
+        return "jdbc:mysql://localhost:" + getPort() + "/" + dataSourceName + DEFAULT_JDBC_URL_SUFFIX;
     }
     
     @Override
@@ -88,7 +80,7 @@ public final class MySQLITContainer extends DatabaseITContainer {
     }
     
     @Override
-    protected String setPassword() {
+    protected String getPassword() {
         return DEFAULT_PASSWORD;
     }
     
