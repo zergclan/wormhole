@@ -37,6 +37,9 @@ jobs:
     strategy:
       matrix:
         java: [ 8, 11, 17 ]
+        scenarios: [ mirror, mapper ]
+        source: [ MySQL:3306 ]
+        target: [ MySQL:3306 ]
     steps:
       - uses: actions/checkout@v2
       - name: Cache Maven Repos
