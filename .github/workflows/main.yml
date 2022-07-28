@@ -37,7 +37,6 @@ jobs:
     strategy:
       matrix:
         java: [ 8, 11, 17 ]
-        scenarios: [ mirror, mapper ]
     steps:
       - uses: actions/checkout@v2
       - name: Cache Maven Repos
