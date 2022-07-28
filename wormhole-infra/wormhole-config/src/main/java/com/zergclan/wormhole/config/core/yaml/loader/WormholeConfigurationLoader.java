@@ -15,19 +15,22 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.infra.config;
+package com.zergclan.wormhole.config.core.yaml.loader;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.config.core.WormholeConfiguration;
-import com.zergclan.wormhole.config.core.yaml.swapper.YamlWormholeConfigurationSwapper;
 import com.zergclan.wormhole.config.core.yaml.YamlTaskConfiguration;
 import com.zergclan.wormhole.config.core.yaml.YamlWormholeConfiguration;
+import com.zergclan.wormhole.config.core.yaml.swapper.YamlWormholeConfigurationSwapper;
 import com.zergclan.wormhole.config.core.yaml.util.YamlUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -40,50 +43,47 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeConfigurationLoader {
     
-    private static final String CONFIGURATION_PATH_PREFIX;
-    
     private static final String WORMHOLE_SERVER_CONFIGURATION_FILE = "wormhole-server.yaml";
     
     private static final String WORMHOLE_TASK_CONFIGURATION_FILE_PREFIX = "wormhole-task-";
     
     private static final String WORMHOLE_TASK_CONFIGURATION_FILE_SUFFIX = "yaml";
     
-    private static final YamlWormholeConfigurationSwapper SWAPPER;
-    
-    static {
-        SWAPPER = new YamlWormholeConfigurationSwapper();
-        String projectPath = System.getProperty("user.dir");
-        String modulePath = projectPath.endsWith("wormhole") ? "/wormhole-console" : "";
-        CONFIGURATION_PATH_PREFIX = projectPath + modulePath + "/src/main/resources/conf";
-    }
+    private static final YamlWormholeConfigurationSwapper SWAPPER = new YamlWormholeConfigurationSwapper();
     
     /**
      * Load {@link WormholeConfiguration}.
      *
+     * @param classpath classpath
      * @return {@link WormholeConfiguration}
      * @throws IOException IO exception
      */
-    public static WormholeConfiguration load() throws IOException {
-        return SWAPPER.swapToTarget(loadYamlWormholeConfiguration());
+    public static WormholeConfiguration load(final String classpath) throws IOException {
+        return SWAPPER.swapToTarget(loadYamlWormholeConfiguration(classpath));
     }
     
-    private static YamlWormholeConfiguration loadYamlWormholeConfiguration() throws IOException {
-        YamlWormholeConfiguration result = YamlUtil.unmarshal(loadFile(WORMHOLE_SERVER_CONFIGURATION_FILE), YamlWormholeConfiguration.class);
+    private static YamlWormholeConfiguration loadYamlWormholeConfiguration(final String classpath) throws IOException {
+        YamlWormholeConfiguration result = YamlUtil.unmarshal(getResourceYamlFile(classpath, WORMHOLE_SERVER_CONFIGURATION_FILE), YamlWormholeConfiguration.class);
         Map<String, YamlTaskConfiguration> tasks = new LinkedHashMap<>();
         Set<String> taskNames = result.getPlans().entrySet().stream().flatMap(entry -> entry.getValue().getTasks().stream()).collect(Collectors.toCollection(LinkedHashSet::new));
         for (String each : taskNames) {
-            tasks.put(each, loadYamlTaskConfiguration(each));
+            tasks.put(each, loadYamlTaskConfiguration(classpath, each));
         }
         result.setTasks(tasks);
         return result;
     }
     
-    private static YamlTaskConfiguration loadYamlTaskConfiguration(final String taskName) throws IOException {
-        File file = loadFile(WORMHOLE_TASK_CONFIGURATION_FILE_PREFIX + taskName + MarkConstant.POINT + WORMHOLE_TASK_CONFIGURATION_FILE_SUFFIX);
-        return YamlUtil.unmarshal(file, YamlTaskConfiguration.class);
+    private static YamlTaskConfiguration loadYamlTaskConfiguration(final String classpath, final String taskName) throws IOException {
+        return YamlUtil.unmarshal(getResourceYamlFile(classpath, formatYAMLFileName(WORMHOLE_TASK_CONFIGURATION_FILE_PREFIX + taskName)), YamlTaskConfiguration.class);
     }
     
-    private static File loadFile(final String fileName) {
-        return new File(CONFIGURATION_PATH_PREFIX + MarkConstant.FORWARD_SLASH + fileName);
+    @SneakyThrows(URISyntaxException.class)
+    private static File getResourceYamlFile(final String classpath, final String fileName) {
+        URL url = WormholeConfigurationLoader.class.getResource(classpath + MarkConstant.FORWARD_SLASH + fileName);
+        return null == url ? new File(classpath) : new File(url.toURI().getPath());
+    }
+    
+    private static String formatYAMLFileName(final String fileName) {
+        return fileName + MarkConstant.POINT + WORMHOLE_TASK_CONFIGURATION_FILE_SUFFIX;
     }
 }

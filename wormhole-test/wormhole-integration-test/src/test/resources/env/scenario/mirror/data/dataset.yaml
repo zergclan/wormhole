@@ -18,7 +18,7 @@
 databaseType: MySQL
 port: 3306
 dataSources:
-  source_ds:
+  ds_source:
     tables:
       t_user:
         columns:

@@ -76,11 +76,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.zaxxer</groupId>
-                <artifactId>HikariCP</artifactId>
-                <version>${HikariCP.version}</version>
-            </dependency>
+            <!-- tools -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -116,6 +112,13 @@
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml.version}</version>
             </dependency>
+
+            <!-- databases -->
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${HikariCP.version}</version>
+            </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
@@ -128,11 +131,15 @@
                 <version>${h2.version}</version>
                 <scope>runtime</scope>
             </dependency>
+
+            <!-- log -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
+
+            <!-- test -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
@@ -160,6 +167,10 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -238,23 +249,4 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-    <developers>
-        <developer>
-            <name>gin</name>
-            <email>jacky7boy@163.com</email>
-        </developer>
-        <developer>
-            <name>WtlKoma</name>
-            <email>15810322721@163.com</email>
-        </developer>
-        <developer>
-            <name>wenguozhang</name>
-            <email>15710047100@163.com</email>
-        </developer>
-        <developer>
-            <name>rabbit1225</name>
-            <email>shihuatao@gmail.com</email>
-        </developer>
-    </developers>
 </project>

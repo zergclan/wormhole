@@ -31,10 +31,12 @@ public final class MarkConstant {
     public static final String POINT = ".";
     
     public static final String COMMA = ",";
-
-    public static final String SPACE = "#";
     
     public static final String COLON = ":";
+    
+    public static final String HYPHEN = "-";
+
+    public static final String SPACE = "#";
     
     public static final String FORWARD_SLASH = "/";
     

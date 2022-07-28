@@ -21,6 +21,7 @@ import com.zergclan.wormhole.config.core.DataSourceConfiguration;
 import com.zergclan.wormhole.config.core.PlanConfiguration;
 import com.zergclan.wormhole.config.core.TaskConfiguration;
 import com.zergclan.wormhole.config.core.WormholeConfiguration;
+import com.zergclan.wormhole.config.core.yaml.loader.WormholeConfigurationLoader;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,7 @@ public final class WormholeConfigurationLoaderTest {
     @Test
     @SneakyThrows(IOException.class)
     public void assertLoad() {
-        WormholeConfiguration wormholeConfiguration = WormholeConfigurationLoader.load();
+        WormholeConfiguration wormholeConfiguration = WormholeConfigurationLoader.load("/conf");
         Map<String, DataSourceConfiguration> dataSources = wormholeConfiguration.getDataSources();
         assertEquals(2, dataSources.size());
         DataSourceConfiguration sourceDataSourceConfiguration = dataSources.get("ds-source");

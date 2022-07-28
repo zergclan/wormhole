@@ -113,10 +113,7 @@ public final class WormholeExecutionEngine {
      * @return is registered or not
      */
     public synchronized boolean register(final MetaData metadata) {
-        if (isInitialization()) {
-            return planExecutionEngine.register(metadata);
-        }
-        return false;
+        return planExecutionEngine.register(metadata);
     }
     
     /**
@@ -127,12 +124,19 @@ public final class WormholeExecutionEngine {
     @SuppressWarnings("all")
     public void register(final Map<String, EventListener> listeners) {
         listeners.values().forEach(WormholeEventBus::register);
-        started();
     }
     
-    private void started() {
-        STATE.compareAndSet(EngineState.UNINITIALIZED, EngineState.INITIALIZATION);
-        log.info("Wormhole execution engine initialization completed, started successfully !!");
+    /**
+     * Started.
+     *
+     * @return is started or not
+     */
+    public boolean started() {
+        boolean result = STATE.compareAndSet(EngineState.UNINITIALIZED, EngineState.INITIALIZATION);
+        if (result) {
+            log.info("Wormhole execution engine initialization completed, started successfully !!");
+        }
+        return result;
     }
     
     /**
@@ -161,7 +165,7 @@ public final class WormholeExecutionEngine {
     }
     
     private enum EngineState {
-    
+        
         UNINITIALIZED, INITIALIZATION
     }
 }

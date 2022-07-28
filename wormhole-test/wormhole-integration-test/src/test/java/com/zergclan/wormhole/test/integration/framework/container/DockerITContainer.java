@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.test.integration.framework.container;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.testcontainers.containers.GenericContainer;
@@ -31,7 +32,7 @@ import java.time.temporal.ChronoUnit;
  * Abstract IT container based on docker.
  */
 @Slf4j
-@Getter
+@Getter(AccessLevel.PROTECTED)
 public abstract class DockerITContainer extends GenericContainer<DockerITContainer> implements ITContainer {
     
     private final String identifier;

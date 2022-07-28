@@ -20,7 +20,7 @@ package com.zergclan.wormhole.console.application.context;
 import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
 import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.common.exception.WormholeException;
-import com.zergclan.wormhole.console.infra.config.WormholeConfigurationLoader;
+import com.zergclan.wormhole.config.core.yaml.loader.WormholeConfigurationLoader;
 import lombok.Getter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -83,11 +83,13 @@ public final class SpringContextContainer implements ApplicationContextAware {
     @Getter
     private static final class WormholeEngineExecutor implements Runnable {
         
+        private static final int MAX_RETRY = 3;
+        
         private final WormholeExecutionEngine wormholeExecutionEngine;
         
         WormholeEngineExecutor() {
             try {
-                wormholeExecutionEngine = WormholeExecutionEngine.getInstance(WormholeConfigurationLoader.load());
+                wormholeExecutionEngine = WormholeExecutionEngine.getInstance(WormholeConfigurationLoader.load("/conf"));
             } catch (SQLException | IOException e) {
                 throw new WormholeException(e);
             }
@@ -99,7 +101,22 @@ public final class SpringContextContainer implements ApplicationContextAware {
         
         @Override
         public void run() {
-            wormholeExecutionEngine.execute();
+            if (startEngine()) {
+                wormholeExecutionEngine.execute();
+            }
+        }
+        
+        private boolean startEngine() {
+            boolean isStarted;
+            int count = 0;
+            do {
+                if (count > MAX_RETRY) {
+                    return false;
+                }
+                isStarted = wormholeExecutionEngine.started();
+                count++;
+            } while (!isStarted);
+            return true;
         }
     }
 }
