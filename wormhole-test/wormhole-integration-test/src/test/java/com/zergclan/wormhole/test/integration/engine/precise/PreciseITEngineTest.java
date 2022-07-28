@@ -25,9 +25,6 @@ import com.zergclan.wormhole.test.integration.framework.param.ParameterizedArray
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
 import lombok.SneakyThrows;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.junit.runners.Parameterized;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -61,7 +58,6 @@ public final class PreciseITEngineTest extends BaseITEngine {
     public void assertPreciseCases() {
         preProcess();
         testData();
-        // executeProcess();
         postProcess();
     }
     
