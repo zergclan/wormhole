@@ -52,10 +52,10 @@ jobs:
       - name: Build with Maven
         run: echo y | ./mvnw -B --no-transfer-progress clean install
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
-        with:
-          file: ./wormhole-console/target/site/jacoco/jacoco.xml
+#      - name: Upload coverage to Codecov
+#        uses: codecov/codecov-action@v2.1.0
+#        with:
+#          file: ./wormhole-console/target/site/jacoco/jacoco.xml
 
   it-precise:
     name: wormhole-it-precise
@@ -74,10 +74,11 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Set up JDK 8
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: 8
+          java-version: ${{ matrix.java }}
+          cache: maven
       - name: Run Integration Test
-        run: ./mvnw -nsu -B install -f wormhole-test/wormhole-integration-test/pom.xml -Dcheckstyle.skip=true -Dit.env.scenarios=${{ matrix.scenarios }} -Dit.env.datasource.source=${{ matrix.source}} -Dit.env.datasource.target=${{ matrix.target }} -Dit.run.type=DOCKER
+        run: echo y | ./mvnw -nsu -B install -f wormhole-test/wormhole-integration-test/pom.xml -Dcheckstyle.skip=true -Dit.env.scenarios=${{ matrix.scenarios }} -Dit.env.datasource.source=${{ matrix.source}} -Dit.env.datasource.target=${{ matrix.target }} -Dit.run.type=DOCKER
