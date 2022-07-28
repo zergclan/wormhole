@@ -25,11 +25,7 @@ on:
 
 env:
   MAVEN_OPTS: -Dhttp.keepAlive=false
-
-concurrency:
-  group: it-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
+  
 jobs:
   it-precise-case:
     name: precise case
