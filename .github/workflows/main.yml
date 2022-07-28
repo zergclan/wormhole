@@ -60,28 +60,29 @@ jobs:
         with:
           file: ./wormhole-console/target/site/jacoco/jacoco.xml
 
-#  it-precise:
-#    name: wormhole-it-precise
-#    runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        scenarios: [ mirror, mapper ]
-#        source: [ MySQL:3306 ]
-#        target: [ MySQL:3306 ]
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Cache Maven Repos
-#        uses: actions/cache@v2
-#        with:
-#          path: ~/.m2/repository
-#          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-#          restore-keys: |
-#            ${{ runner.os }}-maven-
-#      - name: Set up JDK ${{ matrix.java }}
-#        uses: actions/setup-java@v2
-#        with:
-#          distribution: 'temurin'
-#          java-version: ${{ matrix.java }}
-#          cache: maven
-#      - name: Run Integration Test
-#        run: ./mvnw -nsu -B install -f wormhole-test/wormhole-integration-test/pom.xml -Dcheckstyle.skip=true -Dit.env.scenarios=${{ matrix.scenarios }} -Dit.env.datasource.source=${{ matrix.source}} -Dit.env.datasource.target=${{ matrix.target }} -Dit.run.type=DOCKER
+  it-precise:
+    name: wormhole-it-precise
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 8, 11, 17 ]
+        scenarios: [ mirror, mapper ]
+        source: [ MySQL:3306 ]
+        target: [ MySQL:3306 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache Maven Repos
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: maven
+      - name: Run Integration Test
+        run: ./mvnw -nsu -B install -f wormhole-test/wormhole-integration-test/pom.xml -Dcheckstyle.skip=true -Dit.env.scenarios=${{ matrix.scenarios }} -Dit.env.datasource.source=${{ matrix.source}} -Dit.env.datasource.target=${{ matrix.target }} -Dit.run.type=DOCKER
