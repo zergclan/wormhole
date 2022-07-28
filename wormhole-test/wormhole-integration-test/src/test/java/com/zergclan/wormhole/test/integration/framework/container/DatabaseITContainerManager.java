@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public final class DatabaseITContainerManager {
@@ -47,8 +46,8 @@ public final class DatabaseITContainerManager {
      * @param identifier identifier
      * @return {@link DatabaseITContainer}
      */
-    public Optional<DatabaseITContainer> getContainer(final String identifier) {
-        return Optional.ofNullable(databasesContainers.get(identifier));
+    public DatabaseITContainer getContainer(final String identifier) {
+        return databasesContainers.get(identifier);
     }
     
     /**

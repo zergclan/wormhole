@@ -60,21 +60,28 @@ public abstract class BaseITEngine {
     
     private final DatabaseITContainerManager containerManager;
     
+    private volatile Dataset dataset;
+    
+    private volatile DataSource source;
+    
+    private volatile DataSource target;
+    
     public BaseITEngine(final WormholeParameterized parameterized) {
         scenario = parameterized.getScenario();
         dataSources = parameterized.getDataSources();
-        sleeper = new TimeSleeper(200L);
+        sleeper = new TimeSleeper(50L);
         containerManager = new DatabaseITContainerManager(sleeper);
-    }
-    
-    protected void preProcess() {
-        initEnv();
-        setData();
     }
     
     protected void postProcess() {
         containerManager.close();
         sleeper.sleep();
+    }
+    
+    protected void preProcess() {
+        initEnv();
+        initDataSource();
+        setData();
     }
     
     private void initEnv() {
@@ -85,29 +92,41 @@ public abstract class BaseITEngine {
     }
     
     @SneakyThrows(IOException.class)
-    protected void setData() {
-        Dataset dataset = new Dataset(scenario, DatasetConfigurationLoader.load(scenario));
-        System.out.println("====");
-        containerManager.getContainer(dataset.getDataSourceIdentifier()).ifPresent(databaseITContainer -> setData(databaseITContainer, dataset.getDataSources()));
+    private void initDataSource() {
+        dataset = new Dataset(scenario, DatasetConfigurationLoader.load(scenario));
+        DatabaseITContainer container = containerManager.getContainer(dataset.getIdentifier());
+        source = container.getDataSource("ds_source");
+        target = container.getDataSource("ds_target");
     }
     
     @SneakyThrows(SQLException.class)
-    private void setData(final DatabaseITContainer databaseITContainer, final Map<String, DataSourceNode> dataSources) {
-        for (Map.Entry<String, DataSourceNode> entry : dataSources.entrySet()) {
-            setData(entry.getValue(), databaseITContainer.getDataSource(entry.getKey()));
-        }
+    private void setData() {
+        setSourceData(dataset.getDataSources().get("ds_source"));
+        setTargetData(dataset.getDataSources().get("ds_target"));
     }
     
-    private void setData(final DataSourceNode dataSourceNode, final DataSource dataSources) throws SQLException {
-        try (Connection connection = dataSources.getConnection()) {
-            Map<String, TableNode> tables = dataSourceNode.getTables();
+    private void setSourceData(final DataSourceNode sourceDataSourceNode) throws SQLException {
+        try (Connection connection = source.getConnection()) {
+            Map<String, TableNode> tables = sourceDataSourceNode.getTables();
             for (Entry<String, TableNode> entry : tables.entrySet()) {
-                setData(entry.getValue(), connection);
+                setInitData(entry.getValue(), connection);
             }
         }
     }
     
-    private void setData(final TableNode tableNode, final Connection connection) throws SQLException {
+    private void setTargetData(final DataSourceNode targetDataSourceNode) throws SQLException {
+        if (null == targetDataSourceNode) {
+            return;
+        }
+        try (Connection connection = target.getConnection()) {
+            Map<String, TableNode> tables = targetDataSourceNode.getTables();
+            for (Entry<String, TableNode> entry : tables.entrySet()) {
+                setInitData(entry.getValue(), connection);
+            }
+        }
+    }
+    
+    private void setInitData(final TableNode tableNode, final Connection connection) throws SQLException {
         String insertSQL = initInsertSQL(tableNode);
         List<List<Object>> parameters = initInsertParameter(tableNode);
         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);

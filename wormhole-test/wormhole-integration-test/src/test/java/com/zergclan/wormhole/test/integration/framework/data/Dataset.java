@@ -55,11 +55,11 @@ public final class Dataset {
     }
     
     /**
-     * Get identifier of data source.
+     * Get identifier.
      *
      * @return identifier
      */
-    public String getDataSourceIdentifier() {
+    public String getIdentifier() {
         return scenario + MarkConstant.COLON + databaseType + MarkConstant.COLON + port;
     }
 }

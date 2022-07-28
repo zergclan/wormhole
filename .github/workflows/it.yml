@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-name: GitHub CI
+name: Integration Test
 
 on:
   push:
@@ -26,13 +26,21 @@ on:
 env:
   MAVEN_OPTS: -Dhttp.keepAlive=false
 
+concurrency:
+  group: it-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  it-precise-case:
+    name: precise case
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       matrix:
         java: [8, 11, 17]
-
+        scenarios: [ mirror, mapper ]
+        source: [ MySQL:3306 ]
+        target: [ MySQL:3306 ]
     steps:
       - uses: actions/checkout@v2
       - name: Cache Maven Repos
@@ -48,11 +56,5 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: maven
-
-      - name: Build with Maven
-        run: echo y | ./mvnw -B --no-transfer-progress clean install
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
-        with:
-          file: ./wormhole-console/target/site/jacoco/jacoco.xml
+      - name: Run Integration Test
+        run: ./mvnw -nsu -B install -f wormhole-test/wormhole-integration-test/pom.xml -Dcheckstyle.skip=true -Dit.env.scenarios=${{ matrix.scenarios }} -Dit.env.datasource.source=${{ matrix.source}} -Dit.env.datasource.target=${{ matrix.target }} -Dit.run.type=DOCKER

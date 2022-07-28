@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.test.integration.framework.container.storage;
 
 import com.zaxxer.hikari.HikariDataSource;
+import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.test.integration.framework.container.wait.ConnectionWaitStrategy;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
 import com.zergclan.wormhole.test.integration.framework.container.DockerITContainer;
@@ -59,26 +60,32 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     
     @Override
     protected void configure() {
-        withExposedPorts(getPort());
         withClasspathResourceMapping(PathGenerator.generateInitSqlPath(getScenario(), getDatabaseType()), CONTAINER_PATH, BindMode.READ_ONLY);
+        withExposedPorts(getPort());
         setWaitStrategy(new ConnectionWaitStrategy(() -> DriverManager.getConnection(URLGenerator.generateJDBCUrl(getDatabaseType(), getFirstMappedPort()), getUsername(), getPassword())));
     }
     
     private DataSource createDataSource(final String dataSourceName) {
         HikariDataSource result = new HikariDataSource();
         result.setDriverClassName(getDriverClassName());
-        result.setJdbcUrl(getJdbcUrl(dataSourceName));
+        String jdbcUrl = getJdbcUrl(getHost(), getMappedPort(getPort()), dataSourceName);
+        result.setJdbcUrl(jdbcUrl);
         result.setUsername(getUsername());
         result.setPassword(getPassword());
         result.setTransactionIsolation(getTransactionIsolation());
+        result.setPoolName(getPoolName(dataSourceName));
         return result;
+    }
+    
+    private String getPoolName(final String dataSourceName) {
+        return getDatabaseType() + MarkConstant.HYPHEN + getScenario() + MarkConstant.HYPHEN + dataSourceName;
     }
     
     protected abstract String getDatabaseType();
     
     protected abstract String getDriverClassName();
     
-    protected abstract String getJdbcUrl(String dataSourceName);
+    protected abstract String getJdbcUrl(String host, int port, String dataSourceName);
     
     protected abstract String getUsername();
     

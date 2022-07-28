@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -34,30 +35,32 @@ public final class IntegrationTestEnvironment {
     
     private static final IntegrationTestEnvironment INSTANCE = new IntegrationTestEnvironment();
     
-    private final Collection<String> scenarios;
+    private final Collection<String> scenarios = new LinkedList<>();
     
     private final Collection<DataSourceEnvironment> dataSources = new LinkedList<>();
     
     private IntegrationTestEnvironment() {
-        Properties props = loadProperties();
-        scenarios = Splitter.on(",").trimResults().splitToList(props.getProperty("it.env.scenarios"));
-        String source = props.getProperty("it.env.datasource.source");
-        String target = props.getProperty("it.env.datasource.target");
-        dataSources.add(new DataSourceEnvironment(source));
-        if (!source.equals(target)) {
-            dataSources.add(new DataSourceEnvironment(target));
+        Optional<Properties> properties = loadProperties();
+        if (properties.isPresent()) {
+            Properties props = properties.get();
+            scenarios.addAll(Splitter.on(",").trimResults().splitToList(props.getProperty("it.env.scenarios")));
+            String source = props.getProperty("it.env.datasource.source");
+            String target = props.getProperty("it.env.datasource.target");
+            dataSources.add(new DataSourceEnvironment(source));
+            if (!source.equals(target)) {
+                dataSources.add(new DataSourceEnvironment(target));
+            }
         }
     }
     
-    private Properties loadProperties() {
-        String type = System.getProperties().getProperty("it.run.type", "NATIVE");
+    private Optional<Properties> loadProperties() {
+        String type = System.getProperties().getProperty("it.run.type", "SKIP");
         if ("NATIVE".equalsIgnoreCase(type)) {
-            return loadNativeProperties();
+            return Optional.of(loadNativeProperties());
         } else if ("DOCKER".equalsIgnoreCase(type)) {
-            return loadRuntimeProperties();
-        } else {
-            throw new UnsupportedOperationException();
+            return Optional.of(loadRuntimeProperties());
         }
+        return Optional.empty();
     }
     
     private Properties loadNativeProperties() {

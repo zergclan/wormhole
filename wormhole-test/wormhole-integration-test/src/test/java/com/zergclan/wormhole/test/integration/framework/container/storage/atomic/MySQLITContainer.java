@@ -19,6 +19,7 @@ package com.zergclan.wormhole.test.integration.framework.container.storage.atomi
 
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
 import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
+import org.testcontainers.containers.BindMode;
 
 /**
  * Database IT container of MySQL.
@@ -37,8 +38,6 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     private static final String DEFAULT_JDBC_URL_SUFFIX = "?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&useServerPrepStmts=true&useLocalSessionState=true";
     
-    private static final String[] DEFAULT_COMMANDS = new String[] {"--default-authentication-plugin=mysql_native_password"};
-    
     private static final String DEFAULT_TRANSACTION_ISOLATION = "TRANSACTION_REPEATABLE_READ";
     
     public MySQLITContainer(final DockerContainerDefinition dockerDefinition) {
@@ -47,10 +46,10 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     @Override
     protected void configure() {
-        withCommand(DEFAULT_COMMANDS);
         addEnv("LANG", "C.UTF-8");
         addEnv("MYSQL_ROOT_PASSWORD", DEFAULT_PASSWORD);
         addEnv("MYSQL_ROOT_HOST", "%");
+        withClasspathResourceMapping("/env/common/mysql/my.cnf", "/etc/mysql/my.cnf", BindMode.READ_ONLY);
         super.configure();
     }
     
@@ -65,8 +64,8 @@ public final class MySQLITContainer extends DatabaseITContainer {
     }
     
     @Override
-    protected String getJdbcUrl(final String dataSourceName) {
-        return "jdbc:mysql://localhost:" + getPort() + "/" + dataSourceName + DEFAULT_JDBC_URL_SUFFIX;
+    protected String getJdbcUrl(final String host, final int port, final String dataSourceName) {
+        return "jdbc:mysql://" + host + ":" + port + "/" + dataSourceName + DEFAULT_JDBC_URL_SUFFIX;
     }
     
     @Override

@@ -26,13 +26,13 @@ dataSources:
   ds-target:
     type: MySQL
     host: 127.0.0.1
-    port: 3307
+    port: 3306
     username: root
     password: root
     catalog: ds_target
 
 plans:
-  test_plan:
+  mapper_plan:
     mode: ONE_OFF
     expression: 0 0 10 * * *
     atomic: true
