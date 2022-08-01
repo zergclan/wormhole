@@ -17,28 +17,25 @@
 
 package com.zergclan.wormhole.config.core;
 
-import com.zergclan.wormhole.config.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Configuration of data source.
+ * Configuration of data source pool.
  */
 @RequiredArgsConstructor
 @Getter
-public final class DataSourceConfiguration implements Configuration {
+public final class DataSourcePoolConfiguration {
     
-    private static final long serialVersionUID = 1663604199838185645L;
+    private final String poolName;
     
-    private final String name;
+    private final int minPoolSize;
     
-    private final String type;
+    private final int maxPoolSize;
     
-    private final String url;
+    private final int connectionTimeoutMilliseconds;
     
-    private final String username;
+    private final int idleTimeoutMilliseconds;
     
-    private final String password;
-    
-    private final DataSourcePoolConfiguration pool;
+    private final int maxLifetimeMilliseconds;
 }

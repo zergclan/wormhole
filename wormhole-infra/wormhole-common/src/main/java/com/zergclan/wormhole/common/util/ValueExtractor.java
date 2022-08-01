@@ -15,30 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core;
+package com.zergclan.wormhole.common.util;
 
-import com.zergclan.wormhole.config.api.Configuration;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * Configuration of data source.
+ * Value extractor.
  */
-@RequiredArgsConstructor
-@Getter
-public final class DataSourceConfiguration implements Configuration {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class ValueExtractor {
+
+    public static int getOrDefault(final Integer input, final int defaultValue) {
+        return null == input ? defaultValue : input;
+    }
     
-    private static final long serialVersionUID = 1663604199838185645L;
-    
-    private final String name;
-    
-    private final String type;
-    
-    private final String url;
-    
-    private final String username;
-    
-    private final String password;
-    
-    private final DataSourcePoolConfiguration pool;
 }

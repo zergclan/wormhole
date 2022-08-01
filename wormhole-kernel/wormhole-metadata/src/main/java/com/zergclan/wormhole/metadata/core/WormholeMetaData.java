@@ -43,9 +43,7 @@ public final class WormholeMetaData implements MetaData {
     
     public WormholeMetaData(final Map<String, DataSourceMetaData> dataSources, final Map<String, PlanMetaData> plans) {
         Map<String, DataSourceMetaData> dataSourceMetaData = new LinkedHashMap<>();
-        dataSources.forEach((key, value) -> {
-            dataSourceMetaData.put(value.getIdentifier(), value);
-        });
+        dataSources.forEach((key, value) -> dataSourceMetaData.put(value.getIdentifier(), value));
         this.dataSources = dataSourceMetaData;
         this.plans = plans;
     }

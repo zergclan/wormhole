@@ -35,9 +35,6 @@
 
     <properties>
         <testcontainers.version>1.17.3</testcontainers.version>
-        <mysql.version>8.0.28</mysql.version>
-        <postgresql.version>42.3.3</postgresql.version>
-        <logback-classic.version>1.2.11</logback-classic.version>
     </properties>
 
     <dependencyManagement>
@@ -63,7 +60,7 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>${logback-classic.version}</version>
+                <version>${logback.version}</version>
                 <scope>test</scope>
                 <exclusions>
                     <exclusion>

@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * wormhole metadata initializer.
@@ -53,19 +54,19 @@ public final class WormholeMetadataInitializer {
     
     private Map<String, DataSourceMetaData> createDataSources(final Map<String, DataSourceConfiguration> configurations) throws SQLException {
         Map<String, DataSourceMetaData> result = new LinkedHashMap<>();
-        Iterator<Map.Entry<String, DataSourceConfiguration>> iterator = configurations.entrySet().iterator();
+        Iterator<Entry<String, DataSourceConfiguration>> iterator = configurations.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, DataSourceConfiguration> entry = iterator.next();
+            Entry<String, DataSourceConfiguration> entry = iterator.next();
             result.put(entry.getKey(), DataSourceMetadataInitializer.createActualTypeDataSourceMetadata(entry.getValue()));
         }
         return result;
     }
     
     private Map<String, PlanMetaData> createPlans(final Map<String, PlanConfiguration> planConfigurations, final Map<String, DataSourceMetaData> dataSources) {
-        Iterator<Map.Entry<String, PlanConfiguration>> iterator = planConfigurations.entrySet().iterator();
+        Iterator<Entry<String, PlanConfiguration>> iterator = planConfigurations.entrySet().iterator();
         Map<String, PlanMetaData> result = new LinkedHashMap<>();
         while (iterator.hasNext()) {
-            Map.Entry<String, PlanConfiguration> entry = iterator.next();
+            Entry<String, PlanConfiguration> entry = iterator.next();
             result.put(entry.getKey(), planMetadataInitializer.init(entry.getKey(), entry.getValue(), dataSources));
         }
         return result;

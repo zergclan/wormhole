@@ -18,44 +18,35 @@
 package com.zergclan.wormhole.config.core.yaml.swapper;
 
 import com.zergclan.wormhole.config.api.Swapper;
-import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.config.core.DataSourceConfiguration;
+import com.zergclan.wormhole.config.core.DataSourcePoolConfiguration;
 import com.zergclan.wormhole.config.core.yaml.YamlDataSourceConfiguration;
-
-import java.util.Properties;
+import com.zergclan.wormhole.config.core.yaml.YamlDataSourcePoolConfiguration;
 
 /**
  * YAML data source configuration swapper.
  */
 public final class YamlDataSourceConfigurationSwapper implements Swapper<YamlDataSourceConfiguration, DataSourceConfiguration> {
     
+    private final YamlDataSourcePoolConfigurationSwapper dataSourcePoolSwapper = new YamlDataSourcePoolConfigurationSwapper();
+    
     @Override
     public DataSourceConfiguration swapToTarget(final YamlDataSourceConfiguration yamlConfiguration) {
-        String dataSourceName = yamlConfiguration.getDataSourceName();
-        String type = yamlConfiguration.getType();
-        String host = yamlConfiguration.getHost();
-        int port = yamlConfiguration.getPort();
+        String dataSourceName = yamlConfiguration.getName();
+        String dataSourceType = yamlConfiguration.getType();
+        String url = yamlConfiguration.getUrl();
         String username = yamlConfiguration.getUsername();
         String password = yamlConfiguration.getPassword();
-        String catalog = yamlConfiguration.getCatalog();
-        Properties props = initProperties(yamlConfiguration);
-        return new DataSourceConfiguration(dataSourceName, type, host, port, username, password, catalog, props);
-    }
-    
-    private Properties initProperties(final YamlDataSourceConfiguration yamlConfiguration) {
-        Properties result = new Properties();
-        String poolName = yamlConfiguration.getPoolName();
-        result.put("poolName", StringUtil.isBlank(poolName) ? yamlConfiguration.getDataSourceName() : poolName);
-        result.put("minPoolSize", yamlConfiguration.getMinPoolSize());
-        result.put("maxPoolSize", yamlConfiguration.getMaxPoolSize());
-        result.put("connectionTimeoutMilliseconds", yamlConfiguration.getConnectionTimeoutMilliseconds());
-        result.put("idleTimeoutMilliseconds", yamlConfiguration.getIdleTimeoutMilliseconds());
-        result.put("maxLifetimeMilliseconds", yamlConfiguration.getMaxLifetimeMilliseconds());
-        return result;
+        YamlDataSourcePoolConfiguration yamlDataSourcePool = yamlConfiguration.getPool();
+        String poolName = null == yamlDataSourcePool.getPoolName() ? "wormhole-ds-" + dataSourceName : yamlDataSourcePool.getPoolName();
+        yamlDataSourcePool.setPoolName(poolName);
+        DataSourcePoolConfiguration dataSourcePoolConfiguration = dataSourcePoolSwapper.swapToTarget(yamlDataSourcePool);
+        return new DataSourceConfiguration(dataSourceName, dataSourceType, url, username, password, dataSourcePoolConfiguration);
     }
     
     @Override
-    public YamlDataSourceConfiguration swapToSource(final DataSourceConfiguration target) {
+    public YamlDataSourceConfiguration swapToSource(final DataSourceConfiguration configuration) {
+        // TODO init YamlDataSourceConfiguration
         return null;
     }
 }

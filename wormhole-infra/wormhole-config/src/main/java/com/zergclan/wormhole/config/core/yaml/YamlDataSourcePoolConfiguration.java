@@ -15,30 +15,28 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core;
+package com.zergclan.wormhole.config.core.yaml;
 
-import com.zergclan.wormhole.config.api.Configuration;
+import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
- * Configuration of data source.
+ * YAML data source pool configuration.
  */
-@RequiredArgsConstructor
 @Getter
-public final class DataSourceConfiguration implements Configuration {
+@Setter
+public final class YamlDataSourcePoolConfiguration implements YamlConfiguration {
     
-    private static final long serialVersionUID = 1663604199838185645L;
+    private String poolName;
     
-    private final String name;
+    private Integer minPoolSize;
     
-    private final String type;
+    private Integer maxPoolSize;
     
-    private final String url;
+    private Integer connectionTimeoutMilliseconds;
     
-    private final String username;
+    private Integer idleTimeoutMilliseconds;
     
-    private final String password;
-    
-    private final DataSourcePoolConfiguration pool;
+    private Integer maxLifetimeMilliseconds;
 }

@@ -17,9 +17,8 @@
 
 package com.zergclan.wormhole.spi.scene.typed.fixture;
 
-import com.google.common.collect.Sets;
-
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class TypedSPIFixtureImpl implements TypedSPIFixture {
     
@@ -30,6 +29,8 @@ public class TypedSPIFixtureImpl implements TypedSPIFixture {
     
     @Override
     public Collection<String> getAliases() {
-        return Sets.newHashSet("FIXTURE_TYPE_ALIASES");
+        Collection<String> result = new LinkedList<>();
+        result.add("FIXTURE_TYPE_ALIASES");
+        return result;
     }
 }
