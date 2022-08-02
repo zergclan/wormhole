@@ -23,7 +23,7 @@ import com.zergclan.wormhole.data.core.node.LocalDateTimeDataNode;
 import com.zergclan.wormhole.data.core.node.LongDataNode;
 import com.zergclan.wormhole.data.core.node.PatternedDataTime;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
-import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData.DataType;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeTypeMetaData.DataType;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

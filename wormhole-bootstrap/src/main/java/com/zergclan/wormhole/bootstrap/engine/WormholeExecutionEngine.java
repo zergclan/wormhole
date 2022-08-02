@@ -31,7 +31,7 @@ import com.zergclan.wormhole.metadata.core.WormholeMetaData;
 import com.zergclan.wormhole.metadata.core.initializer.WormholeMetadataInitializer;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData.ExecutionMode;
-import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
+import com.zergclan.wormhole.metadata.core.plan.TaskMetaData;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

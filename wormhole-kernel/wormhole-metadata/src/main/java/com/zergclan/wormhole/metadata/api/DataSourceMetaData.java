@@ -17,8 +17,9 @@
 
 package com.zergclan.wormhole.metadata.api;
 
-import com.zergclan.wormhole.metadata.core.resource.SchemaMetaData;
-import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.DataSourceType;
+import com.zergclan.wormhole.metadata.core.datasource.SchemaMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.TableMetaData;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -33,7 +34,7 @@ public interface DataSourceMetaData extends MetaData {
      *
      * @return data source type
      */
-    String getDataSourceType();
+    DataSourceType getDataSourceType();
     
     /**
      * Get driver class name.
@@ -71,14 +72,6 @@ public interface DataSourceMetaData extends MetaData {
      */
     boolean registerSchema(SchemaMetaData schemaMetaData);
     
-    /**
-     * Get {@link SchemaMetaData}.
-     *
-     * @param name name
-     * @return {@link SchemaMetaData}
-     */
-    SchemaMetaData getSchema(String name);
-
     /**
      * Get {@link TableMetaData}.
      *

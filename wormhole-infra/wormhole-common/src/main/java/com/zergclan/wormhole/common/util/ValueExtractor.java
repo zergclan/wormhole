@@ -25,9 +25,15 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ValueExtractor {
-
+    
+    /**
+     * Get or default value.
+     *
+     * @param input input
+     * @param defaultValue default value
+     * @return value
+     */
     public static int getOrDefault(final Integer input, final int defaultValue) {
         return null == input ? defaultValue : input;
     }
-    
 }

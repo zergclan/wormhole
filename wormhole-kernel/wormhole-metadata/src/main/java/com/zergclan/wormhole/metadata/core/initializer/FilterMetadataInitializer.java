@@ -20,10 +20,10 @@ package com.zergclan.wormhole.metadata.core.initializer;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.config.core.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.config.core.FilterConfiguration;
-import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
-import com.zergclan.wormhole.metadata.core.filter.FilterMetadataFactory;
-import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
-import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
+import com.zergclan.wormhole.metadata.core.plan.filter.FilterMetaData;
+import com.zergclan.wormhole.metadata.core.plan.filter.FilterMetadataFactory;
+import com.zergclan.wormhole.metadata.core.plan.SourceMetaData;
+import com.zergclan.wormhole.metadata.core.plan.TargetMetaData;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;

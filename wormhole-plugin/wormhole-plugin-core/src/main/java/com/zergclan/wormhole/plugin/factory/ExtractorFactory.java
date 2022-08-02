@@ -46,7 +46,7 @@ public final class ExtractorFactory {
      */
     public static Optional<Extractor> getExtractor(final CachedSourceMetaData cachedSource) {
         DataSourceMetaData dataSource = cachedSource.getDataSource();
-        Optional<Extractor> registeredService = TypedSPIRegistry.findRegisteredService(Extractor.class, dataSource.getDataSourceType());
+        Optional<Extractor> registeredService = TypedSPIRegistry.findRegisteredService(Extractor.class, dataSource.getDataSourceType().getType());
         if (registeredService.isPresent()) {
             Extractor extractor = registeredService.get();
             extractor.init(cachedSource);

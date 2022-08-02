@@ -43,7 +43,7 @@ public final class LoaderFactory {
      * @return {@link Loader}
      */
     public static Optional<Loader> getLoader(final CachedTargetMetaData cachedTarget) {
-        Optional<Loader> registeredService = TypedSPIRegistry.findRegisteredService(Loader.class, cachedTarget.getDataSource().getDataSourceType());
+        Optional<Loader> registeredService = TypedSPIRegistry.findRegisteredService(Loader.class, cachedTarget.getDataSource().getDataSourceType().getType());
         if (registeredService.isPresent()) {
             Loader loader = registeredService.get();
             loader.init(cachedTarget);

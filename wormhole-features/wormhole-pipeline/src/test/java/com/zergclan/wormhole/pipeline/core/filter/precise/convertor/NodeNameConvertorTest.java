@@ -19,7 +19,7 @@ package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
 
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
-import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import com.zergclan.wormhole.metadata.core.plan.filter.FilterType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

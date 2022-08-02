@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.pipeline.core.filter.precise.editor;
 
 import com.zergclan.wormhole.data.core.DataGroup;
-import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import com.zergclan.wormhole.metadata.core.plan.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueHelper;
 import lombok.Getter;

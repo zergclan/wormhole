@@ -19,7 +19,7 @@ package com.zergclan.wormhole.pipeline.core.filter.complex;
 
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.data.core.node.TextDataNode;
-import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import com.zergclan.wormhole.metadata.core.plan.filter.FilterType;
 import com.zergclan.wormhole.pipeline.core.helper.NodeValueDelimiterSplitterHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

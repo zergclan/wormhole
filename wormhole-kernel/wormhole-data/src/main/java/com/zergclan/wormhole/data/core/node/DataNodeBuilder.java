@@ -20,8 +20,8 @@ package com.zergclan.wormhole.data.core.node;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.data.api.node.DataNode;
-import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
-import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeTypeMetaData;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

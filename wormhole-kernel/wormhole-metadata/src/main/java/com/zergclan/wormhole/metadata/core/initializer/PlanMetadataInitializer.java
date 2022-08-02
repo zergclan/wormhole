@@ -22,7 +22,7 @@ import com.zergclan.wormhole.config.core.PlanConfiguration;
 import com.zergclan.wormhole.config.core.TaskConfiguration;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
-import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
+import com.zergclan.wormhole.metadata.core.plan.TaskMetaData;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.metadata.core.loader;
 
-import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
-import com.zergclan.wormhole.metadata.core.resource.IndexMetaData;
-import com.zergclan.wormhole.metadata.core.resource.SchemaMetaData;
-import com.zergclan.wormhole.metadata.core.resource.TableMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.ColumnMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.IndexMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.SchemaMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.TableMetaData;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

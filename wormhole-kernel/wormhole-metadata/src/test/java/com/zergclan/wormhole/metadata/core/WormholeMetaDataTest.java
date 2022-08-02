@@ -18,13 +18,12 @@
 package com.zergclan.wormhole.metadata.core;
 
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.WormholeDataSource;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
-import com.zergclan.wormhole.metadata.core.resource.dialect.MySQLDataSourceMetaData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
-import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,7 +40,12 @@ public final class WormholeMetaDataTest {
     
     @Test
     public void assertRegister() {
-        DataSourceMetaData dataSourceMetaData = new MySQLDataSourceMetaData("127.0.0.1", 3306, "root", "root", "source-ds", new Properties());
+        String identifier = "ds-source";
+        String databaseType = "MySQL";
+        String url = "jdbc:mysql://127.0.0.1:3306/ds_source?serverTimezone=UTC&useSSL=false";
+        String username = "root";
+        String password = "root";
+        DataSourceMetaData dataSourceMetaData = new WormholeDataSource(identifier, databaseType, url, username, password);
         metaData.register(dataSourceMetaData);
         PlanMetaData planMetaData = new PlanMetaData("test-plan", PlanMetaData.ExecutionMode.ONE_OFF, "yyyy-MM-dd HH:mm:ss", false, new LinkedHashMap<>());
         metaData.register(planMetaData);

@@ -17,8 +17,11 @@
 
 package com.zergclan.wormhole.metadata.core.task;
 
-import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
-import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.core.plan.filter.FilterMetaData;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.core.plan.SourceMetaData;
+import com.zergclan.wormhole.metadata.core.plan.TargetMetaData;
+import com.zergclan.wormhole.metadata.core.plan.TaskMetaData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

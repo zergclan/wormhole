@@ -18,40 +18,26 @@
 dataSources:
   ds-source:
     type: MySQL
-    host: 127.0.0.1
-    port: 3306
+    url: jdbc:mysql://127.0.0.1:3306/ds_source?serverTimezone=UTC&useSSL=false
     username: root
     password: 123456
-    catalog: ds_source
+    pool:
+      minPoolSize: 1
+      maxPoolSize: 50
+      connectionTimeoutMilliseconds: 30000
+      idleTimeoutMilliseconds: 60000
+      maxLifetimeMilliseconds: 1800000
   ds-target:
     type: MySQL
-    host: 127.0.0.1
-    port: 3307
+    url: jdbc:mysql://127.0.0.1:3306/ds_target?serverTimezone=UTC&useSSL=false
     username: root
     password: 123456
-    catalog: ds_target
-
-#dataSources:
-#  ds-source:
-#    url: jdbc:mysql://127.0.0.1:3306/ds_source?serverTimezone=UTC&useSSL=false
-#    username: root
-#    password: root
-#    pool:
-#      minPoolSize: 1
-#      maxPoolSize: 50
-#      connectionTimeoutMilliseconds: 30000
-#      idleTimeoutMilliseconds: 60000
-#      maxLifetimeMilliseconds: 1800000
-#  ds-target:
-#    url: jdbc:mysql://127.0.0.1:3306/ds_target?serverTimezone=UTC&useSSL=false
-#    username: root
-#    password: root
-#    pool:
-#      minPoolSize: 1
-#      maxPoolSize: 50
-#      connectionTimeoutMilliseconds: 30000
-#      idleTimeoutMilliseconds: 60000
-#      maxLifetimeMilliseconds: 1800000
+    pool:
+      minPoolSize: 1
+      maxPoolSize: 50
+      connectionTimeoutMilliseconds: 30000
+      idleTimeoutMilliseconds: 60000
+      maxLifetimeMilliseconds: 1800000
 
 plans:
   test_plan:
