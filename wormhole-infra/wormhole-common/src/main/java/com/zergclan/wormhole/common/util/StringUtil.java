@@ -79,6 +79,24 @@ public final class StringUtil {
     }
     
     /**
+     * Split in two parts.
+     *
+     * @param input input
+     * @param delimiter delimiter
+     * @return two parts
+     */
+    public static String[] twoPartsSplit(final String input, final String delimiter) {
+        int index = input.indexOf(delimiter);
+        int lastIndex = input.lastIndexOf(delimiter);
+        boolean state = index == lastIndex && index > 0 && index < input.length() - 2;
+        Validator.preState(state, "error: Illegal input arg: {%d} in two parts split", input);
+        String[] result = new String[2];
+        result[0] = input.substring(0, index);
+        result[1] = input.substring(index + 1);
+        return result;
+    }
+    
+    /**
      * <p>Joins the elements of the provided {@code Iterator} into
      * a single String containing the provided elements.</p>
      *
