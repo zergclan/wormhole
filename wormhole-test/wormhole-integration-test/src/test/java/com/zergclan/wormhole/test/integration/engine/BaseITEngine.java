@@ -86,7 +86,7 @@ public abstract class BaseITEngine {
     
     private void initEnv() {
         for (DataSourceEnvironment each : dataSources) {
-            containerManager.register(new DockerContainerDefinition(scenario, each.getDatabaseType(), each.getPort()));
+            containerManager.register(new DockerContainerDefinition(scenario, each.getDataSourceType(), each.getPort()));
         }
         containerManager.start();
     }

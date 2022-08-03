@@ -18,22 +18,26 @@
 package com.zergclan.wormhole.test.integration.env;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.metadata.core.datasource.DataSourceType;
+import com.zergclan.wormhole.metadata.core.datasource.DataSourceTypeFactory;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Environment of data source.
+ */
 @RequiredArgsConstructor
 @Getter
 public final class DataSourceEnvironment {
     
-    private final String databaseType;
+    private final DataSourceType dataSourceType;
     
     private final int port;
     
     public DataSourceEnvironment(final String datasource) {
-        int index = datasource.indexOf(MarkConstant.COLON);
-        Validator.preState(index > 0 && index < datasource.length() - 2, "Error configuration datasource source about source datasource");
-        databaseType = datasource.substring(0, index);
-        port = Integer.parseInt(datasource.substring(index + 1));
+        String[] typeAndPort = StringUtil.twoPartsSplit(datasource, MarkConstant.COLON);
+        dataSourceType = DataSourceTypeFactory.getInstance(typeAndPort[0]);
+        port = Integer.parseInt(typeAndPort[1]);
     }
 }
