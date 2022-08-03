@@ -34,11 +34,6 @@
             <artifactId>wormhole-bootstrap</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.zaxxer</groupId>
