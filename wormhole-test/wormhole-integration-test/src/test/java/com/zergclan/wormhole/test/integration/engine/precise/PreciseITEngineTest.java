@@ -84,7 +84,7 @@ public final class PreciseITEngineTest extends BaseITEngine {
     
     @SneakyThrows({IOException.class, SQLException.class})
     private void startWormholeExecutionEngine() {
-        String classPath = PathGenerator.generateWormholeConfigClasspath(getScenario());
+        String classPath = PathGenerator.generateWormholeConfigPath(getScenario());
         executionEngine = WormholeExecutionEngine.getInstance(WormholeConfigurationLoader.load(classPath));
         new Thread(new WormholeEngineExecutor(executionEngine)).start();
     }

@@ -28,7 +28,7 @@ import com.zergclan.wormhole.data.core.result.ErrorDataGroup;
 import com.zergclan.wormhole.data.core.result.MysqlLoadResult;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
-import com.zergclan.wormhole.metadata.core.resource.DatabaseType;
+import com.zergclan.wormhole.metadata.core.datasource.dialect.DatabaseType;
 import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;

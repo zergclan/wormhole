@@ -52,10 +52,10 @@ public final class YamlWormholeConfigurationSwapper implements Swapper<YamlWormh
     private Map<String, DataSourceConfiguration> createDataSourceConfigurations(final Map<String, YamlDataSourceConfiguration> dataSourceConfigurations) {
         Map<String, DataSourceConfiguration> result = new LinkedHashMap<>();
         for (Map.Entry<String, YamlDataSourceConfiguration> entry : dataSourceConfigurations.entrySet()) {
-            String dataSource = entry.getKey();
+            String dataSourceName = entry.getKey();
             YamlDataSourceConfiguration yamlDataSourceConfiguration = entry.getValue();
-            yamlDataSourceConfiguration.setDataSourceName(dataSource);
-            result.put(dataSource, dataSourceSwapper.swapToTarget(yamlDataSourceConfiguration));
+            yamlDataSourceConfiguration.setName(dataSourceName);
+            result.put(dataSourceName, dataSourceSwapper.swapToTarget(yamlDataSourceConfiguration));
         }
         return result;
     }

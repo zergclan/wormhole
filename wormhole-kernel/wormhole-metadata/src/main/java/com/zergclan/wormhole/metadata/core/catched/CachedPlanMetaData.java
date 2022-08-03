@@ -20,7 +20,7 @@ package com.zergclan.wormhole.metadata.core.catched;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
-import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
+import com.zergclan.wormhole.metadata.core.plan.TaskMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

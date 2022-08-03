@@ -18,10 +18,10 @@
 package com.zergclan.wormhole.metadata.core.initializer;
 
 import com.zergclan.wormhole.config.core.DataNodeConfiguration;
-import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
-import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaData;
-import com.zergclan.wormhole.metadata.core.node.DataNodeTypeMetaDataFactory;
-import com.zergclan.wormhole.metadata.core.resource.ColumnMetaData;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeTypeMetaDataFactory;
+import com.zergclan.wormhole.metadata.core.datasource.ColumnMetaData;
 
 import java.util.Objects;
 

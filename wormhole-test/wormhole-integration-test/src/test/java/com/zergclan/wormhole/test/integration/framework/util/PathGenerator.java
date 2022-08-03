@@ -43,7 +43,7 @@ public final class PathGenerator {
      * @return dataset path
      */
     public static String generateDatasetPath(final String scenario) {
-        return String.join(DELIMITER, getBasicPath(scenario), DATA_PATH);
+        return String.join(DELIMITER, generateRootPath(scenario), DATA_PATH);
     }
     
     /**
@@ -54,20 +54,26 @@ public final class PathGenerator {
      * @return init SQL path
      */
     public static String generateInitSqlPath(final String scenario, final String databaseType) {
-        return String.join(DELIMITER, getBasicPath(scenario), DATA_PATH, INIT_SQL_PATH, databaseType.toLowerCase());
+        return String.join(DELIMITER, generateRootPath(scenario), DATA_PATH, INIT_SQL_PATH, databaseType.toLowerCase());
     }
     
-    private static String getBasicPath(final String scenario) {
+    /**
+     * Generate root path.
+     *
+     * @param scenario scenario
+     * @return root path
+     */
+    public static String generateRootPath(final String scenario) {
         return ROOT_PATH + DELIMITER + scenario;
     }
     
     /**
-     * Generate wormhole config classpath.
+     * Generate wormhole config path.
      *
      * @param scenario scenario
-     * @return wormhole config classpath
+     * @return wormhole config path
      */
-    public static String generateWormholeConfigClasspath(final String scenario) {
-        return String.join(DELIMITER, getBasicPath(scenario), DATA_CONFIG);
+    public static String generateWormholeConfigPath(final String scenario) {
+        return String.join(DELIMITER, generateRootPath(scenario), DATA_CONFIG);
     }
 }

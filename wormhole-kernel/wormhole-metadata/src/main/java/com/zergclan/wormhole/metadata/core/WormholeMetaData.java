@@ -21,10 +21,11 @@ import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.api.MetaData;
+import com.zergclan.wormhole.metadata.core.datasource.WormholeDataSource;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -32,6 +33,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Root implemented {@link MetaData} in wormhole project.
  */
+@RequiredArgsConstructor
 @Getter
 public final class WormholeMetaData implements MetaData {
 
@@ -40,15 +42,6 @@ public final class WormholeMetaData implements MetaData {
     private final Map<String, DataSourceMetaData> dataSources;
 
     private final Map<String, PlanMetaData> plans;
-    
-    public WormholeMetaData(final Map<String, DataSourceMetaData> dataSources, final Map<String, PlanMetaData> plans) {
-        Map<String, DataSourceMetaData> dataSourceMetaData = new LinkedHashMap<>();
-        dataSources.forEach((key, value) -> {
-            dataSourceMetaData.put(value.getIdentifier(), value);
-        });
-        this.dataSources = dataSourceMetaData;
-        this.plans = plans;
-    }
     
     /**
      * Get {@link PlanMetaData} by plan identifier.
@@ -77,8 +70,8 @@ public final class WormholeMetaData implements MetaData {
         final ReentrantReadWriteLock.WriteLock writeLock = LOCK.writeLock();
         writeLock.lock();
         try {
-            if (metadata instanceof DataSourceMetaData) {
-                return register((DataSourceMetaData) metadata);
+            if (metadata instanceof WormholeDataSource) {
+                return register((WormholeDataSource) metadata);
             }
             if (metadata instanceof PlanMetaData) {
                 return register((PlanMetaData) metadata);
@@ -89,8 +82,8 @@ public final class WormholeMetaData implements MetaData {
         }
     }
     
-    private boolean register(final DataSourceMetaData dataSourceMetaData) {
-        dataSources.put(dataSourceMetaData.getIdentifier(), dataSourceMetaData);
+    private boolean register(final WormholeDataSource dataSource) {
+        dataSources.put(dataSource.getIdentifier(), dataSource);
         return true;
     }
     

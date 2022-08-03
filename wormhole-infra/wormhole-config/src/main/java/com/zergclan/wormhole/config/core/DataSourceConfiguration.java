@@ -21,8 +21,6 @@ import com.zergclan.wormhole.config.api.Configuration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Properties;
-
 /**
  * Configuration of data source.
  */
@@ -36,15 +34,11 @@ public final class DataSourceConfiguration implements Configuration {
     
     private final String type;
     
-    private final String host;
-
-    private final int port;
+    private final String url;
     
     private final String username;
     
     private final String password;
     
-    private final String catalog;
-    
-    private final Properties props;
+    private final DataSourcePoolConfiguration pool;
 }

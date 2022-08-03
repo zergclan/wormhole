@@ -19,7 +19,7 @@ package com.zergclan.wormhole.pipeline.core.filter.precise.convertor;
 
 import com.zergclan.wormhole.data.api.node.DataNode;
 import com.zergclan.wormhole.data.core.DataGroup;
-import com.zergclan.wormhole.metadata.core.filter.FilterType;
+import com.zergclan.wormhole.metadata.core.plan.filter.FilterType;
 import com.zergclan.wormhole.pipeline.api.Filter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

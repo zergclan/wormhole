@@ -22,11 +22,11 @@ import com.zergclan.wormhole.config.core.SourceConfiguration;
 import com.zergclan.wormhole.config.core.TargetConfiguration;
 import com.zergclan.wormhole.config.core.TaskConfiguration;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
-import com.zergclan.wormhole.metadata.core.filter.FilterMetaData;
-import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
-import com.zergclan.wormhole.metadata.core.task.SourceMetaData;
-import com.zergclan.wormhole.metadata.core.task.TargetMetaData;
-import com.zergclan.wormhole.metadata.core.task.TaskMetaData;
+import com.zergclan.wormhole.metadata.core.plan.filter.FilterMetaData;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.core.plan.SourceMetaData;
+import com.zergclan.wormhole.metadata.core.plan.TargetMetaData;
+import com.zergclan.wormhole.metadata.core.plan.TaskMetaData;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

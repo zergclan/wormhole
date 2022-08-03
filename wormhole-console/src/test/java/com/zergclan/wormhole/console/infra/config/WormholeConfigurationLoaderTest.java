@@ -53,22 +53,16 @@ public final class WormholeConfigurationLoaderTest {
         assertNotNull(dataSource);
         assertEquals("ds-source", dataSource.getName());
         assertEquals("MySQL", dataSource.getType());
-        assertEquals("127.0.0.1", dataSource.getHost());
-        assertEquals(3306, dataSource.getPort());
         assertEquals("root", dataSource.getUsername());
         assertEquals("123456", dataSource.getPassword());
-        assertEquals("ds_source", dataSource.getCatalog());
     }
     
     private void assertTargetDataSource(final DataSourceConfiguration dataSource) {
         assertNotNull(dataSource);
         assertEquals("ds-target", dataSource.getName());
         assertEquals("MySQL", dataSource.getType());
-        assertEquals("127.0.0.1", dataSource.getHost());
-        assertEquals(3307, dataSource.getPort());
         assertEquals("root", dataSource.getUsername());
         assertEquals("123456", dataSource.getPassword());
-        assertEquals("ds_target", dataSource.getCatalog());
     }
     
     private void assertPlan(final PlanConfiguration plan) {

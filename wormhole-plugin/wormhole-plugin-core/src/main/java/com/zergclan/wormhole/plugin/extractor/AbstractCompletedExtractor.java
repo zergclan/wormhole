@@ -21,7 +21,7 @@ import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.data.core.DataGroup;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.core.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.metadata.core.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.core.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.api.Extractor;
 
 import java.sql.SQLException;
