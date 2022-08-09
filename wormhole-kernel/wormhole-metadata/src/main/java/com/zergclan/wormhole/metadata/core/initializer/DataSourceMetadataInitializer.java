@@ -19,26 +19,24 @@ package com.zergclan.wormhole.metadata.core.initializer;
 
 import com.zergclan.wormhole.config.core.DataSourceConfiguration;
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.DataSourcePoolMetadata;
 import com.zergclan.wormhole.metadata.core.datasource.WormholeDataSource;
-import com.zergclan.wormhole.metadata.core.loader.DataSourceManager;
 import com.zergclan.wormhole.metadata.core.loader.MetaDataLoader;
-import com.zergclan.wormhole.metadata.core.loader.MetaDataLoaderFactory;
+import com.zergclan.wormhole.metadata.core.loader.MetaDataLoaderBuilder;
 import com.zergclan.wormhole.metadata.core.datasource.SchemaMetaData;
 import com.zergclan.wormhole.metadata.core.datasource.TableMetaData;
 import com.zergclan.wormhole.metadata.core.datasource.ColumnMetaData;
 import com.zergclan.wormhole.metadata.core.datasource.IndexMetaData;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 
 /**
  * Data source metadata initializer.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DataSourceMetadataInitializer {
+    
+    private final DataSourcePoolMetadataInitializer dataSourcePoolMetadataInitializer = new DataSourcePoolMetadataInitializer();
     
     /**
      * Create {@link DataSourceMetaData} by actual type.
@@ -46,8 +44,9 @@ public final class DataSourceMetadataInitializer {
      * @param configuration {@link DataSourceConfiguration}
      * @return {@link DataSourceMetaData}
      */
-    public static WormholeDataSource createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
-        return new WormholeDataSource(configuration.getName(), configuration.getType(), configuration.getUrl(), configuration.getUsername(), configuration.getPassword());
+    public WormholeDataSource createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
+        DataSourcePoolMetadata pool = dataSourcePoolMetadataInitializer.init(configuration.getPool());
+        return new WormholeDataSource(configuration.getName(), configuration.getType(), configuration.getUrl(), configuration.getUsername(), configuration.getPassword(), pool);
     }
     
     /**
@@ -56,12 +55,11 @@ public final class DataSourceMetadataInitializer {
      * @param dataSourceMetaData {@link DataSourceMetaData}
      * @throws SQLException SQL Exception
      */
-    public static void init(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        Connection connection = DataSourceManager.get(dataSourceMetaData).getConnection();
-        initDataSource(dataSourceMetaData, MetaDataLoaderFactory.getInstance(connection));
+    public void init(final DataSourceMetaData dataSourceMetaData) throws SQLException {
+        initDataSource(dataSourceMetaData, MetaDataLoaderBuilder.build(dataSourceMetaData));
     }
     
-    private static void initDataSource(final DataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {
+    private void initDataSource(final DataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {
         Collection<String> relatedSchemaNames = dataSource.getRelatedSchemaNames();
         for (SchemaMetaData each : metadataLoader.loadSchemas(dataSource.getIdentifier())) {
             if (relatedSchemaNames.contains(each.getName())) {
@@ -71,14 +69,14 @@ public final class DataSourceMetadataInitializer {
         }
     }
     
-    private static void initSchema(final SchemaMetaData schema, final MetaDataLoader metadataLoader) throws SQLException {
+    private void initSchema(final SchemaMetaData schema, final MetaDataLoader metadataLoader) throws SQLException {
         for (TableMetaData each : metadataLoader.loadTables(schema.getDataSourceIdentifier(), schema.getName())) {
             initTable(each, metadataLoader);
             schema.registerTable(each);
         }
     }
     
-    private static void initTable(final TableMetaData table, final MetaDataLoader metadataLoader) throws SQLException {
+    private void initTable(final TableMetaData table, final MetaDataLoader metadataLoader) throws SQLException {
         Collection<ColumnMetaData> columnMetadata = metadataLoader.loadColumns(table.getDataSourceIdentifier(), table.getSchema(), table.getName());
         for (ColumnMetaData each : columnMetadata) {
             table.registerColumn(each);

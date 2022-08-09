@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.metadata.core;
 
 import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.core.datasource.DataSourcePoolMetadata;
 import com.zergclan.wormhole.metadata.core.datasource.WormholeDataSource;
 import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,7 +46,8 @@ public final class WormholeMetaDataTest {
         String url = "jdbc:mysql://127.0.0.1:3306/ds_source?serverTimezone=UTC&useSSL=false";
         String username = "root";
         String password = "root";
-        DataSourceMetaData dataSourceMetaData = new WormholeDataSource(identifier, databaseType, url, username, password);
+        DataSourcePoolMetadata pool = new DataSourcePoolMetadata("wormhole-test-pool", 2, 2, 30000, 60000, 1800000);
+        DataSourceMetaData dataSourceMetaData = new WormholeDataSource(identifier, databaseType, url, username, password, pool);
         metaData.register(dataSourceMetaData);
         PlanMetaData planMetaData = new PlanMetaData("test-plan", PlanMetaData.ExecutionMode.ONE_OFF, "yyyy-MM-dd HH:mm:ss", false, new LinkedHashMap<>());
         metaData.register(planMetaData);

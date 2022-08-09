@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.metadata.api;
 
+import com.zergclan.wormhole.metadata.core.datasource.DataSourcePoolMetadata;
 import com.zergclan.wormhole.metadata.core.datasource.DataSourceType;
 import com.zergclan.wormhole.metadata.core.datasource.SchemaMetaData;
 import com.zergclan.wormhole.metadata.core.datasource.TableMetaData;
@@ -63,6 +64,13 @@ public interface DataSourceMetaData extends MetaData {
      * @return password
      */
     String getPassword();
+    
+    /**
+     * Get pool.
+     *
+     * @return {@link DataSourcePoolMetadata}
+     */
+    DataSourcePoolMetadata getPool();
 
     /**
      * Register {@link SchemaMetaData}.

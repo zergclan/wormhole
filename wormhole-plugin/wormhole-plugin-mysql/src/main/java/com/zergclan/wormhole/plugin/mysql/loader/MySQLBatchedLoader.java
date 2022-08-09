@@ -31,11 +31,9 @@ import com.zergclan.wormhole.metadata.core.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.metadata.core.datasource.dialect.DatabaseType;
 import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
-import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;
+import com.zergclan.wormhole.plugin.mysql.util.DataSourceBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -99,9 +97,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        JdbcTemplate jdbcTemplate = JdbcTemplateCreator.create(dataSourceMetaData);
-        DataSource dataSource = jdbcTemplate.getDataSource();
-        return dataSource.getConnection();
+        return DataSourceBuilder.build(dataSourceMetaData).getConnection();
     }
     
     private ResultSet executeSelect(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {

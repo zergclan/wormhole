@@ -85,6 +85,8 @@ public final class CachedTaskMetaData implements MetaData {
     
     @RequiredArgsConstructor
     private static class CachedBuilder {
+    
+        private final DataSourceMetadataInitializer dataSourceMetadataInitializer = new DataSourceMetadataInitializer();
         
         private final DataNodeMetadataInitializer dataNodeMetadataInitializer = new DataNodeMetadataInitializer();
         
@@ -136,7 +138,7 @@ public final class CachedTaskMetaData implements MetaData {
         
         private TableMetaData initTableMetaData(final String dataSourceIdentifier, final String table) throws SQLException {
             DataSourceMetaData dataSourceMetaData = dataSources.get(dataSourceIdentifier);
-            DataSourceMetadataInitializer.init(dataSourceMetaData);
+            dataSourceMetadataInitializer.init(dataSourceMetaData);
             return dataSourceMetaData.getTable(table);
         }
         

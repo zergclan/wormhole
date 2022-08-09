@@ -35,6 +35,8 @@ public final class WormholeMetadataInitializer {
     
     private final PlanMetadataInitializer planMetadataInitializer = new PlanMetadataInitializer();
     
+    private final DataSourceMetadataInitializer dataSourceMetadataInitializer = new DataSourceMetadataInitializer();
+    
     /**
      * Init {@link WormholeMetaData}.
      *
@@ -52,7 +54,7 @@ public final class WormholeMetadataInitializer {
     
     private Map<String, DataSourceMetaData> createDataSources(final Map<String, DataSourceConfiguration> configurations) {
         Map<String, DataSourceMetaData> result = new LinkedHashMap<>();
-        configurations.forEach((key, value) -> result.put(key, DataSourceMetadataInitializer.createActualTypeDataSourceMetadata(value)));
+        configurations.forEach((key, value) -> result.put(key, dataSourceMetadataInitializer.createActualTypeDataSourceMetadata(value)));
         return result;
     }
     

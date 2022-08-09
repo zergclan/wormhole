@@ -42,14 +42,17 @@ public final class WormholeDataSource implements DataSourceMetaData {
     
     private final String password;
     
+    private final DataSourcePoolMetadata pool;
+    
     private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
     
-    public WormholeDataSource(final String identifier, final String databaseType, final String url, final String username, final String password) {
+    public WormholeDataSource(final String identifier, final String databaseType, final String url, final String username, final String password, final DataSourcePoolMetadata pool) {
         dataSourceType = DataSourceTypeFactory.getInstance(databaseType);
         urlInformation = UrlInformation.build(url);
         this.identifier = identifier;
         this.username = username;
         this.password = password;
+        this.pool = pool;
     }
     
     @Override
