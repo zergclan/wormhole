@@ -27,9 +27,10 @@ env:
   MAVEN_OPTS: -Dhttp.keepAlive=false
 
 jobs:
-  it-precise:
+  wormhole-it-precise:
     name: wormhole-it-precise
     runs-on: ubuntu-latest
+    needs: wormhole-ci
     strategy:
       matrix:
         java: [ 8, 11, 17 ]

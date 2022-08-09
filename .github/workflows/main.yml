@@ -27,7 +27,7 @@ env:
   MAVEN_OPTS: -Dhttp.keepAlive=false
 
 jobs:
-  ci:
+  wormhole-ci:
     name: wormhole-ci
     runs-on: ubuntu-latest
     strategy:
