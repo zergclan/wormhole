@@ -23,6 +23,7 @@ import com.zergclan.wormhole.common.util.StringUtil;
 import com.zergclan.wormhole.config.core.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.config.core.FilterConfiguration;
 import com.zergclan.wormhole.config.core.yaml.YamlDataNodeMappingConfiguration;
+import com.zergclan.wormhole.config.core.yaml.YamlFilterConfiguration;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -34,15 +35,20 @@ public final class YamlDataNodeMappingConfigurationSwapper implements Swapper<Ya
     
     @Override
     public DataNodeMappingConfiguration swapToTarget(final YamlDataNodeMappingConfiguration yamlConfiguration) {
-        Collection<String> targetNames = parseNodeNames(yamlConfiguration.getTargetNames());
-        Collection<String> sourceNames = parseNodeNames(yamlConfiguration.getSourceNames());
-        Collection<FilterConfiguration> filters = new LinkedList<>();
-        yamlConfiguration.getFilters().forEach(each -> filters.add(new FilterConfiguration(each.getType(), each.getOrder(), each.getProp())));
+        Collection<String> targetNames = StringUtil.deduplicateSplit(yamlConfiguration.getTargetNames(), MarkConstant.COMMA);
+        Collection<String> sourceNames = StringUtil.deduplicateSplit(yamlConfiguration.getSourceNames(), MarkConstant.COMMA);
+        Collection<FilterConfiguration> filters = initFilters(yamlConfiguration.getFilters());
         return new DataNodeMappingConfiguration(targetNames, sourceNames, filters);
     }
     
-    private Collection<String> parseNodeNames(final String nodeNames) {
-        return StringUtil.deduplicateSplit(nodeNames, MarkConstant.COMMA);
+    private Collection<FilterConfiguration> initFilters(final Collection<YamlFilterConfiguration> filterConfigurations) {
+        Collection<FilterConfiguration> result = new LinkedList<>();
+        int order = 0;
+        for (YamlFilterConfiguration each : filterConfigurations) {
+            result.add(new FilterConfiguration(each.getType(), order, each.getProp()));
+            order++;
+        }
+        return result;
     }
     
     @Override

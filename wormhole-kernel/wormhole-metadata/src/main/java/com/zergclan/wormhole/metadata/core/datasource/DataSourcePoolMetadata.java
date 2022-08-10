@@ -15,22 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.config.core.yaml;
+package com.zergclan.wormhole.metadata.core.datasource;
 
-import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Properties;
+import lombok.RequiredArgsConstructor;
 
 /**
- * YAML filter configuration.
+ * Data source pool metadata.
  */
+@RequiredArgsConstructor
 @Getter
-@Setter
-public final class YamlFilterConfiguration implements YamlConfiguration {
+public final class DataSourcePoolMetadata {
     
-    private String type;
+    private final String poolName;
     
-    private Properties prop;
+    private final int minPoolSize;
+    
+    private final int maxPoolSize;
+    
+    private final int connectionTimeout;
+    
+    private final int idleTimeout;
+    
+    private final int maxLifetime;
 }

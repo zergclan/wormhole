@@ -35,14 +35,15 @@ import java.util.Optional;
 /**
  * mysql metadata loader.
  */
-public class MySQLMetaDataLoader implements MetaDataLoader {
+public final class MySQLMetaDataLoader implements MetaDataLoader {
 
-    private final DatabaseMetaData databaseMetaData;
-
-    public MySQLMetaDataLoader(final Connection connection) throws SQLException {
+    private DatabaseMetaData databaseMetaData;
+    
+    @Override
+    public void init(final Connection connection) throws SQLException {
         databaseMetaData = connection.getMetaData();
     }
-
+    
     @Override
     public Collection<SchemaMetaData> loadSchemas(final String dataSourceIdentifier) throws SQLException {
         Collection<SchemaMetaData> collection = new LinkedList<>();
@@ -136,5 +137,10 @@ public class MySQLMetaDataLoader implements MetaDataLoader {
             }
         }
         return indexMap.values();
+    }
+    
+    @Override
+    public String getType() {
+        return "MySQL";
     }
 }

@@ -21,7 +21,9 @@ import com.zergclan.wormhole.metadata.core.datasource.ColumnMetaData;
 import com.zergclan.wormhole.metadata.core.datasource.IndexMetaData;
 import com.zergclan.wormhole.metadata.core.datasource.SchemaMetaData;
 import com.zergclan.wormhole.metadata.core.datasource.TableMetaData;
+import com.zergclan.wormhole.spi.scene.typed.TypedSPI;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
@@ -29,8 +31,16 @@ import java.util.Optional;
 /**
  * Meta data loader.
  */
-public interface MetaDataLoader {
-
+public interface MetaDataLoader extends TypedSPI {
+    
+    /**
+     * Init.
+     *
+     * @param connection connection
+     * @throws SQLException {@link SQLException}
+     */
+    void init(Connection connection) throws SQLException;
+    
     /**
      * Load {@link SchemaMetaData}.
      *

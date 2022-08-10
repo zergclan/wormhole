@@ -35,14 +35,15 @@ import java.util.Optional;
 /**
  * oracle metadata loader.
  */
-public class OracleMetaDataLoader implements MetaDataLoader {
+public final class OracleMetaDataLoader implements MetaDataLoader {
 
-    private final DatabaseMetaData databaseMetaData;
-
-    public OracleMetaDataLoader(final Connection connection) throws SQLException {
+    private DatabaseMetaData databaseMetaData;
+    
+    @Override
+    public void init(final Connection connection) throws SQLException {
         databaseMetaData = connection.getMetaData();
     }
-
+    
     @Override
     public Collection<SchemaMetaData> loadSchemas(final String dataSourceIdentifier) throws SQLException {
         Collection<SchemaMetaData> collection = new LinkedList<>();
@@ -137,5 +138,10 @@ public class OracleMetaDataLoader implements MetaDataLoader {
             }
         }
         return indexMap.values();
+    }
+    
+    @Override
+    public String getType() {
+        return "Oracle";
     }
 }

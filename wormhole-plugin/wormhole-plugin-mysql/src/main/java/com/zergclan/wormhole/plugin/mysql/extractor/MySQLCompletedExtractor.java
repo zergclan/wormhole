@@ -24,15 +24,12 @@ import com.zergclan.wormhole.metadata.core.datasource.dialect.DatabaseType;
 import com.zergclan.wormhole.metadata.core.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
-import com.zergclan.wormhole.plugin.mysql.util.JdbcTemplateCreator;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.zergclan.wormhole.plugin.mysql.util.DataSourceBuilder;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLTimeoutException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -58,12 +55,7 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        JdbcTemplate jdbcTemplate = JdbcTemplateCreator.create(dataSourceMetaData);
-        DataSource dataSource = jdbcTemplate.getDataSource();
-        if (null != dataSource) {
-            return dataSource.getConnection();
-        }
-        throw new SQLTimeoutException();
+        return DataSourceBuilder.build(dataSourceMetaData).getConnection();
     }
     
     private Collection<DataGroup> execute(final Connection connection, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
