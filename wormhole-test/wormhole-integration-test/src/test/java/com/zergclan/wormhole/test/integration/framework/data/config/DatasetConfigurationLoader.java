@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.test.integration.framework.data.config;
 
-import com.zergclan.wormhole.config.core.yaml.util.YamlUtil;
+import com.zergclan.wormhole.common.util.YamlUtil;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

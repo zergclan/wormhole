@@ -19,7 +19,7 @@ package com.zergclan.wormhole.console.application.domain.log;
 
 import com.zergclan.wormhole.console.application.domain.entity.AbstractPO;
 import com.zergclan.wormhole.console.infra.util.BeanMapper;
-import com.zergclan.wormhole.pipeline.core.event.DataGroupExecutionEvent;
+import com.zergclan.wormhole.pipeline.event.DataGroupExecutionEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

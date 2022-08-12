@@ -37,5 +37,9 @@
             <groupId>com.cronutils</groupId>
             <artifactId>cron-utils</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
     </dependencies>
 </project>

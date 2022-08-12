@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.test.integration.framework.data.config;
 
-import com.zergclan.wormhole.config.api.YamlConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +27,7 @@ import java.util.Collection;
  */
 @Getter
 @Setter
-public final class TableConfiguration implements YamlConfiguration {
+public final class TableConfiguration {
     
     private Collection<String> columns;
     

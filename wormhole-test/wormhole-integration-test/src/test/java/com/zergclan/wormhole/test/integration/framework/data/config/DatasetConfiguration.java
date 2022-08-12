@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.test.integration.framework.data.config;
 
-import com.zergclan.wormhole.config.api.YamlConfiguration;
+import com.zergclan.wormhole.common.configuration.Configuration;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @Getter
 @Setter
-public final class DatasetConfiguration implements YamlConfiguration {
+public final class DatasetConfiguration implements Configuration {
     
     private String databaseType;
     

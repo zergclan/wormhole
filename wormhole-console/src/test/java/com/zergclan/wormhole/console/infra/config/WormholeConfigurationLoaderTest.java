@@ -17,11 +17,11 @@
 
 package com.zergclan.wormhole.console.infra.config;
 
-import com.zergclan.wormhole.config.core.DataSourceConfiguration;
-import com.zergclan.wormhole.config.core.PlanConfiguration;
-import com.zergclan.wormhole.config.core.TaskConfiguration;
-import com.zergclan.wormhole.config.core.WormholeConfiguration;
-import com.zergclan.wormhole.config.core.yaml.loader.WormholeConfigurationLoader;
+import com.zergclan.wormhole.common.configuration.DataSourceConfiguration;
+import com.zergclan.wormhole.common.configuration.PlanConfiguration;
+import com.zergclan.wormhole.common.configuration.TaskConfiguration;
+import com.zergclan.wormhole.common.configuration.WormholeConfiguration;
+import com.zergclan.wormhole.common.configuration.WormholeConfigurationLoader;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 

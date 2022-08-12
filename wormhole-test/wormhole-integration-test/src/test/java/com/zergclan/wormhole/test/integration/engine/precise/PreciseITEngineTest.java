@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.test.integration.engine.precise;
 
 import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
-import com.zergclan.wormhole.config.core.yaml.loader.WormholeConfigurationLoader;
+import com.zergclan.wormhole.common.configuration.WormholeConfigurationLoader;
 import com.zergclan.wormhole.test.integration.engine.BaseITEngine;
 import com.zergclan.wormhole.test.integration.engine.WormholeEngineExecutor;
 import com.zergclan.wormhole.test.integration.framework.param.ParameterizedArrayFactory;

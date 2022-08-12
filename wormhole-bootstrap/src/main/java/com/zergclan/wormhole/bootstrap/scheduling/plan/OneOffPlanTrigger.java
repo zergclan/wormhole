@@ -20,7 +20,7 @@ package com.zergclan.wormhole.bootstrap.scheduling.plan;
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.DateUtil;
 import com.zergclan.wormhole.common.util.Validator;
-import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
+import com.zergclan.wormhole.metadata.plan.PlanMetaData;
 import lombok.Getter;
 
 import java.util.concurrent.TimeUnit;
