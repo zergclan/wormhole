@@ -66,13 +66,14 @@
     </properties>
 
     <modules>
-        <module>wormhole-bootstrap</module>
-        <module>wormhole-features</module>
-        <module>wormhole-kernel</module>
         <module>wormhole-infra</module>
+        <module>wormhole-kernel</module>
+        <module>wormhole-features</module>
+        <module>wormhole-repository</module>
+        <module>wormhole-bootstrap</module>
         <module>wormhole-plugin</module>
-        <module>wormhole-console</module>
         <module>wormhole-test</module>
+        <module>wormhole-console</module>
     </modules>
 
     <dependencyManagement>

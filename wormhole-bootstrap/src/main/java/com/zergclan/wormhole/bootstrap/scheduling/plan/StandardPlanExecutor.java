@@ -26,8 +26,8 @@ import com.zergclan.wormhole.bootstrap.scheduling.task.TaskResult;
 import com.zergclan.wormhole.bus.api.Event;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.concurrent.ExecutorServiceManager;
-import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
-import com.zergclan.wormhole.metadata.core.catched.CachedTaskMetaData;
+import com.zergclan.wormhole.metadata.catched.CachedPlanMetaData;
+import com.zergclan.wormhole.metadata.catched.CachedTaskMetaData;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;

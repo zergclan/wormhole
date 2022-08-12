@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.plugin.mysql.extractor;
 
-import com.zergclan.wormhole.metadata.core.plan.node.DataNodeMetaData;
-import com.zergclan.wormhole.metadata.core.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.metadata.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.metadata.plan.node.DataNodeTypeMetaData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

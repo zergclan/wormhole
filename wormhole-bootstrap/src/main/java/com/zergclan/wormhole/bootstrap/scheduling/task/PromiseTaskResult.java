@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.task;
 
-import com.zergclan.wormhole.data.api.result.Result;
+import com.zergclan.wormhole.data.result.Result;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

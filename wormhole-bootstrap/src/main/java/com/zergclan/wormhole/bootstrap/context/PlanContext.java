@@ -26,10 +26,10 @@ import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.exception.WormholeException;
-import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
-import com.zergclan.wormhole.metadata.core.WormholeMetaData;
-import com.zergclan.wormhole.metadata.core.catched.CachedPlanMetaData;
-import com.zergclan.wormhole.metadata.core.plan.PlanMetaData;
+import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.WormholeMetaData;
+import com.zergclan.wormhole.metadata.catched.CachedPlanMetaData;
+import com.zergclan.wormhole.metadata.plan.PlanMetaData;
 
 import java.sql.SQLException;
 import java.util.Map;

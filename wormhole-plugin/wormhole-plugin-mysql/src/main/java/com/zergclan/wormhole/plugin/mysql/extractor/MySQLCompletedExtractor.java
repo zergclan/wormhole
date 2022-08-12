@@ -17,11 +17,11 @@
 
 package com.zergclan.wormhole.plugin.mysql.extractor;
 
-import com.zergclan.wormhole.data.core.DataGroup;
-import com.zergclan.wormhole.data.core.node.DataNodeBuilder;
-import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
-import com.zergclan.wormhole.metadata.core.datasource.dialect.DatabaseType;
-import com.zergclan.wormhole.metadata.core.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.data.node.DataGroup;
+import com.zergclan.wormhole.data.node.DataNodeBuilder;
+import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.datasource.dialect.DatabaseType;
+import com.zergclan.wormhole.metadata.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 import com.zergclan.wormhole.plugin.mysql.util.DataSourceBuilder;

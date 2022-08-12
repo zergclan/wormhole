@@ -19,8 +19,8 @@ package com.zergclan.wormhole.plugin.mysql.util;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.metadata.api.DataSourceMetaData;
-import com.zergclan.wormhole.metadata.core.datasource.DataSourcePoolMetadata;
+import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.datasource.DataSourcePoolMetadata;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

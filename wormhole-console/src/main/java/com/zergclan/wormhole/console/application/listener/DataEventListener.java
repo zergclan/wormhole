@@ -22,7 +22,7 @@ import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
 import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
 import com.zergclan.wormhole.console.infra.util.BeanMapper;
-import com.zergclan.wormhole.data.core.event.ErrorDataEvent;
+import com.zergclan.wormhole.data.event.ErrorDataEvent;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

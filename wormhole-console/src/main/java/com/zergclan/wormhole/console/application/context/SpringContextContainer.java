@@ -20,7 +20,7 @@ package com.zergclan.wormhole.console.application.context;
 import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
 import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.common.exception.WormholeException;
-import com.zergclan.wormhole.config.core.yaml.loader.WormholeConfigurationLoader;
+import com.zergclan.wormhole.common.configuration.WormholeConfigurationLoader;
 import lombok.Getter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
