@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.common.generator;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

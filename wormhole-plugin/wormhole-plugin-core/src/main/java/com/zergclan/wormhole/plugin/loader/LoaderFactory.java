@@ -41,6 +41,7 @@ public final class LoaderFactory {
      * @param cachedTarget {@link CachedTargetMetaData}
      * @return {@link Loader}
      */
+    @SuppressWarnings("all")
     public static Optional<Loader> getLoader(final CachedTargetMetaData cachedTarget) {
         Optional<Loader> registeredService = TypedSPIRegistry.findRegisteredService(Loader.class, cachedTarget.getDataSource().getDataSourceType().getType());
         if (registeredService.isPresent()) {

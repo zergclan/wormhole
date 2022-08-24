@@ -114,8 +114,7 @@ public final class DateUtil {
      * @return {@link Date}
      */
     public static LocalDateTime parseLocalDateTime(final String text, final String pattern) {
-        DateTimeFormatter df = DateTimeFormatter.ofPattern(pattern);
-        return LocalDateTime.parse(text, df);
+        return LocalDateTime.parse(text, DateTimeFormatter.ofPattern(pattern));
     }
     
     /**

@@ -28,11 +28,11 @@ public final class YamlDataSourcePoolConfigurationSwapper implements Swapper<Yam
     
     @Override
     public DataSourcePoolConfiguration swapToTarget(final YamlDataSourcePoolConfiguration yamlConfiguration) {
-        int minPoolSize = ValueExtractor.getOrDefault(yamlConfiguration.getMinPoolSize(), 1);
-        int maxPoolSize = ValueExtractor.getOrDefault(yamlConfiguration.getMaxPoolSize(), 2);
-        int connectionTimeout = ValueExtractor.getOrDefault(yamlConfiguration.getConnectionTimeoutMilliseconds(), 30000);
-        int idleTimeout = ValueExtractor.getOrDefault(yamlConfiguration.getIdleTimeoutMilliseconds(), 60000);
-        int maxLifetime = ValueExtractor.getOrDefault(yamlConfiguration.getMaxLifetimeMilliseconds(), 1800000);
+        int minPoolSize = ValueExtractor.extractValueOrDefault(yamlConfiguration.getMinPoolSize(), 1);
+        int maxPoolSize = ValueExtractor.extractValueOrDefault(yamlConfiguration.getMaxPoolSize(), 2);
+        int connectionTimeout = ValueExtractor.extractValueOrDefault(yamlConfiguration.getConnectionTimeoutMilliseconds(), 30000);
+        int idleTimeout = ValueExtractor.extractValueOrDefault(yamlConfiguration.getIdleTimeoutMilliseconds(), 60000);
+        int maxLifetime = ValueExtractor.extractValueOrDefault(yamlConfiguration.getMaxLifetimeMilliseconds(), 1800000);
         return new DataSourcePoolConfiguration(yamlConfiguration.getPoolName(), minPoolSize, maxPoolSize, connectionTimeout, idleTimeout, maxLifetime);
     }
     

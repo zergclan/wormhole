@@ -41,8 +41,8 @@ public final class ExtractorFactory {
      *
      * @param cachedSource {@link CachedSourceMetaData}
      * @return {@link Extractor}
-     *
      */
+    @SuppressWarnings("all")
     public static Optional<Extractor> getExtractor(final CachedSourceMetaData cachedSource) {
         DataSourceMetaData dataSource = cachedSource.getDataSource();
         Optional<Extractor> registeredService = TypedSPIRegistry.findRegisteredService(Extractor.class, dataSource.getDataSourceType().getType());

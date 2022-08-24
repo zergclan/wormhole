@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.metadata.catched;
 
-import com.zergclan.wormhole.common.SequenceGenerator;
+import com.zergclan.wormhole.common.generator.SequenceGenerator;
 import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.util.Validator;
 import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;

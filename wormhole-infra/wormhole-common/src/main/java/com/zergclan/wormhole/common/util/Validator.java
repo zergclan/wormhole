@@ -20,6 +20,10 @@ package com.zergclan.wormhole.common.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * Util tools for Validator.
  * <p>
@@ -40,7 +44,7 @@ public final class Validator {
      * @param <T> class type of object
      */
     public static <T> void notNull(final T object, final String message, final Object... args) {
-        if (null == object) {
+        if (Objects.isNull(object)) {
             throw new IllegalArgumentException(String.format(message, args));
         }
     }
@@ -54,6 +58,34 @@ public final class Validator {
      */
     public static void notBlank(final String input, final String message, final Object... args) {
         if (StringUtil.isBlank(input)) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
+    }
+    
+    /**
+     * Validate not empty.
+     *
+     * @param input input
+     * @param message message
+     * @param args args
+     */
+    public static void notEmpty(final Collection<?> input, final String message, final Object... args) {
+        notNull(input, "error : arg input can not be null.");
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
+    }
+    
+    /**
+     * Validate not empty.
+     *
+     * @param input input
+     * @param message message
+     * @param args args
+     */
+    public static void notEmpty(final Map<?, ?> input, final String message, final Object... args) {
+        notNull(input, "error : arg input can not be null.");
+        if (input.isEmpty()) {
             throw new IllegalArgumentException(String.format(message, args));
         }
     }

@@ -17,16 +17,39 @@
 
 package com.zergclan.wormhole.common.constant;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Constant of state.
+ * Quote character.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class StateConstant {
+@RequiredArgsConstructor
+@Getter
+public enum QuoteCharacter {
     
-    public static final int TRUE = 1;
+    BACK_QUOTE(MarkConstant.BACK_QUOTE, MarkConstant.BACK_QUOTE),
     
-    public static final int FALSE = 0;
+    SINGLE_QUOTE(MarkConstant.SINGLE_QUOTE, MarkConstant.SINGLE_QUOTE),
+    
+    QUOTE(MarkConstant.QUOTE, MarkConstant.QUOTE),
+    
+    BRACKETS(MarkConstant.LEFT_BRACKETS, MarkConstant.RIGHT_BRACKETS),
+    
+    PARENTHESES(MarkConstant.LEFT_PARENTHESIS, MarkConstant.RIGHT_PARENTHESIS),
+    
+    NONE("", "");
+    
+    private final String startDelimiter;
+    
+    private final String endDelimiter;
+    
+    /**
+     * Wrap value with quote character.
+     *
+     * @param value value to be wrapped
+     * @return wrapped value
+     */
+    public String wrap(final String value) {
+        return startDelimiter + value + endDelimiter;
+    }
 }

@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.plan.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.PropertiesExtractor;
+import com.zergclan.wormhole.common.util.ValueExtractor;
 import com.zergclan.wormhole.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.plan.filter.FilterType;
 import lombok.Getter;
@@ -65,9 +65,9 @@ public final class CodeConvertorMetaData implements FilterMetaData {
      * @return {@link CodeConvertorMetaData}
      */
     public static CodeConvertorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        String sourceName = ValueExtractor.extractRequiredString(props, "sourceName");
         String defaultCode = props.getProperty("defaultCode");
-        Map<String, String> sourceTargetCodeMappings = PropertiesExtractor.extractRequiredMap(props, "sourceName", "defaultCode");
+        Map<String, String> sourceTargetCodeMappings = ValueExtractor.extractRequiredMap(props, "sourceName", "defaultCode");
         return new FilterBuilder(taskIdentifier, order, sourceName, sourceTargetCodeMappings, defaultCode).build();
     }
     
