@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.plan.filter.precise.editor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.PropertiesExtractor;
+import com.zergclan.wormhole.common.util.ValueExtractor;
 import com.zergclan.wormhole.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.plan.filter.FilterType;
 import com.zergclan.wormhole.metadata.plan.node.DataNodeTypeMetaData;
@@ -65,9 +65,9 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
      * @return {@link NullToDefaultEditorMetaData}
      */
     public static NullToDefaultEditorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
-        String defaultValue = PropertiesExtractor.extractRequiredString(props, "defaultValue");
-        String dataType = PropertiesExtractor.extractRequiredString(props, "dataType");
+        String sourceName = ValueExtractor.extractRequiredString(props, "sourceName");
+        String defaultValue = ValueExtractor.extractRequiredString(props, "defaultValue");
+        String dataType = ValueExtractor.extractRequiredString(props, "dataType");
         return builder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetaData.DataType.valueOf(dataType));
     }
 

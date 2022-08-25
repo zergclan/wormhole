@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.plan.filter.precise.validator;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.PropertiesExtractor;
+import com.zergclan.wormhole.common.util.ValueExtractor;
 import com.zergclan.wormhole.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.plan.filter.FilterType;
 import lombok.Getter;
@@ -60,7 +60,7 @@ public final class NotBlankValidatorMetaData implements FilterMetaData {
      * @return {@link NotBlankValidatorMetaData}
      */
     public static NotBlankValidatorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
+        String sourceName = ValueExtractor.extractRequiredString(props, "sourceName");
         return new FilterBuilder(taskIdentifier, order, sourceName).build();
     }
 

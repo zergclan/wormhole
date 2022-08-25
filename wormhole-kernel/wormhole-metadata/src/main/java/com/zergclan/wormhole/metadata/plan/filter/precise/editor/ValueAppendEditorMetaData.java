@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.plan.filter.precise.editor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.PropertiesExtractor;
+import com.zergclan.wormhole.common.util.ValueExtractor;
 import com.zergclan.wormhole.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.plan.filter.FilterType;
 import lombok.Getter;
@@ -62,8 +62,8 @@ public final class ValueAppendEditorMetaData implements FilterMetaData {
      * @return {@link ValueRangeEditorMetaData}
      */
     public static FilterMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
-        String appendValue = PropertiesExtractor.extractRequiredString(props, "appendValue");
+        String sourceName = ValueExtractor.extractRequiredString(props, "sourceName");
+        String appendValue = ValueExtractor.extractRequiredString(props, "appendValue");
         return new ValueAppendEditorMetaData.FilterBuilder(taskIdentifier, order, sourceName, appendValue).build();
     }
     

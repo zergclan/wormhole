@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.metadata.datasource.dialect;
 
-import com.zergclan.wormhole.common.QuoteCharacter;
+import com.zergclan.wormhole.common.constant.QuoteCharacter;
 import com.zergclan.wormhole.metadata.datasource.DataSourceType;
 
 /**

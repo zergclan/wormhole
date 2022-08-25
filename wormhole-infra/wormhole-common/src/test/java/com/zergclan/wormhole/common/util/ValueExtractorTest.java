@@ -27,37 +27,43 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public final class PropertiesExtractorTest {
+public final class ValueExtractorTest {
+    
+    @Test
+    public void assertExtractValueOrDefault() {
+        assertEquals("default_value", ValueExtractor.extractValueOrDefault(null, "default_value"));
+        assertEquals("value", ValueExtractor.extractValueOrDefault("value", "default_value"));
+    }
     
     @Test
     public void assertExtractRequiredString() {
         Properties properties = new Properties();
         properties.put("name", "expectedValue");
-        assertEquals("expectedValue", PropertiesExtractor.extractRequiredString(properties, "name"));
-        assertEquals("defaultValue", PropertiesExtractor.extractRequiredString(properties, "default", "defaultValue"));
+        assertEquals("expectedValue", ValueExtractor.extractRequiredString(properties, "name"));
+        assertEquals("defaultValue", ValueExtractor.extractRequiredString(properties, "default", "defaultValue"));
     }
     
     @Test
     public void assertExtractRequiredInt() {
         Properties properties = new Properties();
         properties.put("name", 1);
-        assertEquals(1, PropertiesExtractor.extractRequiredInt(properties, "name"));
-        assertEquals(0, PropertiesExtractor.extractRequiredInt(properties, "default", 0));
+        assertEquals(1, ValueExtractor.extractRequiredInt(properties, "name"));
+        assertEquals(0, ValueExtractor.extractRequiredInt(properties, "default", 0));
     }
     
     @Test
     public void assertExtractRequiredBoolean() {
         Properties properties = new Properties();
         properties.put("name", true);
-        assertTrue(PropertiesExtractor.extractRequiredBoolean(properties, "name"));
-        assertFalse(PropertiesExtractor.extractRequiredBoolean(properties, "default", false));
+        assertTrue(ValueExtractor.extractRequiredBoolean(properties, "name"));
+        assertFalse(ValueExtractor.extractRequiredBoolean(properties, "default", false));
     }
     
     @Test
     public void assertExtractRequiredArray() {
         Properties properties = new Properties();
         properties.put("name", "aa,bb,cc");
-        String[] values = PropertiesExtractor.extractRequiredArray(properties, "name", MarkConstant.COMMA);
+        String[] values = ValueExtractor.extractRequiredArray(properties, "name", MarkConstant.COMMA);
         assertEquals(3, values.length);
         assertEquals("aa", values[0]);
         assertEquals("bb", values[1]);
@@ -71,7 +77,7 @@ public final class PropertiesExtractorTest {
         properties.put("name2", "bb");
         properties.put("key1", "value1");
         properties.put("key2", "value2");
-        Map<String, String> map = PropertiesExtractor.extractRequiredMap(properties, "name1", "name2");
+        Map<String, String> map = ValueExtractor.extractRequiredMap(properties, "name1", "name2");
         assertEquals(2, map.size());
         assertEquals("value1", map.get("key1"));
         assertEquals("value2", map.get("key2"));

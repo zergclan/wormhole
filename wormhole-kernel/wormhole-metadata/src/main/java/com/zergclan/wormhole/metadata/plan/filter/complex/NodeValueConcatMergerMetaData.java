@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.plan.filter.complex;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.PropertiesExtractor;
+import com.zergclan.wormhole.common.util.ValueExtractor;
 import com.zergclan.wormhole.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.plan.filter.FilterType;
 import lombok.Getter;
@@ -64,9 +64,9 @@ public final class NodeValueConcatMergerMetaData implements FilterMetaData {
      * @return {@link NodeValueConcatMergerMetaData}
      */
     public static NodeValueConcatMergerMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String targetName = PropertiesExtractor.extractRequiredString(props, "targetName");
-        String[] sourceNames = PropertiesExtractor.extractRequiredArray(props, "sourceNames", MarkConstant.COMMA);
-        String delimiter = PropertiesExtractor.extractRequiredString(props, "delimiter", "");
+        String targetName = ValueExtractor.extractRequiredString(props, "targetName");
+        String[] sourceNames = ValueExtractor.extractRequiredArray(props, "sourceNames", MarkConstant.COMMA);
+        String delimiter = ValueExtractor.extractRequiredString(props, "delimiter", "");
         return new FilterBuilder(taskIdentifier, order, sourceNames, targetName, delimiter).build();
     }
     

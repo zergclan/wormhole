@@ -15,17 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.constant;
+package com.zergclan.wormhole.common.generator;
 
-import org.junit.jupiter.api.Test;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public final class StateConstantTest {
+/**
+ * Sequence generator.
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SequenceGenerator {
     
-    @Test
-    public void assertStates() {
-        assertEquals(1, StateConstant.TRUE);
-        assertEquals(0, StateConstant.FALSE);
+    /**
+     * Generate id.
+     *
+     * @return id
+     */
+    public static Long generateId() {
+        return SnowflakeIdWorker.generateId();
     }
 }

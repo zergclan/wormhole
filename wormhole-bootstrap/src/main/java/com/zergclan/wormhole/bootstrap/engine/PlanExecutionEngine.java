@@ -28,7 +28,7 @@ import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutorFactory;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
-import com.zergclan.wormhole.common.SequenceGenerator;
+import com.zergclan.wormhole.common.generator.SequenceGenerator;
 import com.zergclan.wormhole.metadata.MetaData;
 import com.zergclan.wormhole.metadata.WormholeMetaData;
 import com.zergclan.wormhole.metadata.catched.CachedPlanMetaData;

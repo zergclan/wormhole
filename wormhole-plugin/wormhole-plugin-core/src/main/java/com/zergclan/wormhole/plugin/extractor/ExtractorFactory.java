@@ -19,8 +19,8 @@ package com.zergclan.wormhole.plugin.extractor;
 
 import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.spi.WormholeServiceLoader;
-import com.zergclan.wormhole.spi.scene.typed.TypedSPIRegistry;
+import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
+import com.zergclan.wormhole.common.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -41,8 +41,8 @@ public final class ExtractorFactory {
      *
      * @param cachedSource {@link CachedSourceMetaData}
      * @return {@link Extractor}
-     *
      */
+    @SuppressWarnings("all")
     public static Optional<Extractor> getExtractor(final CachedSourceMetaData cachedSource) {
         DataSourceMetaData dataSource = cachedSource.getDataSource();
         Optional<Extractor> registeredService = TypedSPIRegistry.findRegisteredService(Extractor.class, dataSource.getDataSourceType().getType());

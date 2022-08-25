@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.plan.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.PropertiesExtractor;
+import com.zergclan.wormhole.common.util.ValueExtractor;
 import com.zergclan.wormhole.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.plan.filter.FilterType;
 import com.zergclan.wormhole.metadata.plan.node.DataNodeTypeMetaData;
@@ -67,10 +67,10 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
      * @return {@link FilterMetaData}
      */
     public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
-        String sourceDataType = PropertiesExtractor.extractRequiredString(props, "sourceDataType");
-        String targetDataType = PropertiesExtractor.extractRequiredString(props, "targetDataType");
-        String pattern = PropertiesExtractor.extractRequiredString(props, "pattern", "");
+        String sourceName = ValueExtractor.extractRequiredString(props, "sourceName");
+        String sourceDataType = ValueExtractor.extractRequiredString(props, "sourceDataType");
+        String targetDataType = ValueExtractor.extractRequiredString(props, "targetDataType");
+        String pattern = ValueExtractor.extractRequiredString(props, "pattern", "");
         return builder(taskIdentifier, order, sourceName, DataNodeTypeMetaData.DataType.valueOf(sourceDataType), DataNodeTypeMetaData.DataType.valueOf(targetDataType), pattern);
     }
     

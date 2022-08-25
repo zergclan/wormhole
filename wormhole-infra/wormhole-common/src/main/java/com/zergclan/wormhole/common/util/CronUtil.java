@@ -29,7 +29,7 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 
 /**
- * Util tools for Cron.
+ * Util tools for cron.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CronUtil {

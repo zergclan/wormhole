@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * YAML util.
+ * Util tools for YAML.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class YamlUtil {

@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.metadata.plan.filter.complex;
 
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.PropertiesExtractor;
+import com.zergclan.wormhole.common.util.ValueExtractor;
 import com.zergclan.wormhole.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.metadata.plan.filter.FilterType;
 import lombok.Getter;
@@ -64,9 +64,9 @@ public final class NodeValueDelimiterSplitterMetaData implements FilterMetaData 
      * @return {@link NodeValueDelimiterSplitterMetaData}
      */
     public static NodeValueDelimiterSplitterMetaData builder(final String taskIdentifier, final int order, final Properties props) {
-        String sourceName = PropertiesExtractor.extractRequiredString(props, "sourceName");
-        String[] targetNames = PropertiesExtractor.extractRequiredArray(props, "targetNames", MarkConstant.COMMA);
-        String delimiter = PropertiesExtractor.extractRequiredString(props, "delimiter", "");
+        String sourceName = ValueExtractor.extractRequiredString(props, "sourceName");
+        String[] targetNames = ValueExtractor.extractRequiredArray(props, "targetNames", MarkConstant.COMMA);
+        String delimiter = ValueExtractor.extractRequiredString(props, "delimiter", "");
         return new FilterBuilder(taskIdentifier, order, sourceName, targetNames, delimiter).build();
     }
     
