@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.plugin.loader;
 
 import com.zergclan.wormhole.metadata.catched.CachedTargetMetaData;
-import com.zergclan.wormhole.spi.WormholeServiceLoader;
-import com.zergclan.wormhole.spi.scene.typed.TypedSPIRegistry;
+import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
+import com.zergclan.wormhole.common.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

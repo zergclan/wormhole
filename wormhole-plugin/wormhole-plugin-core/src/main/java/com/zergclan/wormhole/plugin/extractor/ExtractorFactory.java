@@ -19,8 +19,8 @@ package com.zergclan.wormhole.plugin.extractor;
 
 import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.spi.WormholeServiceLoader;
-import com.zergclan.wormhole.spi.scene.typed.TypedSPIRegistry;
+import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
+import com.zergclan.wormhole.common.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

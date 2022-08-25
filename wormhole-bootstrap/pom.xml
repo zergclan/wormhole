@@ -31,11 +31,6 @@
     <dependencies>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zergclan</groupId>
             <artifactId>wormhole-pipeline</artifactId>
             <version>${project.version}</version>
         </dependency>
