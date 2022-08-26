@@ -15,24 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.yaml;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Collection;
-import java.util.LinkedList;
+package com.zergclan.wormhole.common;
 
 /**
- * YAML data node mapping configuration.
+ * The root interface from which all swapper objects shall be derived in Wormhole.
+ *
+ * @param <S> class type of source
+ * @param <T> class type of target
  */
-@Getter
-@Setter
-public final class YamlDataNodeMappingConfiguration implements YamlConfiguration {
+public interface WormholeSwapper<S, T> {
     
-    private String targetNames;
+    /**
+     * Swap source to target.
+     *
+     * @param source source
+     * @return target
+     */
+    T swapToTarget(S source);
     
-    private String sourceNames;
-    
-    private Collection<YamlFilterConfiguration> filters = new LinkedList<>();
+    /**
+     * Swap target to source.
+     *
+     * @param target target
+     * @return source
+     */
+    S swapToSource(T target);
 }

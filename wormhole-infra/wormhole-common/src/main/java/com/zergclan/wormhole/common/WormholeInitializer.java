@@ -15,27 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.yaml;
-
-import lombok.Getter;
-import lombok.Setter;
+package com.zergclan.wormhole.common;
 
 /**
- * YAML data source pool configuration.
+ * The root interface from which all initializer objects shall be derived in Wormhole.
+ *
+ * @param <C> class type of config
+ * @param <R> class type of initialized result
  */
-@Getter
-@Setter
-public final class YamlDataSourceConfiguration implements YamlConfiguration {
+public interface WormholeInitializer<C, R> {
     
-    private String name;
-    
-    private String type;
-    
-    private String url;
-    
-    private String username;
-    
-    private String password;
-    
-    private YamlDataSourcePoolConfiguration pool;
+    /**
+     * Init.
+     *
+     * @param config config
+     * @return initialized result
+     */
+    R init(C config);
 }

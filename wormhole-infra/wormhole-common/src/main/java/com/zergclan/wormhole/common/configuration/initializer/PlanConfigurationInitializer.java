@@ -15,29 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.swapper;
+package com.zergclan.wormhole.common.configuration.initializer;
+
+import com.zergclan.wormhole.common.WormholeInitializer;
+import com.zergclan.wormhole.common.configuration.PlanConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlPlanConfiguration;
 
 /**
- * The root interface from which all swapper objects shall be derived in Wormhole.
- *
- * @param <S> class type of source
- * @param <T> class type of target
+ * Initializer of {@link PlanConfiguration}.
  */
-public interface Swapper<S, T> {
+public final class PlanConfigurationInitializer implements WormholeInitializer<YamlPlanConfiguration, PlanConfiguration> {
     
-    /**
-     * Swap source to target.
-     *
-     * @param source source
-     * @return target
-     */
-    T swapToTarget(S source);
-    
-    /**
-     * Swap target to source.
-     *
-     * @param target target
-     * @return source
-     */
-    S swapToSource(T target);
+    @Override
+    public PlanConfiguration init(final YamlPlanConfiguration yamlConfiguration) {
+        return new PlanConfiguration(yamlConfiguration.getMode(), yamlConfiguration.getExpression(), yamlConfiguration.isAtomic());
+    }
 }

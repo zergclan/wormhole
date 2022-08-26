@@ -20,6 +20,7 @@ package com.zergclan.wormhole.metadata.loader;
 import com.zergclan.wormhole.common.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.common.spi.scene.typed.TypedSPIRegistry;
 import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.metadata.datasource.manager.DataSourceManager;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -58,7 +59,7 @@ public final class MetaDataLoaderBuilder {
     
     private static MetaDataLoader createMetaDataLoader(final DataSourceMetaData metadata) throws SQLException {
         MetaDataLoader result = TypedSPIRegistry.getRegisteredService(MetaDataLoader.class, metadata.getDataSourceType().getType());
-        result.init(DataSourceManager.get(metadata).getConnection());
+        result.init(DataSourceManager.getDataSource(metadata).getConnection());
         return result;
     }
 }

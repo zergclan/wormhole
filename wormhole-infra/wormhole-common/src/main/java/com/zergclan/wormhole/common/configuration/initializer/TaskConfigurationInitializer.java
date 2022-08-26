@@ -15,40 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.swapper;
+package com.zergclan.wormhole.common.configuration.initializer;
 
+import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.configuration.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.common.configuration.SourceConfiguration;
 import com.zergclan.wormhole.common.configuration.TargetConfiguration;
 import com.zergclan.wormhole.common.configuration.TaskConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlTaskConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlTaskConfiguration;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * YAML task configuration swapper.
+ * Initializer of {@link TaskConfiguration}.
  */
-public final class YamlTaskConfigurationSwapper implements Swapper<YamlTaskConfiguration, TaskConfiguration> {
+public final class TaskConfigurationInitializer implements WormholeInitializer<YamlTaskConfiguration, TaskConfiguration> {
     
-    private final YamlSourceConfigurationSwapper sourceSwapper = new YamlSourceConfigurationSwapper();
+    private final SourceConfigurationInitializer sourceConfigurationInitializer = new SourceConfigurationInitializer();
     
-    private final YamlTargetConfigurationSwapper targetSwapper = new YamlTargetConfigurationSwapper();
+    private final TargetConfigurationInitializer targetConfigurationInitializer = new TargetConfigurationInitializer();
     
-    private final YamlDataNodeMappingConfigurationSwapper dataNodeMappingSwapper = new YamlDataNodeMappingConfigurationSwapper();
+    private final DataNodeMappingConfigurationInitializer dataNodeMappingConfigurationInitializer = new DataNodeMappingConfigurationInitializer();
     
     @Override
-    public TaskConfiguration swapToTarget(final YamlTaskConfiguration yamlConfiguration) {
-        SourceConfiguration sourceConfiguration = sourceSwapper.swapToTarget(yamlConfiguration.getSource());
-        TargetConfiguration targetConfiguration = targetSwapper.swapToTarget(yamlConfiguration.getTarget());
+    public TaskConfiguration init(final YamlTaskConfiguration yamlConfiguration) {
+        SourceConfiguration sourceConfiguration = sourceConfigurationInitializer.init(yamlConfiguration.getSource());
+        TargetConfiguration targetConfiguration = targetConfigurationInitializer.init(yamlConfiguration.getTarget());
         Collection<DataNodeMappingConfiguration> dataNodeMappings = new LinkedList<>();
-        yamlConfiguration.getDataNodeMappings().forEach(each -> dataNodeMappings.add(dataNodeMappingSwapper.swapToTarget(each)));
+        yamlConfiguration.getDataNodeMappings().forEach(each -> dataNodeMappings.add(dataNodeMappingConfigurationInitializer.init(each)));
         return new TaskConfiguration(yamlConfiguration.getOrder(), yamlConfiguration.getBatchSize(), sourceConfiguration, targetConfiguration, dataNodeMappings);
-    }
-    
-    @Override
-    public YamlTaskConfiguration swapToSource(final TaskConfiguration configuration) {
-        // TODO init yamlTaskConfiguration
-        return null;
     }
 }

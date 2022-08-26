@@ -15,10 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.yaml;
+package com.zergclan.wormhole.common.configuration.yaml;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Properties;
 
 /**
- * The root interface from which all YAML configuration shall be derived in Wormhole.
+ * YAML filter configuration.
  */
-public interface YamlConfiguration {
+@Getter
+@Setter
+public final class YamlFilterConfiguration implements YamlConfiguration {
+    
+    private String type;
+    
+    private Properties prop;
 }

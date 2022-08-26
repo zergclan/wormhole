@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.common.configuration;
 
+import com.zergclan.wormhole.common.configuration.initializer.WormholeConfigurationInitializer;
 import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.yaml.YamlTaskConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlWormholeConfiguration;
-import com.zergclan.wormhole.common.swapper.YamlWormholeConfigurationSwapper;
+import com.zergclan.wormhole.common.configuration.yaml.YamlTaskConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlWormholeConfiguration;
 import com.zergclan.wormhole.common.util.YamlUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -37,7 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * {@link WormholeConfiguration} loader.
+ * Loader of {@link WormholeConfiguration}.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WormholeConfigurationLoader {
@@ -48,7 +48,7 @@ public final class WormholeConfigurationLoader {
     
     private static final String WORMHOLE_TASK_CONFIGURATION_FILE_SUFFIX = "yaml";
     
-    private static final YamlWormholeConfigurationSwapper SWAPPER = new YamlWormholeConfigurationSwapper();
+    private static final WormholeConfigurationInitializer INITIALIZER = new WormholeConfigurationInitializer();
     
     /**
      * Load {@link WormholeConfiguration}.
@@ -58,7 +58,7 @@ public final class WormholeConfigurationLoader {
      * @throws IOException IO exception
      */
     public static WormholeConfiguration load(final String classpath) throws IOException {
-        return SWAPPER.swapToTarget(loadYamlWormholeConfiguration(classpath));
+        return INITIALIZER.init(loadYamlWormholeConfiguration(classpath));
     }
     
     private static YamlWormholeConfiguration loadYamlWormholeConfiguration(final String classpath) throws IOException {

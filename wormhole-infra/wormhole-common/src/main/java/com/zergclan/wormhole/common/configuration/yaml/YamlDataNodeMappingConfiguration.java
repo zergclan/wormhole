@@ -15,28 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.yaml;
+package com.zergclan.wormhole.common.configuration.yaml;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
- * YAML source configuration.
+ * YAML data node mapping configuration.
  */
 @Getter
 @Setter
-public final class YamlSourceConfiguration implements YamlConfiguration {
+public final class YamlDataNodeMappingConfiguration implements YamlConfiguration {
     
-    private String dataSource;
+    private String targetNames;
     
-    private String actualSql;
+    private String sourceNames;
     
-    private String table;
-    
-    private String conditionSql;
-    
-    private Map<String, YamlDataNodeConfiguration> dataNodes = new LinkedHashMap<>();
+    private Collection<YamlFilterConfiguration> filters = new LinkedList<>();
 }

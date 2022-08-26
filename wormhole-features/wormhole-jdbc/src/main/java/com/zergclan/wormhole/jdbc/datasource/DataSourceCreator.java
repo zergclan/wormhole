@@ -15,31 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.metadata.loader;
+package com.zergclan.wormhole.jdbc.datasource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
- * Create factory for data source.
+ * Data source creator.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DataSourceCreator {
-
+    
     /**
-     * Create {@link DataSource}.
+     * Create.
      *
-     * @param dataSourceMetadata data source metadata
+     * @param configProperties config properties
      * @return {@link DataSource}
      */
-    public static DataSource create(final DataSourceMetaData dataSourceMetadata) {
-        HikariConfig config = new HikariConfig();
-        config.setDriverClassName(dataSourceMetadata.getDriverClassName());
-        config.setJdbcUrl(dataSourceMetadata.getJdbcUrl());
-        config.setUsername(dataSourceMetadata.getUsername());
-        config.setPassword(dataSourceMetadata.getPassword());
-        return new HikariDataSource(config);
+    public static DataSource create(final Properties configProperties) {
+        return new HikariDataSource(new HikariConfig(configProperties));
     }
 }

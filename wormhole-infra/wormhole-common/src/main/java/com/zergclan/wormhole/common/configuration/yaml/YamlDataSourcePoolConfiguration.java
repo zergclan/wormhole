@@ -15,26 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.yaml;
+package com.zergclan.wormhole.common.configuration.yaml;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
- * YAML plan configuration.
+ * YAML data source pool configuration.
  */
 @Getter
 @Setter
-public final class YamlPlanConfiguration implements YamlConfiguration {
+public final class YamlDataSourcePoolConfiguration implements YamlConfiguration {
     
-    private String mode;
+    private String poolName;
     
-    private String expression;
+    private Integer minPoolSize;
     
-    private boolean atomic;
+    private Integer maxPoolSize;
     
-    private Collection<String> tasks = new LinkedList<>();
+    private Integer connectionTimeoutMilliseconds;
+    
+    private Integer idleTimeoutMilliseconds;
+    
+    private Integer maxLifetimeMilliseconds;
 }

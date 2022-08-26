@@ -15,22 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.swapper;
+package com.zergclan.wormhole.common.configuration.initializer;
 
+import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.configuration.DataSourceConfiguration;
 import com.zergclan.wormhole.common.configuration.DataSourcePoolConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlDataSourceConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlDataSourcePoolConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlDataSourceConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlDataSourcePoolConfiguration;
 
 /**
- * YAML data source configuration swapper.
+ * Initializer of {@link DataSourceConfiguration}.
  */
-public final class YamlDataSourceConfigurationSwapper implements Swapper<YamlDataSourceConfiguration, DataSourceConfiguration> {
+public final class DataSourceConfigurationInitializer implements WormholeInitializer<YamlDataSourceConfiguration, DataSourceConfiguration> {
     
-    private final YamlDataSourcePoolConfigurationSwapper dataSourcePoolSwapper = new YamlDataSourcePoolConfigurationSwapper();
+    private final DataSourcePoolConfigurationInitializer poolConfigurationInitializer = new DataSourcePoolConfigurationInitializer();
     
     @Override
-    public DataSourceConfiguration swapToTarget(final YamlDataSourceConfiguration yamlConfiguration) {
+    public DataSourceConfiguration init(final YamlDataSourceConfiguration yamlConfiguration) {
         String dataSourceName = yamlConfiguration.getName();
         String dataSourceType = yamlConfiguration.getType();
         String url = yamlConfiguration.getUrl();
@@ -39,13 +40,7 @@ public final class YamlDataSourceConfigurationSwapper implements Swapper<YamlDat
         YamlDataSourcePoolConfiguration yamlDataSourcePool = yamlConfiguration.getPool();
         String poolName = null == yamlDataSourcePool.getPoolName() ? "wormhole-ds-" + dataSourceName : yamlDataSourcePool.getPoolName();
         yamlDataSourcePool.setPoolName(poolName);
-        DataSourcePoolConfiguration dataSourcePoolConfiguration = dataSourcePoolSwapper.swapToTarget(yamlDataSourcePool);
+        DataSourcePoolConfiguration dataSourcePoolConfiguration = poolConfigurationInitializer.init(yamlDataSourcePool);
         return new DataSourceConfiguration(dataSourceName, dataSourceType, url, username, password, dataSourcePoolConfiguration);
-    }
-    
-    @Override
-    public YamlDataSourceConfiguration swapToSource(final DataSourceConfiguration configuration) {
-        // TODO init YamlDataSourceConfiguration
-        return null;
     }
 }

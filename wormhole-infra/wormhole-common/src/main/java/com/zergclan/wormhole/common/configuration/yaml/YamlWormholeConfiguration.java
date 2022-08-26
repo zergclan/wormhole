@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.yaml;
+package com.zergclan.wormhole.common.configuration.yaml;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,23 +24,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * YAML target configuration.
+ * YAML Wormhole configuration.
  */
 @Getter
 @Setter
-public final class YamlTargetConfiguration implements YamlConfiguration {
+public final class YamlWormholeConfiguration implements YamlConfiguration {
     
-    private String dataSource;
+    private Map<String, YamlDataSourceConfiguration> dataSources = new LinkedHashMap<>();
     
-    private String table;
+    private Map<String, YamlPlanConfiguration> plans = new LinkedHashMap<>();
     
-    private String uniqueNodes;
-    
-    private String compareNodes;
-    
-    private String ignoreNodes;
-    
-    private String versionNode;
-    
-    private Map<String, YamlDataNodeConfiguration> dataNodes = new LinkedHashMap<>();
+    private Map<String, YamlTaskConfiguration> tasks = new LinkedHashMap<>();
 }

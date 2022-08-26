@@ -29,6 +29,7 @@ import com.zergclan.wormhole.data.result.MysqlLoadResult;
 import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.metadata.datasource.dialect.DatabaseType;
+import com.zergclan.wormhole.metadata.datasource.manager.DataSourceManager;
 import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 import com.zergclan.wormhole.plugin.mysql.util.DataSourceBuilder;
@@ -97,7 +98,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        return DataSourceBuilder.build(dataSourceMetaData).getConnection();
+        return DataSourceManager.getDataSource(dataSourceMetaData).getConnection();
     }
     
     private ResultSet executeSelect(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {

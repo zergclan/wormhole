@@ -21,6 +21,7 @@ import com.zergclan.wormhole.data.node.DataGroup;
 import com.zergclan.wormhole.data.node.DataNodeBuilder;
 import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.metadata.datasource.dialect.DatabaseType;
+import com.zergclan.wormhole.metadata.datasource.manager.DataSourceManager;
 import com.zergclan.wormhole.metadata.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
@@ -55,7 +56,7 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        return DataSourceBuilder.build(dataSourceMetaData).getConnection();
+        return DataSourceManager.getDataSource(dataSourceMetaData).getConnection();
     }
     
     private Collection<DataGroup> execute(final Connection connection, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {

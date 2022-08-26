@@ -15,30 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.swapper;
+package com.zergclan.wormhole.common.configuration.initializer;
 
-import com.zergclan.wormhole.common.util.ValueExtractor;
+import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.configuration.DataSourcePoolConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlDataSourcePoolConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlDataSourcePoolConfiguration;
+import com.zergclan.wormhole.common.util.ValueExtractor;
 
 /**
- * YAML data source pool configuration swapper.
+ * Initializer of {@link DataSourcePoolConfiguration}.
  */
-public final class YamlDataSourcePoolConfigurationSwapper implements Swapper<YamlDataSourcePoolConfiguration, DataSourcePoolConfiguration> {
+public final class DataSourcePoolConfigurationInitializer implements WormholeInitializer<YamlDataSourcePoolConfiguration, DataSourcePoolConfiguration> {
     
     @Override
-    public DataSourcePoolConfiguration swapToTarget(final YamlDataSourcePoolConfiguration yamlConfiguration) {
+    public DataSourcePoolConfiguration init(final YamlDataSourcePoolConfiguration yamlConfiguration) {
         int minPoolSize = ValueExtractor.extractValueOrDefault(yamlConfiguration.getMinPoolSize(), 1);
         int maxPoolSize = ValueExtractor.extractValueOrDefault(yamlConfiguration.getMaxPoolSize(), 2);
         int connectionTimeout = ValueExtractor.extractValueOrDefault(yamlConfiguration.getConnectionTimeoutMilliseconds(), 30000);
         int idleTimeout = ValueExtractor.extractValueOrDefault(yamlConfiguration.getIdleTimeoutMilliseconds(), 60000);
         int maxLifetime = ValueExtractor.extractValueOrDefault(yamlConfiguration.getMaxLifetimeMilliseconds(), 1800000);
         return new DataSourcePoolConfiguration(yamlConfiguration.getPoolName(), minPoolSize, maxPoolSize, connectionTimeout, idleTimeout, maxLifetime);
-    }
-    
-    @Override
-    public YamlDataSourcePoolConfiguration swapToSource(final DataSourcePoolConfiguration configuration) {
-        // TODO init YamlDataSourcePoolConfiguration
-        return null;
     }
 }

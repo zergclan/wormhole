@@ -15,28 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.yaml;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Collection;
-import java.util.LinkedList;
+package com.zergclan.wormhole.common.configuration.yaml;
 
 /**
- * YAML task configuration.
+ * The root interface from which all YAML configuration shall be derived in Wormhole.
  */
-@Getter
-@Setter
-public final class YamlTaskConfiguration implements YamlConfiguration {
-    
-    private int order;
-    
-    private int batchSize;
-    
-    private YamlSourceConfiguration source;
-    
-    private YamlTargetConfiguration target;
-    
-    private Collection<YamlDataNodeMappingConfiguration> dataNodeMappings = new LinkedList<>();
+public interface YamlConfiguration {
 }

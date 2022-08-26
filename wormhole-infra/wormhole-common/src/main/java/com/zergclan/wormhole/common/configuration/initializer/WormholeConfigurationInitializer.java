@@ -15,34 +15,35 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.swapper;
+package com.zergclan.wormhole.common.configuration.initializer;
 
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.configuration.DataSourceConfiguration;
 import com.zergclan.wormhole.common.configuration.PlanConfiguration;
 import com.zergclan.wormhole.common.configuration.WormholeConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlDataSourceConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlPlanConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlTaskConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlWormholeConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlDataSourceConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlPlanConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlTaskConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlWormholeConfiguration;
+import com.zergclan.wormhole.common.util.Validator;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * YAML wormhole configuration swapper.
+ * Initializer of {@link WormholeConfiguration}.
  */
-public final class YamlWormholeConfigurationSwapper implements Swapper<YamlWormholeConfiguration, WormholeConfiguration> {
+public final class WormholeConfigurationInitializer implements WormholeInitializer<YamlWormholeConfiguration, WormholeConfiguration> {
     
-    private final YamlDataSourceConfigurationSwapper dataSourceSwapper = new YamlDataSourceConfigurationSwapper();
+    private final DataSourceConfigurationInitializer dataSourceConfigurationInitializer = new DataSourceConfigurationInitializer();
     
-    private final YamlPlanConfigurationSwapper planSwapper = new YamlPlanConfigurationSwapper();
+    private final PlanConfigurationInitializer planConfigurationInitializer = new PlanConfigurationInitializer();
     
-    private final YamlTaskConfigurationSwapper taskSwapper = new YamlTaskConfigurationSwapper();
+    private final TaskConfigurationInitializer taskConfigurationInitializer = new TaskConfigurationInitializer();
     
     @Override
-    public WormholeConfiguration swapToTarget(final YamlWormholeConfiguration yamlConfiguration) {
+    public WormholeConfiguration init(final YamlWormholeConfiguration yamlConfiguration) {
         Map<String, DataSourceConfiguration> dataSourceConfigurations = createDataSourceConfigurations(yamlConfiguration.getDataSources());
         Map<String, PlanConfiguration> planConfigurations = createPlanConfigurations(yamlConfiguration.getPlans(), yamlConfiguration.getTasks());
         return new WormholeConfiguration(dataSourceConfigurations, planConfigurations);
@@ -54,7 +55,7 @@ public final class YamlWormholeConfigurationSwapper implements Swapper<YamlWormh
             String dataSourceName = entry.getKey();
             YamlDataSourceConfiguration yamlDataSourceConfiguration = entry.getValue();
             yamlDataSourceConfiguration.setName(dataSourceName);
-            result.put(dataSourceName, dataSourceSwapper.swapToTarget(yamlDataSourceConfiguration));
+            result.put(dataSourceName, dataSourceConfigurationInitializer.init(yamlDataSourceConfiguration));
         }
         return result;
     }
@@ -65,7 +66,7 @@ public final class YamlWormholeConfigurationSwapper implements Swapper<YamlWormh
         for (Map.Entry<String, YamlPlanConfiguration> entry : planConfigurations.entrySet()) {
             String planName = entry.getKey();
             YamlPlanConfiguration yamlPlanConfiguration = entry.getValue();
-            planConfiguration = planSwapper.swapToTarget(yamlPlanConfiguration);
+            planConfiguration = planConfigurationInitializer.init(yamlPlanConfiguration);
             Map<String, YamlTaskConfiguration> relatedTaskConfigurations = getRelatedTaskConfigurations(taskConfigurations, yamlPlanConfiguration, planName);
             initTasks(planConfiguration, relatedTaskConfigurations);
             result.put(planName, planConfiguration);
@@ -85,12 +86,6 @@ public final class YamlWormholeConfigurationSwapper implements Swapper<YamlWormh
     }
     
     private void initTasks(final PlanConfiguration planConfiguration, final Map<String, YamlTaskConfiguration> relatedTaskConfigurations) {
-        relatedTaskConfigurations.forEach((key, each) -> planConfiguration.registerTask(key, taskSwapper.swapToTarget(each)));
-    }
-    
-    @Override
-    public YamlWormholeConfiguration swapToSource(final WormholeConfiguration configuration) {
-        // TODO init yamlWormholeConfiguration
-        return null;
+        relatedTaskConfigurations.forEach((key, each) -> planConfiguration.registerTask(key, taskConfigurationInitializer.init(each)));
     }
 }

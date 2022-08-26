@@ -15,25 +15,26 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.swapper;
+package com.zergclan.wormhole.common.configuration.initializer;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.configuration.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.common.configuration.FilterConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlDataNodeMappingConfiguration;
-import com.zergclan.wormhole.common.yaml.YamlFilterConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlDataNodeMappingConfiguration;
+import com.zergclan.wormhole.common.configuration.yaml.YamlFilterConfiguration;
+import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.common.util.StringUtil;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * YAML data node mapping configuration swapper.
+ * Initializer of {@link DataNodeMappingConfiguration}.
  */
-public final class YamlDataNodeMappingConfigurationSwapper implements Swapper<YamlDataNodeMappingConfiguration, DataNodeMappingConfiguration> {
+public final class DataNodeMappingConfigurationInitializer implements WormholeInitializer<YamlDataNodeMappingConfiguration, DataNodeMappingConfiguration> {
     
     @Override
-    public DataNodeMappingConfiguration swapToTarget(final YamlDataNodeMappingConfiguration yamlConfiguration) {
+    public DataNodeMappingConfiguration init(YamlDataNodeMappingConfiguration yamlConfiguration) {
         Collection<String> targetNames = StringUtil.deduplicateSplit(yamlConfiguration.getTargetNames(), MarkConstant.COMMA);
         Collection<String> sourceNames = StringUtil.deduplicateSplit(yamlConfiguration.getSourceNames(), MarkConstant.COMMA);
         Collection<FilterConfiguration> filters = initFilters(yamlConfiguration.getFilters());
@@ -48,11 +49,5 @@ public final class YamlDataNodeMappingConfigurationSwapper implements Swapper<Ya
             order++;
         }
         return result;
-    }
-    
-    @Override
-    public YamlDataNodeMappingConfiguration swapToSource(final DataNodeMappingConfiguration configuration) {
-        // TODO init yamlDataNodeMappingConfiguration
-        return null;
     }
 }

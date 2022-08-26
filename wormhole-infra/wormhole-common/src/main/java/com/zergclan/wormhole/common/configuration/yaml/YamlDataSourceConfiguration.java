@@ -15,21 +15,27 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.yaml;
+package com.zergclan.wormhole.common.configuration.yaml;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * YAML data source configuration.
+ * YAML data source pool configuration.
  */
 @Getter
 @Setter
-public final class YamlDataNodeConfiguration implements YamlConfiguration {
+public final class YamlDataSourceConfiguration implements YamlConfiguration {
     
-    private String nodeType;
+    private String name;
     
-    private String dataType;
+    private String type;
     
-    private String defaultValue;
+    private String url;
+    
+    private String username;
+    
+    private String password;
+    
+    private YamlDataSourcePoolConfiguration pool;
 }
