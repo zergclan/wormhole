@@ -30,16 +30,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cronutils</groupId>
-            <artifactId>cron-utils</artifactId>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-tool</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

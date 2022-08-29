@@ -22,8 +22,8 @@ import com.zergclan.wormhole.common.configuration.DataNodeMappingConfiguration;
 import com.zergclan.wormhole.common.configuration.FilterConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlDataNodeMappingConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlFilterConfiguration;
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
+import com.zergclan.wormhole.tool.util.StringUtil;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -34,7 +34,7 @@ import java.util.LinkedList;
 public final class DataNodeMappingConfigurationInitializer implements WormholeInitializer<YamlDataNodeMappingConfiguration, DataNodeMappingConfiguration> {
     
     @Override
-    public DataNodeMappingConfiguration init(YamlDataNodeMappingConfiguration yamlConfiguration) {
+    public DataNodeMappingConfiguration init(final YamlDataNodeMappingConfiguration yamlConfiguration) {
         Collection<String> targetNames = StringUtil.deduplicateSplit(yamlConfiguration.getTargetNames(), MarkConstant.COMMA);
         Collection<String> sourceNames = StringUtil.deduplicateSplit(yamlConfiguration.getSourceNames(), MarkConstant.COMMA);
         Collection<FilterConfiguration> filters = initFilters(yamlConfiguration.getFilters());

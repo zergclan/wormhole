@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.console.application.service.impl;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 import com.zergclan.wormhole.console.application.domain.entity.DatabaseInfo;

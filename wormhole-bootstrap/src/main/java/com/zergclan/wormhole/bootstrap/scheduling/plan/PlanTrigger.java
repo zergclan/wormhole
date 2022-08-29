@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.bootstrap.scheduling.plan;
 
 import com.zergclan.wormhole.bootstrap.scheduling.Trigger;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.tool.util.Validator;
 
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;

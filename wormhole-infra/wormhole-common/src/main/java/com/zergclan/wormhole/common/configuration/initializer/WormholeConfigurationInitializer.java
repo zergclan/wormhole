@@ -25,7 +25,7 @@ import com.zergclan.wormhole.common.configuration.yaml.YamlDataSourceConfigurati
 import com.zergclan.wormhole.common.configuration.yaml.YamlPlanConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlTaskConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlWormholeConfiguration;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.tool.util.Validator;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

@@ -20,7 +20,7 @@ package com.zergclan.wormhole.common.configuration.initializer;
 import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.configuration.DataSourcePoolConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlDataSourcePoolConfiguration;
-import com.zergclan.wormhole.common.util.ValueExtractor;
+import com.zergclan.wormhole.tool.util.ValueExtractor;
 
 /**
  * Initializer of {@link DataSourcePoolConfiguration}.

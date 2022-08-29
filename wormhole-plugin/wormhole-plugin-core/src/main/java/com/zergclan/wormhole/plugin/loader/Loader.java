@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.plugin.loader;
 
-import com.zergclan.wormhole.metadata.catched.CachedTargetMetaData;
-import com.zergclan.wormhole.common.spi.scene.typed.TypedSPI;
+import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 /**
  * The root interface from which all loader shall be derived in Wormhole.

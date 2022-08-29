@@ -17,11 +17,11 @@
 
 package com.zergclan.wormhole.plugin.extractor;
 
-import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.data.node.DataGroup;
-import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
-import com.zergclan.wormhole.metadata.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.metadata.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.tool.util.StringUtil;
 
 import java.sql.SQLException;
 import java.util.Collection;

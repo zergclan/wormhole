@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.bus.disruptor.event;
 
 import com.zergclan.wormhole.bus.api.Event;
-import com.zergclan.wormhole.common.util.DateUtil;
+import com.zergclan.wormhole.tool.util.DateUtil;
 import lombok.Getter;
 
 @Getter

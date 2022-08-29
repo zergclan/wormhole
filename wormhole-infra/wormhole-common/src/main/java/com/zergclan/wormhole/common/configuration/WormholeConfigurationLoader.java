@@ -18,10 +18,10 @@
 package com.zergclan.wormhole.common.configuration;
 
 import com.zergclan.wormhole.common.configuration.initializer.WormholeConfigurationInitializer;
-import com.zergclan.wormhole.common.constant.MarkConstant;
 import com.zergclan.wormhole.common.configuration.yaml.YamlTaskConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlWormholeConfiguration;
-import com.zergclan.wormhole.common.util.YamlUtil;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
+import com.zergclan.wormhole.tool.util.YamlUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;

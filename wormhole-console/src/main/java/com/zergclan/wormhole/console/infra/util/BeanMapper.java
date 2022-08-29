@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.console.infra.util;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ma.glasnost.orika.MapperFacade;

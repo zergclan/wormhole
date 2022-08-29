@@ -21,8 +21,8 @@ import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.configuration.DataNodeConfiguration;
 import com.zergclan.wormhole.common.configuration.TargetConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlTargetConfiguration;
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
+import com.zergclan.wormhole.tool.util.StringUtil;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -34,7 +34,7 @@ import java.util.Map;
 public final class TargetConfigurationInitializer implements WormholeInitializer<YamlTargetConfiguration, TargetConfiguration> {
     
     @Override
-    public TargetConfiguration init(YamlTargetConfiguration yamlConfiguration) {
+    public TargetConfiguration init(final YamlTargetConfiguration yamlConfiguration) {
         String dataSource = yamlConfiguration.getDataSource();
         String table = yamlConfiguration.getTable();
         Collection<String> uniqueNodes = StringUtil.deduplicateSplit(yamlConfiguration.getUniqueNodes(), MarkConstant.COMMA);

@@ -31,7 +31,7 @@ import java.util.Map;
 public final class SourceConfigurationInitializer implements WormholeInitializer<YamlSourceConfiguration, SourceConfiguration> {
     
     @Override
-    public SourceConfiguration init(YamlSourceConfiguration yamlConfiguration) {
+    public SourceConfiguration init(final YamlSourceConfiguration yamlConfiguration) {
         String dataSource = yamlConfiguration.getDataSource();
         String actualSql = yamlConfiguration.getActualSql();
         String table = yamlConfiguration.getTable();

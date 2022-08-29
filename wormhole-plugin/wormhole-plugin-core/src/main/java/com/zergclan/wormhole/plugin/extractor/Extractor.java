@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.plugin.extractor;
 
-import com.zergclan.wormhole.metadata.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.common.spi.scene.typed.TypedSPI;
+import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
+import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 import java.sql.SQLException;
 import java.util.Collection;

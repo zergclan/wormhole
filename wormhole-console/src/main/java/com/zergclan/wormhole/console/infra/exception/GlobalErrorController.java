@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.console.infra.exception;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.console.api.vo.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

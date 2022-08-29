@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.test.integration.framework.data.node;
 
 import com.google.common.base.Splitter;
-import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
