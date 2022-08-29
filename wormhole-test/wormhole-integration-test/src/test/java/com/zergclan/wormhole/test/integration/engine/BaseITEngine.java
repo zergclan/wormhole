@@ -128,7 +128,7 @@ public abstract class BaseITEngine {
     
     private void setInitData(final TableNode tableNode, final Connection connection) throws SQLException {
         String insertSQL = initInsertSQL(tableNode);
-        List<List<Object>> parameters = initInsertParameter(tableNode);
+        Collection<List<Object>> parameters = initInsertParameter(tableNode);
         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
         for (List<Object> each : parameters) {
             setParameters(preparedStatement, each);
@@ -143,8 +143,8 @@ public abstract class BaseITEngine {
         return insertExpression + columnsValuesExpression;
     }
     
-    private List<List<Object>> initInsertParameter(final TableNode tableNode) {
-        List<List<Object>> result = new LinkedList<>();
+    private Collection<List<Object>> initInsertParameter(final TableNode tableNode) {
+        Collection<List<Object>> result = new LinkedList<>();
         Collection<RowsNode> rows = tableNode.getRows();
         for (RowsNode each : rows) {
             result.add(each.getValues());
