@@ -47,11 +47,12 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
         String condition = MySQLExpressionBuilder.buildConditionWhere(conditionSql);
         return selectColumns + fromTable + condition;
     }
-
+    
     @Override
     protected Collection<DataGroup> doExtract(final DataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
-        Connection connection = createConnection(dataSource);
-        return execute(connection, dataNodes, extractSQl);
+        try (Connection connection = createConnection(dataSource)) {
+            return execute(connection, dataNodes, extractSQl);
+        }
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
