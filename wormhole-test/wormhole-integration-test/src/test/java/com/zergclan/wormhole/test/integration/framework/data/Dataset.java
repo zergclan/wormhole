@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.test.integration.framework.data;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.test.integration.framework.data.config.DataSourceConfiguration;
 import com.zergclan.wormhole.test.integration.framework.data.config.DatasetConfiguration;
 import com.zergclan.wormhole.test.integration.framework.data.node.DataSourceNode;

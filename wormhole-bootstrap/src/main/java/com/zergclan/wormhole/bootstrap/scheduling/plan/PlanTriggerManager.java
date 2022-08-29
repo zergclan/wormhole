@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.plan;
 
-import com.zergclan.wormhole.metadata.plan.PlanMetaData;
+import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 
 import java.util.Optional;
 import java.util.concurrent.DelayQueue;

@@ -17,9 +17,9 @@
 
 package com.zergclan.wormhole.plugin.mysql.builder;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.constant.SQLKeywordConstant;
-import com.zergclan.wormhole.common.util.StringUtil;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
+import com.zergclan.wormhole.tool.constant.SQLKeywordConstant;
+import com.zergclan.wormhole.tool.util.StringUtil;
 
 import java.util.Collection;
 import java.util.Iterator;

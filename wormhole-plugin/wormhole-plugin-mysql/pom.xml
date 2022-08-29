@@ -35,8 +35,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-jdbc</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

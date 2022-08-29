@@ -17,14 +17,14 @@
 
 package com.zergclan.wormhole.plugin.mysql.extractor;
 
-import com.zergclan.wormhole.data.node.DataGroup;
-import com.zergclan.wormhole.data.node.DataNodeBuilder;
-import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
-import com.zergclan.wormhole.metadata.datasource.dialect.DatabaseType;
-import com.zergclan.wormhole.metadata.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.node.DataNodeBuilder;
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.dialect.DatabaseType;
+import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.jdbc.datasource.DataSourceManager;
 import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
-import com.zergclan.wormhole.plugin.mysql.util.DataSourceBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,15 +47,16 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
         String condition = MySQLExpressionBuilder.buildConditionWhere(conditionSql);
         return selectColumns + fromTable + condition;
     }
-
+    
     @Override
     protected Collection<DataGroup> doExtract(final DataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
-        Connection connection = createConnection(dataSource);
-        return execute(connection, dataNodes, extractSQl);
+        try (Connection connection = createConnection(dataSource)) {
+            return execute(connection, dataNodes, extractSQl);
+        }
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        return DataSourceBuilder.build(dataSourceMetaData).getConnection();
+        return DataSourceManager.getDataSource(dataSourceMetaData).getConnection();
     }
     
     private Collection<DataGroup> execute(final Connection connection, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {

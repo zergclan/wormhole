@@ -17,21 +17,21 @@
 
 package com.zergclan.wormhole.plugin.mysql.loader;
 
-import com.zergclan.wormhole.data.node.DataNode;
-import com.zergclan.wormhole.data.BatchedDataGroup;
-import com.zergclan.wormhole.data.node.DataGroup;
-import com.zergclan.wormhole.data.node.BigDecimalDataNode;
-import com.zergclan.wormhole.data.node.LongDataNode;
-import com.zergclan.wormhole.data.node.PatternedDataTimeDataNode;
-import com.zergclan.wormhole.data.result.BatchedLoadResult;
-import com.zergclan.wormhole.data.result.ErrorDataGroup;
-import com.zergclan.wormhole.data.result.MysqlLoadResult;
-import com.zergclan.wormhole.metadata.datasource.DataSourceMetaData;
-import com.zergclan.wormhole.metadata.catched.CachedTargetMetaData;
-import com.zergclan.wormhole.metadata.datasource.dialect.DatabaseType;
+import com.zergclan.wormhole.common.data.result.BatchedLoadResult;
+import com.zergclan.wormhole.common.data.result.MysqlLoadResult;
+import com.zergclan.wormhole.common.data.node.DataNode;
+import com.zergclan.wormhole.common.data.BatchedDataGroup;
+import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.node.BigDecimalDataNode;
+import com.zergclan.wormhole.common.data.node.LongDataNode;
+import com.zergclan.wormhole.common.data.node.PatternedDataTimeDataNode;
+import com.zergclan.wormhole.common.data.result.ErrorDataGroup;
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.dialect.DatabaseType;
+import com.zergclan.wormhole.jdbc.datasource.DataSourceManager;
 import com.zergclan.wormhole.plugin.loader.AbstractBatchedLoader;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
-import com.zergclan.wormhole.plugin.mysql.util.DataSourceBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
@@ -97,7 +97,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
     }
     
     private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        return DataSourceBuilder.build(dataSourceMetaData).getConnection();
+        return DataSourceManager.getDataSource(dataSourceMetaData).getConnection();
     }
     
     private ResultSet executeSelect(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {

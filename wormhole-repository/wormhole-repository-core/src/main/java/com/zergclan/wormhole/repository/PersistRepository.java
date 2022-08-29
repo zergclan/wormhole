@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.repository;
 
-import com.zergclan.wormhole.common.spi.annotation.SingletonSPI;
-import com.zergclan.wormhole.common.spi.scene.typed.TypedSPI;
+import com.zergclan.wormhole.tool.spi.annotation.SingletonSPI;
+import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 /**
  * The root interface from which all persist repository shall be derived in Wormhole.

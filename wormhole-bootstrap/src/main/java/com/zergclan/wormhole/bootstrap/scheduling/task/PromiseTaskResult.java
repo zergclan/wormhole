@@ -17,16 +17,16 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.task;
 
-import com.zergclan.wormhole.data.result.Result;
+import com.zergclan.wormhole.common.WormholeResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * PromiseTaskResult implemented of {@link Result}.
+ * PromiseTaskResult implemented of {@link WormholeResult}.
  */
 @RequiredArgsConstructor
 @Getter
-public final class PromiseTaskResult implements Result<TaskResult> {
+public final class PromiseTaskResult implements WormholeResult<TaskResult> {
 
     private static final long serialVersionUID = -8354421630803417276L;
     

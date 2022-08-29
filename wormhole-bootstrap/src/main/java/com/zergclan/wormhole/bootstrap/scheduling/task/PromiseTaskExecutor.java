@@ -20,17 +20,17 @@ package com.zergclan.wormhole.bootstrap.scheduling.task;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
 import com.zergclan.wormhole.bus.api.Event;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
-import com.zergclan.wormhole.common.concurrent.ExecutorServiceManager;
-import com.zergclan.wormhole.common.concurrent.PromiseTask;
-import com.zergclan.wormhole.data.result.Result;
-import com.zergclan.wormhole.data.BatchedDataGroup;
-import com.zergclan.wormhole.data.node.DataGroup;
-import com.zergclan.wormhole.data.result.LoadResult;
-import com.zergclan.wormhole.metadata.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.metadata.catched.CachedTargetMetaData;
-import com.zergclan.wormhole.metadata.catched.CachedTaskMetaData;
-import com.zergclan.wormhole.metadata.plan.filter.FilterMetaData;
-import com.zergclan.wormhole.metadata.plan.filter.FilterType;
+import com.zergclan.wormhole.common.WormholeResult;
+import com.zergclan.wormhole.common.data.BatchedDataGroup;
+import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.result.LoadResult;
+import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedTaskMetaData;
+import com.zergclan.wormhole.common.metadata.plan.filter.FilterMetaData;
+import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
+import com.zergclan.wormhole.tool.concurrent.ExecutorServiceManager;
+import com.zergclan.wormhole.tool.concurrent.PromiseTask;
 import com.zergclan.wormhole.pipeline.filter.Filter;
 import com.zergclan.wormhole.pipeline.handler.Handler;
 import com.zergclan.wormhole.pipeline.event.DataGroupExecutionEvent;
@@ -81,7 +81,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         return PromiseTaskResult.newError(createTaskResult(-1));
     }
     
-    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, Result<LoadResult>> loader) throws SQLException {
+    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, WormholeResult<LoadResult>> loader) throws SQLException {
         Collection<DataGroup> dataGroups = extractor.extract();
         if (dataGroups.isEmpty()) {
             return PromiseTaskResult.newSuccess(createTaskResult(0));

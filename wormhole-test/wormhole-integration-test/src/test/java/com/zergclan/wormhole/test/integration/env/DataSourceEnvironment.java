@@ -17,10 +17,10 @@
 
 package com.zergclan.wormhole.test.integration.env;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.StringUtil;
-import com.zergclan.wormhole.metadata.datasource.DataSourceType;
-import com.zergclan.wormhole.metadata.datasource.DataSourceTypeFactory;
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceTypeFactory;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
+import com.zergclan.wormhole.tool.util.StringUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

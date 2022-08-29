@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.test.integration.framework.data.node;
 
-import com.zergclan.wormhole.common.constant.MarkConstant;
-import com.zergclan.wormhole.common.util.Validator;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
+import com.zergclan.wormhole.tool.util.Validator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.test.integration.framework.container.storage;
 
 import com.zaxxer.hikari.HikariDataSource;
-import com.zergclan.wormhole.common.constant.MarkConstant;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.test.integration.framework.container.wait.ConnectionWaitStrategy;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
 import com.zergclan.wormhole.test.integration.framework.container.DockerITContainer;
