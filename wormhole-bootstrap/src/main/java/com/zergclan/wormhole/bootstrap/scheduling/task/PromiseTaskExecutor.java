@@ -23,7 +23,7 @@ import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.WormholeResult;
 import com.zergclan.wormhole.common.data.BatchedDataGroup;
 import com.zergclan.wormhole.common.data.node.DataGroup;
-import com.zergclan.wormhole.common.data.result.LoadResult;
+import com.zergclan.wormhole.common.data.result.LoadResultData;
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.common.metadata.catched.CachedTaskMetaData;
@@ -81,7 +81,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         return PromiseTaskResult.newError(createTaskResult(-1));
     }
     
-    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, WormholeResult<LoadResult>> loader) throws SQLException {
+    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, WormholeResult<LoadResultData>> loader) throws SQLException {
         Collection<DataGroup> dataGroups = extractor.extract();
         if (dataGroups.isEmpty()) {
             return PromiseTaskResult.newSuccess(createTaskResult(0));

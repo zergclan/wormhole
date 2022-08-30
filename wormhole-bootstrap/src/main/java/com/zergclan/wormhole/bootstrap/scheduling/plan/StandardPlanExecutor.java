@@ -73,14 +73,14 @@ public final class StandardPlanExecutor implements PlanExecutor {
             try {
                 promiseTaskResult = completionService.take().get();
                 if (!promiseTaskResult.isSuccess()) {
-                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.FAILED));
+                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResultData().getTaskBatch(), ExecutionState.FAILED));
                     continue;
                 }
-                TaskResult result = promiseTaskResult.getResult();
+                TaskResult result = promiseTaskResult.getResultData();
                 if (0 == result.getTotalRow()) {
-                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.SUCCESS));
+                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResultData().getTaskBatch(), ExecutionState.SUCCESS));
                 } else {
-                    handleEvent(TaskExecutionEvent.buildExecutionEvent(promiseTaskResult.getResult().getTaskBatch(), promiseTaskResult.getResult().getTotalRow()));
+                    handleEvent(TaskExecutionEvent.buildExecutionEvent(promiseTaskResult.getResultData().getTaskBatch(), promiseTaskResult.getResultData().getTotalRow()));
                 }
             } catch (final InterruptedException | ExecutionException ex) {
                 ex.printStackTrace();

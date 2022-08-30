@@ -24,7 +24,7 @@ import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
 /**
  * Abstract loader of {@link BatchedDataGroup}.
  */
-public abstract class AbstractBatchedLoader<T> implements Loader<BatchedDataGroup, BatchedLoadResult<T>> {
+public abstract class AbstractBatchedLoader implements Loader<BatchedDataGroup, BatchedLoadResult> {
     
     private volatile CachedTargetMetaData cachedTarget;
     
@@ -35,9 +35,9 @@ public abstract class AbstractBatchedLoader<T> implements Loader<BatchedDataGrou
     }
     
     @Override
-    public BatchedLoadResult<T> load(final BatchedDataGroup data) {
+    public BatchedLoadResult load(final BatchedDataGroup data) {
         return standardLoad(data, cachedTarget);
     }
     
-    protected abstract BatchedLoadResult<T> standardLoad(BatchedDataGroup data, CachedTargetMetaData cachedTarget);
+    protected abstract BatchedLoadResult standardLoad(BatchedDataGroup data, CachedTargetMetaData cachedTarget);
 }

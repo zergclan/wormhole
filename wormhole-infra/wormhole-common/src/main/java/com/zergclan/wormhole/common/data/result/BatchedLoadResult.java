@@ -26,9 +26,9 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-public final class BatchedLoadResult<T> implements WormholeResult<T> {
+public final class BatchedLoadResult implements WormholeResult<LoadResultData> {
 
     private final boolean success;
 
-    private final T result;
+    private final LoadResultData resultData;
 }

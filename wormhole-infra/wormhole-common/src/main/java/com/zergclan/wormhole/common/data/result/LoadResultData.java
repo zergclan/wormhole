@@ -17,18 +17,20 @@
 
 package com.zergclan.wormhole.common.data.result;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * Result value of database loader.
+ * The interface of Load result.
  */
-@Data
-public final class MysqlLoadResult implements LoadResult {
-
-    private int totalRow;
+@RequiredArgsConstructor
+@Getter
+public final class LoadResultData {
+    
+    private final int totalRow;
     
     private int insertRow;
     
@@ -68,7 +70,11 @@ public final class MysqlLoadResult implements LoadResult {
         errorData.add(errorDataGroup);
     }
     
-    @Override
+    /**
+     * Get error row.
+     *
+     * @return error row
+     */
     public int getErrorRow() {
         return totalRow - insertRow - updateRow - sameRow;
     }

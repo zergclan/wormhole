@@ -15,54 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.result;
-
-import java.util.Collection;
+package com.zergclan.wormhole.jdbc.builder;
 
 /**
- * The interface of Load result.
+ * SQL expression builder.
  */
-public interface LoadResult {
-    
-    /**
-     * get total row.
-     *
-     * @return total row
-     */
-    int getTotalRow();
-
-    /**
-     * Get insert row.
-     *
-     * @return insert row
-     */
-    int getInsertRow();
-    
-    /**
-     * Get update row.
-     *
-     * @return update row
-     */
-    int getUpdateRow();
-    
-    /**
-     * Get error row.
-     *
-     * @return error row
-     */
-    int getErrorRow();
-    
-    /**
-     * Get same row.
-     *
-     * @return same row
-     */
-    int getSameRow();
-    
-    /**
-     * get error info.
-     *
-     * @return map
-     */
-    Collection<ErrorDataGroup> getErrorData();
+public final class SQLExpressionBuilder {
 }

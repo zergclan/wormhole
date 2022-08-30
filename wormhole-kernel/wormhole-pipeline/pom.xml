@@ -31,13 +31,27 @@
     <dependencies>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-bus</artifactId>
+            <artifactId>wormhole-common</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-plugin-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-plugin-mysql</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-bus</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

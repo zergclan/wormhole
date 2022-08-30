@@ -15,28 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.jdbc.executor;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Iterator;
 
 /**
- * The root interface from which all result object shall be derived in Wormhole.
- *
- * @param <T> class type of result data
+ * parameter for Execute.
  */
-public interface WormholeResult<T> extends Serializable {
-
-    /**
-     * Is success.
-     * 
-     * @return Is success or not
-     */
-    boolean isSuccess();
-
-    /**
-     * Get result data.
-     *
-     * @return result
-     */
-    T getResultData();
+@RequiredArgsConstructor
+@Getter
+public final class ExecuteParameter {
+    
+    private final String sql;
+    
+    private final Iterator<Object> valueIterator;
 }

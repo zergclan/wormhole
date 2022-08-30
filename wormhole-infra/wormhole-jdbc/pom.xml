@@ -33,7 +33,9 @@
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-common</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>

@@ -17,15 +17,13 @@
 
 package com.zergclan.wormhole.test.integration.framework.data.node;
 
-import com.google.common.base.Splitter;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Rows node.
@@ -34,18 +32,22 @@ import java.util.List;
 @Getter
 public final class RowsNode {
     
-    private final List<Object> values;
+    private final Object[] values;
     
     public RowsNode(final String values, final Collection<ColumnNode> columns) {
-        this.values = initValues(Splitter.on(MarkConstant.COMMA).trimResults().splitToList(values), columns);
+        this.values = initValues(splitValues(values), columns);
     }
     
-    private List<Object> initValues(final List<String> values, final Collection<ColumnNode> columns) {
-        int size = values.size();
-        List<Object> result = new ArrayList<>(values.size());
+    private String[] splitValues(final String values) {
+        return values.split(MarkConstant.COMMA);
+    }
+    
+    private Object[] initValues(final String[] values, final Collection<ColumnNode> columns) {
+        int length = values.length;
+        Object[] result = new Object[length];
         Iterator<ColumnNode> iterator = columns.iterator();
-        for (int i = 0; i < size; i++) {
-            result.add(parseObject(iterator.next(), values.get(i)));
+        for (int i = 0; i < length; i++) {
+            result[i] = parseObject(iterator.next(), values[i]);
         }
         return result;
     }
@@ -59,5 +61,14 @@ public final class RowsNode {
             default:
                 throw new UnsupportedOperationException();
         }
+    }
+    
+    /**
+     * Get value iterator.
+     *
+     * @return value iterator
+     */
+    public Iterator<Object> getValueIterator() {
+        return Arrays.stream(values).iterator();
     }
 }

@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.test.integration.engine;
 
+import com.zergclan.wormhole.jdbc.executor.ExecuteBatchParameter;
+import com.zergclan.wormhole.jdbc.executor.SQLExecutor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
@@ -37,11 +39,11 @@ import lombok.SneakyThrows;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -106,10 +108,13 @@ public abstract class BaseITEngine {
     }
     
     private void setSourceData(final DataSourceNode sourceDataSourceNode) throws SQLException {
+        if (null == sourceDataSourceNode) {
+            return;
+        }
         try (Connection connection = source.getConnection()) {
             Map<String, TableNode> tables = sourceDataSourceNode.getTables();
             for (Entry<String, TableNode> entry : tables.entrySet()) {
-                setInitData(entry.getValue(), connection);
+                initData(connection, entry.getValue());
             }
         }
     }
@@ -121,19 +126,17 @@ public abstract class BaseITEngine {
         try (Connection connection = target.getConnection()) {
             Map<String, TableNode> tables = targetDataSourceNode.getTables();
             for (Entry<String, TableNode> entry : tables.entrySet()) {
-                setInitData(entry.getValue(), connection);
+                initData(connection, entry.getValue());
             }
         }
     }
     
-    private void setInitData(final TableNode tableNode, final Connection connection) throws SQLException {
-        String insertSQL = initInsertSQL(tableNode);
-        List<List<Object>> parameters = initInsertParameter(tableNode);
-        PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
-        for (List<Object> each : parameters) {
-            setParameters(preparedStatement, each);
-        }
-        preparedStatement.executeBatch();
+    private void initData(final Connection connection, final TableNode tableNode) throws SQLException {
+        SQLExecutor.executeBatch(connection, initExecuteBatchParameter(tableNode));
+    }
+    
+    private ExecuteBatchParameter initExecuteBatchParameter(final TableNode tableNode) {
+        return new ExecuteBatchParameter(initInsertSQL(tableNode), initValueIterators(tableNode));
     }
     
     private String initInsertSQL(final TableNode tableNode) {
@@ -143,19 +146,12 @@ public abstract class BaseITEngine {
         return insertExpression + columnsValuesExpression;
     }
     
-    private List<List<Object>> initInsertParameter(final TableNode tableNode) {
-        List<List<Object>> result = new LinkedList<>();
+    private Collection<Iterator<Object>> initValueIterators(final TableNode tableNode) {
         Collection<RowsNode> rows = tableNode.getRows();
+        Collection<Iterator<Object>> result = new ArrayList<>(rows.size());
         for (RowsNode each : rows) {
-            result.add(each.getValues());
+            result.add(each.getValueIterator());
         }
         return result;
-    }
-    
-    private void setParameters(final PreparedStatement preparedStatement, final List<Object> parameters) throws SQLException {
-        for (int i = 0; i < parameters.size(); i++) {
-            preparedStatement.setObject(i + 1, parameters.get(i));
-        }
-        preparedStatement.addBatch();
     }
 }
