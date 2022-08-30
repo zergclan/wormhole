@@ -41,8 +41,7 @@ public abstract class AbstractCompletedExtractor implements Extractor<DataGroup>
     
     @Override
     public Collection<DataGroup> extract() throws SQLException {
-        String extractSQl = getExtractSQl(cachedSource);
-        return doExtract(cachedSource.getDataSource(), cachedSource.getDataNodes(), extractSQl);
+        return doExtract(cachedSource.getDataSource(), cachedSource.getDataNodes(), getExtractSQl(cachedSource));
     }
     
     private String getExtractSQl(final CachedSourceMetaData cachedSource) {
