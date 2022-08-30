@@ -33,12 +33,15 @@
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-bootstrap</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-jdbc</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

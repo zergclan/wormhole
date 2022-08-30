@@ -33,6 +33,7 @@
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-pipeline</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- TODO Refactoring after unified cache service completed -->
         <dependency>
