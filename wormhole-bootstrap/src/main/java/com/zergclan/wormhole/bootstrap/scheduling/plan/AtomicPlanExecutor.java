@@ -80,14 +80,14 @@ public final class AtomicPlanExecutor implements PlanExecutor {
             try {
                 promiseTaskResult = completionService.take().get();
                 if (!promiseTaskResult.isSuccess()) {
-                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.FAILED));
-                    return Optional.of(promiseTaskResult.getResult().getCachedTaskIdentifier());
+                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResultData().getTaskBatch(), ExecutionState.FAILED));
+                    return Optional.of(promiseTaskResult.getResultData().getCachedTaskIdentifier());
                 }
-                TaskResult result = promiseTaskResult.getResult();
+                TaskResult result = promiseTaskResult.getResultData();
                 if (0 == result.getTotalRow()) {
-                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResult().getTaskBatch(), ExecutionState.SUCCESS));
+                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResultData().getTaskBatch(), ExecutionState.SUCCESS));
                 } else {
-                    handleEvent(TaskExecutionEvent.buildExecutionEvent(promiseTaskResult.getResult().getTaskBatch(), promiseTaskResult.getResult().getTotalRow()));
+                    handleEvent(TaskExecutionEvent.buildExecutionEvent(promiseTaskResult.getResultData().getTaskBatch(), promiseTaskResult.getResultData().getTotalRow()));
                 }
             } catch (final ExecutionException | InterruptedException ex) {
                 ex.printStackTrace();

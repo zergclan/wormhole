@@ -35,7 +35,7 @@ public final class PromiseTaskResult implements WormholeResult<TaskResult> {
     private final TaskResult result;
     
     @Override
-    public TaskResult getResult() {
+    public TaskResult getResultData() {
         return result;
     }
     

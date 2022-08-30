@@ -22,7 +22,7 @@ import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -34,18 +34,18 @@ import java.util.List;
 @Getter
 public final class RowsNode {
     
-    private final List<Object> values;
+    private final Object[] values;
     
     public RowsNode(final String values, final Collection<ColumnNode> columns) {
         this.values = initValues(Splitter.on(MarkConstant.COMMA).trimResults().splitToList(values), columns);
     }
     
-    private List<Object> initValues(final List<String> values, final Collection<ColumnNode> columns) {
+    private Object[] initValues(final List<String> values, final Collection<ColumnNode> columns) {
         int size = values.size();
-        List<Object> result = new ArrayList<>(values.size());
+        Object[] result = new Object[values.size()];
         Iterator<ColumnNode> iterator = columns.iterator();
         for (int i = 0; i < size; i++) {
-            result.add(parseObject(iterator.next(), values.get(i)));
+            result[i] = parseObject(iterator.next(), values.get(i));
         }
         return result;
     }
@@ -59,5 +59,14 @@ public final class RowsNode {
             default:
                 throw new UnsupportedOperationException();
         }
+    }
+    
+    /**
+     * Get value iterator.
+     *
+     * @return value iterator
+     */
+    public Iterator<Object> getValueIterator() {
+        return Arrays.stream(values).iterator();
     }
 }

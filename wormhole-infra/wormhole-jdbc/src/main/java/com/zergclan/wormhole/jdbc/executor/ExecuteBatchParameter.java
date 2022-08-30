@@ -17,27 +17,20 @@
 
 package com.zergclan.wormhole.jdbc.executor;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
- * Query executor.
+ * Parameter for execute batch.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class QueryExecutor {
+@RequiredArgsConstructor
+@Getter
+public final class ExecuteBatchParameter {
     
-    /**
-     * Execute.
-     *
-     * @param connection connection
-     * @param sql sql
-     * @param parameters parameters
-     * @return {@link ResultSet}
-     */
-    public static ResultSet execute(final Connection connection, final String sql, final Object[] parameters) {
-        return null;
-    }
+    private final String sql;
+    
+    private final Collection<Iterator<Object>> valueIterators;
 }

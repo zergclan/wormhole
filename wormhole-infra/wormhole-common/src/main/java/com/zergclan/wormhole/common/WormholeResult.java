@@ -20,23 +20,23 @@ package com.zergclan.wormhole.common;
 import java.io.Serializable;
 
 /**
- * The root interface from which all {@link WormholeResult} shall be derived in Wormhole.
+ * The root interface from which all result object shall be derived in Wormhole.
  *
- * @param <T> class type of result
+ * @param <T> class type of result data
  */
 public interface WormholeResult<T> extends Serializable {
 
     /**
      * Is success.
-     *
+     * 
      * @return Is success or not
      */
     boolean isSuccess();
 
     /**
-     * Get result.
+     * Get result data.
      *
      * @return result
      */
-    T getResult();
+    T getResultData();
 }

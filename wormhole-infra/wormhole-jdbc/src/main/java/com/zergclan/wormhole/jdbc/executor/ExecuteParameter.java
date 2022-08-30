@@ -17,35 +17,19 @@
 
 package com.zergclan.wormhole.jdbc.executor;
 
-import java.sql.Connection;
-import java.util.Collection;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Iterator;
 
 /**
- * Update executor.
+ * parameter for Execute.
  */
-public final class UpdateExecutor {
+@RequiredArgsConstructor
+@Getter
+public final class ExecuteParameter {
     
-    /**
-     * Execute.
-     *
-     * @param connection connection
-     * @param sql sql
-     * @param parameters parameters
-     * @return update rows
-     */
-    public static int execute(final Connection connection, final String sql, final Object[] parameters) {
-        return 0;
-    }
+    private final String sql;
     
-    /**
-     * Execute batch.
-     *
-     * @param connection connection
-     * @param sql sql
-     * @param parameters parameters
-     * @return update rows of batch
-     */
-    public static int[] executeBatch (final Connection connection, final String sql, final Collection<Object[]> parameters) {
-        return new int[0];
-    }
+    private final Iterator<Object> valueIterator;
 }

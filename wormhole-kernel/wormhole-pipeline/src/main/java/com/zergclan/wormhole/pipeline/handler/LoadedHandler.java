@@ -20,7 +20,7 @@ package com.zergclan.wormhole.pipeline.handler;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.data.BatchedDataGroup;
 import com.zergclan.wormhole.common.data.result.ErrorDataGroup;
-import com.zergclan.wormhole.common.data.result.LoadResult;
+import com.zergclan.wormhole.common.data.result.LoadResultData;
 import com.zergclan.wormhole.common.WormholeResult;
 import com.zergclan.wormhole.pipeline.event.ErrorDataEvent;
 import com.zergclan.wormhole.plugin.loader.Loader;
@@ -35,13 +35,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class LoadedHandler implements Handler<BatchedDataGroup> {
     
-    private final Loader<BatchedDataGroup, WormholeResult<LoadResult>> loader;
+    private final Loader<BatchedDataGroup, WormholeResult<LoadResultData>> loader;
     
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {
         batchedDataGroup.clearErrors();
         try {
-            LoadResult loadResult = loader.load(batchedDataGroup).getResult();
+            LoadResultData loadResult = loader.load(batchedDataGroup).getResultData();
             loadResult.getErrorData().forEach(each -> handleErrorDataEvent(batchedDataGroup, each));
             WormholeEventBus.post(DataGroupExecutionEvent.buildCompleteEvent(batchedDataGroup.getTaskBatch(), batchedDataGroup.getBatchIndex(), loadResult));
             // CHECKSTYLE:OFF

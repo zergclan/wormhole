@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.plugin.mysql.loader;
 
 import com.zergclan.wormhole.common.data.result.BatchedLoadResult;
-import com.zergclan.wormhole.common.data.result.MysqlLoadResult;
+import com.zergclan.wormhole.common.data.result.LoadResultData;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.BatchedDataGroup;
 import com.zergclan.wormhole.common.data.node.DataGroup;
@@ -46,11 +46,11 @@ import java.util.HashSet;
  * Batched loader of MySQL.
  */
 @Slf4j
-public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadResult> {
+public final class MySQLBatchedLoader extends AbstractBatchedLoader {
 
     @Override
-    protected BatchedLoadResult<MysqlLoadResult> standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
-        MysqlLoadResult result = new MysqlLoadResult();
+    protected BatchedLoadResult standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
+        LoadResultData result = new LoadResultData(batchedDataGroup.getBatchSize());
         try (Connection connection = createConnection(cachedTarget.getDataSource())) {
             Collection<DataGroup> dataGroups = batchedDataGroup.getDataGroups();
             for (DataGroup each : dataGroups) {
@@ -65,9 +65,8 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        result.setTotalRow(batchedDataGroup.getBatchSize());
         log.info("MySQL batched loader standard load success, load result: [{}]", result);
-        return new BatchedLoadResult<>(true, result);
+        return new BatchedLoadResult(true, result);
     }
     
     private void preFix(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) {
@@ -78,7 +77,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader<MysqlLoadRes
         dataGroup.register(new LongDataNode(cachedTarget.getVersionNode(), cachedTarget.getTaskBatch()));
     }
     
-    private void loadDataGroup(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget, final MysqlLoadResult loadResult) throws SQLException {
+    private void loadDataGroup(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget, final LoadResultData loadResult) throws SQLException {
         try (ResultSet resultSet = executeSelect(connection, dataGroup, cachedTarget)) {
             if (!resultSet.next()) {
                 if (executeInsert(connection, dataGroup, cachedTarget)) {

@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.pipeline.event;
 
 import com.zergclan.wormhole.bus.api.Event;
-import com.zergclan.wormhole.common.data.result.LoadResult;
+import com.zergclan.wormhole.common.data.result.LoadResultData;
 import com.zergclan.wormhole.tool.util.DateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -77,10 +77,10 @@ public final class DataGroupExecutionEvent implements Event {
      *
      * @param taskBatch task batch
      * @param batchIndex batch index
-     * @param loadResult {@link LoadResult}
+     * @param loadResult {@link LoadResultData}
      * @return {@link DataGroupExecutionEvent}
      */
-    public static DataGroupExecutionEvent buildCompleteEvent(final long taskBatch, final int batchIndex, final LoadResult loadResult) {
+    public static DataGroupExecutionEvent buildCompleteEvent(final long taskBatch, final int batchIndex, final LoadResultData loadResult) {
         return new DataGroupExecutionEvent(null, null, null, taskBatch, batchIndex, loadResult.getTotalRow(), loadResult.getInsertRow(), loadResult.getUpdateRow(), loadResult.getErrorRow(),
                 loadResult.getSameRow(), null, DateUtil.currentTimeMillis());
     }

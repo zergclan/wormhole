@@ -17,52 +17,65 @@
 
 package com.zergclan.wormhole.common.data.result;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * The interface of Load result.
  */
-public interface LoadResult {
+@RequiredArgsConstructor
+@Getter
+public final class LoadResultData {
+    
+    private final int totalRow;
+    
+    private int insertRow;
+    
+    private int updateRow;
+    
+    private int sameRow;
+    
+    private final Collection<ErrorDataGroup> errorData = new LinkedList<>();
     
     /**
-     * get total row.
-     *
-     * @return total row
+     * Increment insert row.
      */
-    int getTotalRow();
-
-    /**
-     * Get insert row.
-     *
-     * @return insert row
-     */
-    int getInsertRow();
+    public void incrementInsertRow() {
+        insertRow++;
+    }
     
     /**
-     * Get update row.
-     *
-     * @return update row
+     * Increment update row.
      */
-    int getUpdateRow();
+    public void incrementUpdateRow() {
+        updateRow++;
+    }
+    
+    /**
+     * Increment same row.
+     */
+    public void incrementSameRow() {
+        sameRow++;
+    }
+    
+    /**
+     * Add error data.
+     *
+     * @param errorDataGroup {@link ErrorDataGroup}
+     */
+    public void addErrorData(final ErrorDataGroup errorDataGroup) {
+        errorData.add(errorDataGroup);
+    }
     
     /**
      * Get error row.
      *
      * @return error row
      */
-    int getErrorRow();
-    
-    /**
-     * Get same row.
-     *
-     * @return same row
-     */
-    int getSameRow();
-    
-    /**
-     * get error info.
-     *
-     * @return map
-     */
-    Collection<ErrorDataGroup> getErrorData();
+    public int getErrorRow() {
+        return totalRow - insertRow - updateRow - sameRow;
+    }
 }
