@@ -17,11 +17,13 @@
 
 package com.zergclan.wormhole.test.integration.env;
 
-import com.google.common.base.Splitter;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -43,7 +45,7 @@ public final class IntegrationTestEnvironment {
         Optional<Properties> properties = loadProperties();
         if (properties.isPresent()) {
             Properties props = properties.get();
-            scenarios.addAll(Splitter.on(",").trimResults().splitToList(props.getProperty("it.env.scenarios")));
+            scenarios.addAll(splitValues(props.getProperty("it.env.scenarios")));
             String source = props.getProperty("it.env.datasource.source");
             String target = props.getProperty("it.env.datasource.target");
             dataSources.add(new DataSourceEnvironment(source));
@@ -51,6 +53,13 @@ public final class IntegrationTestEnvironment {
                 dataSources.add(new DataSourceEnvironment(target));
             }
         }
+    }
+    
+    private Collection<String> splitValues(final String values) {
+        String[] split = values.split(MarkConstant.COMMA);
+        Collection<String> result = new ArrayList<>(split.length);
+        result.addAll(Arrays.asList(split));
+        return result;
     }
     
     private Optional<Properties> loadProperties() {
