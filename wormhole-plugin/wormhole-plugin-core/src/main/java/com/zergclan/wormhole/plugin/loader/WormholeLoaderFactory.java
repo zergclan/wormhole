@@ -15,10 +15,9 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.extractor;
+package com.zergclan.wormhole.plugin.loader;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
-import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.tool.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
@@ -27,29 +26,28 @@ import lombok.NoArgsConstructor;
 import java.util.Optional;
 
 /**
- * Extractor factory.
+ * Loader factory.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ExtractorFactory {
+public final class WormholeLoaderFactory {
     
     static {
-        WormholeServiceLoader.register(Extractor.class);
+        WormholeServiceLoader.register(WormholeLoader.class);
     }
     
     /**
-     * Get extractor.
+     * Get loader.
      *
-     * @param cachedSource {@link CachedSourceMetaData}
-     * @return {@link Extractor}
+     * @param cachedTarget {@link CachedTargetMetaData}
+     * @return {@link WormholeLoader}
      */
     @SuppressWarnings("all")
-    public static Optional<Extractor> getExtractor(final CachedSourceMetaData cachedSource) {
-        DataSourceMetaData dataSource = cachedSource.getDataSource();
-        Optional<Extractor> registeredService = TypedSPIRegistry.findRegisteredService(Extractor.class, dataSource.getDataSourceType().getType());
+    public static Optional<WormholeLoader> getLoader(final CachedTargetMetaData cachedTarget) {
+        Optional<WormholeLoader> registeredService = TypedSPIRegistry.findRegisteredService(WormholeLoader.class, cachedTarget.getDataSource().getDataSourceType().getType());
         if (registeredService.isPresent()) {
-            Extractor extractor = registeredService.get();
-            extractor.init(cachedSource);
-            return Optional.of(extractor);
+            WormholeLoader loader = registeredService.get();
+            loader.init(cachedTarget);
+            return Optional.of(loader);
         }
         return Optional.empty();
     }

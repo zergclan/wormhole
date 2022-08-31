@@ -15,26 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.plan.filter;
+package com.zergclan.wormhole.jdbc.constant;
 
-import com.zergclan.wormhole.common.WormholeMetaData;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * The interface from which all filter metadata objects shall be derived in Wormhole.
+ * Constant of SQL keyword.
  */
-public interface FilterMetaData extends WormholeMetaData {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SQLKeywordConstant {
     
-    /**
-     * Get order.
-     *
-     * @return order
-     */
-    int getOrder();
+    public static final String INSERT = "INSERT ";
     
-    /**
-     * Get {@link FilterType}.
-     *
-     * @return {@link FilterType}
-     */
-    FilterType getType();
+    public static final String INTO = "INTO ";
+    
+    public static final String VALUES = " VALUES ";
+    
+    public static final String UPDATE = "UPDATE ";
+    
+    public static final String SET = " SET ";
+    
+    public static final String SELECT = "SELECT ";
+    
+    public static final String AS = " AS ";
+    
+    public static final String FROM = " FROM ";
+    
+    public static final String WHERE = " WHERE ";
+    
+    public static final String AND = " AND ";
 }

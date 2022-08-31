@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.executor;
+package com.zergclan.wormhole.jdbc.execute.parameter;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

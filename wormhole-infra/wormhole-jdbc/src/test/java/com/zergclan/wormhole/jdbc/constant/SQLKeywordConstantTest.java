@@ -15,31 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.extractor;
+package com.zergclan.wormhole.jdbc.constant;
 
-import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
+import org.junit.Test;
 
-import java.sql.SQLException;
-import java.util.Collection;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * The root interface from which all extractor shall be derived in Wormhole.
- */
-public interface Extractor<D> extends TypedSPI {
+public final class SQLKeywordConstantTest {
     
-    /**
-     * Init.
-     *
-     * @param cachedSource {@link CachedSourceMetaData}
-     */
-    void init(CachedSourceMetaData cachedSource);
-    
-    /**
-     * Extract.
-     *
-     * @return data
-     * @throws SQLException SQL exception
-     */
-    Collection<D> extract() throws SQLException;
+    @Test
+    public void assertSQLKeyword() {
+        assertEquals("INSERT ", SQLKeywordConstant.INSERT);
+        assertEquals("INTO ", SQLKeywordConstant.INTO);
+        assertEquals(" VALUES ", SQLKeywordConstant.VALUES);
+        assertEquals("UPDATE ", SQLKeywordConstant.UPDATE);
+        assertEquals(" SET ", SQLKeywordConstant.SET);
+        assertEquals("SELECT ", SQLKeywordConstant.SELECT);
+        assertEquals(" AS ", SQLKeywordConstant.AS);
+        assertEquals(" FROM ", SQLKeywordConstant.FROM);
+        assertEquals(" WHERE ", SQLKeywordConstant.WHERE);
+        assertEquals(" AND ", SQLKeywordConstant.AND);
+    }
 }

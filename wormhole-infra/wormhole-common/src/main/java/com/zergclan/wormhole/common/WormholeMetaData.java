@@ -15,26 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.plan.filter;
+package com.zergclan.wormhole.common;
 
-import com.zergclan.wormhole.common.WormholeMetaData;
+import java.io.Serializable;
 
 /**
- * The interface from which all filter metadata objects shall be derived in Wormhole.
+ * The root interface from which all meta data objects shall be derived in Wormhole.
  */
-public interface FilterMetaData extends WormholeMetaData {
+public interface WormholeMetaData extends Serializable {
     
     /**
-     * Get order.
+     * Get identifier.
      *
-     * @return order
+     * @return identifier
      */
-    int getOrder();
-    
-    /**
-     * Get {@link FilterType}.
-     *
-     * @return {@link FilterType}
-     */
-    FilterType getType();
+    String getIdentifier();
 }

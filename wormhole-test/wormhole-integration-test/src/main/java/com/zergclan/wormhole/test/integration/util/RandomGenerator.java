@@ -20,6 +20,9 @@ package com.zergclan.wormhole.test.integration.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Random generator.
+ */
 @SuppressWarnings("all")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RandomGenerator {

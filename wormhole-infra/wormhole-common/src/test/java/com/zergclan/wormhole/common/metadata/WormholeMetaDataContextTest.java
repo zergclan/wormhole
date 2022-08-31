@@ -26,17 +26,16 @@ import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public final class WormholeMetaDataTest {
+public final class WormholeMetaDataContextTest {
     
-    private static WormholeMetaData metaData;
+    private static WormholeMetaDataContext metaData;
     
     @BeforeAll
     public static void init() {
-        metaData = new WormholeMetaData(new LinkedHashMap<>(), new LinkedHashMap<>());
+        metaData = new WormholeMetaDataContext(new LinkedHashMap<>(), new LinkedHashMap<>());
     }
     
     @Test
@@ -53,10 +52,5 @@ public final class WormholeMetaDataTest {
         metaData.register(planMetaData);
         assertNotNull(metaData.getDataSources().get(dataSourceMetaData.getIdentifier()));
         assertTrue(metaData.getPlan(planMetaData.getIdentifier()).isPresent());
-    }
-    
-    @Test
-    public void assertGetIdentifier() {
-        assertEquals("wormhole", metaData.getIdentifier());
     }
 }

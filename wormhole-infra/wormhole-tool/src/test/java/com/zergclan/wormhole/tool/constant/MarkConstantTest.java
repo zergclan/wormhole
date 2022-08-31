@@ -25,6 +25,9 @@ public final class MarkConstantTest {
     
     @Test
     public void assertMarks() {
+        assertEquals("", MarkConstant.NONE);
+        assertEquals(" ", MarkConstant.BLANK);
+        assertEquals(".", MarkConstant.POINT);
         assertEquals("#", MarkConstant.SPACE);
         assertEquals(":", MarkConstant.COLON);
         assertEquals("/", MarkConstant.FORWARD_SLASH);

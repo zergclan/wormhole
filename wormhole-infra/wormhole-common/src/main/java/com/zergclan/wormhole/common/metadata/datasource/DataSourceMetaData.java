@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.datasource;
 
-import com.zergclan.wormhole.common.MetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +25,7 @@ import java.util.Collections;
 /**
  * The root interface from which all data source metadata objects shall be derived in Wormhole.
  */
-public interface DataSourceMetaData extends MetaData {
+public interface DataSourceMetaData extends WormholeMetaData {
     
     /**
      * Get data source type.

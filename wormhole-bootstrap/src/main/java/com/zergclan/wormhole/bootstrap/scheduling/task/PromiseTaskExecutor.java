@@ -36,10 +36,10 @@ import com.zergclan.wormhole.pipeline.handler.Handler;
 import com.zergclan.wormhole.pipeline.event.DataGroupExecutionEvent;
 import com.zergclan.wormhole.pipeline.filter.DataGroupFilterFactory;
 import com.zergclan.wormhole.pipeline.handler.LoadedHandler;
-import com.zergclan.wormhole.plugin.extractor.Extractor;
-import com.zergclan.wormhole.plugin.loader.Loader;
-import com.zergclan.wormhole.plugin.extractor.ExtractorFactory;
-import com.zergclan.wormhole.plugin.loader.LoaderFactory;
+import com.zergclan.wormhole.plugin.extracter.WormholeExtractor;
+import com.zergclan.wormhole.plugin.loader.WormholeLoader;
+import com.zergclan.wormhole.plugin.extracter.WormholeExtractorFactory;
+import com.zergclan.wormhole.plugin.loader.WormholeLoaderFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
@@ -67,8 +67,8 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         CachedSourceMetaData source = cachedTaskMetadata.getSource();
         CachedTargetMetaData target = cachedTaskMetadata.getTarget();
         try {
-            Optional<Extractor> extractor = ExtractorFactory.getExtractor(source);
-            Optional<Loader> loader = LoaderFactory.getLoader(target);
+            Optional<WormholeExtractor> extractor = WormholeExtractorFactory.getExtractor(source);
+            Optional<WormholeLoader> loader = WormholeLoaderFactory.getLoader(target);
             if (extractor.isPresent() && loader.isPresent()) {
                 handeEvent(TaskExecutionEvent.buildReadyEvent(cachedTaskMetadata.getTaskBatch(), -1));
                 return handleTask(extractor.get(), loader.get());
@@ -81,7 +81,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         return PromiseTaskResult.newError(createTaskResult(-1));
     }
     
-    private PromiseTaskResult handleTask(final Extractor<DataGroup> extractor, final Loader<BatchedDataGroup, WormholeResult<LoadResultData>> loader) throws SQLException {
+    private PromiseTaskResult handleTask(final WormholeExtractor<DataGroup> extractor, final WormholeLoader<BatchedDataGroup, WormholeResult<LoadResultData>> loader) throws SQLException {
         Collection<DataGroup> dataGroups = extractor.extract();
         if (dataGroups.isEmpty()) {
             return PromiseTaskResult.newSuccess(createTaskResult(0));

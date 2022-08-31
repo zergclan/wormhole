@@ -23,7 +23,7 @@ import com.zergclan.wormhole.common.data.result.ErrorDataGroup;
 import com.zergclan.wormhole.common.data.result.LoadResultData;
 import com.zergclan.wormhole.common.WormholeResult;
 import com.zergclan.wormhole.pipeline.event.ErrorDataEvent;
-import com.zergclan.wormhole.plugin.loader.Loader;
+import com.zergclan.wormhole.plugin.loader.WormholeLoader;
 import com.zergclan.wormhole.tool.util.DateUtil;
 
 import com.zergclan.wormhole.pipeline.event.DataGroupExecutionEvent;
@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class LoadedHandler implements Handler<BatchedDataGroup> {
     
-    private final Loader<BatchedDataGroup, WormholeResult<LoadResultData>> loader;
+    private final WormholeLoader<BatchedDataGroup, WormholeResult<LoadResultData>> loader;
     
     @Override
     public void handle(final BatchedDataGroup batchedDataGroup) {

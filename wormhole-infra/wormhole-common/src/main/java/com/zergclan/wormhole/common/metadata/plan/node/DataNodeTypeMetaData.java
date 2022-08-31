@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.plan.node;
 
-import com.zergclan.wormhole.common.MetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
@@ -31,7 +31,7 @@ import java.util.Locale;
  */
 @RequiredArgsConstructor
 @Getter
-public final class DataNodeTypeMetaData implements MetaData {
+public final class DataNodeTypeMetaData implements WormholeMetaData {
 
     private final NodeType nodeType;
 

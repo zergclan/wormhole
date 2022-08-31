@@ -15,9 +15,11 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.extractor;
+package com.zergclan.wormhole.plugin.extracter;
 
 import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.expression.ExpressionBuilder;
+import com.zergclan.wormhole.common.expression.ExpressionBuilderFactory;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
@@ -30,12 +32,15 @@ import java.util.Map;
 /**
  * Abstract completed extractor.
  */
-public abstract class AbstractCompletedExtractor implements Extractor<DataGroup> {
+public abstract class AbstractCompletedExtractor implements WormholeExtractor<DataGroup> {
     
-    private volatile CachedSourceMetaData cachedSource;
+    private ExpressionBuilder expressionBuilder;
+    
+    private CachedSourceMetaData cachedSource;
     
     @Override
     public void init(final CachedSourceMetaData cachedSource) {
+        expressionBuilder = ExpressionBuilderFactory.getInstance(cachedSource);
         this.cachedSource = cachedSource;
     }
     
@@ -47,20 +52,10 @@ public abstract class AbstractCompletedExtractor implements Extractor<DataGroup>
     private String getExtractSQl(final CachedSourceMetaData cachedSource) {
         String result = cachedSource.getActualSql();
         if (StringUtil.isBlank(result)) {
-            return generatorExtractSQl(cachedSource.getTable(), cachedSource.getConditionSql(), cachedSource.getDataNodes());
+            return expressionBuilder.buildSelect();
         }
         return result;
     }
-    
-    /**
-     * Generator extract SQl.
-     *
-     * @param table table
-     * @param conditionSql condition sql
-     * @param dataNodes data nodes
-     * @return extract SQl
-     */
-    protected abstract String generatorExtractSQl(String table, String conditionSql, Map<String, DataNodeMetaData> dataNodes);
     
     /**
      * Do extract {@link DataGroup}.

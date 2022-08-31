@@ -22,10 +22,10 @@ import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTriggerManager;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.ScheduledPlanTrigger;
 import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
-import com.zergclan.wormhole.common.MetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.common.data.node.PatternedDataTime;
-import com.zergclan.wormhole.common.metadata.WormholeMetaData;
-import com.zergclan.wormhole.common.metadata.initializer.WormholeMetadataInitializer;
+import com.zergclan.wormhole.common.metadata.WormholeMetaDataContext;
+import com.zergclan.wormhole.common.metadata.initializer.WormholeMetaDataContextInitializer;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TaskMetaData;
 import com.zergclan.wormhole.tool.util.DateUtil;
@@ -51,7 +51,7 @@ public final class WormholeExecutionEngine {
     
     private static final AtomicReference<EngineState> STATE = new AtomicReference<>(EngineState.UNINITIALIZED);
     
-    private static final WormholeMetadataInitializer INITIALIZER = new WormholeMetadataInitializer();
+    private static final WormholeMetaDataContextInitializer INITIALIZER = new WormholeMetaDataContextInitializer();
     
     private static final PlanTriggerManager PLAN_TRIGGER_MANAGER = new PlanTriggerManager();
     
@@ -77,10 +77,10 @@ public final class WormholeExecutionEngine {
     }
     
     private void init(final WormholeConfiguration configuration) throws SQLException {
-        WormholeMetaData wormholeMetadata = INITIALIZER.init(configuration);
-        planExecutionEngine = new PlanExecutionEngine(wormholeMetadata);
+        WormholeMetaDataContext wormholeMetadataContext = INITIALIZER.init(configuration);
+        planExecutionEngine = new PlanExecutionEngine(wormholeMetadataContext);
         WormholeEventBus.register(planExecutionEngine);
-        initPlanTriggerManager(wormholeMetadata.getPlans());
+        initPlanTriggerManager(wormholeMetadataContext.getPlans());
     }
     
     private void initPlanTriggerManager(final Map<String, PlanMetaData> planMetaData) {
@@ -106,12 +106,12 @@ public final class WormholeExecutionEngine {
     }
     
     /**
-     * Register {@link MetaData}.
+     * Register {@link WormholeMetaData}.
      *
-     * @param metadata {@link MetaData}
+     * @param metadata {@link WormholeMetaData}
      * @return is registered or not
      */
-    public synchronized boolean register(final MetaData metadata) {
+    public synchronized boolean register(final WormholeMetaData metadata) {
         return planExecutionEngine.register(metadata);
     }
     
@@ -139,7 +139,7 @@ public final class WormholeExecutionEngine {
     }
     
     /**
-     * Register {@link MetaData}.
+     * Register {@link WormholeMetaData}.
      *
      * @param planIdentifier plan identifier
      * @return is registered or not

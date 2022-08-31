@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata;
 
-import com.zergclan.wormhole.common.MetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSource;
@@ -31,11 +31,11 @@ import java.util.Optional;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * Root implemented {@link MetaData} in wormhole project.
+ * Root implemented {@link WormholeMetaData} in wormhole project.
  */
 @RequiredArgsConstructor
 @Getter
-public final class WormholeMetaData implements MetaData {
+public final class WormholeMetaDataContext {
 
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     
@@ -60,12 +60,12 @@ public final class WormholeMetaData implements MetaData {
     }
 
     /**
-     * Register {@link MetaData}.
+     * Register {@link WormholeMetaData}.
      *
-     * @param metadata {@link MetaData}
+     * @param metadata {@link WormholeMetaData}
      * @return is registered or not
      */
-    public boolean register(final MetaData metadata) {
+    public boolean register(final WormholeMetaData metadata) {
         Validator.notNull(metadata, "error : metadata can not be null");
         final ReentrantReadWriteLock.WriteLock writeLock = LOCK.writeLock();
         writeLock.lock();
@@ -90,10 +90,5 @@ public final class WormholeMetaData implements MetaData {
     private boolean register(final PlanMetaData planMetadata) {
         plans.put(planMetadata.getIdentifier(), planMetadata);
         return true;
-    }
-    
-    @Override
-    public String getIdentifier() {
-        return "wormhole";
     }
 }

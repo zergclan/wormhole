@@ -15,31 +15,41 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.loader;
+package com.zergclan.wormhole.common.expression;
 
-import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 /**
- * The root interface from which all loader shall be derived in Wormhole.
- *
- * @param <D> class type of data
- * @param <V> class type of result
+ * Expression builder.
  */
-public interface Loader<D, V> extends TypedSPI {
+public interface ExpressionBuilder extends TypedSPI {
     
     /**
      * Init.
      *
-     * @param cachedTarget {@link CachedTargetMetaData}
+     * @param cachedMetaData {@link CachedMetaData}
      */
-    void init(CachedTargetMetaData cachedTarget);
+    void init(CachedMetaData cachedMetaData);
     
     /**
-     * Load.
+     * Build select expression.
      *
-     * @param data data
-     * @return result
+     * @return select expression
      */
-    V load(D data);
+    String buildSelect();
+    
+    /**
+     * Build insert expression.
+     *
+     * @return insert expression
+     */
+    String buildInsert();
+    
+    /**
+     * Build update expression.
+     *
+     * @return insert expression
+     */
+    String buildUpdate();
 }

@@ -19,18 +19,25 @@ package com.zergclan.wormhole.plugin.loader;
 
 import com.zergclan.wormhole.common.data.BatchedDataGroup;
 import com.zergclan.wormhole.common.data.result.BatchedLoadResult;
+import com.zergclan.wormhole.common.expression.ExpressionBuilder;
+import com.zergclan.wormhole.common.expression.ExpressionBuilderFactory;
 import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 /**
  * Abstract loader of {@link BatchedDataGroup}.
  */
-public abstract class AbstractBatchedLoader implements Loader<BatchedDataGroup, BatchedLoadResult> {
+public abstract class AbstractBatchedLoader implements WormholeLoader<BatchedDataGroup, BatchedLoadResult> {
     
-    private volatile CachedTargetMetaData cachedTarget;
+    private CachedTargetMetaData cachedTarget;
+    
+    @Getter(value = AccessLevel.PRIVATE)
+    private ExpressionBuilder expressionBuilder;
     
     @Override
     public void init(final CachedTargetMetaData cachedTarget) {
-        // TODO init
+        expressionBuilder = ExpressionBuilderFactory.getInstance(cachedTarget);
         this.cachedTarget = cachedTarget;
     }
     

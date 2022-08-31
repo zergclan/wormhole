@@ -15,21 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.executor;
+package com.zergclan.wormhole.plugin.extracter;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
+import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
-import java.util.Iterator;
+import java.sql.SQLException;
+import java.util.Collection;
 
 /**
- * parameter for Execute.
+ * The root interface from which all extractor shall be derived in Wormhole.
+ *
+ * @param <D> class type of data
  */
-@RequiredArgsConstructor
-@Getter
-public final class ExecuteParameter {
+public interface WormholeExtractor<D> extends TypedSPI {
     
-    private final String sql;
+    /**
+     * Init.
+     *
+     * @param cachedSource {@link CachedSourceMetaData}
+     */
+    void init(CachedSourceMetaData cachedSource);
     
-    private final Iterator<Object> valueIterator;
+    /**
+     * Extract.
+     *
+     * @return data
+     * @throws SQLException SQL exception
+     */
+    Collection<D> extract() throws SQLException;
 }

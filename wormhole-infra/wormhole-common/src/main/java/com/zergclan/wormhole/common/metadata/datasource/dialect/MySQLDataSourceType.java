@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.common.metadata.datasource.dialect;
 
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
-import com.zergclan.wormhole.tool.constant.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.datasource.QuoteCharacter;
 
 /**
  * Data source type for MySQL.

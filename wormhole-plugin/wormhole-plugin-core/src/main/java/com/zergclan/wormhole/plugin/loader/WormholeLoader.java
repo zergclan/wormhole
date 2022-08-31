@@ -15,26 +15,31 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.plan.filter;
+package com.zergclan.wormhole.plugin.loader;
 
-import com.zergclan.wormhole.common.WormholeMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 /**
- * The interface from which all filter metadata objects shall be derived in Wormhole.
+ * The root interface from which all loader shall be derived in Wormhole.
+ *
+ * @param <D> class type of data
+ * @param <R> class type of result
  */
-public interface FilterMetaData extends WormholeMetaData {
+public interface WormholeLoader<D, R> extends TypedSPI {
     
     /**
-     * Get order.
+     * Init.
      *
-     * @return order
+     * @param cachedTarget {@link CachedTargetMetaData}
      */
-    int getOrder();
+    void init(CachedTargetMetaData cachedTarget);
     
     /**
-     * Get {@link FilterType}.
+     * Load.
      *
-     * @return {@link FilterType}
+     * @param data data
+     * @return result
      */
-    FilterType getType();
+    R load(D data);
 }

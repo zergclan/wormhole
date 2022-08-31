@@ -15,34 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.tool.constant;
+package com.zergclan.wormhole.plugin.mysql.loader;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.zergclan.wormhole.common.expression.ExpressionBuilder;
+import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
 
 /**
- * Constant of SQL keyword.
+ * Load expression builder of MySQL.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SQLKeywordConstant {
+public final class MySQLLoadExpressionBuilder implements ExpressionBuilder {
     
-    public static final String SELECT = "SELECT ";
+    @Override
+    public void init(final CachedMetaData cachedMetaData) {
+    }
     
-    public static final String INSERT = "INSERT ";
+    @Override
+    public String buildSelect() {
+        return null;
+    }
     
-    public static final String UPDATE = "UPDATE ";
+    @Override
+    public String buildInsert() {
+        return null;
+    }
     
-    public static final String FROM = " FROM ";
+    @Override
+    public String buildUpdate() {
+        return null;
+    }
     
-    public static final String WHERE = " WHERE ";
-    
-    public static final String AS = " AS ";
-    
-    public static final String AND = " AND ";
-    
-    public static final String INTO = "INTO ";
-    
-    public static final String SET = " SET ";
-    
-    public static final String VALUES = " VALUES ";
+    @Override
+    public String getType() {
+        return "MySQL@target";
+    }
 }

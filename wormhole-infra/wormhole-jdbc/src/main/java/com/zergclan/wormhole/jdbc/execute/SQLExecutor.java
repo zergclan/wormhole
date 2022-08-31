@@ -15,7 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.executor;
+package com.zergclan.wormhole.jdbc.execute;
+
+import com.zergclan.wormhole.jdbc.execute.parameter.ExecuteBatchParameter;
+import com.zergclan.wormhole.jdbc.execute.parameter.ExecuteParameter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +31,22 @@ import java.util.Iterator;
 /**
  * Executor for SQL.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SQLExecutor {
+    
+    /**
+     * Execute for query.
+     *
+     * @param connection connection
+     * @param sql sql
+     * @return {@link ResultSet}
+     * @throws SQLException exception {@link SQLException}
+     */
+    public static ResultSet executeQuery(final Connection connection, final String sql) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            return preparedStatement.executeQuery();
+        }
+    }
     
     /**
      * Execute for query.

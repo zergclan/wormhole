@@ -22,7 +22,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.metadata.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
-import com.zergclan.wormhole.common.metadata.WormholeMetaData;
+import com.zergclan.wormhole.common.metadata.WormholeMetaDataContext;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanCompletedEvent;
@@ -56,20 +56,20 @@ public final class PlanContext {
     /**
      * Create {@link CachedPlanMetaData}.
      *
-     * @param wormholeMetaData {@link WormholeMetaData}
+     * @param wormholeMetaDataContext {@link WormholeMetaDataContext}
      * @param planTrigger plan identifier
      * @param planBatch plan batch
      * @return {@link CachedPlanMetaData}
      * @exception SQLException SQL exception
      */
-    public synchronized Optional<CachedPlanMetaData> cachedMetadata(final long planBatch, final WormholeMetaData wormholeMetaData, final PlanTrigger planTrigger) throws SQLException {
+    public synchronized Optional<CachedPlanMetaData> cachedMetadata(final long planBatch, final WormholeMetaDataContext wormholeMetaDataContext, final PlanTrigger planTrigger) throws SQLException {
         String planIdentifier = planTrigger.getPlanIdentifier();
         if (isExecuting(planIdentifier)) {
             return Optional.empty();
         }
-        Optional<PlanMetaData> plan = wormholeMetaData.getPlan(planIdentifier);
+        Optional<PlanMetaData> plan = wormholeMetaDataContext.getPlan(planIdentifier);
         if (plan.isPresent()) {
-            return Optional.of(cachedMetaData(planBatch, plan.get(), wormholeMetaData.getDataSources()));
+            return Optional.of(cachedMetaData(planBatch, plan.get(), wormholeMetaDataContext.getDataSources()));
         }
         throw new WormholeException("error: can not find plan meta data named: [%s]", planIdentifier);
     }

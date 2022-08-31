@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.test.integration.engine;
 
-import com.zergclan.wormhole.jdbc.executor.ExecuteBatchParameter;
-import com.zergclan.wormhole.jdbc.executor.SQLExecutor;
+import com.zergclan.wormhole.jdbc.execute.parameter.ExecuteBatchParameter;
+import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;

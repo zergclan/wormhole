@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.datasource;
 
-import com.zergclan.wormhole.common.MetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-public final class ColumnMetaData implements MetaData {
+public final class ColumnMetaData implements WormholeMetaData {
 
     private final String dataSourceIdentifier;
 

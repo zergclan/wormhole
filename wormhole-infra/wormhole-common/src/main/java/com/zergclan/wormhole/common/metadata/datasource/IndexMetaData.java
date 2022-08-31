@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.datasource;
 
-import com.zergclan.wormhole.common.MetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @Getter
-public final class IndexMetaData implements MetaData {
+public final class IndexMetaData implements WormholeMetaData {
 
     private final String dataSourceIdentifier;
 

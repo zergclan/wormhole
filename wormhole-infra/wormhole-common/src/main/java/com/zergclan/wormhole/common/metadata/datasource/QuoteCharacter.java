@@ -15,33 +15,42 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.plan;
+package com.zergclan.wormhole.common.metadata.datasource;
 
-import com.zergclan.wormhole.common.WormholeMetaData;
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-
 /**
- * Plan metadata.
+ * Quote character.
  */
 @RequiredArgsConstructor
 @Getter
-public final class PlanMetaData implements WormholeMetaData {
+public enum QuoteCharacter {
     
-    private final String identifier;
+    BACK_QUOTE(MarkConstant.BACK_QUOTE, MarkConstant.BACK_QUOTE),
     
-    private final ExecutionMode mode;
+    SINGLE_QUOTE(MarkConstant.SINGLE_QUOTE, MarkConstant.SINGLE_QUOTE),
     
-    private final String expression;
-
-    private final boolean atomic;
+    QUOTE(MarkConstant.QUOTE, MarkConstant.QUOTE),
     
-    private final Map<String, TaskMetaData> tasks;
+    BRACKETS(MarkConstant.LEFT_BRACKETS, MarkConstant.RIGHT_BRACKETS),
     
-    public enum ExecutionMode {
-
-        ONE_OFF, SCHEDULED
+    PARENTHESES(MarkConstant.LEFT_PARENTHESIS, MarkConstant.RIGHT_PARENTHESIS),
+    
+    NONE("", "");
+    
+    private final String startDelimiter;
+    
+    private final String endDelimiter;
+    
+    /**
+     * Wrap value with quote character.
+     *
+     * @param value value to be wrapped
+     * @return wrapped value
+     */
+    public String wrap(final String value) {
+        return startDelimiter + value + endDelimiter;
     }
 }

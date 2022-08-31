@@ -15,41 +15,21 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.tool.constant;
+package com.zergclan.wormhole.jdbc.execute.parameter;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Iterator;
+
 /**
- * Quote character.
+ * parameter for Execute.
  */
 @RequiredArgsConstructor
 @Getter
-public enum QuoteCharacter {
+public final class ExecuteParameter {
     
-    BACK_QUOTE(MarkConstant.BACK_QUOTE, MarkConstant.BACK_QUOTE),
+    private final String sql;
     
-    SINGLE_QUOTE(MarkConstant.SINGLE_QUOTE, MarkConstant.SINGLE_QUOTE),
-    
-    QUOTE(MarkConstant.QUOTE, MarkConstant.QUOTE),
-    
-    BRACKETS(MarkConstant.LEFT_BRACKETS, MarkConstant.RIGHT_BRACKETS),
-    
-    PARENTHESES(MarkConstant.LEFT_PARENTHESIS, MarkConstant.RIGHT_PARENTHESIS),
-    
-    NONE("", "");
-    
-    private final String startDelimiter;
-    
-    private final String endDelimiter;
-    
-    /**
-     * Wrap value with quote character.
-     *
-     * @param value value to be wrapped
-     * @return wrapped value
-     */
-    public String wrap(final String value) {
-        return startDelimiter + value + endDelimiter;
-    }
+    private final Iterator<Object> valueIterator;
 }

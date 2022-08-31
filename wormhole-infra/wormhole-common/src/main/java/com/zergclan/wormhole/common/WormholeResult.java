@@ -22,9 +22,9 @@ import java.io.Serializable;
 /**
  * The root interface from which all result object shall be derived in Wormhole.
  *
- * @param <T> class type of result data
+ * @param <D> class type of result data
  */
-public interface WormholeResult<T> extends Serializable {
+public interface WormholeResult<D> extends Serializable {
 
     /**
      * Is success.
@@ -38,5 +38,5 @@ public interface WormholeResult<T> extends Serializable {
      *
      * @return result
      */
-    T getResultData();
+    D getResultData();
 }

@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.plan;
 
-import com.zergclan.wormhole.common.MetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @Getter
-public final class TaskMetaData implements MetaData {
+public final class TaskMetaData implements WormholeMetaData {
     
     private final String identifier;
     

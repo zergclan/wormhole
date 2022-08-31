@@ -15,19 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common;
+package com.zergclan.wormhole.common.metadata.catched;
 
-import java.io.Serializable;
+import com.zergclan.wormhole.common.WormholeMetaData;
 
 /**
- * The root interface from which all meta data objects shall be derived in Wormhole.
+ * Cached meta data.
  */
-public interface MetaData extends Serializable {
-    
-    /**
-     * Get identifier.
-     *
-     * @return identifier
-     */
-    String getIdentifier();
+public interface CachedMetaData extends WormholeMetaData {
 }

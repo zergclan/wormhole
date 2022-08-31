@@ -20,7 +20,7 @@ package com.zergclan.wormhole.common.metadata.initializer;
 import com.zergclan.wormhole.common.configuration.DataSourceConfiguration;
 import com.zergclan.wormhole.common.configuration.PlanConfiguration;
 import com.zergclan.wormhole.common.configuration.WormholeConfiguration;
-import com.zergclan.wormhole.common.metadata.WormholeMetaData;
+import com.zergclan.wormhole.common.metadata.WormholeMetaDataContext;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 
@@ -29,27 +29,27 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * wormhole metadata initializer.
+ * wormhole metadata context initializer.
  */
-public final class WormholeMetadataInitializer {
+public final class WormholeMetaDataContextInitializer {
     
     private final PlanMetadataInitializer planMetadataInitializer = new PlanMetadataInitializer();
     
     private final DataSourceMetadataInitializer dataSourceMetadataInitializer = new DataSourceMetadataInitializer();
     
     /**
-     * Init {@link WormholeMetaData}.
+     * Init {@link WormholeMetaDataContext}.
      *
      * @param configuration {@link WormholeConfiguration}
-     * @return {@link WormholeMetaData}
+     * @return {@link WormholeMetaDataContext}
      * @throws SQLException SQL Exception
      */
-    public WormholeMetaData init(final WormholeConfiguration configuration) throws SQLException {
+    public WormholeMetaDataContext init(final WormholeConfiguration configuration) throws SQLException {
         Map<String, DataSourceMetaData> dataSourceMetaData = createDataSources(configuration.getDataSources());
         Map<String, PlanMetaData> plans = createPlans(configuration.getPlans(), dataSourceMetaData);
         Map<String, DataSourceMetaData> dataSources = new LinkedHashMap<>();
         dataSourceMetaData.forEach((key, value) -> dataSources.put(value.getIdentifier(), value));
-        return new WormholeMetaData(dataSources, plans);
+        return new WormholeMetaDataContext(dataSources, plans);
     }
     
     private Map<String, DataSourceMetaData> createDataSources(final Map<String, DataSourceConfiguration> configurations) {
