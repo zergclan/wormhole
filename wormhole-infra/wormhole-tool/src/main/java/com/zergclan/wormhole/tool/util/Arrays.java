@@ -21,7 +21,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Util tools for array.
+ * Util tools of array.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Arrays {

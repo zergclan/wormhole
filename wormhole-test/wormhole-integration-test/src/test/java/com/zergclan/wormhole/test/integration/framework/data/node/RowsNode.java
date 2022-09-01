@@ -21,7 +21,6 @@ import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -61,14 +60,5 @@ public final class RowsNode {
             default:
                 throw new UnsupportedOperationException();
         }
-    }
-    
-    /**
-     * Get value iterator.
-     *
-     * @return value iterator
-     */
-    public Iterator<Object> getValueIterator() {
-        return Arrays.stream(values).iterator();
     }
 }

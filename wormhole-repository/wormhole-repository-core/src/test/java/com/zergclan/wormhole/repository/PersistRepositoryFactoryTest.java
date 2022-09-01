@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.repository;
 
 import com.zergclan.wormhole.repository.fixture.FixturePersistRepository;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 

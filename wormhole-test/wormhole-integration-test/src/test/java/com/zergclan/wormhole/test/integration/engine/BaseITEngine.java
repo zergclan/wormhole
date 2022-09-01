@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.test.integration.engine;
 
-import com.zergclan.wormhole.jdbc.execute.parameter.ExecuteBatchParameter;
 import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
 import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
 import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
@@ -42,7 +41,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -132,11 +130,7 @@ public abstract class BaseITEngine {
     }
     
     private void initData(final Connection connection, final TableNode tableNode) throws SQLException {
-        SQLExecutor.executeBatch(connection, initExecuteBatchParameter(tableNode));
-    }
-    
-    private ExecuteBatchParameter initExecuteBatchParameter(final TableNode tableNode) {
-        return new ExecuteBatchParameter(initInsertSQL(tableNode), initValueIterators(tableNode));
+        SQLExecutor.executeBatch(connection, initInsertSQL(tableNode), initValueIterators(tableNode));
     }
     
     private String initInsertSQL(final TableNode tableNode) {
@@ -146,11 +140,11 @@ public abstract class BaseITEngine {
         return insertExpression + columnsValuesExpression;
     }
     
-    private Collection<Iterator<Object>> initValueIterators(final TableNode tableNode) {
+    private Collection<Object[]> initValueIterators(final TableNode tableNode) {
         Collection<RowsNode> rows = tableNode.getRows();
-        Collection<Iterator<Object>> result = new ArrayList<>(rows.size());
+        Collection<Object[]> result = new ArrayList<>(rows.size());
         for (RowsNode each : rows) {
-            result.add(each.getValueIterator());
+            result.add(each.getValues());
         }
         return result;
     }

@@ -15,22 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.execute.parameter;
+package com.zergclan.wormhole.tool.util;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
- * Parameter for execute batch.
+ * Util tools of collection.
  */
-@RequiredArgsConstructor
-@Getter
-public final class ExecuteBatchParameter {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Collections {
     
-    private final String sql;
-    
-    private final Collection<Iterator<Object>> valueIterators;
+    /**
+     * New linked hash set.
+     *
+     * @param elements elements
+     * @param <E> class type of element
+     * @return linked hash set
+     */
+    public static <E> Set<E> newLinkedHashSet(final E[] elements) {
+        int length = elements.length;
+        Set<E> result = new LinkedHashSet<>(length, 1);
+        for (int i = 0; i < length; i++) {
+            result.add(elements[i]);
+        }
+        return result;
+    }
 }

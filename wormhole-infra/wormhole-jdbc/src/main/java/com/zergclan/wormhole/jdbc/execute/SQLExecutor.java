@@ -17,8 +17,6 @@
 
 package com.zergclan.wormhole.jdbc.execute;
 
-import com.zergclan.wormhole.jdbc.execute.parameter.ExecuteBatchParameter;
-import com.zergclan.wormhole.jdbc.execute.parameter.ExecuteParameter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.util.Collection;
 
 /**
  * Executor for SQL.
@@ -52,13 +50,14 @@ public final class SQLExecutor {
      * Execute for query.
      *
      * @param connection connection
-     * @param executeParameter execute parameter
+     * @param sql execute sql
+     * @param parameters parameters
      * @return {@link ResultSet}
      * @throws SQLException exception {@link SQLException}
      */
-    public static ResultSet executeQuery(final Connection connection, final ExecuteParameter executeParameter) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(executeParameter.getSql())) {
-            setParameters(preparedStatement, executeParameter.getValueIterator());
+    public static ResultSet executeQuery(final Connection connection, final String sql, final Object[] parameters) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            setParameters(preparedStatement, parameters);
             return preparedStatement.executeQuery();
         }
     }
@@ -67,13 +66,14 @@ public final class SQLExecutor {
      * Execute for update.
      *
      * @param connection connection
-     * @param executeParameter execute parameter
+     * @param sql execute sql
+     * @param parameters parameters
      * @return update rows
      * @throws SQLException exception {@link SQLException}
      */
-    public static int executeUpdate(final Connection connection, final ExecuteParameter executeParameter) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(executeParameter.getSql())) {
-            setParameters(preparedStatement, executeParameter.getValueIterator());
+    public static int executeUpdate(final Connection connection, final String sql, final Object[] parameters) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            setParameters(preparedStatement, parameters);
             return preparedStatement.executeUpdate();
         }
     }
@@ -82,13 +82,14 @@ public final class SQLExecutor {
      * Execute for batch.
      *
      * @param connection connection
-     * @param executeBatchParameter execute batch parameter
+     * @param sql execute sql
+     * @param batchedParameters batched parameters
      * @return update rows of batch
      * @throws SQLException exception {@link SQLException}
      */
-    public static int[] executeBatch(final Connection connection, final ExecuteBatchParameter executeBatchParameter) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(executeBatchParameter.getSql())) {
-            for (Iterator<Object> each : executeBatchParameter.getValueIterators()) {
+    public static int[] executeBatch(final Connection connection, final String sql, final Collection<Object[]> batchedParameters) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            for (Object[] each : batchedParameters) {
                 setParameters(preparedStatement, each);
                 preparedStatement.addBatch();
             }
@@ -96,11 +97,10 @@ public final class SQLExecutor {
         }
     }
     
-    private static void setParameters(final PreparedStatement preparedStatement, final Iterator<Object> valueIterator) throws SQLException {
-        int parameterIndex = 0;
-        while (valueIterator.hasNext()) {
-            parameterIndex++;
-            preparedStatement.setObject(parameterIndex, valueIterator.next());
+    private static void setParameters(final PreparedStatement preparedStatement, final Object[] parameters) throws SQLException {
+        int length = parameters.length;
+        for (int i = 0; i < length; i++) {
+            preparedStatement.setObject(i + 1, parameters[i]);
         }
     }
 }
