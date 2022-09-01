@@ -15,31 +15,41 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.extractor;
+package com.zergclan.wormhole.common.expression;
 
-import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
-import java.sql.SQLException;
-import java.util.Collection;
-
 /**
- * The root interface from which all extractor shall be derived in Wormhole.
+ * Expression builder.
  */
-public interface Extractor<D> extends TypedSPI {
+public interface ExpressionBuilder extends TypedSPI {
     
     /**
      * Init.
      *
-     * @param cachedSource {@link CachedSourceMetaData}
+     * @param cachedMetaData {@link CachedMetaData}
      */
-    void init(CachedSourceMetaData cachedSource);
+    void init(CachedMetaData cachedMetaData);
     
     /**
-     * Extract.
+     * Build select expression.
      *
-     * @return data
-     * @throws SQLException SQL exception
+     * @return select expression
      */
-    Collection<D> extract() throws SQLException;
+    String buildSelect();
+    
+    /**
+     * Build insert expression.
+     *
+     * @return insert expression
+     */
+    String buildInsert();
+    
+    /**
+     * Build update expression.
+     *
+     * @return insert expression
+     */
+    String buildUpdate();
 }

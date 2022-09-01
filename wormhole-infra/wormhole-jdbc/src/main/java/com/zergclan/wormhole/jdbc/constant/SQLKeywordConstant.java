@@ -15,21 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.executor;
+package com.zergclan.wormhole.jdbc.constant;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Iterator;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * parameter for Execute.
+ * Constant of SQL keyword.
  */
-@RequiredArgsConstructor
-@Getter
-public final class ExecuteParameter {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SQLKeywordConstant {
     
-    private final String sql;
+    public static final String INSERT = "INSERT ";
     
-    private final Iterator<Object> valueIterator;
+    public static final String INTO = "INTO ";
+    
+    public static final String VALUES = " VALUES ";
+    
+    public static final String UPDATE = "UPDATE ";
+    
+    public static final String SET = " SET ";
+    
+    public static final String SELECT = "SELECT ";
+    
+    public static final String AS = " AS ";
+    
+    public static final String FROM = " FROM ";
+    
+    public static final String WHERE = " WHERE ";
+    
+    public static final String AND = " AND ";
 }

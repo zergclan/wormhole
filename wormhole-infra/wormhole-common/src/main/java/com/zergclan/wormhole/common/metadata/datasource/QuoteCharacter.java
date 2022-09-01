@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.tool.constant;
+package com.zergclan.wormhole.common.metadata.datasource;
 
+import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

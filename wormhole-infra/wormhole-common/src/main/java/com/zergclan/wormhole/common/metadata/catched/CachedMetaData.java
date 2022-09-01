@@ -15,22 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.executor;
+package com.zergclan.wormhole.common.metadata.catched;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Collection;
-import java.util.Iterator;
+import com.zergclan.wormhole.common.WormholeMetaData;
 
 /**
- * Parameter for execute batch.
+ * Cached meta data.
  */
-@RequiredArgsConstructor
-@Getter
-public final class ExecuteBatchParameter {
-    
-    private final String sql;
-    
-    private final Collection<Iterator<Object>> valueIterators;
+public interface CachedMetaData extends WormholeMetaData {
 }

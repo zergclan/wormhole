@@ -15,10 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.builder;
+package com.zergclan.wormhole.plugin.mysql.loader;
+
+import com.zergclan.wormhole.common.expression.ExpressionBuilder;
+import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
 
 /**
- * SQL expression builder.
+ * Load expression builder of MySQL.
  */
-public final class SQLExpressionBuilder {
+public final class MySQLLoadExpressionBuilder implements ExpressionBuilder {
+    
+    @Override
+    public void init(final CachedMetaData cachedMetaData) {
+    }
+    
+    @Override
+    public String buildSelect() {
+        return null;
+    }
+    
+    @Override
+    public String buildInsert() {
+        return null;
+    }
+    
+    @Override
+    public String buildUpdate() {
+        return null;
+    }
+    
+    @Override
+    public String getType() {
+        return "MySQL@target";
+    }
 }

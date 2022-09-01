@@ -15,34 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.tool.constant;
+package com.zergclan.wormhole.tool.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
- * Constant of SQL keyword.
+ * Util tools of collection.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SQLKeywordConstant {
+public final class Collections {
     
-    public static final String SELECT = "SELECT ";
-    
-    public static final String INSERT = "INSERT ";
-    
-    public static final String UPDATE = "UPDATE ";
-    
-    public static final String FROM = " FROM ";
-    
-    public static final String WHERE = " WHERE ";
-    
-    public static final String AS = " AS ";
-    
-    public static final String AND = " AND ";
-    
-    public static final String INTO = "INTO ";
-    
-    public static final String SET = " SET ";
-    
-    public static final String VALUES = " VALUES ";
+    /**
+     * New linked hash set.
+     *
+     * @param elements elements
+     * @param <E> class type of element
+     * @return linked hash set
+     */
+    public static <E> Set<E> newLinkedHashSet(final E[] elements) {
+        int length = elements.length;
+        Set<E> result = new LinkedHashSet<>(length, 1);
+        for (int i = 0; i < length; i++) {
+            result.add(elements[i]);
+        }
+        return result;
+    }
 }

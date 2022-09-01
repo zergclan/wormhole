@@ -15,35 +15,25 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.plan;
+package com.zergclan.wormhole.jdbc.constant;
 
-import com.zergclan.wormhole.common.WormholeMetaData;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
-import com.zergclan.wormhole.tool.constant.MarkConstant;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Source metadata.
- */
-@RequiredArgsConstructor
-@Getter
-public final class SourceMetaData implements WormholeMetaData {
+public final class SQLKeywordConstantTest {
     
-    private final String dataSourceIdentifier;
-
-    private final String actualSql;
-
-    private final String table;
-    
-    private final String conditionSql;
-
-    private final Map<String, DataNodeMetaData> dataNodes;
-
-    @Override
-    public String getIdentifier() {
-        return dataSourceIdentifier + MarkConstant.SPACE + table;
+    @Test
+    public void assertSQLKeyword() {
+        assertEquals("INSERT ", SQLKeywordConstant.INSERT);
+        assertEquals("INTO ", SQLKeywordConstant.INTO);
+        assertEquals(" VALUES ", SQLKeywordConstant.VALUES);
+        assertEquals("UPDATE ", SQLKeywordConstant.UPDATE);
+        assertEquals(" SET ", SQLKeywordConstant.SET);
+        assertEquals("SELECT ", SQLKeywordConstant.SELECT);
+        assertEquals(" AS ", SQLKeywordConstant.AS);
+        assertEquals(" FROM ", SQLKeywordConstant.FROM);
+        assertEquals(" WHERE ", SQLKeywordConstant.WHERE);
+        assertEquals(" AND ", SQLKeywordConstant.AND);
     }
 }

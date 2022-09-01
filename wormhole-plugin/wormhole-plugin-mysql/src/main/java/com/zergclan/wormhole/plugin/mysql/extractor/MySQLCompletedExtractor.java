@@ -23,11 +23,10 @@ import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.dialect.DatabaseType;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.jdbc.datasource.DataSourceManager;
-import com.zergclan.wormhole.plugin.extractor.AbstractCompletedExtractor;
-import com.zergclan.wormhole.plugin.mysql.builder.MySQLExpressionBuilder;
+import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
+import com.zergclan.wormhole.plugin.extracter.AbstractCompletedExtractor;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -39,14 +38,6 @@ import java.util.Map;
  * Completed extractor of MySQL.
  */
 public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
-    
-    @Override
-    protected String generatorExtractSQl(final String table, final String conditionSql, final Map<String, DataNodeMetaData> dataNodes) {
-        String selectColumns = MySQLExpressionBuilder.buildSelectColumns(table, dataNodes.keySet());
-        String fromTable = MySQLExpressionBuilder.buildFromTable(table);
-        String condition = MySQLExpressionBuilder.buildConditionWhere(conditionSql);
-        return selectColumns + fromTable + condition;
-    }
     
     @Override
     protected Collection<DataGroup> doExtract(final DataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
@@ -61,11 +52,9 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     
     private Collection<DataGroup> execute(final Connection connection, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
         Collection<DataGroup> result = new LinkedList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(extractSQl)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                result.add(createDataGroup(resultSet, dataNodes));
-            }
+        ResultSet resultSet = SQLExecutor.executeQuery(connection, extractSQl);
+        while (resultSet.next()) {
+            result.add(createDataGroup(resultSet, dataNodes));
         }
         return result;
     }

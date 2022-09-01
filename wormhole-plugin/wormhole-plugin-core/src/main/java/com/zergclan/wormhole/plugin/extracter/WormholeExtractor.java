@@ -15,31 +15,33 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.loader;
+package com.zergclan.wormhole.plugin.extracter;
 
-import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
+import java.sql.SQLException;
+import java.util.Collection;
+
 /**
- * The root interface from which all loader shall be derived in Wormhole.
+ * The root interface from which all extractor shall be derived in Wormhole.
  *
  * @param <D> class type of data
- * @param <V> class type of result
  */
-public interface Loader<D, V> extends TypedSPI {
+public interface WormholeExtractor<D> extends TypedSPI {
     
     /**
      * Init.
      *
-     * @param cachedTarget {@link CachedTargetMetaData}
+     * @param cachedSource {@link CachedSourceMetaData}
      */
-    void init(CachedTargetMetaData cachedTarget);
+    void init(CachedSourceMetaData cachedSource);
     
     /**
-     * Load.
+     * Extract.
      *
-     * @param data data
-     * @return result
+     * @return data
+     * @throws SQLException SQL exception
      */
-    V load(D data);
+    Collection<D> extract() throws SQLException;
 }

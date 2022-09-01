@@ -47,7 +47,7 @@ import java.util.HashSet;
  */
 @Slf4j
 public final class MySQLBatchedLoader extends AbstractBatchedLoader {
-
+    
     @Override
     protected BatchedLoadResult standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
         LoadResultData result = new LoadResultData(batchedDataGroup.getBatchSize());

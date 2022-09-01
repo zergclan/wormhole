@@ -29,36 +29,29 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
-/**
- * FilterMetadataFactoryTest.
- */
-public final class FilterMetadataFactoryTest {
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-    /**
-     * Task id.
-     */
+public final class FilterMetadataFactoryTest {
+    
     private final String taskIdentifier = "testTask";
 
     @Test
     public void assertGetDefaultInstance() {
         DataNodeTypeMetaData sourceDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.STANDARD, DataNodeTypeMetaData.DataType.CODE);
         DataNodeMetaData finalSourceDataNode = new DataNodeMetaData("testTable", "SOURCE_TEST", sourceDataType);
-        // 1、Test target node type can not be fixed and mapped.
         assertTargetNodeType(finalSourceDataNode);
-        // 2、Test target is required and source is standard.
         assertTargetReAndSourceStan();
-        // 3、Test target is default able and source is standard.
         assertTargetDeAndSourceStan(finalSourceDataNode);
     }
 
     private void assertTargetNodeType(final DataNodeMetaData finalSourceDataNode) {
         DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.FIXED, DataNodeTypeMetaData.DataType.TEXT);
         DataNodeMetaData fixedTargetDataNode = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, fixedTargetDataNode));
+        assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, fixedTargetDataNode));
 
         targetDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.MAPPED, DataNodeTypeMetaData.DataType.TEXT);
         DataNodeMetaData mappedTargetDataNode = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, mappedTargetDataNode));
+        assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, mappedTargetDataNode));
 
     }
 
@@ -73,25 +66,22 @@ public final class FilterMetadataFactoryTest {
     private void assertTargetDeAndSourceStan(final DataNodeMetaData finalSourceDataNode) {
         DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.DEFAULT_ABLE, DataNodeTypeMetaData.DataType.TEXT);
         DataNodeMetaData defaultTargetDataNode = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, defaultTargetDataNode));
+        assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, defaultTargetDataNode));
         DataNodeMetaData defaultTargetDataNodeT = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType, "mark");
         Assertions.assertEquals(2, FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, defaultTargetDataNodeT).size());
     }
 
     @Test
     public void assertGetInstance() {
-        // 1、Test not null filter.
         assertFilterNotNull();
-        // 2、Test not blank.
         assertFilterNotBlank();
-        // 3、Test null to default.
         assetNullToDefaultFilter();
     }
 
     private void assertFilterNotNull() {
         Properties properties = new Properties();
         FilterConfiguration notNullFilterConfiguration = new FilterConfiguration("not_null", 1, properties);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, notNullFilterConfiguration));
+        assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, notNullFilterConfiguration));
         properties.setProperty("sourceName", "name");
         Assertions.assertInstanceOf(NotNullValidatorMetaData.class, FilterMetadataFactory.getInstance(taskIdentifier, notNullFilterConfiguration));
     }
@@ -99,7 +89,7 @@ public final class FilterMetadataFactoryTest {
     private void assertFilterNotBlank() {
         Properties properties = new Properties();
         FilterConfiguration notBlankFilterConfiguration = new FilterConfiguration("not_blank", 1, properties);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, notBlankFilterConfiguration));
+        assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, notBlankFilterConfiguration));
         properties.setProperty("sourceName", "name");
         Assertions.assertInstanceOf(NotBlankValidatorMetaData.class, FilterMetadataFactory.getInstance(taskIdentifier, notBlankFilterConfiguration));
     }
@@ -107,13 +97,12 @@ public final class FilterMetadataFactoryTest {
     private void assetNullToDefaultFilter() {
         Properties properties = new Properties();
         FilterConfiguration nullToDefaultFilterConfiguration = new FilterConfiguration("null_to_default", 1, properties);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
+        assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
         properties.setProperty("sourceName", "name");
-        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
+        assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
         properties.setProperty("defaultValue", "tyron");
-        Assertions.assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
+        assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
         properties.setProperty("dataType", "TEXT");
         Assertions.assertInstanceOf(NullToDefaultEditorMetaData.class, FilterMetadataFactory.getInstance(taskIdentifier, nullToDefaultFilterConfiguration));
     }
-
 }

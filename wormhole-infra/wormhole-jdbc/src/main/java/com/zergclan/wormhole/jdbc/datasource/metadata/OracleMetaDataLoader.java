@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.jdbc.metadata;
+package com.zergclan.wormhole.jdbc.datasource.metadata;
 
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.loader.MetaDataLoader;

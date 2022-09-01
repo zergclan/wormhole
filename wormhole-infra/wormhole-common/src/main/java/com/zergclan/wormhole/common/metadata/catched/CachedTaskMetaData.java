@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.common.metadata.catched;
 
-import com.zergclan.wormhole.common.MetaData;
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.TableMetaData;
@@ -50,7 +49,7 @@ import java.util.TreeMap;
  */
 @RequiredArgsConstructor
 @Getter
-public final class CachedTaskMetaData implements MetaData {
+public final class CachedTaskMetaData implements CachedMetaData {
     
     private final String taskIdentifier;
     

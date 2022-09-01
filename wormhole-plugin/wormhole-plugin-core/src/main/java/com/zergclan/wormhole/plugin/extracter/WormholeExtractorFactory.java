@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.plugin.loader;
+package com.zergclan.wormhole.plugin.extracter;
 
-import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.tool.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
@@ -26,28 +27,29 @@ import lombok.NoArgsConstructor;
 import java.util.Optional;
 
 /**
- * Loader factory.
+ * Extractor factory.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class LoaderFactory {
+public final class WormholeExtractorFactory {
     
     static {
-        WormholeServiceLoader.register(Loader.class);
+        WormholeServiceLoader.register(WormholeExtractor.class);
     }
     
     /**
-     * Get loader.
+     * Get extractor.
      *
-     * @param cachedTarget {@link CachedTargetMetaData}
-     * @return {@link Loader}
+     * @param cachedSource {@link CachedSourceMetaData}
+     * @return {@link WormholeExtractor}
      */
     @SuppressWarnings("all")
-    public static Optional<Loader> getLoader(final CachedTargetMetaData cachedTarget) {
-        Optional<Loader> registeredService = TypedSPIRegistry.findRegisteredService(Loader.class, cachedTarget.getDataSource().getDataSourceType().getType());
+    public static Optional<WormholeExtractor> getExtractor(final CachedSourceMetaData cachedSource) {
+        DataSourceMetaData dataSource = cachedSource.getDataSource();
+        Optional<WormholeExtractor> registeredService = TypedSPIRegistry.findRegisteredService(WormholeExtractor.class, dataSource.getDataSourceType().getType());
         if (registeredService.isPresent()) {
-            Loader loader = registeredService.get();
-            loader.init(cachedTarget);
-            return Optional.of(loader);
+            WormholeExtractor extractor = registeredService.get();
+            extractor.init(cachedSource);
+            return Optional.of(extractor);
         }
         return Optional.empty();
     }

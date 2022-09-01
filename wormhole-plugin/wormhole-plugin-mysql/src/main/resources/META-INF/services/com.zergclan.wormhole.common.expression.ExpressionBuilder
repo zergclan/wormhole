@@ -15,5 +15,5 @@
 # limitations under the License.
 #
 
-com.zergclan.wormhole.jdbc.datasource.metadata.MySQLMetaDataLoader
-com.zergclan.wormhole.jdbc.datasource.metadata.OracleMetaDataLoader
+com.zergclan.wormhole.plugin.mysql.extractor.MySQLExtractExpressionBuilder
+com.zergclan.wormhole.plugin.mysql.loader.MySQLLoadExpressionBuilder

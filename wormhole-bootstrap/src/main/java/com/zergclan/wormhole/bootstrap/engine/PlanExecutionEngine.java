@@ -28,8 +28,8 @@ import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanExecutorFactory;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.bus.memory.WormholeEventBus;
-import com.zergclan.wormhole.common.MetaData;
-import com.zergclan.wormhole.common.metadata.WormholeMetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
+import com.zergclan.wormhole.common.metadata.WormholeMetaDataContext;
 import com.zergclan.wormhole.common.metadata.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.tool.generator.SequenceGenerator;
@@ -45,16 +45,16 @@ public final class PlanExecutionEngine implements EventListener<TaskCompletedEve
     
     private final PlanContext planContext = new PlanContext();
     
-    private final WormholeMetaData wormholeMetadata;
+    private final WormholeMetaDataContext wormholeMetadataContext;
     
     /**
-     * Register {@link MetaData}.
+     * Register {@link WormholeMetaData}.
      *
-     * @param metadata {@link MetaData}
+     * @param metadata {@link WormholeMetaData}
      * @return is register or not
      */
-    public boolean register(final MetaData metadata) {
-        return wormholeMetadata.register(metadata);
+    public boolean register(final WormholeMetaData metadata) {
+        return wormholeMetadataContext.register(metadata);
     }
     
     /**
@@ -64,7 +64,7 @@ public final class PlanExecutionEngine implements EventListener<TaskCompletedEve
      * @return {@link PlanMetaData}
      */
     public Optional<PlanMetaData> getPlan(final String planIdentifier) {
-        return wormholeMetadata.getPlan(planIdentifier);
+        return wormholeMetadataContext.getPlan(planIdentifier);
     }
     
     /**
@@ -76,7 +76,7 @@ public final class PlanExecutionEngine implements EventListener<TaskCompletedEve
         long planBatch = SequenceGenerator.generateId();
         planContext.handleTrigger(planBatch, planTrigger);
         try {
-            Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(planBatch, wormholeMetadata, planTrigger);
+            Optional<CachedPlanMetaData> cachedPlanMetadata = planContext.cachedMetadata(planBatch, wormholeMetadataContext, planTrigger);
             if (!cachedPlanMetadata.isPresent()) {
                 planContext.handleCachedEvent(planBatch, ExecutionState.FAILED);
                 return;

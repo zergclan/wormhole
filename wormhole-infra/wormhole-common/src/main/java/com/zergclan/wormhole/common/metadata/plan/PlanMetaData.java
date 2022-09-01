@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.plan;
 
-import com.zergclan.wormhole.common.MetaData;
+import com.zergclan.wormhole.common.WormholeMetaData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Getter
-public final class PlanMetaData implements MetaData {
+public final class PlanMetaData implements WormholeMetaData {
     
     private final String identifier;
     

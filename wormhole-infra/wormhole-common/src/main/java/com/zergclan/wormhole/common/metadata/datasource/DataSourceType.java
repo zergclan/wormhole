@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.common.metadata.datasource;
 
-import com.zergclan.wormhole.tool.constant.QuoteCharacter;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 /**

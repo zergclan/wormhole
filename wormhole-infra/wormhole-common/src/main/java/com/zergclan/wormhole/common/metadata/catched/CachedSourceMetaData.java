@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.common.metadata.catched;
 
-import com.zergclan.wormhole.common.MetaData;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.SourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
@@ -32,7 +31,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Getter
-public final class CachedSourceMetaData implements MetaData {
+public final class CachedSourceMetaData implements CachedMetaData {
     
     private final String identifier;
     
