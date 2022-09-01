@@ -68,7 +68,7 @@
     <modules>
         <module>wormhole-infra</module>
         <module>wormhole-kernel</module>
-        <module>wormhole-extracter</module>
+        <module>wormhole-extractor</module>
         <module>wormhole-loader</module>
         <module>wormhole-repository</module>
         <module>wormhole-bootstrap</module>

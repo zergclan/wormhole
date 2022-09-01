@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-extracter-core</artifactId>
+            <artifactId>wormhole-extractor-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

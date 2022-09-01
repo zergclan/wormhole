@@ -38,13 +38,13 @@
 
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-extracter-core</artifactId>
+            <artifactId>wormhole-extractor-core</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-extracter-mysql</artifactId>
+            <artifactId>wormhole-extractor-mysql</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

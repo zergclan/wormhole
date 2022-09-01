@@ -22,7 +22,7 @@ import com.zergclan.wormhole.common.data.node.DataNodeBuilder;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.dialect.DatabaseType;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
-import com.zergclan.wormhole.extracter.AbstractCompletedExtractor;
+import com.zergclan.wormhole.extractor.AbstractCompletedExtractor;
 import com.zergclan.wormhole.jdbc.datasource.DataSourceManager;
 import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
 

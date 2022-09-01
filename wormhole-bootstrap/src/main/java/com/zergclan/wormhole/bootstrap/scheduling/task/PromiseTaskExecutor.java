@@ -36,9 +36,9 @@ import com.zergclan.wormhole.pipeline.handler.Handler;
 import com.zergclan.wormhole.pipeline.event.DataGroupExecutionEvent;
 import com.zergclan.wormhole.pipeline.filter.DataGroupFilterFactory;
 import com.zergclan.wormhole.pipeline.handler.LoadedHandler;
-import com.zergclan.wormhole.extracter.WormholeExtractor;
+import com.zergclan.wormhole.extractor.WormholeExtractor;
 import com.zergclan.wormhole.loader.WormholeLoader;
-import com.zergclan.wormhole.extracter.WormholeExtractorFactory;
+import com.zergclan.wormhole.extractor.WormholeExtractorFactory;
 import com.zergclan.wormhole.loader.WormholeLoaderFactory;
 import lombok.RequiredArgsConstructor;
 

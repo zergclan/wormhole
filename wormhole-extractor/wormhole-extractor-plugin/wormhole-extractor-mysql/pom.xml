@@ -21,15 +21,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>wormhole-extracter</artifactId>
+        <artifactId>wormhole-extractor-plugin</artifactId>
         <groupId>com.zergclan</groupId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>wormhole-extracter-plugin</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>wormhole-extractor-mysql</artifactId>
     <name>${project.artifactId}</name>
 
-    <modules>
-        <module>wormhole-extracter-mysql</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-extractor-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-jdbc</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.extracter;
+package com.zergclan.wormhole.extractor;
 
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
