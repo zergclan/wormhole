@@ -18,10 +18,10 @@
 package com.zergclan.wormhole.console.application.listener;
 
 import com.google.common.eventbus.Subscribe;
-import com.zergclan.wormhole.bus.api.EventListener;
 import com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog;
 import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
 import com.zergclan.wormhole.pipeline.event.DataGroupExecutionEvent;
+import com.zergclan.wormhole.common.WormholeEventListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -30,7 +30,7 @@ import javax.annotation.Resource;
  * Data group event listener.
  */
 @Component
-public final class DataGroupEventListener implements EventListener<DataGroupExecutionEvent> {
+public final class DataGroupEventListener implements WormholeEventListener<DataGroupExecutionEvent> {
 
     @Resource
     private LogMetricsService logMetricsService;

@@ -32,7 +32,6 @@
     <modules>
         <module>wormhole-common</module>
         <module>wormhole-tool</module>
-        <module>wormhole-bus</module>
         <module>wormhole-jdbc</module>
     </modules>
 </project>

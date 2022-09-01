@@ -17,9 +17,9 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.task;
 
-import com.zergclan.wormhole.bus.memory.WormholeEventBus;
 import com.zergclan.wormhole.common.data.BatchedDataGroup;
 import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.pipeline.event.ErrorDataEvent;
 import com.zergclan.wormhole.tool.concurrent.ProcessTask;
 import com.zergclan.wormhole.tool.util.DateUtil;

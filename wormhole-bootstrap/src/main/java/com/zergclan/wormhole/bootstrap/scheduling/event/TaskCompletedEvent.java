@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.bootstrap.scheduling.event;
 
-import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.common.WormholeEvent;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-public final class TaskCompletedEvent implements Event {
+public final class TaskCompletedEvent implements WormholeEvent {
     
     private static final long serialVersionUID = -5984266540485867999L;
     

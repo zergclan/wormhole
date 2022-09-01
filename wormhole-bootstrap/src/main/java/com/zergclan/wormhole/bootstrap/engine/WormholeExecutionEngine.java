@@ -20,10 +20,10 @@ package com.zergclan.wormhole.bootstrap.engine;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTrigger;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.PlanTriggerManager;
 import com.zergclan.wormhole.bootstrap.scheduling.plan.ScheduledPlanTrigger;
-import com.zergclan.wormhole.bus.api.EventListener;
-import com.zergclan.wormhole.bus.memory.WormholeEventBus;
+import com.zergclan.wormhole.common.WormholeEventListener;
 import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.common.data.node.PatternedDataTime;
+import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.common.metadata.WormholeMetaDataContext;
 import com.zergclan.wormhole.common.metadata.initializer.WormholeMetaDataContextInitializer;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
@@ -116,12 +116,12 @@ public final class WormholeExecutionEngine {
     }
     
     /**
-     * Register {@link EventListener}.
+     * Register {@link WormholeEventListener}.
      *
-     * @param listeners {@link EventListener}
+     * @param listeners {@link WormholeEventListener}
      */
     @SuppressWarnings("all")
-    public void register(final Map<String, EventListener> listeners) {
+    public void register(final Map<String, WormholeEventListener> listeners) {
         listeners.values().forEach(WormholeEventBus::register);
     }
     

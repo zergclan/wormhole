@@ -20,7 +20,7 @@ package com.zergclan.wormhole.console.application.listener;
 import com.google.common.eventbus.Subscribe;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
-import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.common.WormholeEventListener;
 import com.zergclan.wormhole.console.application.domain.log.TaskExecutionLog;
 import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
 import com.zergclan.wormhole.console.infra.util.BeanMapper;
@@ -32,7 +32,7 @@ import javax.annotation.Resource;
  * Task event listener.
  */
 @Component
-public final class TaskEventListener implements EventListener<TaskExecutionEvent> {
+public final class TaskEventListener implements WormholeEventListener<TaskExecutionEvent> {
     
     @Resource
     private LogMetricsService logMetricsService;

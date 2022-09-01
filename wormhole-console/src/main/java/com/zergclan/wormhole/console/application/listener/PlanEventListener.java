@@ -22,8 +22,8 @@ import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanCompletedEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanExecutionEvent;
-import com.zergclan.wormhole.bus.api.EventListener;
-import com.zergclan.wormhole.bus.memory.WormholeEventBus;
+import com.zergclan.wormhole.common.WormholeEventListener;
+import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.console.application.domain.log.PlanExecutionLog;
 import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
 import com.zergclan.wormhole.console.infra.util.BeanMapper;
@@ -35,7 +35,7 @@ import javax.annotation.Resource;
  * Plan event listener.
  */
 @Component
-public final class PlanEventListener implements EventListener<PlanExecutionEvent> {
+public final class PlanEventListener implements WormholeEventListener<PlanExecutionEvent> {
     
     @Resource
     private LogMetricsService logMetricsService;

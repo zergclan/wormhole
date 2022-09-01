@@ -41,14 +41,12 @@
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-plugin-core</artifactId>
+            <artifactId>wormhole-extractor-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <!-- TODO Refactoring after event bus completed -->
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-bus</artifactId>
+            <artifactId>wormhole-loader-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 

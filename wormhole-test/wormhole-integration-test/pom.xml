@@ -45,7 +45,7 @@
         <!-- TODO Refactoring after sql builder completed -->
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-plugin-mysql</artifactId>
+            <artifactId>wormhole-loader-mysql</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

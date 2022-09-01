@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.console.application.context;
 
 import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
-import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.common.WormholeEventListener;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.configuration.WormholeConfigurationLoader;
 import lombok.Getter;
@@ -48,7 +48,7 @@ public final class SpringContextContainer implements ApplicationContextAware {
     }
     
     private void startUp() {
-        WORMHOLE_ENGINE_EXECUTOR.register(container.getBeansOfType(EventListener.class));
+        WORMHOLE_ENGINE_EXECUTOR.register(container.getBeansOfType(WormholeEventListener.class));
         new Thread(WORMHOLE_ENGINE_EXECUTOR).start();
     }
     
@@ -95,7 +95,7 @@ public final class SpringContextContainer implements ApplicationContextAware {
             }
         }
         
-        private void register(final Map<String, EventListener> listeners) {
+        private void register(final Map<String, WormholeEventListener> listeners) {
             wormholeExecutionEngine.register(listeners);
         }
         

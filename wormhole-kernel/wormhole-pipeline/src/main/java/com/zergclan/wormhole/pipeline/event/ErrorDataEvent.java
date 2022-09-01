@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.event;
 
-import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.common.WormholeEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-public final class ErrorDataEvent implements Event {
+public final class ErrorDataEvent implements WormholeEvent {
     
     private static final long serialVersionUID = -3777226091757149095L;
     

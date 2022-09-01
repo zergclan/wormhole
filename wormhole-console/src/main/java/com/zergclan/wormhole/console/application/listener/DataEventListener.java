@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.console.application.listener;
 
 import com.google.common.eventbus.Subscribe;
-import com.zergclan.wormhole.bus.api.EventListener;
+import com.zergclan.wormhole.common.WormholeEventListener;
 import com.zergclan.wormhole.console.application.domain.log.ErrorDataLog;
 import com.zergclan.wormhole.console.application.service.log.LogMetricsService;
 import com.zergclan.wormhole.console.infra.util.BeanMapper;
@@ -31,7 +31,7 @@ import javax.annotation.Resource;
  * Data event listener.
  */
 @Component
-public final class DataEventListener implements EventListener<ErrorDataEvent> {
+public final class DataEventListener implements WormholeEventListener<ErrorDataEvent> {
     
     @Resource
     private LogMetricsService logMetricsService;
