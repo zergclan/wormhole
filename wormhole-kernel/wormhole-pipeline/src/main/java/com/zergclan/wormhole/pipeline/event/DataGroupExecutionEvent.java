@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.pipeline.event;
 
-import com.zergclan.wormhole.bus.api.Event;
 import com.zergclan.wormhole.common.data.result.LoadResultData;
+import com.zergclan.wormhole.common.WormholeEvent;
 import com.zergclan.wormhole.tool.util.DateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-public final class DataGroupExecutionEvent implements Event {
+public final class DataGroupExecutionEvent implements WormholeEvent {
 
     private static final long serialVersionUID = 8476838490487796654L;
     
@@ -93,7 +93,7 @@ public final class DataGroupExecutionEvent implements Event {
      * @param errorRow error row
      * @return {@link DataGroupExecutionEvent}
      */
-    public static Event buildErrorEvent(final long taskBatch, final int batchIndex, final int errorRow) {
+    public static WormholeEvent buildErrorEvent(final long taskBatch, final int batchIndex, final int errorRow) {
         return new DataGroupExecutionEvent(null, null, null, taskBatch, batchIndex, null, null, null, errorRow, null, null, DateUtil.currentTimeMillis());
     }
 }

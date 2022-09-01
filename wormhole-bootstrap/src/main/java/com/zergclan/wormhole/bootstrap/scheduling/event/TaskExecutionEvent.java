@@ -19,7 +19,7 @@ package com.zergclan.wormhole.bootstrap.scheduling.event;
 
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionStep;
-import com.zergclan.wormhole.bus.api.Event;
+import com.zergclan.wormhole.common.WormholeEvent;
 import com.zergclan.wormhole.tool.util.DateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-public final class TaskExecutionEvent implements Event {
+public final class TaskExecutionEvent implements WormholeEvent {
     
     private static final long serialVersionUID = -3200589002588431821L;
     

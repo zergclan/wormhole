@@ -35,21 +35,29 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-plugin-core</artifactId>
+            <artifactId>wormhole-extracter-core</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-plugin-mysql</artifactId>
+            <artifactId>wormhole-extracter-mysql</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zergclan</groupId>
+            <artifactId>wormhole-loader-core</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-bus</artifactId>
+            <artifactId>wormhole-loader-mysql</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

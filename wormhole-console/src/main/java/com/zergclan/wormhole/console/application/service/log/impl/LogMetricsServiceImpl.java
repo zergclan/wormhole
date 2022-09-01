@@ -19,7 +19,7 @@ package com.zergclan.wormhole.console.application.service.log.impl;
 
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.event.TaskCompletedEvent;
-import com.zergclan.wormhole.bus.memory.WormholeEventBus;
+import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.console.api.vo.PageQuery;
 import com.zergclan.wormhole.console.api.vo.TaskExecutionDetail;
 import com.zergclan.wormhole.console.application.domain.log.DataGroupExecutionLog;

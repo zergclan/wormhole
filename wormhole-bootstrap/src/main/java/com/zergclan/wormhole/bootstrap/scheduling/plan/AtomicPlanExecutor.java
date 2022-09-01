@@ -23,8 +23,8 @@ import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
 import com.zergclan.wormhole.bootstrap.scheduling.task.PromiseTaskExecutor;
 import com.zergclan.wormhole.bootstrap.scheduling.task.PromiseTaskResult;
 import com.zergclan.wormhole.bootstrap.scheduling.task.TaskResult;
-import com.zergclan.wormhole.bus.api.Event;
-import com.zergclan.wormhole.bus.memory.WormholeEventBus;
+import com.zergclan.wormhole.common.WormholeEvent;
+import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.common.metadata.catched.CachedPlanMetaData;
 import com.zergclan.wormhole.common.metadata.catched.CachedTaskMetaData;
 import com.zergclan.wormhole.tool.concurrent.ExecutorServiceManager;
@@ -48,20 +48,20 @@ public final class AtomicPlanExecutor implements PlanExecutor {
     public void execute() {
         String planIdentifier = cachedPlanMetadata.getPlanIdentifier();
         long planBatch = cachedPlanMetadata.getPlanBatch();
-        handleEvent(PlanExecutionEvent.buildExecutionEvent(planBatch, ExecutionState.RUN));
+        handleWormholeEvent(PlanExecutionEvent.buildExecutionEvent(planBatch, ExecutionState.RUN));
         WormholeEventBus.post(PlanExecutionEvent.buildExecutionEvent(planBatch, ExecutionState.RUN));
         try {
             for (Map<String, CachedTaskMetaData> each : cachedPlanMetadata.getCachedOrderedTasks()) {
                 Optional<String> failedTask = transactionalExecute(planBatch, planIdentifier, each);
                 if (failedTask.isPresent()) {
-                    handleEvent(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.FAILED));
+                    handleWormholeEvent(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.FAILED));
                     return;
                 }
             }
             // CHECKSTYLE:OFF
         } catch (final Exception ex) {
             // CHECKSTYLE:ON
-            handleEvent(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.ERROR));
+            handleWormholeEvent(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.ERROR));
         }
     }
     
@@ -71,7 +71,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
             CachedTaskMetaData cachedTaskMetaData = entry.getValue();
             String taskIdentifier = cachedTaskMetaData.getTaskIdentifier();
             long taskBatch = cachedTaskMetaData.getTaskBatch();
-            handleEvent(TaskExecutionEvent.buildNewEvent(cachedPlanMetadata.getPlanIdentifier(), planBatch, taskIdentifier, taskBatch));
+            handleWormholeEvent(TaskExecutionEvent.buildNewEvent(cachedPlanMetadata.getPlanIdentifier(), planBatch, taskIdentifier, taskBatch));
             completionService.submit(new PromiseTaskExecutor(planIdentifier, planBatch, entry.getValue()));
         }
         int size = cachedTaskMetadata.size();
@@ -80,14 +80,14 @@ public final class AtomicPlanExecutor implements PlanExecutor {
             try {
                 promiseTaskResult = completionService.take().get();
                 if (!promiseTaskResult.isSuccess()) {
-                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResultData().getTaskBatch(), ExecutionState.FAILED));
+                    handleWormholeEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResultData().getTaskBatch(), ExecutionState.FAILED));
                     return Optional.of(promiseTaskResult.getResultData().getCachedTaskIdentifier());
                 }
                 TaskResult result = promiseTaskResult.getResultData();
                 if (0 == result.getTotalRow()) {
-                    handleEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResultData().getTaskBatch(), ExecutionState.SUCCESS));
+                    handleWormholeEvent(TaskExecutionEvent.buildCompleteEvent(promiseTaskResult.getResultData().getTaskBatch(), ExecutionState.SUCCESS));
                 } else {
-                    handleEvent(TaskExecutionEvent.buildExecutionEvent(promiseTaskResult.getResultData().getTaskBatch(), promiseTaskResult.getResultData().getTotalRow()));
+                    handleWormholeEvent(TaskExecutionEvent.buildExecutionEvent(promiseTaskResult.getResultData().getTaskBatch(), promiseTaskResult.getResultData().getTotalRow()));
                 }
             } catch (final ExecutionException | InterruptedException ex) {
                 ex.printStackTrace();
@@ -96,7 +96,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
         return Optional.empty();
     }
     
-    private void handleEvent(final Event event) {
+    private void handleWormholeEvent(final WormholeEvent event) {
         WormholeEventBus.post(event);
     }
 }
