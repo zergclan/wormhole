@@ -61,15 +61,11 @@ public final class SQLExpressionGenerator {
     public String generateInsertColumns() {
         StringBuilder columnsBuilder = new StringBuilder();
         Iterator<String> iterator = nodeNames.iterator();
-        columnsBuilder.append(generateInsertColumnName(iterator.next()));
+        columnsBuilder.append(generateColumnName(iterator.next()));
         while (iterator.hasNext()) {
-            columnsBuilder.append(MarkConstant.COMMA).append(generateInsertColumnName(iterator.next()));
+            columnsBuilder.append(MarkConstant.COMMA).append(generateColumnName(iterator.next()));
         }
         return MarkConstant.LEFT_PARENTHESIS + columnsBuilder + MarkConstant.RIGHT_PARENTHESIS;
-    }
-    
-    private String generateInsertColumnName(final String columnName) {
-        return dataSourceType.getQuoteCharacter().wrap(columnName);
     }
     
     /**
@@ -103,9 +99,9 @@ public final class SQLExpressionGenerator {
     public String generateUpdateColumns() {
         StringBuilder columnsBuilder = new StringBuilder();
         Iterator<String> iterator = nodeNames.iterator();
-        columnsBuilder.append(iterator.next()).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
+        columnsBuilder.append(generateColumnName(iterator.next())).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
         while (iterator.hasNext()) {
-            columnsBuilder.append(MarkConstant.COMMA).append(iterator.next()).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
+            columnsBuilder.append(MarkConstant.COMMA).append(generateColumnName(iterator.next())).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
         }
         return SQLKeywordConstant.SET + columnsBuilder;
     }
@@ -116,19 +112,16 @@ public final class SQLExpressionGenerator {
      * @return select columns expression
      */
     public String generateSelectColumns() {
-        return nodeNames.isEmpty() ? MarkConstant.ASTERISK : StringUtil.join(generateSelectColumnsIterator(), MarkConstant.COMMA);
+        String columnsExpression = nodeNames.isEmpty() ? MarkConstant.ASTERISK : StringUtil.join(generateSelectColumnsIterator(), MarkConstant.COMMA);
+        return SQLKeywordConstant.SELECT + columnsExpression;
     }
     
     private Iterator<String> generateSelectColumnsIterator() {
         Collection<String> result = new ArrayList<>(nodeNames.size());
         for (String each : nodeNames) {
-            result.add(generateSelectColumnName(each));
+            result.add(generateColumnNameByTable(each) + SQLKeywordConstant.AS + generateColumnName(each));
         }
         return result.iterator();
-    }
-    
-    private String generateSelectColumnName(final String columnName) {
-        return table + MarkConstant.POINT + generateInsertColumnName(columnName) + SQLKeywordConstant.AS + generateInsertColumnName(columnName);
     }
     
     /**
@@ -157,14 +150,18 @@ public final class SQLExpressionGenerator {
     public String generateWhereByAllEquals() {
         StringBuilder equalsBuilder = new StringBuilder();
         Iterator<String> iterator = uniqueNodeNames.iterator();
-        equalsBuilder.append(generateWhereColumnName(iterator.next())).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
+        equalsBuilder.append(generateColumnNameByTable(iterator.next())).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
         while (iterator.hasNext()) {
-            equalsBuilder.append(SQLKeywordConstant.AND).append(generateWhereColumnName(iterator.next())).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
+            equalsBuilder.append(SQLKeywordConstant.AND).append(generateColumnNameByTable(iterator.next())).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);
         }
         return SQLKeywordConstant.WHERE + equalsBuilder;
     }
     
-    private String generateWhereColumnName(final String columnName) {
-        return table + MarkConstant.POINT + generateInsertColumnName(columnName);
+    private String generateColumnName(final String columnName) {
+        return dataSourceType.getQuoteCharacter().wrap(columnName);
+    }
+    
+    private String generateColumnNameByTable(final String columnName) {
+        return table + MarkConstant.POINT + generateColumnName(columnName);
     }
 }

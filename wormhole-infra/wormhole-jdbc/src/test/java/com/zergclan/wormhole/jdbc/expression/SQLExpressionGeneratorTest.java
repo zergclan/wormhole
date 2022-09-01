@@ -32,16 +32,55 @@ public final class SQLExpressionGeneratorTest {
     
     @BeforeAll
     private static void init() {
-        System.out.println("211");
         String table = "t_user";
         Set<String> nodeNames = Collections.newLinkedHashSet(new String[] {"id", "username", "password", "create_time"});
         Set<String> uniqueNodeNames = Collections.newLinkedHashSet(new String[] {"username", "password"});
-        String conditionSql = "WHERE id=1";
+        String conditionSql = "id=1";
         generator = new SQLExpressionGenerator(DataSourceTypeFactory.getInstance("MySQL"), table, nodeNames, uniqueNodeNames, conditionSql);
     }
     
     @Test
     public void assertGenerateInsertTable() {
         assertEquals("INSERT INTO t_user", generator.generateInsertTable());
+    }
+    
+    @Test
+    public void assertGenerateInsertColumns() {
+        assertEquals("(`id`,`username`,`password`,`create_time`)", generator.generateInsertColumns());
+    }
+    
+    @Test
+    public void assertGenerateInsertValues() {
+        assertEquals(" VALUES (?,?,?,?)", generator.generateInsertValues());
+    }
+    
+    @Test
+    public void assertGenerateUpdateTable() {
+        assertEquals("UPDATE t_user", generator.generateUpdateTable());
+    }
+    
+    @Test
+    public void assertGenerateUpdateColumns() {
+        assertEquals(" SET `id`=?,`username`=?,`password`=?,`create_time`=?", generator.generateUpdateColumns());
+    }
+    
+    @Test
+    public void assertGenerateSelectColumns() {
+        assertEquals("SELECT t_user.`id` AS `id`,t_user.`username` AS `username`,t_user.`password` AS `password`,t_user.`create_time` AS `create_time`", generator.generateSelectColumns());
+    }
+    
+    @Test
+    public void assertGenerateFromTable() {
+        assertEquals(" FROM t_user", generator.generateFromTable());
+    }
+    
+    @Test
+    public void assertGenerateWhereByConditionSql() {
+        assertEquals(" WHERE id=1", generator.generateWhereByConditionSql());
+    }
+    
+    @Test
+    public void assertGenerateWhereByAllEquals() {
+        assertEquals(" WHERE t_user.`username`=? AND t_user.`password`=?", generator.generateWhereByAllEquals());
     }
 }
