@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.test.integration.framework.util;
 
-import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -28,7 +27,7 @@ public final class URLGenerator {
     /**
      * Generate JDBC url.
      *
-     * @param databaseType {@link DatabaseType}
+     * @param databaseType database type
      * @param port port
      * @return JDBC url
      */
