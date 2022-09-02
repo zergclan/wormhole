@@ -41,16 +41,16 @@ public final class CachedTargetMetaData implements CachedMetaData {
     private final DataSourceMetaData dataSource;
 
     private final String table;
-
+    
+    private final Map<String, DataNodeMetaData> dataNodes;
+    
     private final Collection<String> uniqueNodes;
-
+    
     private final Collection<String> compareNodes;
     
     private final Collection<String> ignoreNodes;
     
     private final String versionNode;
-
-    private final Map<String, DataNodeMetaData> dataNodes;
     
     /**
      * Builder for {@link CachedTargetMetaData}.
@@ -83,7 +83,7 @@ public final class CachedTargetMetaData implements CachedMetaData {
             Collection<String> ignoreNodes = target.getIgnoreNodes();
             String versionNode = target.getVersionNode();
             Map<String, DataNodeMetaData> dataNodes = target.getDataNodes();
-            return new CachedTargetMetaData(generateIdentifier(), taskBatch, dataSource, table, uniqueNodes, compareNodes, ignoreNodes, versionNode, dataNodes);
+            return new CachedTargetMetaData(generateIdentifier(), taskBatch, dataSource, table, dataNodes, uniqueNodes, compareNodes, ignoreNodes, versionNode);
         }
         
         private String generateIdentifier() {

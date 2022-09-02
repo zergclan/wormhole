@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Builder for SQL.
@@ -38,9 +37,9 @@ public final class SQLExpressionGenerator {
     
     private final String table;
     
-    private final Set<String> nodeNames;
+    private final Collection<String> nodeNames;
     
-    private final Set<String> uniqueNodeNames;
+    private final Collection<String> uniqueNodeNames;
     
     private final String conditionSql;
     

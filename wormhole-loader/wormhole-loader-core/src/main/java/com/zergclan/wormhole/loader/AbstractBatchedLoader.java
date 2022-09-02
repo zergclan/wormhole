@@ -32,7 +32,7 @@ public abstract class AbstractBatchedLoader implements WormholeLoader<BatchedDat
     
     private CachedTargetMetaData cachedTarget;
     
-    @Getter(value = AccessLevel.PRIVATE)
+    @Getter(value = AccessLevel.PROTECTED)
     private ExpressionBuilder expressionBuilder;
     
     @Override

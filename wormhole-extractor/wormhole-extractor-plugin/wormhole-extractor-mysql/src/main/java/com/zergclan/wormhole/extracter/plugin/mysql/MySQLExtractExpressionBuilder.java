@@ -23,8 +23,8 @@ import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
 import com.zergclan.wormhole.jdbc.expression.SQLExpressionGenerator;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
 
 /**
  * Extract expression builder of MySQL.
@@ -39,8 +39,8 @@ public final class MySQLExtractExpressionBuilder implements ExpressionBuilder {
             CachedSourceMetaData sourceMetaData = (CachedSourceMetaData) cachedMetaData;
             DataSourceType dataSourceType = sourceMetaData.getDataSource().getDataSourceType();
             String table = sourceMetaData.getTable();
-            Set<String> nodeNames = sourceMetaData.getDataNodes().keySet();
-            Set<String> uniqueNodeNames = Collections.emptySet();
+            Collection<String> nodeNames = sourceMetaData.getDataNodes().keySet();
+            Collection<String> uniqueNodeNames = Collections.emptyList();
             String conditionSql = sourceMetaData.getConditionSql();
             generator = new SQLExpressionGenerator(dataSourceType, table, nodeNames, uniqueNodeNames, conditionSql);
         }

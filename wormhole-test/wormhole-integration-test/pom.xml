@@ -42,14 +42,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- TODO Refactoring after sql builder completed -->
-        <dependency>
-            <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-loader-mysql</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>

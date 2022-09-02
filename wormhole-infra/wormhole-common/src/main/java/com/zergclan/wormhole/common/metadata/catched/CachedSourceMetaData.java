@@ -38,14 +38,14 @@ public final class CachedSourceMetaData implements CachedMetaData {
     private final long taskBatch;
     
     private final DataSourceMetaData dataSource;
-
-    private final String actualSql;
-
+    
     private final String table;
-
-    private final String conditionSql;
-
+    
     private final Map<String, DataNodeMetaData> dataNodes;
+    
+    private final String actualSql;
+    
+    private final String conditionSql;
     
     /**
      * Builder for {@link CachedSourceMetaData}.
@@ -72,7 +72,7 @@ public final class CachedSourceMetaData implements CachedMetaData {
         private final DataSourceMetaData dataSource;
     
         private CachedSourceMetaData build() {
-            return new CachedSourceMetaData(generateIdentifier(), taskBatch, dataSource, source.getActualSql(), source.getTable(), source.getConditionSql(), source.getDataNodes());
+            return new CachedSourceMetaData(generateIdentifier(), taskBatch, dataSource, source.getTable(), source.getDataNodes(), source.getActualSql(), source.getConditionSql());
         }
         
         private String generateIdentifier() {
