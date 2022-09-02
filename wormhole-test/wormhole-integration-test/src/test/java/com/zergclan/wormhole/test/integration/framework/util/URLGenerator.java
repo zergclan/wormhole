@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.test.integration.framework.util;
 
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -27,12 +28,12 @@ public final class URLGenerator {
     /**
      * Generate JDBC url.
      *
-     * @param databaseType database type
+     * @param databaseType {@link DatabaseType}
      * @param port port
      * @return JDBC url
      */
-    public static String generateJDBCUrl(final String databaseType, final int port) {
-        if ("MySQL".equalsIgnoreCase(databaseType)) {
+    public static String generateJDBCUrl(final DatabaseType databaseType, final int port) {
+        if ("MySQL".equalsIgnoreCase(databaseType.getType())) {
             return "jdbc:mysql://localhost:" + port + DEFAULT_MYSQL_JDBC_URL_SUFFIX;
         } else {
             throw new UnsupportedOperationException();

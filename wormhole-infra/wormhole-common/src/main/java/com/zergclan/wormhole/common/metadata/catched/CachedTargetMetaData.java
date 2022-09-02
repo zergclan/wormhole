@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.catched;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TargetMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
@@ -38,7 +38,7 @@ public final class CachedTargetMetaData implements CachedMetaData {
     
     private final long taskBatch;
 
-    private final DataSourceMetaData dataSource;
+    private final WormholeDataSourceMetaData dataSource;
 
     private final String table;
     
@@ -58,10 +58,10 @@ public final class CachedTargetMetaData implements CachedMetaData {
      * @param cachedTaskIdentifier cached task identifier
      * @param taskBatch task batch
      * @param target {@link TargetMetaData}
-     * @param dataSource {@link DataSourceMetaData}
+     * @param dataSource {@link WormholeDataSourceMetaData}
      * @return {@link CachedTargetMetaData}
      */
-    public static CachedTargetMetaData builder(final String cachedTaskIdentifier, final long taskBatch, final TargetMetaData target, final DataSourceMetaData dataSource) {
+    public static CachedTargetMetaData builder(final String cachedTaskIdentifier, final long taskBatch, final TargetMetaData target, final WormholeDataSourceMetaData dataSource) {
         return new CachedBuilder(cachedTaskIdentifier, taskBatch, target, dataSource).build();
     }
     
@@ -74,7 +74,7 @@ public final class CachedTargetMetaData implements CachedMetaData {
         
         private final TargetMetaData target;
         
-        private final DataSourceMetaData dataSource;
+        private final WormholeDataSourceMetaData dataSource;
         
         private CachedTargetMetaData build() {
             String table = target.getTable();

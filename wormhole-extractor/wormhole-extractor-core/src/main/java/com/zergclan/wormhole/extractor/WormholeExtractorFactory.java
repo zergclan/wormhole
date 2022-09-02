@@ -18,7 +18,6 @@
 package com.zergclan.wormhole.extractor;
 
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.tool.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
@@ -44,8 +43,7 @@ public final class WormholeExtractorFactory {
      */
     @SuppressWarnings("all")
     public static Optional<WormholeExtractor> getExtractor(final CachedSourceMetaData cachedSource) {
-        DataSourceMetaData dataSource = cachedSource.getDataSource();
-        Optional<WormholeExtractor> registeredService = TypedSPIRegistry.findRegisteredService(WormholeExtractor.class, dataSource.getDataSourceType().getType());
+        Optional<WormholeExtractor> registeredService = TypedSPIRegistry.findRegisteredService(WormholeExtractor.class, cachedSource.getDataSource().getDatabaseType().getType());
         if (registeredService.isPresent()) {
             WormholeExtractor extractor = registeredService.get();
             extractor.init(cachedSource);

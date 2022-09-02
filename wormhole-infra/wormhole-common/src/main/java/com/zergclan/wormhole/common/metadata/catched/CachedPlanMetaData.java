@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.catched;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TaskMetaData;
 import lombok.Getter;
@@ -57,12 +57,12 @@ public final class CachedPlanMetaData implements CachedMetaData {
      * Builder for {@link CachedPlanMetaData}.
      *
      * @param planMetadata {@link PlanMetaData}
-     * @param dataSources data sources {@link DataSourceMetaData}
+     * @param dataSources data sources {@link WormholeDataSourceMetaData}
      * @param planBatch plan batch
      * @return {@link CachedPlanMetaData}
      * @throws SQLException SQL exception
      */
-    public static CachedPlanMetaData builder(final long planBatch, final PlanMetaData planMetadata, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
+    public static CachedPlanMetaData builder(final long planBatch, final PlanMetaData planMetadata, final Map<String, WormholeDataSourceMetaData> dataSources) throws SQLException {
         return new CachedBuilder(planBatch, planMetadata, dataSources).build();
     }
     
@@ -84,7 +84,7 @@ public final class CachedPlanMetaData implements CachedMetaData {
         
         private final PlanMetaData planMetadata;
         
-        private final Map<String, DataSourceMetaData> dataSources;
+        private final Map<String, WormholeDataSourceMetaData> dataSources;
     
         private final Collection<String> taskIdentifiers = new LinkedList<>();
         

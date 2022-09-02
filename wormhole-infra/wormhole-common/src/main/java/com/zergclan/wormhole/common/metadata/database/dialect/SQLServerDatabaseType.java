@@ -15,26 +15,32 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.datasource.dialect;
+package com.zergclan.wormhole.common.metadata.database.dialect;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
-import com.zergclan.wormhole.common.metadata.datasource.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
+import com.zergclan.wormhole.common.metadata.database.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.database.SupportedDialectType;
 
 /**
- * Data source type for H2.
+ * Data source type for SQLServer.
  */
-public final class H2DataSourceType implements DataSourceType {
+public final class SQLServerDatabaseType implements DatabaseType {
     
-    private static final DatabaseType TYPE = DatabaseType.H2;
+    private static final SupportedDialectType TYPE = SupportedDialectType.SQL_SERVER;
     
     @Override
     public QuoteCharacter getQuoteCharacter() {
-        return QuoteCharacter.QUOTE;
+        return QuoteCharacter.BRACKETS;
     }
     
     @Override
     public String getDriverClassName() {
         return TYPE.getDefaultDriverClassName();
+    }
+    
+    @Override
+    public int getDefaultPort() {
+        return TYPE.getDefaultPort();
     }
     
     @Override

@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.test.integration.framework.container.storage;
 
 import com.zaxxer.hikari.HikariDataSource;
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.test.integration.framework.container.wait.ConnectionWaitStrategy;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
@@ -37,10 +38,13 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     
     private static final String CONTAINER_PATH = "/docker-entrypoint-initdb.d/";
     
+    private final DatabaseType databaseType;
+    
     private final Map<String, DataSource> dataSources = new LinkedHashMap<>();
     
-    public DatabaseITContainer(final String identifier, final String scenario, final String dockerImageName, final int port) {
+    public DatabaseITContainer(final String identifier, final DatabaseType databaseType, final String scenario, final String dockerImageName, final int port) {
         super(identifier, scenario, dockerImageName, port);
+        this.databaseType = databaseType;
     }
     
     /**
@@ -60,9 +64,9 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     
     @Override
     protected void configure() {
-        withClasspathResourceMapping(PathGenerator.generateInitSqlPath(getScenario(), getDatabaseType()), CONTAINER_PATH, BindMode.READ_ONLY);
+        withClasspathResourceMapping(PathGenerator.generateInitSqlPath(getScenario(), databaseType.getType()), CONTAINER_PATH, BindMode.READ_ONLY);
         withExposedPorts(getPort());
-        setWaitStrategy(new ConnectionWaitStrategy(() -> DriverManager.getConnection(URLGenerator.generateJDBCUrl(getDatabaseType(), getFirstMappedPort()), getUsername(), getPassword())));
+        setWaitStrategy(new ConnectionWaitStrategy(() -> DriverManager.getConnection(URLGenerator.generateJDBCUrl(databaseType, getFirstMappedPort()), getUsername(), getPassword())));
     }
     
     private DataSource createDataSource(final String dataSourceName) {
@@ -78,10 +82,8 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     }
     
     private String getPoolName(final String dataSourceName) {
-        return getDatabaseType() + MarkConstant.HYPHEN + getScenario() + MarkConstant.HYPHEN + dataSourceName;
+        return databaseType.getType() + MarkConstant.HYPHEN + getScenario() + MarkConstant.HYPHEN + dataSourceName;
     }
-    
-    protected abstract String getDatabaseType();
     
     protected abstract String getDriverClassName();
     

@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.common.metadata.catched;
 
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.TableMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.initializer.DataNodeMetadataInitializer;
 import com.zergclan.wormhole.common.metadata.initializer.DataSourceMetadataInitializer;
 import com.zergclan.wormhole.common.metadata.plan.SourceMetaData;
@@ -74,11 +74,11 @@ public final class CachedTaskMetaData implements CachedMetaData {
      * Builder for {@link CachedTaskMetaData}.
      *
      * @param taskMetaData {@link TaskMetaData}
-     * @param dataSources data sources {@link DataSourceMetaData}
+     * @param dataSources data sources {@link WormholeDataSourceMetaData}
      * @return {@link CachedTaskMetaData}
      * @throws SQLException SQL exception
      */
-    public static CachedTaskMetaData builder(final TaskMetaData taskMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
+    public static CachedTaskMetaData builder(final TaskMetaData taskMetaData, final Map<String, WormholeDataSourceMetaData> dataSources) throws SQLException {
         return new CachedBuilder(taskMetaData, SequenceGenerator.generateId(), dataSources).build();
     }
     
@@ -93,7 +93,7 @@ public final class CachedTaskMetaData implements CachedMetaData {
         
         private final long taskBatch;
     
-        private final Map<String, DataSourceMetaData> dataSources;
+        private final Map<String, WormholeDataSourceMetaData> dataSources;
     
         private CachedTaskMetaData build() throws SQLException {
             TargetMetaData target = task.getTarget();
@@ -136,7 +136,7 @@ public final class CachedTaskMetaData implements CachedMetaData {
         }
         
         private TableMetaData initTableMetaData(final String dataSourceIdentifier, final String table) throws SQLException {
-            DataSourceMetaData dataSourceMetaData = dataSources.get(dataSourceIdentifier);
+            WormholeDataSourceMetaData dataSourceMetaData = dataSources.get(dataSourceIdentifier);
             dataSourceMetadataInitializer.init(dataSourceMetaData);
             return dataSourceMetaData.getTable(table);
         }

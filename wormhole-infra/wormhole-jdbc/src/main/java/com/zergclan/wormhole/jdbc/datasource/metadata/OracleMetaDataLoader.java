@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.jdbc.datasource.metadata;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.loader.MetaDataLoader;
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.IndexMetaData;
@@ -42,7 +42,7 @@ public final class OracleMetaDataLoader implements MetaDataLoader {
     private DatabaseMetaData databaseMetaData;
     
     @Override
-    public void init(final DataSourceMetaData metadata) throws SQLException {
+    public void init(final WormholeDataSourceMetaData metadata) throws SQLException {
         databaseMetaData = DataSourceManager.getDataSource(metadata).getConnection().getMetaData();
     }
     

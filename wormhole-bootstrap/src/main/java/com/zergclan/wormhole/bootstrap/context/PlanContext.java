@@ -22,8 +22,8 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.metadata.catched.CachedPlanMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.WormholeMetaDataContext;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.bootstrap.scheduling.ExecutionState;
 import com.zergclan.wormhole.bootstrap.scheduling.event.PlanCompletedEvent;
@@ -74,7 +74,7 @@ public final class PlanContext {
         throw new WormholeException("error: can not find plan meta data named: [%s]", planIdentifier);
     }
     
-    private CachedPlanMetaData cachedMetaData(final long planBatch, final PlanMetaData planMetaData, final Map<String, DataSourceMetaData> dataSources) throws SQLException {
+    private CachedPlanMetaData cachedMetaData(final long planBatch, final PlanMetaData planMetaData, final Map<String, WormholeDataSourceMetaData> dataSources) throws SQLException {
         CachedPlanMetaData planMetadata = CachedPlanMetaData.builder(planBatch, planMetaData, dataSources);
         cachedMetadata.put(planMetadata.getPlanIdentifier(), planMetadata);
         return planMetadata;

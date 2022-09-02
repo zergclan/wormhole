@@ -21,7 +21,7 @@ import com.zergclan.wormhole.common.data.node.DataGroup;
 import com.zergclan.wormhole.common.expression.ExpressionBuilder;
 import com.zergclan.wormhole.common.expression.ExpressionBuilderFactory;
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.tool.util.StringUtil;
 
@@ -65,5 +65,5 @@ public abstract class AbstractCompletedExtractor implements WormholeExtractor<Da
      * @param extractSQl extract SQl
      * @return {@link DataGroup}
      */
-    protected abstract Collection<DataGroup> doExtract(DataSourceMetaData dataSource, Map<String, DataNodeMetaData> dataNodes, String extractSQl) throws SQLException;
+    protected abstract Collection<DataGroup> doExtract(WormholeDataSourceMetaData dataSource, Map<String, DataNodeMetaData> dataNodes, String extractSQl) throws SQLException;
 }

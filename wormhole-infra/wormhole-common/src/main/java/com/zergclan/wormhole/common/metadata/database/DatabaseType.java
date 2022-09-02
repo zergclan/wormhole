@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.datasource;
+package com.zergclan.wormhole.common.metadata.database;
 
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 /**
- * The root interface from which all data source type shall be derived in Wormhole.
+ * The root interface from which all database type shall be derived in Wormhole.
  */
-public interface DataSourceType extends TypedSPI {
+public interface DatabaseType extends TypedSPI {
     
     /**
      * Get quote character.
@@ -37,4 +37,11 @@ public interface DataSourceType extends TypedSPI {
      * @return driver class name
      */
     String getDriverClassName();
+    
+    /**
+     * Get default port.
+     *
+     * @return default port
+     */
+    int getDefaultPort();
 }

@@ -15,17 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.datasource.dialect;
+package com.zergclan.wormhole.common.metadata.database.dialect;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
-import com.zergclan.wormhole.common.metadata.datasource.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
+import com.zergclan.wormhole.common.metadata.database.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.database.SupportedDialectType;
 
 /**
  * Data source type for oracle.
  */
-public final class OracleDataSourceType implements DataSourceType {
+public final class OracleDatabaseType implements DatabaseType {
     
-    private static final DatabaseType TYPE = DatabaseType.ORACLE;
+    private static final SupportedDialectType TYPE = SupportedDialectType.ORACLE;
     
     @Override
     public QuoteCharacter getQuoteCharacter() {
@@ -35,6 +36,11 @@ public final class OracleDataSourceType implements DataSourceType {
     @Override
     public String getDriverClassName() {
         return TYPE.getDefaultDriverClassName();
+    }
+    
+    @Override
+    public int getDefaultPort() {
+        return TYPE.getDefaultPort();
     }
     
     @Override

@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.catched;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.SourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
@@ -37,7 +37,7 @@ public final class CachedSourceMetaData implements CachedMetaData {
     
     private final long taskBatch;
     
-    private final DataSourceMetaData dataSource;
+    private final WormholeDataSourceMetaData dataSource;
     
     private final String table;
     
@@ -53,10 +53,10 @@ public final class CachedSourceMetaData implements CachedMetaData {
      * @param cachedTaskIdentifier cached task identifier
      * @param taskBatch task batch
      * @param source {@link SourceMetaData}
-     * @param dataSource {@link DataSourceMetaData}
+     * @param dataSource {@link WormholeDataSourceMetaData}
      * @return {@link CachedSourceMetaData}
      */
-    public static CachedSourceMetaData builder(final String cachedTaskIdentifier, final long taskBatch, final SourceMetaData source, final DataSourceMetaData dataSource) {
+    public static CachedSourceMetaData builder(final String cachedTaskIdentifier, final long taskBatch, final SourceMetaData source, final WormholeDataSourceMetaData dataSource) {
         return new CachedBuilder(cachedTaskIdentifier, taskBatch, source, dataSource).build();
     }
     
@@ -69,7 +69,7 @@ public final class CachedSourceMetaData implements CachedMetaData {
         
         private final SourceMetaData source;
         
-        private final DataSourceMetaData dataSource;
+        private final WormholeDataSourceMetaData dataSource;
     
         private CachedSourceMetaData build() {
             return new CachedSourceMetaData(generateIdentifier(), taskBatch, dataSource, source.getTable(), source.getDataNodes(), source.getActualSql(), source.getConditionSql());

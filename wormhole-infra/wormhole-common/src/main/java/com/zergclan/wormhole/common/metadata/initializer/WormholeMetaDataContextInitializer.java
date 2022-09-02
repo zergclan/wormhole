@@ -21,7 +21,7 @@ import com.zergclan.wormhole.common.configuration.DataSourceConfiguration;
 import com.zergclan.wormhole.common.configuration.PlanConfiguration;
 import com.zergclan.wormhole.common.configuration.WormholeConfiguration;
 import com.zergclan.wormhole.common.metadata.WormholeMetaDataContext;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 
 import java.sql.SQLException;
@@ -45,20 +45,20 @@ public final class WormholeMetaDataContextInitializer {
      * @throws SQLException SQL Exception
      */
     public WormholeMetaDataContext init(final WormholeConfiguration configuration) throws SQLException {
-        Map<String, DataSourceMetaData> dataSourceMetaData = createDataSources(configuration.getDataSources());
+        Map<String, WormholeDataSourceMetaData> dataSourceMetaData = createDataSources(configuration.getDataSources());
         Map<String, PlanMetaData> plans = createPlans(configuration.getPlans(), dataSourceMetaData);
-        Map<String, DataSourceMetaData> dataSources = new LinkedHashMap<>();
+        Map<String, WormholeDataSourceMetaData> dataSources = new LinkedHashMap<>();
         dataSourceMetaData.forEach((key, value) -> dataSources.put(value.getIdentifier(), value));
         return new WormholeMetaDataContext(dataSources, plans);
     }
     
-    private Map<String, DataSourceMetaData> createDataSources(final Map<String, DataSourceConfiguration> configurations) {
-        Map<String, DataSourceMetaData> result = new LinkedHashMap<>();
+    private Map<String, WormholeDataSourceMetaData> createDataSources(final Map<String, DataSourceConfiguration> configurations) {
+        Map<String, WormholeDataSourceMetaData> result = new LinkedHashMap<>();
         configurations.forEach((key, value) -> result.put(key, dataSourceMetadataInitializer.createActualTypeDataSourceMetadata(value)));
         return result;
     }
     
-    private Map<String, PlanMetaData> createPlans(final Map<String, PlanConfiguration> planConfigurations, final Map<String, DataSourceMetaData> dataSources) {
+    private Map<String, PlanMetaData> createPlans(final Map<String, PlanConfiguration> planConfigurations, final Map<String, WormholeDataSourceMetaData> dataSources) {
         Map<String, PlanMetaData> result = new LinkedHashMap<>();
         planConfigurations.forEach((key, value) -> result.put(key, planMetadataInitializer.init(key, value, dataSources)));
         return result;

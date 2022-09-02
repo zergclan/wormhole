@@ -43,7 +43,7 @@ public final class WormholeLoaderFactory {
      */
     @SuppressWarnings("all")
     public static Optional<WormholeLoader> getLoader(final CachedTargetMetaData cachedTarget) {
-        Optional<WormholeLoader> registeredService = TypedSPIRegistry.findRegisteredService(WormholeLoader.class, cachedTarget.getDataSource().getDataSourceType().getType());
+        Optional<WormholeLoader> registeredService = TypedSPIRegistry.findRegisteredService(WormholeLoader.class, cachedTarget.getDataSource().getDatabaseType().getType());
         if (registeredService.isPresent()) {
             WormholeLoader loader = registeredService.get();
             loader.init(cachedTarget);

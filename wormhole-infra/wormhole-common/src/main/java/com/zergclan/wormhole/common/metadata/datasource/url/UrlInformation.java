@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.datasource;
+package com.zergclan.wormhole.common.metadata.datasource.url;
 
 import com.zergclan.wormhole.common.metadata.exception.UnrecognizedDatabaseURLException;
 import com.zergclan.wormhole.tool.util.StringUtil;
@@ -68,7 +68,6 @@ public final class UrlInformation {
      * @return {@link UrlInformation}
      */
     public static UrlInformation build(final String url) {
-        
         return UrlInformationParser.parseUrl(url);
     }
     

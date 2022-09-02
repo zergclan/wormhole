@@ -19,8 +19,7 @@ package com.zergclan.wormhole.common.metadata;
 
 import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.common.exception.WormholeException;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSource;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.tool.util.Validator;
 import lombok.Getter;
@@ -39,7 +38,7 @@ public final class WormholeMetaDataContext {
 
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     
-    private final Map<String, DataSourceMetaData> dataSources;
+    private final Map<String, WormholeDataSourceMetaData> dataSources;
 
     private final Map<String, PlanMetaData> plans;
     
@@ -70,8 +69,8 @@ public final class WormholeMetaDataContext {
         final ReentrantReadWriteLock.WriteLock writeLock = LOCK.writeLock();
         writeLock.lock();
         try {
-            if (metadata instanceof WormholeDataSource) {
-                return register((WormholeDataSource) metadata);
+            if (metadata instanceof WormholeDataSourceMetaData) {
+                return register((WormholeDataSourceMetaData) metadata);
             }
             if (metadata instanceof PlanMetaData) {
                 return register((PlanMetaData) metadata);
@@ -82,7 +81,7 @@ public final class WormholeMetaDataContext {
         }
     }
     
-    private boolean register(final WormholeDataSource dataSource) {
+    private boolean register(final WormholeDataSourceMetaData dataSource) {
         dataSources.put(dataSource.getIdentifier(), dataSource);
         return true;
     }

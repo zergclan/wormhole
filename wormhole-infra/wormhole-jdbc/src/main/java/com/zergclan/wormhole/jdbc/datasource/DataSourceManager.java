@@ -17,8 +17,8 @@
 
 package com.zergclan.wormhole.jdbc.datasource;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourcePoolMetadata;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -38,10 +38,10 @@ public final class DataSourceManager {
     /**
      * Get {@link DataSource}.
      *
-     * @param dataSourceMetadata {@link DataSourceMetaData}
+     * @param dataSourceMetadata {@link WormholeDataSourceMetaData}
      * @return {@link DataSource}
      */
-    public static synchronized DataSource getDataSource(final DataSourceMetaData dataSourceMetadata) {
+    public static synchronized DataSource getDataSource(final WormholeDataSourceMetaData dataSourceMetadata) {
         String identifier = dataSourceMetadata.getIdentifier();
         DataSource result = SOURCES.get(identifier);
         if (null == result) {
@@ -51,7 +51,7 @@ public final class DataSourceManager {
         return result;
     }
     
-    private static Properties initConfigProperties(final DataSourceMetaData dataSourceMetadata) {
+    private static Properties initConfigProperties(final WormholeDataSourceMetaData dataSourceMetadata) {
         Properties result = new Properties();
         result.put("driverClassName", dataSourceMetadata.getDriverClassName());
         result.put("jdbcUrl", dataSourceMetadata.getJdbcUrl());
