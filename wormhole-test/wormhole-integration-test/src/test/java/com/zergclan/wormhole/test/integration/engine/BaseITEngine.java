@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.test.integration.engine;
 
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceTypeFactory;
 import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
 import com.zergclan.wormhole.jdbc.expression.SQLExpressionGenerator;
 import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
@@ -135,7 +136,7 @@ public abstract class BaseITEngine {
     
     private String initInsertSQL(final TableNode tableNode) {
         Collection<String> nodeNames = tableNode.getColumns().stream().map(ColumnNode::getName).collect(Collectors.toCollection(LinkedList::new));
-        SQLExpressionGenerator sqlExpressionGenerator = new SQLExpressionGenerator(dataset.getDatabaseType(), tableNode.getName(), nodeNames);
+        SQLExpressionGenerator sqlExpressionGenerator = new SQLExpressionGenerator(DataSourceTypeFactory.getInstance(dataset.getDatabaseType()), tableNode.getName(), nodeNames);
         return sqlExpressionGenerator.generateInsertTable() + sqlExpressionGenerator.generateInsertColumns() + sqlExpressionGenerator.generateInsertValues();
     }
     

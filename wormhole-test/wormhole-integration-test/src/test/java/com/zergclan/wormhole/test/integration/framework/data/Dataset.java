@@ -17,8 +17,6 @@
 
 package com.zergclan.wormhole.test.integration.framework.data;
 
-import com.zergclan.wormhole.common.metadata.database.DatabaseType;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceTypeFactory;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.test.integration.framework.data.config.DataSourceConfiguration;
 import com.zergclan.wormhole.test.integration.framework.data.config.DatasetConfiguration;
@@ -35,7 +33,7 @@ public final class Dataset {
     
     private final String scenario;
     
-    private final DatabaseType databaseType;
+    private final String databaseType;
     
     private final int port;
     
@@ -43,7 +41,7 @@ public final class Dataset {
     
     public Dataset(final String scenario, final DatasetConfiguration datasetConfiguration) {
         this.scenario = scenario;
-        databaseType = DataSourceTypeFactory.getInstance(datasetConfiguration.getDatabaseType());
+        databaseType = datasetConfiguration.getDatabaseType();
         port = datasetConfiguration.getPort();
         dataSources = initDataSources(datasetConfiguration.getDataSources());
     }
