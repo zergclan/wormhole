@@ -27,19 +27,18 @@ import com.zergclan.wormhole.common.data.result.BatchedLoadResult;
 import com.zergclan.wormhole.common.data.result.ErrorDataGroup;
 import com.zergclan.wormhole.common.data.result.LoadResultData;
 import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.dialect.DatabaseType;
 import com.zergclan.wormhole.jdbc.datasource.DataSourceManager;
+import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
 import com.zergclan.wormhole.loader.AbstractBatchedLoader;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * Batched loader of MySQL.
@@ -50,10 +49,9 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
     @Override
     protected BatchedLoadResult standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
         LoadResultData result = new LoadResultData(batchedDataGroup.getBatchSize());
-        try (Connection connection = createConnection(cachedTarget.getDataSource())) {
-            Collection<DataGroup> dataGroups = batchedDataGroup.getDataGroups();
-            for (DataGroup each : dataGroups) {
-                preFix(each, cachedTarget);
+        try (Connection connection = DataSourceManager.getDataSource(cachedTarget.getDataSource()).getConnection()) {
+            for (DataGroup each : batchedDataGroup.getDataGroups()) {
+                preFixDataGroup(each, cachedTarget);
                 try {
                     loadDataGroup(connection, each, cachedTarget, result);
                 } catch (final SQLException ex) {
@@ -68,7 +66,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
         return new BatchedLoadResult(true, result);
     }
     
-    private void preFix(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) {
+    private void preFixDataGroup(final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) {
         Collection<String> ignoreNodes = cachedTarget.getIgnoreNodes();
         for (String each : ignoreNodes) {
             dataGroup.remove(each);
@@ -94,68 +92,58 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
         }
     }
     
-    private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
-        return DataSourceManager.getDataSource(dataSourceMetaData).getConnection();
-    }
-    
     private ResultSet executeSelect(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
-        String selectSQL = initSelectSQL(cachedTarget);
-        String[] parameters = initWhereParameter(cachedTarget);
-        PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-        for (int i = 0; i < parameters.length; i++) {
-            preparedStatement.setObject(i + 1, dataGroup.getDataNode(parameters[i]).getValue());
-        }
-        return preparedStatement.executeQuery();
+        return SQLExecutor.executeQuery(connection, getExpressionBuilder().buildSelect(), initWhereParameter(cachedTarget, dataGroup));
     }
     
-    private String initSelectSQL(final CachedTargetMetaData cachedTarget) {
-        String selectExpression = MySQLExpressionBuilder.buildSelectColumns(cachedTarget.getDataNodes().keySet());
-        String fromTableExpression = MySQLExpressionBuilder.buildFromTable(cachedTarget.getTable());
-        String whereExpression = MySQLExpressionBuilder.buildAllEqualsWhere(cachedTarget.getUniqueNodes());
-        return selectExpression + fromTableExpression + whereExpression;
-    }
-    
-    private String[] initWhereParameter(final CachedTargetMetaData cachedTarget) {
-        Collection<String> uniqueNodes = cachedTarget.getUniqueNodes();
-        String[] result = new String[uniqueNodes.size()];
+    private Object[] initWhereParameter(final CachedTargetMetaData cachedTarget, final DataGroup dataGroup) {
+        Collection<String> uniqueNodeNames = cachedTarget.getUniqueNodes();
+        Object[] result = new Object[uniqueNodeNames.size()];
         int index = 0;
-        for (String each : uniqueNodes) {
-            result[index] = each;
+        for (String each : uniqueNodeNames) {
+            result[index] = initSQLParameter(each, dataGroup);
             index++;
         }
         return result;
     }
     
+    private Object initSQLParameter(final String nodeName, final DataGroup dataGroup) {
+        DataNode<?> dataNode = dataGroup.getDataNode(nodeName);
+        return dataNode instanceof PatternedDataTimeDataNode ? ((PatternedDataTimeDataNode) dataNode).getPatternedValue() : dataNode.getValue();
+    }
+    
     private boolean executeInsert(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
-        String insertSQL = initInsertSQL(cachedTarget);
-        String[] parameters = initInsertParameter(cachedTarget);
-        PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
-        for (int i = 0; i < parameters.length; i++) {
-            DataNode<?> dataNode = dataGroup.getDataNode(parameters[i]);
-            if (dataNode instanceof PatternedDataTimeDataNode) {
-                preparedStatement.setObject(i + 1, ((PatternedDataTimeDataNode) dataNode).getPatternedValue());
-            } else {
-                preparedStatement.setObject(i + 1, dataNode.getValue());
-            }
-        }
-        return 1 == preparedStatement.executeUpdate();
+        return 1 == SQLExecutor.executeUpdate(connection, getExpressionBuilder().buildInsert(), initInsertParameter(cachedTarget, dataGroup));
     }
     
-    private String initInsertSQL(final CachedTargetMetaData cachedTarget) {
-        String insertExpression = MySQLExpressionBuilder.buildInsertTable(cachedTarget.getTable());
-        Collection<String> columns = new HashSet<>(cachedTarget.getDataNodes().keySet());
+    private Object[] initInsertParameter(final CachedTargetMetaData cachedTarget, final DataGroup dataGroup) {
+        Collection<String> columns = new LinkedList<>(cachedTarget.getDataNodes().keySet());
         columns.add(cachedTarget.getVersionNode());
-        String columnsValuesExpression = MySQLExpressionBuilder.buildInsertColumnsValues(columns);
-        return insertExpression + columnsValuesExpression;
-    }
-    
-    private String[] initInsertParameter(final CachedTargetMetaData cachedTarget) {
-        Collection<String> columns = new HashSet<>(cachedTarget.getDataNodes().keySet());
-        columns.add(cachedTarget.getVersionNode());
-        String[] result = new String[columns.size()];
+        Object[] result = new Object[columns.size()];
         int index = 0;
         for (String each : columns) {
-            result[index] = each;
+            result[index] = initSQLParameter(each, dataGroup);
+            index++;
+        }
+        return result;
+    }
+    
+    private boolean executeUpdate(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
+        return 1 == SQLExecutor.executeUpdate(connection, getExpressionBuilder().buildUpdate(), initUpdateParameter(cachedTarget, dataGroup));
+    }
+    
+    private Object[] initUpdateParameter(final CachedTargetMetaData cachedTarget, final DataGroup dataGroup) {
+        Collection<String> columns = new LinkedList<>(cachedTarget.getDataNodes().keySet());
+        columns.add(cachedTarget.getVersionNode());
+        Collection<String> uniqueNodes = cachedTarget.getUniqueNodes();
+        Object[] result = new Object[columns.size() + uniqueNodes.size()];
+        int index = 0;
+        for (String each : columns) {
+            result[index] = initSQLParameter(each, dataGroup);
+            index++;
+        }
+        for (String each : uniqueNodes) {
+            result[index] = initSQLParameter(each, dataGroup);
             index++;
         }
         return result;
@@ -181,47 +169,6 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
             return 0 == ((BigDecimalDataNode) dataNode).getValue().compareTo(new BigDecimal(String.valueOf(object)));
         }
         return String.valueOf(dataNode.getValue()).equals(String.valueOf(object));
-    }
-    
-    private boolean executeUpdate(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
-        String updateSQL = initUpdateSQL(cachedTarget);
-        String[] parameters = initUpdateParameter(cachedTarget);
-        PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
-        for (int i = 0; i < parameters.length; i++) {
-            DataNode<?> dataNode = dataGroup.getDataNode(parameters[i]);
-            if (dataNode instanceof PatternedDataTimeDataNode) {
-                preparedStatement.setObject(i + 1, ((PatternedDataTimeDataNode) dataNode).getPatternedValue());
-            } else {
-                preparedStatement.setObject(i + 1, dataNode.getValue());
-            }
-        }
-        return 1 == preparedStatement.executeUpdate();
-    }
-    
-    private String initUpdateSQL(final CachedTargetMetaData cachedTarget) {
-        String updateExpression = MySQLExpressionBuilder.buildUpdateTable(cachedTarget.getTable());
-        Collection<String> columns = new HashSet<>(cachedTarget.getDataNodes().keySet());
-        columns.add(cachedTarget.getVersionNode());
-        String setColumnsExpression = MySQLExpressionBuilder.buildSetColumns(columns);
-        String whereExpression = MySQLExpressionBuilder.buildAllEqualsWhere(cachedTarget.getUniqueNodes());
-        return updateExpression + setColumnsExpression + whereExpression;
-    }
-    
-    private String[] initUpdateParameter(final CachedTargetMetaData cachedTarget) {
-        Collection<String> columns = new HashSet<>(cachedTarget.getDataNodes().keySet());
-        columns.add(cachedTarget.getVersionNode());
-        Collection<String> uniqueNodes = cachedTarget.getUniqueNodes();
-        String[] result = new String[columns.size() + uniqueNodes.size()];
-        int index = 0;
-        for (String each : columns) {
-            result[index] = each;
-            index++;
-        }
-        for (String each : uniqueNodes) {
-            result[index] = each;
-            index++;
-        }
-        return result;
     }
     
     @Override

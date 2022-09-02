@@ -15,20 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.loader.plugin.mysql;
+package com.zergclan.wormhole.test.integration.framework.util;
 
 import com.zergclan.wormhole.jdbc.constant.SQLKeywordConstant;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.tool.util.StringUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringJoiner;
 
 /**
- * Expression builder for MySQL.
+ * SQL builder.
  */
-public final class MySQLExpressionBuilder {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SQLBuilder {
     
     /**
      * Build select columns expression.

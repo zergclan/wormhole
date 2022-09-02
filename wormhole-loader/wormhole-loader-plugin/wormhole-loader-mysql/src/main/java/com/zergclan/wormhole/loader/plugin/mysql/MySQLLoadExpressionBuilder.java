@@ -19,29 +19,56 @@ package com.zergclan.wormhole.loader.plugin.mysql;
 
 import com.zergclan.wormhole.common.expression.ExpressionBuilder;
 import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
+import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
+import com.zergclan.wormhole.jdbc.expression.SQLExpressionGenerator;
+import com.zergclan.wormhole.tool.util.StringUtil;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Load expression builder of MySQL.
  */
 public final class MySQLLoadExpressionBuilder implements ExpressionBuilder {
     
+    private SQLExpressionGenerator generator;
+    
     @Override
     public void init(final CachedMetaData cachedMetaData) {
+        if (cachedMetaData instanceof CachedTargetMetaData) {
+            CachedTargetMetaData targetMetaData = (CachedTargetMetaData) cachedMetaData;
+            DataSourceType dataSourceType = targetMetaData.getDataSource().getDataSourceType();
+            String table = targetMetaData.getTable();
+            Collection<String> nodeNames = initNodeNames(targetMetaData);
+            Collection<String> uniqueNodeNames = targetMetaData.getUniqueNodes();
+            generator = new SQLExpressionGenerator(dataSourceType, table, nodeNames, uniqueNodeNames, null);
+        }
+        throw new UnsupportedOperationException();
+    }
+    
+    private Collection<String> initNodeNames(final CachedTargetMetaData targetMetaData) {
+        Collection<String> result = new LinkedList<>(targetMetaData.getDataNodes().keySet());
+        String versionNode = targetMetaData.getVersionNode();
+        if (!StringUtil.isBlank(versionNode)) {
+            result.add(versionNode);
+        }
+        return result;
     }
     
     @Override
     public String buildSelect() {
-        return null;
+        return generator.generateSelectColumns() + generator.generateFromTable() + generator.generateWhereByAllEquals();
     }
     
     @Override
     public String buildInsert() {
-        return null;
+        return generator.generateInsertTable() + generator.generateInsertColumns() + generator.generateInsertValues();
     }
     
     @Override
     public String buildUpdate() {
-        return null;
+        return generator.generateUpdateTable() + generator.generateUpdateColumns() + generator.generateWhereByAllEquals();
     }
     
     @Override
