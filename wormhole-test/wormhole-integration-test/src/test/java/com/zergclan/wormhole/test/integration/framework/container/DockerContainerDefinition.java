@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.test.integration.framework.container;
 
-import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ public final class DockerContainerDefinition {
     
     private final String scenario;
     
-    private final DatabaseType databaseType;
+    private final String databaseType;
     
     private final int port;
     
@@ -41,6 +40,6 @@ public final class DockerContainerDefinition {
      * @return identifier
      */
     public String getIdentifier() {
-        return scenario + MarkConstant.COLON + databaseType.getType() + MarkConstant.COLON + port;
+        return scenario + MarkConstant.COLON + databaseType + MarkConstant.COLON + port;
     }
 }

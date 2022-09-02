@@ -32,8 +32,8 @@ public final class URLGenerator {
      * @param port port
      * @return JDBC url
      */
-    public static String generateJDBCUrl(final DatabaseType databaseType, final int port) {
-        if ("MySQL".equalsIgnoreCase(databaseType.getType())) {
+    public static String generateJDBCUrl(final String databaseType, final int port) {
+        if ("MySQL".equalsIgnoreCase(databaseType)) {
             return "jdbc:mysql://localhost:" + port + DEFAULT_MYSQL_JDBC_URL_SUFFIX;
         } else {
             throw new UnsupportedOperationException();
