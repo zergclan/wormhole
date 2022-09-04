@@ -33,13 +33,11 @@
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-bootstrap</artifactId>
             <version>${project.version}</version>
-            <type>test-jar</type>
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-jdbc</artifactId>
             <version>${project.version}</version>
-            <type>test-jar</type>
         </dependency>
 
         <dependency>
