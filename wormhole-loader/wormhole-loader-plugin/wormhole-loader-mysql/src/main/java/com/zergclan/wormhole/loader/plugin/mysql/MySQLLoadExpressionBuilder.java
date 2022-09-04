@@ -20,7 +20,7 @@ package com.zergclan.wormhole.loader.plugin.mysql;
 import com.zergclan.wormhole.common.expression.ExpressionBuilder;
 import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
 import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.jdbc.expression.SQLExpressionGenerator;
 import com.zergclan.wormhole.tool.util.StringUtil;
 
@@ -38,11 +38,11 @@ public final class MySQLLoadExpressionBuilder implements ExpressionBuilder {
     public void init(final CachedMetaData cachedMetaData) {
         if (cachedMetaData instanceof CachedTargetMetaData) {
             CachedTargetMetaData targetMetaData = (CachedTargetMetaData) cachedMetaData;
-            DataSourceType dataSourceType = targetMetaData.getDataSource().getDataSourceType();
+            DatabaseType databaseType = targetMetaData.getDataSource().getDatabaseType();
             String table = targetMetaData.getTable();
             Collection<String> nodeNames = initNodeNames(targetMetaData);
             Collection<String> uniqueNodeNames = targetMetaData.getUniqueNodes();
-            generator = new SQLExpressionGenerator(dataSourceType, table, nodeNames, uniqueNodeNames, null);
+            generator = new SQLExpressionGenerator(databaseType, table, nodeNames, uniqueNodeNames, null);
         }
         throw new UnsupportedOperationException();
     }

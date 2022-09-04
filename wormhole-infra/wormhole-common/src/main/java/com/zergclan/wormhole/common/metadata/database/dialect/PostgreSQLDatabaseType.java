@@ -15,26 +15,32 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.datasource.dialect;
+package com.zergclan.wormhole.common.metadata.database.dialect;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
-import com.zergclan.wormhole.common.metadata.datasource.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
+import com.zergclan.wormhole.common.metadata.database.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.database.SupportedDialectType;
 
 /**
- * Data source type for MySQL.
+ * Data source type for PostgreSQL.
  */
-public final class MySQLDataSourceType implements DataSourceType {
+public final class PostgreSQLDatabaseType implements DatabaseType {
     
-    private static final DatabaseType TYPE = DatabaseType.MYSQL;
+    private static final SupportedDialectType TYPE = SupportedDialectType.POSTGRESQL;
     
     @Override
     public QuoteCharacter getQuoteCharacter() {
-        return QuoteCharacter.BACK_QUOTE;
+        return QuoteCharacter.QUOTE;
     }
     
     @Override
     public String getDriverClassName() {
         return TYPE.getDefaultDriverClassName();
+    }
+    
+    @Override
+    public int getDefaultPort() {
+        return TYPE.getDefaultPort();
     }
     
     @Override

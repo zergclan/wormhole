@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.jdbc.expression;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.jdbc.constant.SQLKeywordConstant;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.tool.util.StringUtil;
@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Builder for SQL.
@@ -33,7 +34,7 @@ import java.util.Iterator;
 @RequiredArgsConstructor
 public final class SQLExpressionGenerator {
     
-    private final DataSourceType dataSourceType;
+    private final DatabaseType databaseType;
     
     private final String table;
     
@@ -42,6 +43,10 @@ public final class SQLExpressionGenerator {
     private final Collection<String> uniqueNodeNames;
     
     private final String conditionSql;
+    
+    public SQLExpressionGenerator(final DatabaseType databaseType, final String table, final Collection<String> nodeNames) {
+        this(databaseType, table, nodeNames, new LinkedList<>(), null);
+    }
     
     /**
      * Generate insert table.
@@ -157,7 +162,7 @@ public final class SQLExpressionGenerator {
     }
     
     private String generateColumnName(final String columnName) {
-        return dataSourceType.getQuoteCharacter().wrap(columnName);
+        return databaseType.getQuoteCharacter().wrap(columnName);
     }
     
     private String generateColumnNameByTable(final String columnName) {

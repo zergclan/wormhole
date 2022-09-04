@@ -19,7 +19,7 @@ package com.zergclan.wormhole.common.metadata.initializer;
 
 import com.zergclan.wormhole.common.configuration.PlanConfiguration;
 import com.zergclan.wormhole.common.configuration.TaskConfiguration;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TaskMetaData;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
@@ -43,13 +43,13 @@ public final class PlanMetadataInitializer {
      * @param dataSources data sources metadata
      * @return {@link PlanMetaData}
      */
-    public PlanMetaData init(final String planIdentifier, final PlanConfiguration configuration, final Map<String, DataSourceMetaData> dataSources) {
+    public PlanMetaData init(final String planIdentifier, final PlanConfiguration configuration, final Map<String, WormholeDataSourceMetaData> dataSources) {
         PlanMetaData.ExecutionMode executionMode = PlanMetaData.ExecutionMode.valueOf(configuration.getMode().trim().toUpperCase());
         Map<String, TaskMetaData> tasks = createTasks(planIdentifier, configuration.getTasks(), dataSources);
         return new PlanMetaData(planIdentifier, executionMode, configuration.getExpression(), configuration.isAtomic(), tasks);
     }
     
-    private Map<String, TaskMetaData> createTasks(final String planIdentifier, final Map<String, TaskConfiguration> configurations, final Map<String, DataSourceMetaData> dataSources) {
+    private Map<String, TaskMetaData> createTasks(final String planIdentifier, final Map<String, TaskConfiguration> configurations, final Map<String, WormholeDataSourceMetaData> dataSources) {
         Iterator<Map.Entry<String, TaskConfiguration>> iterator = configurations.entrySet().iterator();
         Map<String, TaskMetaData> result = new LinkedHashMap<>();
         while (iterator.hasNext()) {

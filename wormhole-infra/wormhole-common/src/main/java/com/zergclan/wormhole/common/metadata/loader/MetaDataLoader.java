@@ -18,10 +18,10 @@
 package com.zergclan.wormhole.common.metadata.loader;
 
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.IndexMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.SchemaMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.TableMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 import java.sql.SQLException;
@@ -36,10 +36,10 @@ public interface MetaDataLoader extends TypedSPI {
     /**
      * Init.
      *
-     * @param metadata {@link DataSourceMetaData}
+     * @param metadata {@link WormholeDataSourceMetaData}
      * @throws SQLException {@link SQLException}
      */
-    void init(DataSourceMetaData metadata) throws SQLException;
+    void init(WormholeDataSourceMetaData metadata) throws SQLException;
     
     /**
      * Load {@link SchemaMetaData}.

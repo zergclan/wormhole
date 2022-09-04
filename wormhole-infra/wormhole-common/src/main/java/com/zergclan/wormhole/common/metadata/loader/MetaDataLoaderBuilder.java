@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.loader;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.tool.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
@@ -42,11 +42,11 @@ public final class MetaDataLoaderBuilder {
     /**
      * Build {@link MetaDataLoader}.
      *
-     * @param metadata {@link DataSourceMetaData}
+     * @param metadata {@link WormholeDataSourceMetaData}
      * @return {@link MetaDataLoader}
      * @throws SQLException {@link SQLException}
      */
-    public static synchronized MetaDataLoader build(final DataSourceMetaData metadata) throws SQLException {
+    public static synchronized MetaDataLoader build(final WormholeDataSourceMetaData metadata) throws SQLException {
         String identifier = metadata.getIdentifier();
         MetaDataLoader metaDataLoader = CONTAINER.get(identifier);
         if (null == metaDataLoader) {
@@ -56,8 +56,8 @@ public final class MetaDataLoaderBuilder {
         return metaDataLoader;
     }
     
-    private static MetaDataLoader createMetaDataLoader(final DataSourceMetaData metadata) throws SQLException {
-        MetaDataLoader result = TypedSPIRegistry.getRegisteredService(MetaDataLoader.class, metadata.getDataSourceType().getType());
+    private static MetaDataLoader createMetaDataLoader(final WormholeDataSourceMetaData metadata) throws SQLException {
+        MetaDataLoader result = TypedSPIRegistry.getRegisteredService(MetaDataLoader.class, metadata.getDatabaseType().getType());
         result.init(metadata);
         return result;
     }

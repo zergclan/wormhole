@@ -26,8 +26,6 @@ import org.testcontainers.containers.BindMode;
  */
 public final class MySQLITContainer extends DatabaseITContainer {
     
-    private static final int DEFAULT_PORT = 3306;
-    
     private static final String DEFAULT_USER = "root";
     
     private static final String DEFAULT_PASSWORD = "root";
@@ -41,7 +39,7 @@ public final class MySQLITContainer extends DatabaseITContainer {
     private static final String DEFAULT_TRANSACTION_ISOLATION = "TRANSACTION_REPEATABLE_READ";
     
     public MySQLITContainer(final DockerContainerDefinition dockerDefinition) {
-        super(dockerDefinition.getIdentifier(), dockerDefinition.getScenario(), DEFAULT_IMAGE_NAME, dockerDefinition.getPortOrDefault(DEFAULT_PORT));
+        super(dockerDefinition.getIdentifier(), dockerDefinition.getDatabaseType(), dockerDefinition.getScenario(), DEFAULT_IMAGE_NAME, dockerDefinition.getPort());
     }
     
     @Override
@@ -51,11 +49,6 @@ public final class MySQLITContainer extends DatabaseITContainer {
         addEnv("MYSQL_ROOT_HOST", "%");
         withClasspathResourceMapping("/env/common/mysql/my.cnf", "/etc/mysql/my.cnf", BindMode.READ_ONLY);
         super.configure();
-    }
-    
-    @Override
-    protected String getDatabaseType() {
-        return "MySQL";
     }
     
     @Override

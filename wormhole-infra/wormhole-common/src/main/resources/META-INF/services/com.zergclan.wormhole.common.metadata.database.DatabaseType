@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 
-com.zergclan.wormhole.common.metadata.datasource.dialect.MySQLDataSourceType
-com.zergclan.wormhole.common.metadata.datasource.dialect.H2DataSourceType
-com.zergclan.wormhole.common.metadata.datasource.dialect.PostgreSQLDataSourceType
-com.zergclan.wormhole.common.metadata.datasource.dialect.OracleDataSourceType
-com.zergclan.wormhole.common.metadata.datasource.dialect.SQLServerDataSourceType
+com.zergclan.wormhole.common.metadata.database.dialect.MySQLDatabaseType
+com.zergclan.wormhole.common.metadata.database.dialect.H2DatabaseType
+com.zergclan.wormhole.common.metadata.database.dialect.PostgreSQLDatabaseType
+com.zergclan.wormhole.common.metadata.database.dialect.OracleDatabaseType
+com.zergclan.wormhole.common.metadata.database.dialect.SQLServerDatabaseType

@@ -17,7 +17,11 @@
 
 package com.zergclan.wormhole.common.metadata.datasource;
 
+import com.zergclan.wormhole.common.WormholeMetaData;
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
+import com.zergclan.wormhole.common.metadata.datasource.url.UrlInformation;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
+import com.zergclan.wormhole.tool.util.StringUtil;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -26,16 +30,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Implemented {@link DataSourceMetaData} of Wormhole.
+ * Data source meta data of Wormhole.
  */
 @Getter
-public final class WormholeDataSource implements DataSourceMetaData {
+public final class WormholeDataSourceMetaData implements WormholeMetaData {
     
     private final String identifier;
     
-    private final UrlInformation urlInformation;
+    private final DatabaseType databaseType;
     
-    private final DataSourceType dataSourceType;
+    private final UrlInformation urlInformation;
     
     private final String username;
     
@@ -45,8 +49,8 @@ public final class WormholeDataSource implements DataSourceMetaData {
     
     private final Map<String, SchemaMetaData> schemas = new LinkedHashMap<>();
     
-    public WormholeDataSource(final String identifier, final String databaseType, final String url, final String username, final String password, final DataSourcePoolMetadata pool) {
-        dataSourceType = DataSourceTypeFactory.getInstance(databaseType);
+    public WormholeDataSourceMetaData(final String identifier, final String databaseType, final String url, final String username, final String password, final DataSourcePoolMetadata pool) {
+        this.databaseType = DataSourceTypeFactory.getInstance(databaseType);
         urlInformation = UrlInformation.build(url);
         this.identifier = identifier;
         this.username = username;
@@ -54,17 +58,30 @@ public final class WormholeDataSource implements DataSourceMetaData {
         this.pool = pool;
     }
     
-    @Override
+    /**
+     * Get driver class name.
+     *
+     * @return driver class name
+     */
     public String getDriverClassName() {
-        return dataSourceType.getDriverClassName();
+        return databaseType.getDriverClassName();
     }
     
-    @Override
+    /**
+     * Get jdbc url.
+     *
+     * @return jdbc url
+     */
     public String getJdbcUrl() {
         return urlInformation.getUrl();
     }
     
-    @Override
+    /**
+     * Register {@link SchemaMetaData}.
+     *
+     * @param schemaMetaData {@link SchemaMetaData}
+     * @return is registered or not
+     */
     public boolean registerSchema(final SchemaMetaData schemaMetaData) {
         if (schemas.containsKey(schemaMetaData.getName())) {
             return false;
@@ -73,11 +90,15 @@ public final class WormholeDataSource implements DataSourceMetaData {
         return true;
     }
     
-    @Override
+    /**
+     * Get {@link TableMetaData}.
+     *
+     * @param name name
+     * @return {@link TableMetaData}
+     */
     public TableMetaData getTable(final String name) {
-        // TODO refactor to used util
         if (name.contains(MarkConstant.POINT)) {
-            String[] split = name.split(MarkConstant.POINT);
+            String[] split = StringUtil.twoPartsSplit(name, MarkConstant.POINT);
             return getTable(split[0], split[1]);
         }
         return getTable(urlInformation.getCatalog(), name);
@@ -87,7 +108,11 @@ public final class WormholeDataSource implements DataSourceMetaData {
         return schemas.get(schemaName).getTable(tableName);
     }
     
-    @Override
+    /**
+     * Get related schema names.
+     *
+     * @return related schema names
+     */
     public Collection<String> getRelatedSchemaNames() {
         return Collections.singletonList(urlInformation.getCatalog());
     }

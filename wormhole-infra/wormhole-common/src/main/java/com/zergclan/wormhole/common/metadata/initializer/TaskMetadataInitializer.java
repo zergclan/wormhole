@@ -21,7 +21,7 @@ import com.zergclan.wormhole.common.configuration.DataNodeConfiguration;
 import com.zergclan.wormhole.common.configuration.SourceConfiguration;
 import com.zergclan.wormhole.common.configuration.TargetConfiguration;
 import com.zergclan.wormhole.common.configuration.TaskConfiguration;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.SourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TargetMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TaskMetaData;
@@ -46,17 +46,17 @@ public final class TaskMetadataInitializer {
      *
      * @param taskIdentifier task identifier
      * @param configuration {@link TaskConfiguration}
-     * @param dataSources {@link DataSourceMetaData}
+     * @param dataSources {@link WormholeDataSourceMetaData}
      * @return {@link TaskMetaData}
      */
-    public TaskMetaData init(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, DataSourceMetaData> dataSources) {
+    public TaskMetaData init(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, WormholeDataSourceMetaData> dataSources) {
         TargetMetaData target = createTarget(configuration.getTarget(), dataSources.get(configuration.getTarget().getDataSource()));
         SourceMetaData source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSource()));
         Collection<FilterMetaData> filters = filterMetadataInitializer.init(taskIdentifier, configuration.getDataNodeMappings(), target, source);
         return new TaskMetaData(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
 
-    private SourceMetaData createSource(final SourceConfiguration sourceConfiguration, final DataSourceMetaData sourceDataSource) {
+    private SourceMetaData createSource(final SourceConfiguration sourceConfiguration, final WormholeDataSourceMetaData sourceDataSource) {
         String actualSql = sourceConfiguration.getActualSql();
         String table = sourceConfiguration.getTable();
         String conditionSql = sourceConfiguration.getConditionSql();
@@ -64,7 +64,7 @@ public final class TaskMetadataInitializer {
         return new SourceMetaData(sourceDataSource.getIdentifier(), actualSql, table, conditionSql, dataNodes);
     }
 
-    private TargetMetaData createTarget(final TargetConfiguration targetConfiguration, final DataSourceMetaData targetDataSource) {
+    private TargetMetaData createTarget(final TargetConfiguration targetConfiguration, final WormholeDataSourceMetaData targetDataSource) {
         String table = targetConfiguration.getTable();
         Collection<String> uniqueNodes = targetConfiguration.getUniqueNodes();
         Collection<String> compareNodes = targetConfiguration.getCompareNodes();

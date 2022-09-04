@@ -19,9 +19,8 @@ package com.zergclan.wormhole.common.metadata.initializer;
 
 import com.zergclan.wormhole.common.configuration.DataSourceConfiguration;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourcePoolMetadata;
-import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSource;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.IndexMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.SchemaMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.TableMetaData;
@@ -39,27 +38,27 @@ public final class DataSourceMetadataInitializer {
     private final DataSourcePoolMetadataInitializer dataSourcePoolMetadataInitializer = new DataSourcePoolMetadataInitializer();
     
     /**
-     * Create {@link DataSourceMetaData} by actual type.
+     * Create {@link WormholeDataSourceMetaData} by actual type.
      *
      * @param configuration {@link DataSourceConfiguration}
-     * @return {@link DataSourceMetaData}
+     * @return {@link WormholeDataSourceMetaData}
      */
-    public WormholeDataSource createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
+    public WormholeDataSourceMetaData createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
         DataSourcePoolMetadata pool = dataSourcePoolMetadataInitializer.init(configuration.getPool());
-        return new WormholeDataSource(configuration.getName(), configuration.getType(), configuration.getUrl(), configuration.getUsername(), configuration.getPassword(), pool);
+        return new WormholeDataSourceMetaData(configuration.getName(), configuration.getType(), configuration.getUrl(), configuration.getUsername(), configuration.getPassword(), pool);
     }
     
     /**
-     * Init {@link DataSourceMetaData}.
+     * Init {@link WormholeDataSourceMetaData}.
      *
-     * @param dataSourceMetaData {@link DataSourceMetaData}
+     * @param dataSourceMetaData {@link WormholeDataSourceMetaData}
      * @throws SQLException SQL Exception
      */
-    public void init(final DataSourceMetaData dataSourceMetaData) throws SQLException {
+    public void init(final WormholeDataSourceMetaData dataSourceMetaData) throws SQLException {
         initDataSource(dataSourceMetaData, MetaDataLoaderBuilder.build(dataSourceMetaData));
     }
     
-    private void initDataSource(final DataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {
+    private void initDataSource(final WormholeDataSourceMetaData dataSource, final MetaDataLoader metadataLoader) throws SQLException {
         Collection<String> relatedSchemaNames = dataSource.getRelatedSchemaNames();
         for (SchemaMetaData each : metadataLoader.loadSchemas(dataSource.getIdentifier())) {
             if (relatedSchemaNames.contains(each.getName())) {

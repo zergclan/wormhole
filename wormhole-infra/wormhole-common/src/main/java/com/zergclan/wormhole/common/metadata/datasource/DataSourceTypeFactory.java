@@ -17,28 +17,29 @@
 
 package com.zergclan.wormhole.common.metadata.datasource;
 
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.tool.spi.WormholeServiceLoader;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPIRegistry;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Simple factory for create {@link DataSourceType}.
+ * Simple factory for create {@link DatabaseType}.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DataSourceTypeFactory {
     
     static {
-        WormholeServiceLoader.register(DataSourceType.class);
+        WormholeServiceLoader.register(DatabaseType.class);
     }
     
     /**
      * Get instance.
      *
      * @param dataSourceType data source type
-     * @return {@link DataSourceType}
+     * @return {@link DatabaseType}
      */
-    public static DataSourceType getInstance(final String dataSourceType) {
-        return TypedSPIRegistry.getRegisteredService(DataSourceType.class, dataSourceType);
+    public static DatabaseType getInstance(final String dataSourceType) {
+        return TypedSPIRegistry.getRegisteredService(DatabaseType.class, dataSourceType);
     }
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.datasource.dialect;
+package com.zergclan.wormhole.common.metadata.database;
 
 import lombok.Getter;
 
@@ -25,7 +25,7 @@ import java.util.Optional;
  * Database type.
  */
 @Getter
-public enum DatabaseType {
+public enum SupportedDialectType {
     
     /**
      * Compatibility modes for MySQL.
@@ -60,7 +60,7 @@ public enum DatabaseType {
 
     private final String defaultDriverClassName;
     
-    DatabaseType(final String name, final String protocol, final Integer defaultPort, final String defaultDriverClassName) {
+    SupportedDialectType(final String name, final String protocol, final Integer defaultPort, final String defaultDriverClassName) {
         this.name = name;
         this.protocol = protocol;
         this.defaultPort = defaultPort;
@@ -68,12 +68,12 @@ public enum DatabaseType {
     }
 
     /**
-     * Get {@link DatabaseType} by code.
+     * Get {@link SupportedDialectType} by code.
      *
      * @param name name
-     * @return {@link DatabaseType}
+     * @return {@link SupportedDialectType}
      */
-    public static Optional<DatabaseType> getDatabaseType(final String name) {
+    public static Optional<SupportedDialectType> getDatabaseType(final String name) {
         if (MYSQL.name.equalsIgnoreCase(name)) {
             return Optional.of(MYSQL);
         } else if (ORACLE.name.equalsIgnoreCase(name)) {

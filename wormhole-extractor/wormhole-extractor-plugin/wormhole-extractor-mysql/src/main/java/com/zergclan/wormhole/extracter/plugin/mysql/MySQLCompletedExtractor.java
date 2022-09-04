@@ -19,8 +19,8 @@ package com.zergclan.wormhole.extracter.plugin.mysql;
 
 import com.zergclan.wormhole.common.data.node.DataGroup;
 import com.zergclan.wormhole.common.data.node.DataNodeBuilder;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceMetaData;
-import com.zergclan.wormhole.common.metadata.datasource.dialect.DatabaseType;
+import com.zergclan.wormhole.common.metadata.database.SupportedDialectType;
+import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.extractor.AbstractCompletedExtractor;
 import com.zergclan.wormhole.jdbc.datasource.DataSourceManager;
@@ -40,13 +40,13 @@ import java.util.Map;
 public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     
     @Override
-    protected Collection<DataGroup> doExtract(final DataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
+    protected Collection<DataGroup> doExtract(final WormholeDataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
         try (Connection connection = createConnection(dataSource)) {
             return execute(connection, dataNodes, extractSQl);
         }
     }
     
-    private Connection createConnection(final DataSourceMetaData dataSourceMetaData) throws SQLException {
+    private Connection createConnection(final WormholeDataSourceMetaData dataSourceMetaData) throws SQLException {
         return DataSourceManager.getDataSource(dataSourceMetaData).getConnection();
     }
     
@@ -72,6 +72,6 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     
     @Override
     public String getType() {
-        return DatabaseType.MYSQL.getName();
+        return SupportedDialectType.MYSQL.getName();
     }
 }

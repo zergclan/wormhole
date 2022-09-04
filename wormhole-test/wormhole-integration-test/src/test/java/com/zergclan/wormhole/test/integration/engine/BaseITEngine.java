@@ -17,7 +17,9 @@
 
 package com.zergclan.wormhole.test.integration.engine;
 
+import com.zergclan.wormhole.common.metadata.datasource.DataSourceTypeFactory;
 import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
+import com.zergclan.wormhole.jdbc.expression.SQLExpressionGenerator;
 import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
 import com.zergclan.wormhole.test.integration.framework.container.DatabaseITContainerManager;
@@ -29,7 +31,6 @@ import com.zergclan.wormhole.test.integration.framework.data.node.DataSourceNode
 import com.zergclan.wormhole.test.integration.framework.data.node.RowsNode;
 import com.zergclan.wormhole.test.integration.framework.data.node.TableNode;
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
-import com.zergclan.wormhole.test.integration.framework.util.SQLBuilder;
 import com.zergclan.wormhole.test.integration.framework.util.TimeSleeper;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -86,7 +87,7 @@ public abstract class BaseITEngine {
     
     private void initEnv() {
         for (DataSourceEnvironment each : dataSources) {
-            containerManager.register(new DockerContainerDefinition(scenario, each.getDataSourceType(), each.getPort()));
+            containerManager.register(new DockerContainerDefinition(scenario, each.getDatabaseType(), each.getPort()));
         }
         containerManager.start();
     }
@@ -134,10 +135,9 @@ public abstract class BaseITEngine {
     }
     
     private String initInsertSQL(final TableNode tableNode) {
-        String insertExpression = SQLBuilder.buildInsertTable(tableNode.getName());
-        Collection<String> columnNames = tableNode.getColumns().stream().map(ColumnNode::getName).collect(Collectors.toCollection(LinkedList::new));
-        String columnsValuesExpression = SQLBuilder.buildInsertColumnsValues(columnNames, 1);
-        return insertExpression + columnsValuesExpression;
+        Collection<String> nodeNames = tableNode.getColumns().stream().map(ColumnNode::getName).collect(Collectors.toCollection(LinkedList::new));
+        SQLExpressionGenerator sqlExpressionGenerator = new SQLExpressionGenerator(DataSourceTypeFactory.getInstance(dataset.getDatabaseType()), tableNode.getName(), nodeNames);
+        return sqlExpressionGenerator.generateInsertTable() + sqlExpressionGenerator.generateInsertColumns() + sqlExpressionGenerator.generateInsertValues();
     }
     
     private Collection<Object[]> initValueIterators(final TableNode tableNode) {

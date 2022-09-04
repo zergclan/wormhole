@@ -53,14 +53,14 @@ public final class ExpressionBuilderFactory {
     }
     
     private static ExpressionBuilder getSourceExpressionBuilder(final CachedSourceMetaData cachedSourceMetaData) {
-        String dataSourceType = cachedSourceMetaData.getDataSource().getDataSourceType().getType();
+        String dataSourceType = cachedSourceMetaData.getDataSource().getDatabaseType().getType();
         ExpressionBuilder result = TypedSPIRegistry.getRegisteredService(ExpressionBuilder.class, dataSourceType + MarkConstant.AT + "source");
         result.init(cachedSourceMetaData);
         return result;
     }
     
     private static ExpressionBuilder getTargetExpressionBuilder(final CachedTargetMetaData cachedTargetMetaData) {
-        String dataSourceType = cachedTargetMetaData.getDataSource().getDataSourceType().getType();
+        String dataSourceType = cachedTargetMetaData.getDataSource().getDatabaseType().getType();
         ExpressionBuilder result = TypedSPIRegistry.getRegisteredService(ExpressionBuilder.class, dataSourceType + MarkConstant.AT + "target");
         result.init(cachedTargetMetaData);
         return result;

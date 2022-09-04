@@ -15,17 +15,18 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.datasource.dialect;
+package com.zergclan.wormhole.common.metadata.database.dialect;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceType;
-import com.zergclan.wormhole.common.metadata.datasource.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
+import com.zergclan.wormhole.common.metadata.database.QuoteCharacter;
+import com.zergclan.wormhole.common.metadata.database.SupportedDialectType;
 
 /**
- * Data source type for PostgreSQL.
+ * Data source type for H2.
  */
-public final class PostgreSQLDataSourceType implements DataSourceType {
+public final class H2DatabaseType implements DatabaseType {
     
-    private static final DatabaseType TYPE = DatabaseType.POSTGRESQL;
+    private static final SupportedDialectType TYPE = SupportedDialectType.H2;
     
     @Override
     public QuoteCharacter getQuoteCharacter() {
@@ -35,6 +36,11 @@ public final class PostgreSQLDataSourceType implements DataSourceType {
     @Override
     public String getDriverClassName() {
         return TYPE.getDefaultDriverClassName();
+    }
+    
+    @Override
+    public int getDefaultPort() {
+        return TYPE.getDefaultPort();
     }
     
     @Override
