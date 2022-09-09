@@ -37,12 +37,12 @@ public final class TargetMetaDataTest {
     public static void init() {
         String dataSourceIdentifier = "dataSourceIdentifier";
         String table = "table";
+        Map<String, DataNodeMetaData> dataNodes = new LinkedHashMap<>();
         Collection<String> uniqueNodes = new LinkedList<>();
         Collection<String> compareNodes = new LinkedList<>();
         Collection<String> ignoreNodes = new LinkedList<>();
         String versionNode = "taskBatch";
-        Map<String, DataNodeMetaData> dataNodes = new LinkedHashMap<>();
-        metaData = new TargetMetaData(dataSourceIdentifier, table, uniqueNodes, compareNodes, ignoreNodes, versionNode, dataNodes);
+        metaData = new TargetMetaData(dataSourceIdentifier, table, dataNodes, uniqueNodes, compareNodes, ignoreNodes, versionNode);
     }
     
     @Test

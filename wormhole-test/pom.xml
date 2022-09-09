@@ -35,6 +35,7 @@
 
     <properties>
         <testcontainers.version>1.17.3</testcontainers.version>
+        <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -71,4 +72,15 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

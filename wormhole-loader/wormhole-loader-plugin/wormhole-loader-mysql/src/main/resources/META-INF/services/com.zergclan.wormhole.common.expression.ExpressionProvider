@@ -15,4 +15,4 @@
 # limitations under the License.
 #
 
-com.zergclan.wormhole.extracter.plugin.mysql.MySQLExtractExpressionBuilder
+com.zergclan.wormhole.loader.plugin.mysql.LoadExpressionProvider

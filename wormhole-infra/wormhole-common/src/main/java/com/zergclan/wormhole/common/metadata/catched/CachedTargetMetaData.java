@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.common.metadata.catched;
 
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TargetMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
@@ -63,6 +64,15 @@ public final class CachedTargetMetaData implements CachedMetaData {
      */
     public static CachedTargetMetaData builder(final String cachedTaskIdentifier, final long taskBatch, final TargetMetaData target, final WormholeDataSourceMetaData dataSource) {
         return new CachedBuilder(cachedTaskIdentifier, taskBatch, target, dataSource).build();
+    }
+    
+    /**
+     * Get {@link DatabaseType}.
+     *
+     * @return {@link DatabaseType}
+     */
+    public DatabaseType getDatabaseType() {
+        return dataSource.getDatabaseType();
     }
     
     @RequiredArgsConstructor

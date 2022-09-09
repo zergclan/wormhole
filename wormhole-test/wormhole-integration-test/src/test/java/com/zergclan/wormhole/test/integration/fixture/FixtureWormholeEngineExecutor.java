@@ -15,41 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.expression;
+package com.zergclan.wormhole.test.integration.fixture;
 
-import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
-import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
+import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Expression builder.
+ * Wormhole engine executor.
  */
-public interface ExpressionBuilder extends TypedSPI {
+@RequiredArgsConstructor
+@Getter
+public final class FixtureWormholeEngineExecutor implements Runnable {
     
-    /**
-     * Init.
-     *
-     * @param cachedMetaData {@link CachedMetaData}
-     */
-    void init(CachedMetaData cachedMetaData);
+    private final WormholeExecutionEngine wormholeExecutionEngine;
     
-    /**
-     * Build select expression.
-     *
-     * @return select expression
-     */
-    String buildSelect();
-    
-    /**
-     * Build insert expression.
-     *
-     * @return insert expression
-     */
-    String buildInsert();
-    
-    /**
-     * Build update expression.
-     *
-     * @return insert expression
-     */
-    String buildUpdate();
+    @Override
+    public void run() {
+        wormholeExecutionEngine.execute();
+    }
 }

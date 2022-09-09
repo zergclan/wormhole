@@ -26,11 +26,13 @@ import com.zergclan.wormhole.common.data.node.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.common.data.result.BatchedLoadResult;
 import com.zergclan.wormhole.common.data.result.ErrorDataGroup;
 import com.zergclan.wormhole.common.data.result.LoadResultData;
+import com.zergclan.wormhole.common.expression.ExpressionProvider;
+import com.zergclan.wormhole.common.expression.ExpressionProviderFactory;
 import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.common.metadata.database.SupportedDialectType;
 import com.zergclan.wormhole.jdbc.datasource.DataSourceManager;
 import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
-import com.zergclan.wormhole.loader.AbstractBatchedLoader;
+import com.zergclan.wormhole.loader.WormholeLoader;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
@@ -44,10 +46,20 @@ import java.util.LinkedList;
  * Batched loader of MySQL.
  */
 @Slf4j
-public final class MySQLBatchedLoader extends AbstractBatchedLoader {
+public final class MySQLBatchedLoader implements WormholeLoader<BatchedDataGroup, BatchedLoadResult> {
+    
+    private CachedTargetMetaData cachedTarget;
+    
+    private ExpressionProvider expressionProvider;
     
     @Override
-    protected BatchedLoadResult standardLoad(final BatchedDataGroup batchedDataGroup, final CachedTargetMetaData cachedTarget) {
+    public void init(final CachedTargetMetaData cachedTarget) {
+        this.cachedTarget = cachedTarget;
+        expressionProvider = ExpressionProviderFactory.getInstance(cachedTarget);
+    }
+    
+    @Override
+    public BatchedLoadResult load(final BatchedDataGroup batchedDataGroup) {
         LoadResultData result = new LoadResultData(batchedDataGroup.getBatchSize());
         try (Connection connection = DataSourceManager.getDataSource(cachedTarget.getDataSource()).getConnection()) {
             for (DataGroup each : batchedDataGroup.getDataGroups()) {
@@ -93,7 +105,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
     }
     
     private ResultSet executeSelect(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
-        return SQLExecutor.executeQuery(connection, getExpressionBuilder().buildSelect(), initWhereParameter(cachedTarget, dataGroup));
+        return SQLExecutor.executeQuery(connection, expressionProvider.getSelectExpression(), initWhereParameter(cachedTarget, dataGroup));
     }
     
     private Object[] initWhereParameter(final CachedTargetMetaData cachedTarget, final DataGroup dataGroup) {
@@ -113,7 +125,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
     }
     
     private boolean executeInsert(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
-        return 1 == SQLExecutor.executeUpdate(connection, getExpressionBuilder().buildInsert(), initInsertParameter(cachedTarget, dataGroup));
+        return 1 == SQLExecutor.executeUpdate(connection, expressionProvider.getInsertExpression(), initInsertParameter(cachedTarget, dataGroup));
     }
     
     private Object[] initInsertParameter(final CachedTargetMetaData cachedTarget, final DataGroup dataGroup) {
@@ -129,7 +141,7 @@ public final class MySQLBatchedLoader extends AbstractBatchedLoader {
     }
     
     private boolean executeUpdate(final Connection connection, final DataGroup dataGroup, final CachedTargetMetaData cachedTarget) throws SQLException {
-        return 1 == SQLExecutor.executeUpdate(connection, getExpressionBuilder().buildUpdate(), initUpdateParameter(cachedTarget, dataGroup));
+        return 1 == SQLExecutor.executeUpdate(connection, expressionProvider.getUpdateExpression(), initUpdateParameter(cachedTarget, dataGroup));
     }
     
     private Object[] initUpdateParameter(final CachedTargetMetaData cachedTarget, final DataGroup dataGroup) {

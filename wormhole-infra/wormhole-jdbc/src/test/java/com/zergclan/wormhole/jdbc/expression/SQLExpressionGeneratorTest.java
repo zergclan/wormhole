@@ -36,7 +36,7 @@ public final class SQLExpressionGeneratorTest {
         Set<String> nodeNames = Collections.newLinkedHashSet(new String[] {"id", "username", "password", "create_time"});
         Set<String> uniqueNodeNames = Collections.newLinkedHashSet(new String[] {"username", "password"});
         String conditionSql = "id=1";
-        generator = new SQLExpressionGenerator(DataSourceTypeFactory.getInstance("MySQL"), table, nodeNames, uniqueNodeNames, conditionSql);
+        generator = SQLExpressionGenerator.build(DataSourceTypeFactory.getInstance("MySQL"), table, nodeNames, conditionSql, uniqueNodeNames);
     }
     
     @Test

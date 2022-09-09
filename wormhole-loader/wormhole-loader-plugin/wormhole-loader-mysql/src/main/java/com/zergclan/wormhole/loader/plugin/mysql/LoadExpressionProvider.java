@@ -17,22 +17,28 @@
 
 package com.zergclan.wormhole.loader.plugin.mysql;
 
-import com.zergclan.wormhole.common.expression.ExpressionBuilder;
+import com.zergclan.wormhole.common.expression.ExpressionProvider;
 import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
 import com.zergclan.wormhole.common.metadata.catched.CachedTargetMetaData;
 import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.jdbc.expression.SQLExpressionGenerator;
 import com.zergclan.wormhole.tool.util.StringUtil;
+import lombok.Getter;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * Load expression builder of MySQL.
+ * Expression provider of Loader.
  */
-public final class MySQLLoadExpressionBuilder implements ExpressionBuilder {
+@Getter
+public final class LoadExpressionProvider implements ExpressionProvider {
     
-    private SQLExpressionGenerator generator;
+    private String insertExpression;
+    
+    private String updateExpression;
+    
+    private String selectExpression;
     
     @Override
     public void init(final CachedMetaData cachedMetaData) {
@@ -42,7 +48,10 @@ public final class MySQLLoadExpressionBuilder implements ExpressionBuilder {
             String table = targetMetaData.getTable();
             Collection<String> nodeNames = initNodeNames(targetMetaData);
             Collection<String> uniqueNodeNames = targetMetaData.getUniqueNodes();
-            generator = new SQLExpressionGenerator(databaseType, table, nodeNames, uniqueNodeNames, null);
+            SQLExpressionGenerator generator = SQLExpressionGenerator.build(databaseType, table, nodeNames, uniqueNodeNames);
+            insertExpression = generator.generateInsertTable() + generator.generateInsertColumns() + generator.generateInsertValues();
+            updateExpression = generator.generateUpdateTable() + generator.generateUpdateColumns() + generator.generateWhereByAllEquals();
+            selectExpression = generator.generateSelectColumns() + generator.generateFromTable() + generator.generateWhereByAllEquals();
         }
         throw new UnsupportedOperationException();
     }
@@ -54,25 +63,5 @@ public final class MySQLLoadExpressionBuilder implements ExpressionBuilder {
             result.add(versionNode);
         }
         return result;
-    }
-    
-    @Override
-    public String buildSelect() {
-        return generator.generateSelectColumns() + generator.generateFromTable() + generator.generateWhereByAllEquals();
-    }
-    
-    @Override
-    public String buildInsert() {
-        return generator.generateInsertTable() + generator.generateInsertColumns() + generator.generateInsertValues();
-    }
-    
-    @Override
-    public String buildUpdate() {
-        return generator.generateUpdateTable() + generator.generateUpdateColumns() + generator.generateWhereByAllEquals();
-    }
-    
-    @Override
-    public String getType() {
-        return "MySQL@target";
     }
 }
