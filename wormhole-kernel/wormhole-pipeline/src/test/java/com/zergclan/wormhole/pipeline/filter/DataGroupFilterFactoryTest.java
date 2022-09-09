@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
 import org.junit.jupiter.api.Test;

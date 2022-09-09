@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.helper;
 
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.tool.util.DateUtil;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.node.BigDecimalDataNode;
@@ -26,7 +27,6 @@ import com.zergclan.wormhole.common.data.node.LongDataNode;
 import com.zergclan.wormhole.common.data.node.PatternedDataTime;
 import com.zergclan.wormhole.common.data.node.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.common.data.node.TextDataNode;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -42,13 +42,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class DataTypeConvertorHelper {
     
-    private final DataNodeTypeMetaData.DataType sourceDataType;
+    private final DataType sourceDataType;
     
-    private final DataNodeTypeMetaData.DataType targetDataType;
+    private final DataType targetDataType;
     
     private final String pattern;
     
-    public DataTypeConvertorHelper(final DataNodeTypeMetaData.DataType sourceDataType, final DataNodeTypeMetaData.DataType targetDataType) {
+    public DataTypeConvertorHelper(final DataType sourceDataType, final DataType targetDataType) {
         this(sourceDataType, targetDataType, null);
     }
     
@@ -59,72 +59,72 @@ public final class DataTypeConvertorHelper {
      * @return source data node
      */
     public Optional<DataNode<?>> convert(final DataNode<?> sourceDataNode) {
-        if (DataNodeTypeMetaData.DataType.TEXT == sourceDataType) {
+        if (DataType.TEXT == sourceDataType) {
             return convertText((TextDataNode) sourceDataNode);
         }
-        if (DataNodeTypeMetaData.DataType.INT == sourceDataType) {
+        if (DataType.INT == sourceDataType) {
             return convertInt((IntegerDataNode) sourceDataNode);
         }
-        if (DataNodeTypeMetaData.DataType.LONG == sourceDataType) {
+        if (DataType.LONG == sourceDataType) {
             return convertLong((LongDataNode) sourceDataNode);
         }
-        if (DataNodeTypeMetaData.DataType.DATA_TIME == sourceDataType) {
+        if (DataType.DATA_TIME == sourceDataType) {
             return convertDataTime((LocalDateTimeDataNode) sourceDataNode);
         }
         return Optional.empty();
     }
     
     private Optional<DataNode<?>> convertText(final TextDataNode sourceDataNode) {
-        if (DataNodeTypeMetaData.DataType.INT == targetDataType) {
+        if (DataType.INT == targetDataType) {
             return Optional.of(new IntegerDataNode(sourceDataNode.getName(), Integer.parseInt(sourceDataNode.getValue())));
         }
-        if (DataNodeTypeMetaData.DataType.LONG == targetDataType) {
+        if (DataType.LONG == targetDataType) {
             return Optional.of(new LongDataNode(sourceDataNode.getName(), Long.parseLong(sourceDataNode.getValue())));
         }
-        if (DataNodeTypeMetaData.DataType.MONETARY == targetDataType) {
+        if (DataType.MONETARY == targetDataType) {
             return Optional.of(new BigDecimalDataNode(sourceDataNode.getName(), new BigDecimal(sourceDataNode.getValue())));
         }
-        if (DataNodeTypeMetaData.DataType.DATA_TIME == targetDataType) {
+        if (DataType.DATA_TIME == targetDataType) {
             LocalDateTime localDateTime = DateUtil.swapToLocalDateTime(DateUtil.parseDate(sourceDataNode.getValue(), pattern));
             return Optional.of(new LocalDateTimeDataNode(sourceDataNode.getName(), localDateTime));
         }
-        if (DataNodeTypeMetaData.DataType.PATTERNED_DATA_TIME == targetDataType) {
+        if (DataType.PATTERNED_DATA_TIME == targetDataType) {
             return Optional.of(new PatternedDataTimeDataNode(sourceDataNode.getName(), new PatternedDataTime(sourceDataNode.getValue(), pattern)));
         }
         return Optional.empty();
     }
     
     private Optional<DataNode<?>> convertInt(final IntegerDataNode sourceDataNode) {
-        if (DataNodeTypeMetaData.DataType.TEXT == targetDataType) {
+        if (DataType.TEXT == targetDataType) {
             return Optional.of(new TextDataNode(sourceDataNode.getName(), String.valueOf(sourceDataNode.getValue())));
         }
-        if (DataNodeTypeMetaData.DataType.LONG == targetDataType) {
+        if (DataType.LONG == targetDataType) {
             return Optional.of(new LongDataNode(sourceDataNode.getName(), Long.valueOf(sourceDataNode.getValue())));
         }
-        if (DataNodeTypeMetaData.DataType.MONETARY == targetDataType) {
+        if (DataType.MONETARY == targetDataType) {
             return Optional.of(new BigDecimalDataNode(sourceDataNode.getName(), new BigDecimal(sourceDataNode.getValue())));
         }
         return Optional.empty();
     }
     
     private Optional<DataNode<?>> convertLong(final LongDataNode sourceDataNode) {
-        if (DataNodeTypeMetaData.DataType.TEXT == targetDataType) {
+        if (DataType.TEXT == targetDataType) {
             return Optional.of(new TextDataNode(sourceDataNode.getName(), sourceDataNode.getValue().toString()));
         }
-        if (DataNodeTypeMetaData.DataType.MONETARY == targetDataType) {
+        if (DataType.MONETARY == targetDataType) {
             return Optional.of(new BigDecimalDataNode(sourceDataNode.getName(), new BigDecimal(sourceDataNode.getValue())));
         }
-        if (DataNodeTypeMetaData.DataType.DATA_TIME == targetDataType) {
+        if (DataType.DATA_TIME == targetDataType) {
             return Optional.of(new LocalDateTimeDataNode(sourceDataNode.getName(), LocalDateTime.ofInstant(Instant.ofEpochMilli(sourceDataNode.getValue()), ZoneId.systemDefault())));
         }
         return Optional.empty();
     }
     
     private Optional<DataNode<?>> convertDataTime(final LocalDateTimeDataNode sourceDataNode) {
-        if (DataNodeTypeMetaData.DataType.LONG == targetDataType) {
+        if (DataType.LONG == targetDataType) {
             return Optional.of(new LongDataNode(sourceDataNode.getName(), Timestamp.valueOf(sourceDataNode.getValue()).getTime()));
         }
-        if (DataNodeTypeMetaData.DataType.PATTERNED_DATA_TIME == targetDataType) {
+        if (DataType.PATTERNED_DATA_TIME == targetDataType) {
             return Optional.of(new PatternedDataTimeDataNode(sourceDataNode.getName(),
                     new PatternedDataTime(DateUtil.swapToDate(sourceDataNode.getValue()), PatternedDataTime.DatePattern.valueOfPattern(pattern))));
         }

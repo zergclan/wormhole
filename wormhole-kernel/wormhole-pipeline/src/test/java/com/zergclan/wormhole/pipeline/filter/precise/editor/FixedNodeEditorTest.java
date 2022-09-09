@@ -17,12 +17,12 @@
 
 package com.zergclan.wormhole.pipeline.filter.precise.editor;
 
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.node.IntegerDataNode;
 import com.zergclan.wormhole.common.data.node.TextDataNode;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.pipeline.helper.NodeValueHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ public final class FixedNodeEditorTest {
     @BeforeAll
     public static void init() {
         Collection<NodeValueHelper> helpers = new LinkedList<>();
-        NodeValueHelper testHelper = new NodeValueHelper(DataNodeTypeMetaData.DataType.TEXT, "name", "jack");
+        NodeValueHelper testHelper = new NodeValueHelper(DataType.TEXT, "name", "jack");
         helpers.add(testHelper);
         editor = new FixedNodeEditor(0, FilterType.FIXED_NODE, helpers);
     }

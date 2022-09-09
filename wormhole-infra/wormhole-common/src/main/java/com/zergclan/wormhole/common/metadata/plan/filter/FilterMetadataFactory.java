@@ -32,7 +32,8 @@ import com.zergclan.wormhole.common.metadata.plan.filter.precise.editor.ValueRan
 import com.zergclan.wormhole.common.metadata.plan.filter.precise.validator.NotBlankValidatorMetaData;
 import com.zergclan.wormhole.common.metadata.plan.filter.precise.validator.NotNullValidatorMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
+import com.zergclan.wormhole.common.metadata.plan.node.NodeType;
 import com.zergclan.wormhole.tool.util.Validator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -56,16 +57,16 @@ public final class FilterMetadataFactory {
      * @return {@link FilterMetaData}
      */
     public static Collection<FilterMetaData> getDefaultInstance(final String taskIdentifier, final DataNodeMetaData sourceDataNode, final DataNodeMetaData targetDataNode) {
-        DataNodeTypeMetaData.NodeType targetNodeType = targetDataNode.getType().getNodeType();
-        DataNodeTypeMetaData.NodeType sourceNodeType = sourceDataNode.getType().getNodeType();
+        NodeType targetNodeType = targetDataNode.getType().getNodeType();
+        NodeType sourceNodeType = sourceDataNode.getType().getNodeType();
         String sourceName = sourceDataNode.getName();
         Collection<FilterMetaData> result = new LinkedList<>();
-        boolean preState = DataNodeTypeMetaData.NodeType.FIXED != targetNodeType && DataNodeTypeMetaData.NodeType.MAPPED != targetNodeType;
+        boolean preState = NodeType.FIXED != targetNodeType && NodeType.MAPPED != targetNodeType;
         Validator.preState(preState, "error : create default filter metadata failed target NodeType can not be: [%s] task identifier: [%s]", targetNodeType.name(), taskIdentifier);
-        if (DataNodeTypeMetaData.NodeType.REQUIRED == targetNodeType && DataNodeTypeMetaData.NodeType.STANDARD == sourceNodeType) {
+        if (NodeType.REQUIRED == targetNodeType && NodeType.STANDARD == sourceNodeType) {
             result.add(NotNullValidatorMetaData.builder(taskIdentifier, Integer.MIN_VALUE, sourceName));
         }
-        if (DataNodeTypeMetaData.NodeType.DEFAULT_ABLE == targetNodeType && DataNodeTypeMetaData.NodeType.STANDARD == sourceNodeType) {
+        if (NodeType.DEFAULT_ABLE == targetNodeType && NodeType.STANDARD == sourceNodeType) {
             String defaultValue = targetDataNode.getDefaultValue();
             Validator.notNull(defaultValue, "error : create default filter metadata failed defaultValue can not be null task identifier: [%s]", taskIdentifier);
             result.add(NullToDefaultEditorMetaData.builder(taskIdentifier, Integer.MIN_VALUE, sourceName, targetDataNode.getDefaultValue(), targetDataNode.getType().getDataType()));
@@ -74,8 +75,8 @@ public final class FilterMetadataFactory {
         return result;
     }
 
-    private static Collection<FilterMetaData> createDataTypeConvertorMetadata(final String taskIdentifier, final int order, final String sourceName, final DataNodeTypeMetaData.DataType targetDataType,
-                                                                              final DataNodeTypeMetaData.DataType sourceDataType) {
+    private static Collection<FilterMetaData> createDataTypeConvertorMetadata(final String taskIdentifier, final int order, final String sourceName, final DataType targetDataType,
+                                                                              final DataType sourceDataType) {
         Collection<FilterMetaData> result = new LinkedList<>();
         if (targetDataType != sourceDataType) {
             result.add(DataTypeConvertorMetaData.builder(taskIdentifier, order, sourceName, targetDataType, sourceDataType));

@@ -19,7 +19,7 @@ package com.zergclan.wormhole.common.metadata.plan.filter.precise.editor;
 
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.tool.util.ValueExtractor;
 import lombok.Getter;
@@ -44,7 +44,7 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
 
     private final String defaultValue;
     
-    private final DataNodeTypeMetaData.DataType dataType;
+    private final DataType dataType;
 
     @Override
     public String getIdentifier() {
@@ -68,7 +68,7 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
         String sourceName = ValueExtractor.extractRequiredString(props, "sourceName");
         String defaultValue = ValueExtractor.extractRequiredString(props, "defaultValue");
         String dataType = ValueExtractor.extractRequiredString(props, "dataType");
-        return builder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetaData.DataType.valueOf(dataType));
+        return builder(taskIdentifier, order, sourceName, defaultValue, DataType.valueOf(dataType));
     }
 
     /**
@@ -78,10 +78,10 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
      * @param order order
      * @param sourceName source name
      * @param defaultValue default value
-     * @param dataType {@link DataNodeTypeMetaData.DataType}
+     * @param dataType {@link DataType}
      * @return {@link NullToDefaultEditorMetaData}
      */
-    public static NullToDefaultEditorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final String defaultValue, final DataNodeTypeMetaData.DataType dataType) {
+    public static NullToDefaultEditorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final String defaultValue, final DataType dataType) {
         return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue, dataType).build();
     }
 
@@ -96,7 +96,7 @@ public final class NullToDefaultEditorMetaData implements FilterMetaData {
 
         private final String defaultValue;
     
-        private final DataNodeTypeMetaData.DataType dataType;
+        private final DataType dataType;
 
         private NullToDefaultEditorMetaData build() {
             return new NullToDefaultEditorMetaData(taskIdentifier, order, sourceName, defaultValue, dataType);

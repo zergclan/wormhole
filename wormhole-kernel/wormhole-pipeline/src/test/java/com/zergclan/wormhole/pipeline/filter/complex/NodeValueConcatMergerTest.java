@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.filter.complex;
 
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.data.node.TextDataNode;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
 import com.zergclan.wormhole.pipeline.helper.NodeValueConcatMergerHelper;

@@ -15,22 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.result;
-
-import com.zergclan.wormhole.common.data.DataGroup;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+package com.zergclan.wormhole.common.metadata.plan.node;
 
 /**
- * Error data group.
+ * Node type.
  */
-@RequiredArgsConstructor
-@Getter
-public final class ErrorDataGroup {
+public enum NodeType {
     
-    private final String code;
-    
-    private final String message;
-    
-    private final DataGroup dataGroup;
+    STANDARD, REQUIRED, DEFAULT_ABLE, FIXED, MAPPED
 }

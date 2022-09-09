@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.common.data.node;
 
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.tool.util.DateUtil;
 import com.zergclan.wormhole.tool.util.StringUtil;
 import lombok.AccessLevel;
@@ -43,7 +43,7 @@ public final class DataNodeBuilder {
      */
     public static DataNode<?> build(final Object data, final DataNodeMetaData metaData) {
         String name = metaData.getName();
-        DataNodeTypeMetaData.DataType dataType = metaData.getType().getDataType();
+        DataType dataType = metaData.getType().getDataType();
         if (Objects.isNull(data)) {
             return new ObjectDataNode(name, null);
         }

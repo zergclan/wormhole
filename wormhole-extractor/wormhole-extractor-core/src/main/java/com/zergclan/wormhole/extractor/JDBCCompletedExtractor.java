@@ -17,36 +17,48 @@
 
 package com.zergclan.wormhole.extractor;
 
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.expression.ExpressionProvider;
 import com.zergclan.wormhole.common.expression.ExpressionProviderFactory;
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
+import com.zergclan.wormhole.extractor.initializer.ResultSetDataGroupInitializer;
 import com.zergclan.wormhole.tool.util.StringUtil;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Map;
+import java.util.LinkedList;
 
 /**
- * Abstract completed extractor.
+ * Completed extractor of JDBC implemented.
  */
-public abstract class AbstractCompletedExtractor implements WormholeExtractor<DataGroup> {
+public abstract class JDBCCompletedExtractor implements WormholeExtractor<DataGroup> {
     
     private CachedSourceMetaData cachedSource;
     
     private ExpressionProvider expressionProvider;
     
+    private ResultSetDataGroupInitializer dataGroupInitializer;
+    
     @Override
     public void init(final CachedSourceMetaData cachedSource) {
         this.cachedSource = cachedSource;
         expressionProvider = ExpressionProviderFactory.getInstance(cachedSource);
+        dataGroupInitializer = new ResultSetDataGroupInitializer(cachedSource.getDataNodes());
     }
     
     @Override
     public Collection<DataGroup> extract() throws SQLException {
-        return doExtract(cachedSource.getDataSource(), cachedSource.getDataNodes(), getSelectExpression(cachedSource));
+        Collection<DataGroup> result = new LinkedList<>();
+        try (Connection connection = createConnection(cachedSource.getDataSource())) {
+            ResultSet resultSet = execute(connection, getSelectExpression(cachedSource));
+            while (resultSet.next()) {
+                result.add(dataGroupInitializer.init(resultSet));
+            }
+            return result;
+        }
     }
     
     private String getSelectExpression(final CachedSourceMetaData cachedSource) {
@@ -58,12 +70,21 @@ public abstract class AbstractCompletedExtractor implements WormholeExtractor<Da
     }
     
     /**
-     * Do extract {@link DataGroup}.
+     * Get {@link Connection}.
      *
-     * @param dataSource data source
-     * @param dataNodes data nodes
-     * @param extractExpression extract expression
-     * @return {@link DataGroup}
+     * @param dataSourceMetaData {@link WormholeDataSourceMetaData}
+     * @return {@link Connection}
+     * @throws SQLException SQL exception
      */
-    protected abstract Collection<DataGroup> doExtract(WormholeDataSourceMetaData dataSource, Map<String, DataNodeMetaData> dataNodes, String extractExpression) throws SQLException;
+    protected abstract Connection createConnection(WormholeDataSourceMetaData dataSourceMetaData) throws SQLException;
+    
+    /**
+     * Execute.
+     *
+     * @param connection {@link Connection}
+     * @param selectExpression select expression
+     * @return {@link ResultSet}
+     * @throws SQLException SQL exception
+     */
+    protected abstract ResultSet execute(Connection connection, String selectExpression) throws SQLException;
 }

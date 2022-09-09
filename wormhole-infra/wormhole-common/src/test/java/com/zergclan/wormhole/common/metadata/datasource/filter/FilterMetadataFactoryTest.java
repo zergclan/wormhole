@@ -24,6 +24,8 @@ import com.zergclan.wormhole.common.metadata.plan.filter.precise.validator.NotBl
 import com.zergclan.wormhole.common.metadata.plan.filter.precise.validator.NotNullValidatorMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
+import com.zergclan.wormhole.common.metadata.plan.node.NodeType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +39,7 @@ public final class FilterMetadataFactoryTest {
 
     @Test
     public void assertGetDefaultInstance() {
-        DataNodeTypeMetaData sourceDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.STANDARD, DataNodeTypeMetaData.DataType.CODE);
+        DataNodeTypeMetaData sourceDataType = new DataNodeTypeMetaData(NodeType.STANDARD, DataType.CODE);
         DataNodeMetaData finalSourceDataNode = new DataNodeMetaData("testTable", "SOURCE_TEST", sourceDataType);
         assertTargetNodeType(finalSourceDataNode);
         assertTargetReAndSourceStan();
@@ -45,26 +47,26 @@ public final class FilterMetadataFactoryTest {
     }
 
     private void assertTargetNodeType(final DataNodeMetaData finalSourceDataNode) {
-        DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.FIXED, DataNodeTypeMetaData.DataType.TEXT);
+        DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(NodeType.FIXED, DataType.TEXT);
         DataNodeMetaData fixedTargetDataNode = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType);
         assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, fixedTargetDataNode));
 
-        targetDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.MAPPED, DataNodeTypeMetaData.DataType.TEXT);
+        targetDataType = new DataNodeTypeMetaData(NodeType.MAPPED, DataType.TEXT);
         DataNodeMetaData mappedTargetDataNode = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType);
         assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, mappedTargetDataNode));
 
     }
 
     private void assertTargetReAndSourceStan() {
-        DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.REQUIRED, DataNodeTypeMetaData.DataType.DATA_TIME);
+        DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(NodeType.REQUIRED, DataType.DATA_TIME);
         DataNodeMetaData targetDataNode = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType);
-        DataNodeTypeMetaData sourceDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.STANDARD, DataNodeTypeMetaData.DataType.CODE);
+        DataNodeTypeMetaData sourceDataType = new DataNodeTypeMetaData(NodeType.STANDARD, DataType.CODE);
         DataNodeMetaData sourceDataNode = new DataNodeMetaData("testTable", "SOURCE_TEST", sourceDataType);
         Assertions.assertEquals(2, FilterMetadataFactory.getDefaultInstance(taskIdentifier, sourceDataNode, targetDataNode).size());
     }
 
     private void assertTargetDeAndSourceStan(final DataNodeMetaData finalSourceDataNode) {
-        DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(DataNodeTypeMetaData.NodeType.DEFAULT_ABLE, DataNodeTypeMetaData.DataType.TEXT);
+        DataNodeTypeMetaData targetDataType = new DataNodeTypeMetaData(NodeType.DEFAULT_ABLE, DataType.TEXT);
         DataNodeMetaData defaultTargetDataNode = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType);
         assertThrows(IllegalArgumentException.class, () -> FilterMetadataFactory.getDefaultInstance(taskIdentifier, finalSourceDataNode, defaultTargetDataNode));
         DataNodeMetaData defaultTargetDataNodeT = new DataNodeMetaData("testTable", "TARGET_TEST", targetDataType, "mark");
