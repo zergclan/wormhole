@@ -17,10 +17,11 @@
 
 package com.zergclan.wormhole.test.integration.engine;
 
+import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourceTypeFactory;
 import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
-import com.zergclan.wormhole.jdbc.expression.SQLExpressionGenerator;
 import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
+import com.zergclan.wormhole.test.integration.fixture.FixtureExpressionProvider;
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
 import com.zergclan.wormhole.test.integration.framework.container.DatabaseITContainerManager;
 import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
@@ -135,9 +136,9 @@ public abstract class BaseITEngine {
     }
     
     private String initInsertSQL(final TableNode tableNode) {
+        DatabaseType databaseType = DataSourceTypeFactory.getInstance(dataset.getDatabaseType());
         Collection<String> nodeNames = tableNode.getColumns().stream().map(ColumnNode::getName).collect(Collectors.toCollection(LinkedList::new));
-        SQLExpressionGenerator sqlExpressionGenerator = SQLExpressionGenerator.build(DataSourceTypeFactory.getInstance(dataset.getDatabaseType()), tableNode.getName(), nodeNames);
-        return sqlExpressionGenerator.generateInsertTable() + sqlExpressionGenerator.generateInsertColumns() + sqlExpressionGenerator.generateInsertValues();
+        return new FixtureExpressionProvider(databaseType, tableNode.getName(), nodeNames).getInsertExpression();
     }
     
     private Collection<Object[]> initValueIterators(final TableNode tableNode) {

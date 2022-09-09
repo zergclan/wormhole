@@ -20,7 +20,7 @@ package com.zergclan.wormhole.test.integration.engine.precise;
 import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
 import com.zergclan.wormhole.common.configuration.WormholeConfigurationLoader;
 import com.zergclan.wormhole.test.integration.engine.BaseITEngine;
-import com.zergclan.wormhole.test.integration.engine.WormholeEngineExecutor;
+import com.zergclan.wormhole.test.integration.fixture.FixtureWormholeEngineExecutor;
 import com.zergclan.wormhole.test.integration.framework.param.ParameterizedArrayFactory;
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
@@ -86,7 +86,7 @@ public final class PreciseITEngineTest extends BaseITEngine {
     private void startWormholeExecutionEngine() {
         String classPath = PathGenerator.generateWormholeConfigPath(getScenario());
         executionEngine = WormholeExecutionEngine.getInstance(WormholeConfigurationLoader.load(classPath));
-        new Thread(new WormholeEngineExecutor(executionEngine)).start();
+        new Thread(new FixtureWormholeEngineExecutor(executionEngine)).start();
     }
     
     private void triggerPlanExecute() {
