@@ -19,7 +19,7 @@ package com.zergclan.wormhole.common.metadata.plan.filter.precise.editor;
 
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.tool.util.ValueExtractor;
 import lombok.Getter;
@@ -45,7 +45,7 @@ public final class FixedNodeEditorMetaData implements FilterMetaData {
 
     private final String defaultValue;
 
-    private final DataNodeTypeMetaData.DataType dataType;
+    private final DataType dataType;
 
     @Override
     public String getIdentifier() {
@@ -69,7 +69,7 @@ public final class FixedNodeEditorMetaData implements FilterMetaData {
         String sourceName = ValueExtractor.extractRequiredString(props, "sourceName");
         String defaultValue = ValueExtractor.extractRequiredString(props, "defaultValue");
         String dataType = ValueExtractor.extractRequiredString(props, "defaultValue");
-        return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue, DataNodeTypeMetaData.DataType.valueOf(dataType.toUpperCase(Locale.ROOT))).build();
+        return new FilterBuilder(taskIdentifier, order, sourceName, defaultValue, DataType.valueOf(dataType.toUpperCase(Locale.ROOT))).build();
     }
 
     @RequiredArgsConstructor
@@ -83,7 +83,7 @@ public final class FixedNodeEditorMetaData implements FilterMetaData {
 
         private final String defaultValue;
 
-        private final DataNodeTypeMetaData.DataType dataType;
+        private final DataType dataType;
 
         private FixedNodeEditorMetaData build() {
             return new FixedNodeEditorMetaData(taskIdentifier, order, sourceName, defaultValue, dataType);

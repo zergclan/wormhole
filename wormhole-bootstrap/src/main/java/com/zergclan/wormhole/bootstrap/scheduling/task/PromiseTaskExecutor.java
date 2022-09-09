@@ -21,7 +21,7 @@ import com.zergclan.wormhole.bootstrap.scheduling.event.TaskExecutionEvent;
 import com.zergclan.wormhole.common.WormholeEvent;
 import com.zergclan.wormhole.common.WormholeResult;
 import com.zergclan.wormhole.common.data.BatchedDataGroup;
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.data.result.LoadResultData;
 import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;

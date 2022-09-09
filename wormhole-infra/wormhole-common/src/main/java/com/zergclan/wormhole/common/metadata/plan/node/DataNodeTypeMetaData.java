@@ -18,7 +18,6 @@
 package com.zergclan.wormhole.common.metadata.plan.node;
 
 import com.zergclan.wormhole.common.WormholeMetaData;
-import com.zergclan.wormhole.common.exception.WormholeException;
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
@@ -75,43 +74,5 @@ public final class DataNodeTypeMetaData implements WormholeMetaData {
             return NodeType.DEFAULT_ABLE;
         }
         return NodeType.STANDARD;
-    }
-    
-    public enum NodeType {
-    
-        STANDARD, REQUIRED, DEFAULT_ABLE, FIXED, MAPPED
-    }
-    
-    /**
-     * Data type.
-     */
-    public enum DataType {
-        
-        OBJECT, TEXT, INT, LONG, MONETARY, DATA_TIME, PATTERNED_DATA_TIME, CODE;
-    
-        /**
-         * Value of type.
-         *
-         * @param dataType data type
-         * @return {@link DataType}
-         */
-        public static DataType valueOfColumnType(final String dataType) {
-            if ("VARCHAR".equalsIgnoreCase(dataType)) {
-                return TEXT;
-            }
-            if ("INT".equalsIgnoreCase(dataType)) {
-                return INT;
-            }
-            if ("BIGINT".equalsIgnoreCase(dataType)) {
-                return LONG;
-            }
-            if ("DECIMAL".equalsIgnoreCase(dataType)) {
-                return MONETARY;
-            }
-            if ("DATETIME".equalsIgnoreCase(dataType) || "TIMESTAMP".equalsIgnoreCase(dataType)) {
-                return DATA_TIME;
-            }
-            throw new WormholeException("error : No enum constant in DataNodeTypeMetaData.DataType value of [%s]", dataType);
-        }
     }
 }

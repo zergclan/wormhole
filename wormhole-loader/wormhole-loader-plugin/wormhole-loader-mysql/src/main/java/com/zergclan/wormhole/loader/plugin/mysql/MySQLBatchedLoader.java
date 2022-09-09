@@ -19,7 +19,7 @@ package com.zergclan.wormhole.loader.plugin.mysql;
 
 import com.zergclan.wormhole.common.data.BatchedDataGroup;
 import com.zergclan.wormhole.common.data.node.BigDecimalDataNode;
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.node.LongDataNode;
 import com.zergclan.wormhole.common.data.node.PatternedDataTimeDataNode;

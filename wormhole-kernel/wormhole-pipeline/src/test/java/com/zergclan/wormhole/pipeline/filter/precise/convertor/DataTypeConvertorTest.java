@@ -18,12 +18,12 @@
 package com.zergclan.wormhole.pipeline.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.data.node.BigDecimalDataNode;
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.data.node.IntegerDataNode;
 import com.zergclan.wormhole.common.data.node.LongDataNode;
 import com.zergclan.wormhole.common.data.node.TextDataNode;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.pipeline.helper.DataTypeConvertorHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -42,9 +42,9 @@ public final class DataTypeConvertorTest {
     @BeforeAll
     public static void init() {
         Map<String, DataTypeConvertorHelper> helpers = new LinkedHashMap<>();
-        DataTypeConvertorHelper intHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.TEXT, DataNodeTypeMetaData.DataType.INT);
-        DataTypeConvertorHelper longHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.TEXT, DataNodeTypeMetaData.DataType.LONG);
-        DataTypeConvertorHelper monetaryHelper = new DataTypeConvertorHelper(DataNodeTypeMetaData.DataType.TEXT, DataNodeTypeMetaData.DataType.MONETARY);
+        DataTypeConvertorHelper intHelper = new DataTypeConvertorHelper(DataType.TEXT, DataType.INT);
+        DataTypeConvertorHelper longHelper = new DataTypeConvertorHelper(DataType.TEXT, DataType.LONG);
+        DataTypeConvertorHelper monetaryHelper = new DataTypeConvertorHelper(DataType.TEXT, DataType.MONETARY);
         helpers.put("int", intHelper);
         helpers.put("long", longHelper);
         helpers.put("monetary", monetaryHelper);

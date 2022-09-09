@@ -17,57 +17,29 @@
 
 package com.zergclan.wormhole.extracter.plugin.mysql;
 
-import com.zergclan.wormhole.common.data.node.DataGroup;
-import com.zergclan.wormhole.common.data.node.DataNodeBuilder;
 import com.zergclan.wormhole.common.metadata.database.SupportedDialectType;
 import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
-import com.zergclan.wormhole.extractor.AbstractCompletedExtractor;
+import com.zergclan.wormhole.extractor.JDBCCompletedExtractor;
 import com.zergclan.wormhole.jdbc.datasource.DataSourceManager;
 import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * Completed extractor of MySQL.
  */
-public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
+public final class MySQLCompletedExtractor extends JDBCCompletedExtractor {
     
     @Override
-    protected Collection<DataGroup> doExtract(final WormholeDataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String sql) throws SQLException {
-        try (Connection connection = createConnection(dataSource)) {
-            return execute(connection, dataNodes, sql);
-        }
-    }
-    
-    private Connection createConnection(final WormholeDataSourceMetaData dataSourceMetaData) throws SQLException {
+    protected Connection createConnection(final WormholeDataSourceMetaData dataSourceMetaData) throws SQLException {
         return DataSourceManager.getDataSource(dataSourceMetaData).getConnection();
     }
     
-    private Collection<DataGroup> execute(final Connection connection, final Map<String, DataNodeMetaData> dataNodes, final String sql) throws SQLException {
-        Collection<DataGroup> result = new LinkedList<>();
-        ResultSet resultSet = SQLExecutor.executeQuery(connection, sql);
-        while (resultSet.next()) {
-            result.add(createDataGroup(resultSet, dataNodes));
-        }
-        return result;
-    }
-    
-    private DataGroup createDataGroup(final ResultSet resultSet, final Map<String, DataNodeMetaData> dataNodes) throws SQLException {
-        DataGroup result = new DataGroup();
-        Iterator<Map.Entry<String, DataNodeMetaData>> iterator = dataNodes.entrySet().iterator();
-        Map.Entry<String, DataNodeMetaData> entry;
-        while (iterator.hasNext()) {
-            entry = iterator.next();
-            result.register(DataNodeBuilder.build(resultSet.getObject(entry.getKey()), entry.getValue()));
-        }
-        return result;
+    @Override
+    protected ResultSet execute(final Connection connection, final String sql) throws SQLException {
+        return SQLExecutor.executeQuery(connection, sql);
     }
     
     @Override

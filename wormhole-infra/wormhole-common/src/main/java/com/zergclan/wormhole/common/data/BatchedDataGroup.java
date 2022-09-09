@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.common.data;
 
-import com.zergclan.wormhole.common.data.node.DataGroup;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

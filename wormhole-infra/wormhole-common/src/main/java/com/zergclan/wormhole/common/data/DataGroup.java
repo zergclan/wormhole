@@ -15,8 +15,10 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.data.node;
+package com.zergclan.wormhole.common.data;
 
+import com.zergclan.wormhole.common.data.node.DataNode;
+import com.zergclan.wormhole.common.data.node.PatternedDataTime;
 import com.zergclan.wormhole.tool.util.JsonUtil;
 import lombok.Getter;
 

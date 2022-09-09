@@ -17,6 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.helper;
 
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.tool.util.DateUtil;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.node.BigDecimalDataNode;
@@ -26,7 +27,6 @@ import com.zergclan.wormhole.common.data.node.LongDataNode;
 import com.zergclan.wormhole.common.data.node.PatternedDataTime;
 import com.zergclan.wormhole.common.data.node.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.common.data.node.TextDataNode;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -37,7 +37,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public final class NodeValueHelper {
     
-    private final DataNodeTypeMetaData.DataType dataType;
+    private final DataType dataType;
     
     private final String name;
     

@@ -25,7 +25,7 @@ import com.zergclan.wormhole.common.data.node.LongDataNode;
 import com.zergclan.wormhole.common.data.node.PatternedDataTime;
 import com.zergclan.wormhole.common.data.node.PatternedDataTimeDataNode;
 import com.zergclan.wormhole.common.data.node.TextDataNode;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.tool.util.DateUtil;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ public final class NodeValueHelperTest {
     
     @Test
     public void assertGetDefaultTextValue() {
-        NodeValueHelper testHelper = new NodeValueHelper(DataNodeTypeMetaData.DataType.TEXT, "text", "default_value");
+        NodeValueHelper testHelper = new NodeValueHelper(DataType.TEXT, "text", "default_value");
         DataNode<?> textValue = testHelper.getDefaultValue();
         assertTrue(textValue instanceof TextDataNode);
         assertEquals("text", textValue.getName());
@@ -48,7 +48,7 @@ public final class NodeValueHelperTest {
     
     @Test
     public void assertGetDefaultIntValue() {
-        NodeValueHelper intHelper = new NodeValueHelper(DataNodeTypeMetaData.DataType.INT, "int", "0");
+        NodeValueHelper intHelper = new NodeValueHelper(DataType.INT, "int", "0");
         DataNode<?> intValue = intHelper.getDefaultValue();
         assertTrue(intValue instanceof IntegerDataNode);
         assertEquals("int", intValue.getName());
@@ -57,7 +57,7 @@ public final class NodeValueHelperTest {
     
     @Test
     public void assertGetDefaultLongValue() {
-        NodeValueHelper longHelper = new NodeValueHelper(DataNodeTypeMetaData.DataType.LONG, "long", "0");
+        NodeValueHelper longHelper = new NodeValueHelper(DataType.LONG, "long", "0");
         DataNode<?> longValue = longHelper.getDefaultValue();
         assertTrue(longValue instanceof LongDataNode);
         assertEquals("long", longValue.getName());
@@ -66,7 +66,7 @@ public final class NodeValueHelperTest {
     
     @Test
     public void assertGetDefaultMonetaryValue() {
-        NodeValueHelper monetaryHelper = new NodeValueHelper(DataNodeTypeMetaData.DataType.MONETARY, "monetary", "1.01");
+        NodeValueHelper monetaryHelper = new NodeValueHelper(DataType.MONETARY, "monetary", "1.01");
         DataNode<?> monetaryValue = monetaryHelper.getDefaultValue();
         assertTrue(monetaryValue instanceof BigDecimalDataNode);
         assertEquals("monetary", monetaryValue.getName());
@@ -76,7 +76,7 @@ public final class NodeValueHelperTest {
     @Test
     public void assertGetDefaultDataTimeValue() {
         LocalDateTime localDateTime = DateUtil.parseLocalDateTime("2022-04-24 15:00:00", "yyyy-MM-dd HH:mm:ss");
-        NodeValueHelper localDateTimeHelper = new NodeValueHelper(DataNodeTypeMetaData.DataType.DATA_TIME, "localDateTime", "2022-04-24 15:00:00");
+        NodeValueHelper localDateTimeHelper = new NodeValueHelper(DataType.DATA_TIME, "localDateTime", "2022-04-24 15:00:00");
         DataNode<?> localDateTimeValue = localDateTimeHelper.getDefaultValue();
         assertTrue(localDateTimeValue instanceof LocalDateTimeDataNode);
         assertEquals("localDateTime", localDateTimeValue.getName());
@@ -85,7 +85,7 @@ public final class NodeValueHelperTest {
     
     @Test
     public void assertGetDefaultPatternedDataTimeValue() {
-        NodeValueHelper patternedDataTimeHelper = new NodeValueHelper(DataNodeTypeMetaData.DataType.PATTERNED_DATA_TIME, "patternedDataTime", "2022-04-24 15:00:00");
+        NodeValueHelper patternedDataTimeHelper = new NodeValueHelper(DataType.PATTERNED_DATA_TIME, "patternedDataTime", "2022-04-24 15:00:00");
         DataNode<?> patternedDataTimeValue = patternedDataTimeHelper.getDefaultValue();
         assertTrue(patternedDataTimeValue instanceof PatternedDataTimeDataNode);
         assertEquals("patternedDataTime", patternedDataTimeValue.getName());

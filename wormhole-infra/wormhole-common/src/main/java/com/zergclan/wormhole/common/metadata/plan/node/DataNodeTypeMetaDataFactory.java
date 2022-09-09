@@ -34,7 +34,7 @@ public final class DataNodeTypeMetaDataFactory {
      * @return {@link DataNodeMetaData}
      */
     public static DataNodeMetaData createObjectDataType(final ColumnMetaData columnMetaData) {
-        DataNodeTypeMetaData dataNodeType = new DataNodeTypeMetaData(DataNodeTypeMetaData.initNodeType(columnMetaData), DataNodeTypeMetaData.DataType.OBJECT);
+        DataNodeTypeMetaData dataNodeType = new DataNodeTypeMetaData(DataNodeTypeMetaData.initNodeType(columnMetaData), DataType.OBJECT);
         return new DataNodeMetaData(columnMetaData.getName(), columnMetaData.getTable(), dataNodeType, columnMetaData.getDefaultValue());
     }
     

@@ -22,7 +22,7 @@ import com.zergclan.wormhole.common.data.node.LocalDateTimeDataNode;
 import com.zergclan.wormhole.common.data.node.LongDataNode;
 import com.zergclan.wormhole.common.data.node.PatternedDataTime;
 import com.zergclan.wormhole.common.data.node.TextDataNode;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData.DataType;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.tool.util.DateUtil;
 import org.junit.jupiter.api.Test;
 

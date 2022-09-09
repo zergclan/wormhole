@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.pipeline.helper;
 
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.node.TextDataNode;
 import org.junit.jupiter.api.BeforeAll;

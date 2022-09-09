@@ -15,42 +15,37 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.pipeline.filter.precise.editor;
+package com.zergclan.wormhole.extractor.initializer;
 
+import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.data.DataGroup;
-import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.pipeline.filter.Filter;
-import com.zergclan.wormhole.pipeline.helper.NodeValueHelper;
-import lombok.Getter;
+import com.zergclan.wormhole.common.data.node.DataNodeBuilder;
+import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
-import java.util.Collection;
+import java.sql.ResultSet;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Fixed node editor implemented of {@link Filter}.
+ * Result set data group initializer.
  */
 @RequiredArgsConstructor
-@Getter
-public final class FixedNodeEditor implements Filter<DataGroup> {
+public final class ResultSetDataGroupInitializer implements WormholeInitializer<ResultSet, DataGroup> {
     
-    private final int order;
+    private final Map<String, DataNodeMetaData> dataNodes;
     
-    private final FilterType filterType;
-
-    private final Collection<NodeValueHelper> fixedValue;
-    
+    @SneakyThrows
     @Override
-    public boolean doFilter(final DataGroup dataGroup) {
-        Iterator<NodeValueHelper> iterator = fixedValue.iterator();
+    public DataGroup init(final ResultSet resultSet) {
+        DataGroup result = new DataGroup();
+        Iterator<Map.Entry<String, DataNodeMetaData>> iterator = dataNodes.entrySet().iterator();
+        Map.Entry<String, DataNodeMetaData> entry;
         while (iterator.hasNext()) {
-            dataGroup.refresh(iterator.next().getDefaultValue());
+            entry = iterator.next();
+            result.register(DataNodeBuilder.build(resultSet.getObject(entry.getKey()), entry.getValue()));
         }
-        return true;
-    }
-    
-    @Override
-    public String getType() {
-        return filterType.name();
+        return result;
     }
 }

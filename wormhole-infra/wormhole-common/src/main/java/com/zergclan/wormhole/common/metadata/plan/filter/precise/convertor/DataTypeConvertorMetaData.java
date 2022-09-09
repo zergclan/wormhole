@@ -19,7 +19,7 @@ package com.zergclan.wormhole.common.metadata.plan.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaData;
+import com.zergclan.wormhole.common.metadata.plan.node.DataType;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.tool.util.ValueExtractor;
 import lombok.Getter;
@@ -42,9 +42,9 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
     
     private final String sourceName;
     
-    private final DataNodeTypeMetaData.DataType sourceDataType;
+    private final DataType sourceDataType;
     
-    private final DataNodeTypeMetaData.DataType targetDataType;
+    private final DataType targetDataType;
     
     private final String pattern;
 
@@ -71,7 +71,7 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
         String sourceDataType = ValueExtractor.extractRequiredString(props, "sourceDataType");
         String targetDataType = ValueExtractor.extractRequiredString(props, "targetDataType");
         String pattern = ValueExtractor.extractRequiredString(props, "pattern", "");
-        return builder(taskIdentifier, order, sourceName, DataNodeTypeMetaData.DataType.valueOf(sourceDataType), DataNodeTypeMetaData.DataType.valueOf(targetDataType), pattern);
+        return builder(taskIdentifier, order, sourceName, DataType.valueOf(sourceDataType), DataType.valueOf(targetDataType), pattern);
     }
     
     /**
@@ -80,12 +80,11 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
      * @param taskIdentifier task identifier
      * @param order order
      * @param sourceName source name
-     * @param sourceDataType source {@link DataNodeTypeMetaData.DataType}
-     * @param targetDataType target {@link DataNodeTypeMetaData.DataType}
+     * @param sourceDataType source {@link DataType}
+     * @param targetDataType target {@link DataType}
      * @return {@link DataTypeConvertorMetaData}
      */
-    public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final DataNodeTypeMetaData.DataType sourceDataType,
-                                                    final DataNodeTypeMetaData.DataType targetDataType) {
+    public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final DataType sourceDataType, final DataType targetDataType) {
         return new FilterBuilder(taskIdentifier, order, sourceName, sourceDataType, targetDataType, null).build();
     }
     
@@ -95,13 +94,13 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
      * @param taskIdentifier task identifier
      * @param order order
      * @param sourceName source name
-     * @param sourceDataType source {@link DataNodeTypeMetaData.DataType}
-     * @param targetDataType target {@link DataNodeTypeMetaData.DataType}
+     * @param sourceDataType source {@link DataType}
+     * @param targetDataType target {@link DataType}
      * @param pattern pattern
      * @return {@link DataTypeConvertorMetaData}
      */
-    public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final DataNodeTypeMetaData.DataType sourceDataType,
-                                                    final DataNodeTypeMetaData.DataType targetDataType, final String pattern) {
+    public static DataTypeConvertorMetaData builder(final String taskIdentifier, final int order, final String sourceName, final DataType sourceDataType, final DataType targetDataType,
+                                                    final String pattern) {
         return new FilterBuilder(taskIdentifier, order, sourceName, sourceDataType, targetDataType, pattern).build();
     }
 
@@ -114,9 +113,9 @@ public final class DataTypeConvertorMetaData implements FilterMetaData {
     
         private final String sourceName;
     
-        private final DataNodeTypeMetaData.DataType sourceDataType;
+        private final DataType sourceDataType;
     
-        private final DataNodeTypeMetaData.DataType targetDataType;
+        private final DataType targetDataType;
     
         private final String pattern;
 

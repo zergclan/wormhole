@@ -18,7 +18,7 @@
 package com.zergclan.wormhole.pipeline.filter.precise.convertor;
 
 import com.zergclan.wormhole.common.data.node.DataNode;
-import com.zergclan.wormhole.common.data.node.DataGroup;
+import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
 import com.zergclan.wormhole.pipeline.filter.Filter;
 import lombok.Getter;
