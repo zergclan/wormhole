@@ -27,42 +27,41 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Expression builder factory.
+ * Expression provider factory.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ExpressionBuilderFactory {
+public class ExpressionProviderFactory {
     
     static {
-        WormholeServiceLoader.register(ExpressionBuilder.class);
+        WormholeServiceLoader.register(ExpressionProvider.class);
     }
     
     /**
-     * Get {@link ExpressionBuilder}.
+     * Get {@link ExpressionProvider}.
      *
      * @param cachedMetaData {@link CachedMetaData}
-     * @return {@link ExpressionBuilder}
+     * @return {@link ExpressionProvider}
      */
-    public static ExpressionBuilder getInstance(final CachedMetaData cachedMetaData) {
+    public static ExpressionProvider getInstance(final CachedMetaData cachedMetaData) {
+        ExpressionProvider result;
         if (cachedMetaData instanceof CachedSourceMetaData) {
-            return getSourceExpressionBuilder((CachedSourceMetaData) cachedMetaData);
+            result = initExecuteExpressionProvider((CachedSourceMetaData) cachedMetaData);
         } else if (cachedMetaData instanceof CachedTargetMetaData) {
-            return getTargetExpressionBuilder((CachedTargetMetaData) cachedMetaData);
+            result = initExecuteExpressionProvider((CachedTargetMetaData) cachedMetaData);
         } else {
             throw new UnsupportedOperationException();
         }
-    }
-    
-    private static ExpressionBuilder getSourceExpressionBuilder(final CachedSourceMetaData cachedSourceMetaData) {
-        String dataSourceType = cachedSourceMetaData.getDataSource().getDatabaseType().getType();
-        ExpressionBuilder result = TypedSPIRegistry.getRegisteredService(ExpressionBuilder.class, dataSourceType + MarkConstant.AT + "source");
-        result.init(cachedSourceMetaData);
+        result.init(cachedMetaData);
         return result;
     }
     
-    private static ExpressionBuilder getTargetExpressionBuilder(final CachedTargetMetaData cachedTargetMetaData) {
-        String dataSourceType = cachedTargetMetaData.getDataSource().getDatabaseType().getType();
-        ExpressionBuilder result = TypedSPIRegistry.getRegisteredService(ExpressionBuilder.class, dataSourceType + MarkConstant.AT + "target");
-        result.init(cachedTargetMetaData);
-        return result;
+    private static ExpressionProvider initExecuteExpressionProvider(final CachedSourceMetaData cachedSourceMetaData) {
+        String type = "extract" + MarkConstant.SPACE + cachedSourceMetaData.getDatabaseType().getType();
+        return TypedSPIRegistry.getRegisteredService(ExpressionProvider.class, type);
+    }
+    
+    private static ExpressionProvider initExecuteExpressionProvider(final CachedTargetMetaData cachedTargetMetaData) {
+        String type = "load" + MarkConstant.SPACE + cachedTargetMetaData.getDatabaseType().getType();
+        return TypedSPIRegistry.getRegisteredService(ExpressionProvider.class, type);
     }
 }

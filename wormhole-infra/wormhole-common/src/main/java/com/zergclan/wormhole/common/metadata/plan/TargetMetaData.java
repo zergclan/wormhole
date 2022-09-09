@@ -37,6 +37,8 @@ public final class TargetMetaData implements WormholeMetaData {
 
     private final String table;
     
+    private final Map<String, DataNodeMetaData> dataNodes;
+    
     private final Collection<String> uniqueNodes;
 
     private final Collection<String> compareNodes;
@@ -44,9 +46,7 @@ public final class TargetMetaData implements WormholeMetaData {
     private final Collection<String> ignoreNodes;
     
     private final String versionNode;
-
-    private final Map<String, DataNodeMetaData> dataNodes;
-
+    
     @Override
     public String getIdentifier() {
         return dataSourceIdentifier + MarkConstant.SPACE + table;

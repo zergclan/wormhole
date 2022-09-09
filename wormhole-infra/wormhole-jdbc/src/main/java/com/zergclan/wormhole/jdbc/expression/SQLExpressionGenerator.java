@@ -21,17 +21,17 @@ import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.jdbc.constant.SQLKeywordConstant;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.tool.util.StringUtil;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * Builder for SQL.
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SQLExpressionGenerator {
     
     private final DatabaseType databaseType;
@@ -40,12 +40,61 @@ public final class SQLExpressionGenerator {
     
     private final Collection<String> nodeNames;
     
-    private final Collection<String> uniqueNodeNames;
-    
     private final String conditionSql;
     
-    public SQLExpressionGenerator(final DatabaseType databaseType, final String table, final Collection<String> nodeNames) {
-        this(databaseType, table, nodeNames, new LinkedList<>(), null);
+    private final Collection<String> uniqueNodeNames;
+    
+    /**
+     * Build {@link SQLExpressionGenerator}.
+     *
+     * @param databaseType {@link DatabaseType}
+     * @param table table
+     * @param nodeNames node names
+     * @return {@link SQLExpressionGenerator}
+     */
+    public static SQLExpressionGenerator build(final DatabaseType databaseType, final String table, final Collection<String> nodeNames) {
+        return new SQLExpressionGenerator(databaseType, table, nodeNames, null, new ArrayList<>());
+    }
+    
+    /**
+     * Build {@link SQLExpressionGenerator}.
+     *
+     * @param databaseType {@link DatabaseType}
+     * @param table table
+     * @param nodeNames node names
+     * @param conditionSql condition sql
+     * @return {@link SQLExpressionGenerator}
+     */
+    public static SQLExpressionGenerator build(final DatabaseType databaseType, final String table, final Collection<String> nodeNames, final String conditionSql) {
+        return new SQLExpressionGenerator(databaseType, table, nodeNames, conditionSql, new ArrayList<>());
+    }
+    
+    /**
+     * Build {@link SQLExpressionGenerator}.
+     *
+     * @param databaseType {@link DatabaseType}
+     * @param table table
+     * @param nodeNames node names
+     * @param uniqueNodeNames unique node names
+     * @return {@link SQLExpressionGenerator}
+     */
+    public static SQLExpressionGenerator build(final DatabaseType databaseType, final String table, final Collection<String> nodeNames, final Collection<String> uniqueNodeNames) {
+        return new SQLExpressionGenerator(databaseType, table, nodeNames, null, uniqueNodeNames);
+    }
+    
+    /**
+     * Build {@link SQLExpressionGenerator}.
+     *
+     * @param databaseType {@link DatabaseType}
+     * @param table table
+     * @param nodeNames node names
+     * @param conditionSql condition sql
+     * @param uniqueNodeNames unique node names
+     * @return {@link SQLExpressionGenerator}
+     */
+    public static SQLExpressionGenerator build(final DatabaseType databaseType, final String table, final Collection<String> nodeNames, final String conditionSql,
+                                               final Collection<String> uniqueNodeNames) {
+        return new SQLExpressionGenerator(databaseType, table, nodeNames, conditionSql, uniqueNodeNames);
     }
     
     /**
@@ -152,6 +201,9 @@ public final class SQLExpressionGenerator {
      * @return where expression
      */
     public String generateWhereByAllEquals() {
+        if (uniqueNodeNames.isEmpty()) {
+            return "";
+        }
         StringBuilder equalsBuilder = new StringBuilder();
         Iterator<String> iterator = uniqueNodeNames.iterator();
         equalsBuilder.append(generateColumnNameByTable(iterator.next())).append(MarkConstant.EQUAL).append(MarkConstant.QUESTION);

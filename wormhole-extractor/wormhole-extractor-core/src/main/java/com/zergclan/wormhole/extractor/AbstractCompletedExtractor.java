@@ -18,8 +18,8 @@
 package com.zergclan.wormhole.extractor;
 
 import com.zergclan.wormhole.common.data.node.DataGroup;
-import com.zergclan.wormhole.common.expression.ExpressionBuilder;
-import com.zergclan.wormhole.common.expression.ExpressionBuilderFactory;
+import com.zergclan.wormhole.common.expression.ExpressionProvider;
+import com.zergclan.wormhole.common.expression.ExpressionProviderFactory;
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.node.DataNodeMetaData;
@@ -34,25 +34,25 @@ import java.util.Map;
  */
 public abstract class AbstractCompletedExtractor implements WormholeExtractor<DataGroup> {
     
-    private ExpressionBuilder expressionBuilder;
-    
     private CachedSourceMetaData cachedSource;
+    
+    private ExpressionProvider expressionProvider;
     
     @Override
     public void init(final CachedSourceMetaData cachedSource) {
-        expressionBuilder = ExpressionBuilderFactory.getInstance(cachedSource);
         this.cachedSource = cachedSource;
+        expressionProvider = ExpressionProviderFactory.getInstance(cachedSource);
     }
     
     @Override
     public Collection<DataGroup> extract() throws SQLException {
-        return doExtract(cachedSource.getDataSource(), cachedSource.getDataNodes(), getExtractSQl(cachedSource));
+        return doExtract(cachedSource.getDataSource(), cachedSource.getDataNodes(), getSelectExpression(cachedSource));
     }
     
-    private String getExtractSQl(final CachedSourceMetaData cachedSource) {
+    private String getSelectExpression(final CachedSourceMetaData cachedSource) {
         String result = cachedSource.getActualSql();
         if (StringUtil.isBlank(result)) {
-            return expressionBuilder.buildSelect();
+            return expressionProvider.getSelectExpression();
         }
         return result;
     }
@@ -62,8 +62,8 @@ public abstract class AbstractCompletedExtractor implements WormholeExtractor<Da
      *
      * @param dataSource data source
      * @param dataNodes data nodes
-     * @param extractSQl extract SQl
+     * @param extractExpression extract expression
      * @return {@link DataGroup}
      */
-    protected abstract Collection<DataGroup> doExtract(WormholeDataSourceMetaData dataSource, Map<String, DataNodeMetaData> dataNodes, String extractSQl) throws SQLException;
+    protected abstract Collection<DataGroup> doExtract(WormholeDataSourceMetaData dataSource, Map<String, DataNodeMetaData> dataNodes, String extractExpression) throws SQLException;
 }

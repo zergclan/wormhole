@@ -40,9 +40,9 @@ import java.util.Map;
 public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
     
     @Override
-    protected Collection<DataGroup> doExtract(final WormholeDataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
+    protected Collection<DataGroup> doExtract(final WormholeDataSourceMetaData dataSource, final Map<String, DataNodeMetaData> dataNodes, final String sql) throws SQLException {
         try (Connection connection = createConnection(dataSource)) {
-            return execute(connection, dataNodes, extractSQl);
+            return execute(connection, dataNodes, sql);
         }
     }
     
@@ -50,9 +50,9 @@ public final class MySQLCompletedExtractor extends AbstractCompletedExtractor {
         return DataSourceManager.getDataSource(dataSourceMetaData).getConnection();
     }
     
-    private Collection<DataGroup> execute(final Connection connection, final Map<String, DataNodeMetaData> dataNodes, final String extractSQl) throws SQLException {
+    private Collection<DataGroup> execute(final Connection connection, final Map<String, DataNodeMetaData> dataNodes, final String sql) throws SQLException {
         Collection<DataGroup> result = new LinkedList<>();
-        ResultSet resultSet = SQLExecutor.executeQuery(connection, extractSQl);
+        ResultSet resultSet = SQLExecutor.executeQuery(connection, sql);
         while (resultSet.next()) {
             result.add(createDataGroup(resultSet, dataNodes));
         }

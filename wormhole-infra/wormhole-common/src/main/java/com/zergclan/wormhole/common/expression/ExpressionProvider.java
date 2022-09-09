@@ -21,9 +21,9 @@ import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
 import com.zergclan.wormhole.tool.spi.scene.typed.TypedSPI;
 
 /**
- * Expression builder.
+ * Expression provider.
  */
-public interface ExpressionBuilder extends TypedSPI {
+public interface ExpressionProvider extends TypedSPI {
     
     /**
      * Init.
@@ -33,23 +33,23 @@ public interface ExpressionBuilder extends TypedSPI {
     void init(CachedMetaData cachedMetaData);
     
     /**
-     * Build select expression.
-     *
-     * @return select expression
-     */
-    String buildSelect();
-    
-    /**
-     * Build insert expression.
+     * Get insert expression.
      *
      * @return insert expression
      */
-    String buildInsert();
+    String getInsertExpression();
     
     /**
      * Build update expression.
      *
-     * @return insert expression
+     * @return update expression
      */
-    String buildUpdate();
+    String getUpdateExpression();
+    
+    /**
+     * Get select expression.
+     *
+     * @return select expression
+     */
+    String getSelectExpression();
 }

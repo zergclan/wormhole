@@ -17,53 +17,52 @@
 
 package com.zergclan.wormhole.extracter.plugin.mysql;
 
-import com.zergclan.wormhole.common.expression.ExpressionBuilder;
+import com.zergclan.wormhole.common.expression.ExpressionProvider;
 import com.zergclan.wormhole.common.metadata.catched.CachedMetaData;
 import com.zergclan.wormhole.common.metadata.catched.CachedSourceMetaData;
 import com.zergclan.wormhole.common.metadata.database.DatabaseType;
 import com.zergclan.wormhole.jdbc.expression.SQLExpressionGenerator;
+import lombok.Getter;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
- * Extract expression builder of MySQL.
+ * Expression provider of extracter.
  */
-public final class MySQLExtractExpressionBuilder implements ExpressionBuilder {
+@Getter
+public final class ExtractExpressionProvider implements ExpressionProvider {
     
-    private SQLExpressionGenerator generator;
+    private String selectExpression;
     
     @Override
     public void init(final CachedMetaData cachedMetaData) {
         if (cachedMetaData instanceof CachedSourceMetaData) {
-            CachedSourceMetaData sourceMetaData = (CachedSourceMetaData) cachedMetaData;
-            DatabaseType databaseType = sourceMetaData.getDataSource().getDatabaseType();
-            String table = sourceMetaData.getTable();
-            Collection<String> nodeNames = sourceMetaData.getDataNodes().keySet();
-            Collection<String> uniqueNodeNames = Collections.emptyList();
-            String conditionSql = sourceMetaData.getConditionSql();
-            generator = new SQLExpressionGenerator(databaseType, table, nodeNames, uniqueNodeNames, conditionSql);
+            selectExpression = initSelectExpression((CachedSourceMetaData) cachedMetaData);
         }
         throw new UnsupportedOperationException();
     }
     
-    @Override
-    public String buildSelect() {
-        return generator.generateSelectColumns() + generator.generateFromTable() + generator.generateWhereByConditionSql();
+    private String initSelectExpression(final CachedSourceMetaData sourceMetaData) {
+        DatabaseType databaseType = sourceMetaData.getDataSource().getDatabaseType();
+        String table = sourceMetaData.getTable();
+        Collection<String> nodeNames = sourceMetaData.getDataNodes().keySet();
+        String conditionSql = sourceMetaData.getConditionSql();
+        SQLExpressionGenerator generator = SQLExpressionGenerator.build(databaseType, table, nodeNames, conditionSql);
+        return generator.generateSelectColumns() + generator.generateWhereByConditionSql();
     }
     
     @Override
-    public String buildInsert() {
+    public String getInsertExpression() {
         throw new UnsupportedOperationException();
     }
     
     @Override
-    public String buildUpdate() {
+    public String getUpdateExpression() {
         throw new UnsupportedOperationException();
     }
     
     @Override
     public String getType() {
-        return "MySQL@source";
+        return "extract#MySQL";
     }
 }

@@ -66,12 +66,12 @@ public final class TaskMetadataInitializer {
 
     private TargetMetaData createTarget(final TargetConfiguration targetConfiguration, final WormholeDataSourceMetaData targetDataSource) {
         String table = targetConfiguration.getTable();
+        Map<String, DataNodeMetaData> dataNodes = createConfiguredDataNodes(targetConfiguration.getDataNodes());
         Collection<String> uniqueNodes = targetConfiguration.getUniqueNodes();
         Collection<String> compareNodes = targetConfiguration.getCompareNodes();
         Collection<String> ignoreNodes = targetConfiguration.getIgnoreNodes();
         String versionNode = targetConfiguration.getVersionNode();
-        Map<String, DataNodeMetaData> dataNodes = createConfiguredDataNodes(targetConfiguration.getDataNodes());
-        return new TargetMetaData(targetDataSource.getIdentifier(), table, uniqueNodes, compareNodes, ignoreNodes, versionNode, dataNodes);
+        return new TargetMetaData(targetDataSource.getIdentifier(), table, dataNodes, uniqueNodes, compareNodes, ignoreNodes, versionNode);
     }
 
     private Map<String, DataNodeMetaData> createConfiguredDataNodes(final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
