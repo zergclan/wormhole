@@ -35,8 +35,8 @@ public final class UserSessionManager {
     private static final Map<String, UserSession> SESSION_CONTAINER;
     
     static {
-        SESSION_CONTAINER = new ConcurrentHashMap<>(16);
-        SESSION_CONTAINER.put("wormhole-console-test-token", new UserSession(0, "root", "root"));
+        SESSION_CONTAINER = new ConcurrentHashMap<>(16, 1);
+        SESSION_CONTAINER.put("wormhole-console-test-token", new UserSession("root", "root"));
     }
     
     /**
@@ -53,13 +53,13 @@ public final class UserSessionManager {
     /**
      * Create {@link UserSession} by {@link UserInfo}.
      *
-     * @param user {@link UserInfo}
+     * @param username username
+     * @param password username
      * @return token
      */
-    public static String createUserSession(final UserInfo user) {
-        UserSession userSession = new UserSession(user.getId(), user.getUsername(), user.getPassword());
+    public static String createUserSession(final String username, final String password) {
         String token = UUID.randomUUID().toString().replaceAll("-", "").toLowerCase();
-        SESSION_CONTAINER.put(token, userSession);
+        SESSION_CONTAINER.put(token, new UserSession(username, password));
         return token;
     }
     

@@ -15,20 +15,23 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.security;
+package com.zergclan.wormhole.common.metadata.builder;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.configuration.AuthorizationConfiguration;
+import com.zergclan.wormhole.common.metadata.authorization.AuthorizationMetaData;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public final class UserSessionTest {
+/**
+ * Authorization metadata builder.
+ */
+public final class AuthorizationMetaDataBuilder {
     
-    @Test
-    public void assertUserSession() {
-        UserSession userSession = new UserSession("root", "root");
-        assertTrue(userSession.isAccountNonExpired());
-        assertTrue(userSession.isAccountNonLocked());
-        assertTrue(userSession.isCredentialsNonExpired());
-        assertTrue(userSession.isEnabled());
+    /**
+     * Build.
+     *
+     * @param configuration {@link AuthorizationConfiguration}
+     * @return {@link AuthorizationMetaData}
+     */
+    public AuthorizationMetaData build(final AuthorizationConfiguration configuration) {
+        return new AuthorizationMetaData(configuration.getUsers());
     }
 }

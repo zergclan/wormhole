@@ -15,29 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.initializer;
+package com.zergclan.wormhole.common.metadata.builder;
 
 import com.zergclan.wormhole.common.configuration.DataSourcePoolConfiguration;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourcePoolMetadata;
 
 /**
- * Data source pool metadata initializer.
+ * Data source pool metadata builder.
  */
-public final class DataSourcePoolMetadataInitializer {
+public final class DataSourcePoolMetadataBuilder {
     
     /**
      * Init.
      *
-     * @param poolConfiguration {@link DataSourcePoolConfiguration}
+     * @param configuration {@link DataSourcePoolConfiguration}
      * @return {@link DataSourcePoolMetadata}
      */
-    public DataSourcePoolMetadata init(final DataSourcePoolConfiguration poolConfiguration) {
-        String poolName = poolConfiguration.getPoolName();
-        int minPoolSize = poolConfiguration.getMaxPoolSize();
-        int maxPoolSize = poolConfiguration.getMaxPoolSize();
-        int connectionTimeout = poolConfiguration.getConnectionTimeoutMilliseconds();
-        int idleTimeout = poolConfiguration.getIdleTimeoutMilliseconds();
-        int maxLifetime = poolConfiguration.getMaxLifetimeMilliseconds();
+    public DataSourcePoolMetadata build(final DataSourcePoolConfiguration configuration) {
+        String poolName = configuration.getPoolName();
+        int minPoolSize = configuration.getMaxPoolSize();
+        int maxPoolSize = configuration.getMaxPoolSize();
+        int connectionTimeout = configuration.getConnectionTimeoutMilliseconds();
+        int idleTimeout = configuration.getIdleTimeoutMilliseconds();
+        int maxLifetime = configuration.getMaxLifetimeMilliseconds();
         return new DataSourcePoolMetadata(poolName, minPoolSize, maxPoolSize, connectionTimeout, idleTimeout, maxLifetime);
     }
 }

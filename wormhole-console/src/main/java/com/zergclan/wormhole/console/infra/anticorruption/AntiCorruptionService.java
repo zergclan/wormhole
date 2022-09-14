@@ -39,10 +39,7 @@ public class AntiCorruptionService {
      */
     public static Optional<UserInfo> userLoginVOToPO(final LoginVO loginVO) {
         if (LoginType.USERNAME.getCode().equals(loginVO.getLoginType())) {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUsername(loginVO.getLoginName());
-            userInfo.setPassword(loginVO.getPassword());
-            return Optional.of(userInfo);
+            return Optional.of(new UserInfo(loginVO.getLoginName(), loginVO.getPassword()));
         }
         return Optional.empty();
     }

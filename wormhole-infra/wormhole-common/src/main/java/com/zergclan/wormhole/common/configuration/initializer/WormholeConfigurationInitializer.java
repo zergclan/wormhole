@@ -18,6 +18,7 @@
 package com.zergclan.wormhole.common.configuration.initializer;
 
 import com.zergclan.wormhole.common.WormholeInitializer;
+import com.zergclan.wormhole.common.configuration.AuthorizationConfiguration;
 import com.zergclan.wormhole.common.configuration.DataSourceConfiguration;
 import com.zergclan.wormhole.common.configuration.PlanConfiguration;
 import com.zergclan.wormhole.common.configuration.WormholeConfiguration;
@@ -36,6 +37,8 @@ import java.util.Map;
  */
 public final class WormholeConfigurationInitializer implements WormholeInitializer<YamlWormholeConfiguration, WormholeConfiguration> {
     
+    private final AuthorizationConfigurationInitializer authorizationConfigurationInitializer = new AuthorizationConfigurationInitializer();
+    
     private final DataSourceConfigurationInitializer dataSourceConfigurationInitializer = new DataSourceConfigurationInitializer();
     
     private final PlanConfigurationInitializer planConfigurationInitializer = new PlanConfigurationInitializer();
@@ -44,9 +47,10 @@ public final class WormholeConfigurationInitializer implements WormholeInitializ
     
     @Override
     public WormholeConfiguration init(final YamlWormholeConfiguration yamlConfiguration) {
+        AuthorizationConfiguration authorization = authorizationConfigurationInitializer.init(yamlConfiguration.getAuthorization());
         Map<String, DataSourceConfiguration> dataSourceConfigurations = createDataSourceConfigurations(yamlConfiguration.getDataSources());
         Map<String, PlanConfiguration> planConfigurations = createPlanConfigurations(yamlConfiguration.getPlans(), yamlConfiguration.getTasks());
-        return new WormholeConfiguration(dataSourceConfigurations, planConfigurations);
+        return new WormholeConfiguration(authorization, dataSourceConfigurations, planConfigurations);
     }
     
     private Map<String, DataSourceConfiguration> createDataSourceConfigurations(final Map<String, YamlDataSourceConfiguration> dataSourceConfigurations) {

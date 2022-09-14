@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.initializer;
+package com.zergclan.wormhole.common.metadata.builder;
 
 import com.zergclan.wormhole.common.configuration.DataNodeConfiguration;
 import com.zergclan.wormhole.common.configuration.SourceConfiguration;
@@ -33,50 +33,50 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Task metadata initializer.
+ * Task metadata builder.
  */
-public final class TaskMetadataInitializer {
+public final class TaskMetadataBuilder {
     
-    private final DataNodeMetadataInitializer dataNodeMetadataInitializer = new DataNodeMetadataInitializer();
+    private final DataNodeMetadataBuilder dataNodeMetadataBuilder = new DataNodeMetadataBuilder();
     
-    private final FilterMetadataInitializer filterMetadataInitializer = new FilterMetadataInitializer();
+    private final FilterMetadataBuilder filterMetadataBuilder = new FilterMetadataBuilder();
     
     /**
-     * Init {@link TaskMetaData}.
+     * Build {@link TaskMetaData}.
      *
      * @param taskIdentifier task identifier
      * @param configuration {@link TaskConfiguration}
      * @param dataSources {@link WormholeDataSourceMetaData}
      * @return {@link TaskMetaData}
      */
-    public TaskMetaData init(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, WormholeDataSourceMetaData> dataSources) {
-        TargetMetaData target = createTarget(configuration.getTarget(), dataSources.get(configuration.getTarget().getDataSource()));
-        SourceMetaData source = createSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSource()));
-        Collection<FilterMetaData> filters = filterMetadataInitializer.init(taskIdentifier, configuration.getDataNodeMappings(), target, source);
+    public TaskMetaData build(final String taskIdentifier, final TaskConfiguration configuration, final Map<String, WormholeDataSourceMetaData> dataSources) {
+        TargetMetaData target = buildTarget(configuration.getTarget(), dataSources.get(configuration.getTarget().getDataSource()));
+        SourceMetaData source = buildSource(configuration.getSource(), dataSources.get(configuration.getSource().getDataSource()));
+        Collection<FilterMetaData> filters = filterMetadataBuilder.build(taskIdentifier, configuration.getDataNodeMappings(), target, source);
         return new TaskMetaData(taskIdentifier, configuration.getOrder(), configuration.getBatchSize(), source, target, filters);
     }
-
-    private SourceMetaData createSource(final SourceConfiguration sourceConfiguration, final WormholeDataSourceMetaData sourceDataSource) {
-        String actualSql = sourceConfiguration.getActualSql();
-        String table = sourceConfiguration.getTable();
-        String conditionSql = sourceConfiguration.getConditionSql();
-        Map<String, DataNodeMetaData> dataNodes = createConfiguredDataNodes(sourceConfiguration.getDataNodes());
-        return new SourceMetaData(sourceDataSource.getIdentifier(), actualSql, table, conditionSql, dataNodes);
-    }
-
-    private TargetMetaData createTarget(final TargetConfiguration targetConfiguration, final WormholeDataSourceMetaData targetDataSource) {
+    
+    private TargetMetaData buildTarget(final TargetConfiguration targetConfiguration, final WormholeDataSourceMetaData targetDataSource) {
         String table = targetConfiguration.getTable();
-        Map<String, DataNodeMetaData> dataNodes = createConfiguredDataNodes(targetConfiguration.getDataNodes());
+        Map<String, DataNodeMetaData> dataNodes = buildConfiguredDataNodes(targetConfiguration.getDataNodes());
         Collection<String> uniqueNodes = targetConfiguration.getUniqueNodes();
         Collection<String> compareNodes = targetConfiguration.getCompareNodes();
         Collection<String> ignoreNodes = targetConfiguration.getIgnoreNodes();
         String versionNode = targetConfiguration.getVersionNode();
         return new TargetMetaData(targetDataSource.getIdentifier(), table, dataNodes, uniqueNodes, compareNodes, ignoreNodes, versionNode);
     }
-
-    private Map<String, DataNodeMetaData> createConfiguredDataNodes(final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
+    
+    private SourceMetaData buildSource(final SourceConfiguration sourceConfiguration, final WormholeDataSourceMetaData sourceDataSource) {
+        String actualSql = sourceConfiguration.getActualSql();
+        String table = sourceConfiguration.getTable();
+        String conditionSql = sourceConfiguration.getConditionSql();
+        Map<String, DataNodeMetaData> dataNodes = buildConfiguredDataNodes(sourceConfiguration.getDataNodes());
+        return new SourceMetaData(sourceDataSource.getIdentifier(), actualSql, table, conditionSql, dataNodes);
+    }
+    
+    private Map<String, DataNodeMetaData> buildConfiguredDataNodes(final Map<String, DataNodeConfiguration> dataNodeConfigurations) {
         Map<String, DataNodeMetaData> result = new LinkedHashMap<>();
-        dataNodeConfigurations.forEach((key, value) -> result.put(key, dataNodeMetadataInitializer.init(key, value)));
+        dataNodeConfigurations.forEach((key, value) -> result.put(key, dataNodeMetadataBuilder.build(key, value)));
         return result;
     }
 }

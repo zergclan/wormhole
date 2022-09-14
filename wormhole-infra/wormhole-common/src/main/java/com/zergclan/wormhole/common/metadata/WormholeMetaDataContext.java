@@ -19,6 +19,7 @@ package com.zergclan.wormhole.common.metadata;
 
 import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.common.exception.WormholeException;
+import com.zergclan.wormhole.common.metadata.authorization.AuthorizationMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.tool.util.Validator;
@@ -35,8 +36,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @RequiredArgsConstructor
 @Getter
 public final class WormholeMetaDataContext {
-
+    
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
+    
+    private final AuthorizationMetaData authorization;
     
     private final Map<String, WormholeDataSourceMetaData> dataSources;
 

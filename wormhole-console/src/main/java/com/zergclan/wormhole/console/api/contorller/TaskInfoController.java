@@ -53,7 +53,6 @@ public class TaskInfoController extends AbstractRestController {
      */
     @PostMapping
     public HttpResult<Void> add(@RequestBody final TaskInfo taskInfo) {
-        taskInfo.setOperator(getUserSession().getId());
         taskInfoService.add(taskInfo);
         return success();
     }

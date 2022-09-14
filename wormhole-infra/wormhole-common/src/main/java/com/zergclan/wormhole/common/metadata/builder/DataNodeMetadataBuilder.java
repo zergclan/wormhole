@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.initializer;
+package com.zergclan.wormhole.common.metadata.builder;
 
 import com.zergclan.wormhole.common.configuration.DataNodeConfiguration;
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
@@ -26,18 +26,18 @@ import com.zergclan.wormhole.common.metadata.plan.node.DataNodeTypeMetaDataFacto
 import java.util.Objects;
 
 /**
- * Data node metadata initializer.
+ * Data node metadata builder.
  */
-public final class DataNodeMetadataInitializer {
+public final class DataNodeMetadataBuilder {
     
     /**
-     * Init {@link DataNodeMetaData}.
+     * Build {@link DataNodeMetaData}.
      *
      * @param nodeName node name
      * @param configuration {@link DataNodeConfiguration}
      * @return {@link DataNodeMetaData}
      */
-    public DataNodeMetaData init(final String nodeName, final DataNodeConfiguration configuration) {
+    public DataNodeMetaData build(final String nodeName, final DataNodeConfiguration configuration) {
         String tableName = configuration.getTable();
         String defaultValue = configuration.getDefaultValue();
         DataNodeTypeMetaData dataNodeTypeMetadata = new DataNodeTypeMetaData(configuration.getNodeType(), configuration.getDataType());
@@ -45,13 +45,13 @@ public final class DataNodeMetadataInitializer {
     }
     
     /**
-     * Init default target source data nodes.
+     * Build default target source data nodes.
      *
      * @param targetColumn {@link ColumnMetaData}
      * @param sourceColumn {@link ColumnMetaData}
      * @return default target source data nodes
      */
-    public DataNodeMetaData[] initDefaultTargetSourceDataNodes(final ColumnMetaData targetColumn, final ColumnMetaData sourceColumn) {
+    public DataNodeMetaData[] buildDefaultTargetSourceDataNodes(final ColumnMetaData targetColumn, final ColumnMetaData sourceColumn) {
         DataNodeMetaData[] result = new DataNodeMetaData[2];
         if (isSameDataNodeType(targetColumn, sourceColumn)) {
             result[0] = DataNodeTypeMetaDataFactory.createObjectDataType(targetColumn);

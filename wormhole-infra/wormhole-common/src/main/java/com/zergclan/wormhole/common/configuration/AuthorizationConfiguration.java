@@ -15,20 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.security;
+package com.zergclan.wormhole.common.configuration;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.metadata.authorization.user.WormholeUser;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Map;
 
-public final class UserSessionTest {
+/**
+ * Configuration of authorization.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class AuthorizationConfiguration implements Configuration {
     
-    @Test
-    public void assertUserSession() {
-        UserSession userSession = new UserSession("root", "root");
-        assertTrue(userSession.isAccountNonExpired());
-        assertTrue(userSession.isAccountNonLocked());
-        assertTrue(userSession.isCredentialsNonExpired());
-        assertTrue(userSession.isEnabled());
-    }
+    private final Map<String, WormholeUser> users;
 }

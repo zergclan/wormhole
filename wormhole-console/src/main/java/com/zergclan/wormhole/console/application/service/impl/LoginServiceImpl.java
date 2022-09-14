@@ -17,14 +17,12 @@
 
 package com.zergclan.wormhole.console.application.service.impl;
 
-import com.zergclan.wormhole.console.api.security.UserSessionManager;
+import com.zergclan.wormhole.common.metadata.authorization.AuthenticationResult;
 import com.zergclan.wormhole.console.api.vo.LoginResult;
+import com.zergclan.wormhole.console.application.context.SpringContextContainer;
 import com.zergclan.wormhole.console.application.domain.entity.UserInfo;
 import com.zergclan.wormhole.console.application.service.LoginService;
-import com.zergclan.wormhole.console.infra.repository.BaseRepository;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * Implemented Service of {@link LoginService}.
@@ -32,18 +30,12 @@ import javax.annotation.Resource;
 @Service(value = "loginService")
 public class LoginServiceImpl implements LoginService {
     
-    @Resource
-    private BaseRepository<UserInfo> userInfoRepository;
-    
     @Override
     public LoginResult login(final UserInfo userInfo) {
-        LoginResult result = new LoginResult();
-        UserInfo user = userInfoRepository.getOne(userInfo);
-        if (null == user) {
-            return result;
+        AuthenticationResult authenticationResult = SpringContextContainer.getExecutionEngine().authenticate(userInfo.getUsername(), userInfo.getPassword());
+        if (authenticationResult.isSuccess()) {
+            return LoginResult.success(authenticationResult.getResultData());
         }
-        result.setToken(UserSessionManager.createUserSession(user));
-        result.setLogined(true);
-        return result;
+        return LoginResult.failed();
     }
 }

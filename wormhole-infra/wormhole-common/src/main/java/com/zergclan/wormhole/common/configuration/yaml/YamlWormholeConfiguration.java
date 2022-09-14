@@ -30,6 +30,8 @@ import java.util.Map;
 @Setter
 public final class YamlWormholeConfiguration implements YamlConfiguration {
     
+    private YamlAuthorizationConfiguration authorization;
+    
     private Map<String, YamlDataSourceConfiguration> dataSources = new LinkedHashMap<>();
     
     private Map<String, YamlPlanConfiguration> plans = new LinkedHashMap<>();

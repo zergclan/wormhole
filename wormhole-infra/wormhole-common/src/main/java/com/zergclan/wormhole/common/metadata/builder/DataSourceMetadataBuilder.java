@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.metadata.initializer;
+package com.zergclan.wormhole.common.metadata.builder;
 
 import com.zergclan.wormhole.common.configuration.DataSourceConfiguration;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourcePoolMetadata;
@@ -31,30 +31,30 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 /**
- * Data source metadata initializer.
+ * Data source metadata builder.
  */
-public final class DataSourceMetadataInitializer {
+public final class DataSourceMetadataBuilder {
     
-    private final DataSourcePoolMetadataInitializer dataSourcePoolMetadataInitializer = new DataSourcePoolMetadataInitializer();
+    private final DataSourcePoolMetadataBuilder dataSourcePoolMetadataBuilder = new DataSourcePoolMetadataBuilder();
     
     /**
-     * Create {@link WormholeDataSourceMetaData} by actual type.
+     * Build {@link WormholeDataSourceMetaData} by actual type.
      *
      * @param configuration {@link DataSourceConfiguration}
      * @return {@link WormholeDataSourceMetaData}
      */
-    public WormholeDataSourceMetaData createActualTypeDataSourceMetadata(final DataSourceConfiguration configuration) {
-        DataSourcePoolMetadata pool = dataSourcePoolMetadataInitializer.init(configuration.getPool());
+    public WormholeDataSourceMetaData buildActualTypedDataSourceMetadata(final DataSourceConfiguration configuration) {
+        DataSourcePoolMetadata pool = dataSourcePoolMetadataBuilder.build(configuration.getPool());
         return new WormholeDataSourceMetaData(configuration.getName(), configuration.getType(), configuration.getUrl(), configuration.getUsername(), configuration.getPassword(), pool);
     }
     
     /**
-     * Init {@link WormholeDataSourceMetaData}.
+     * Build {@link WormholeDataSourceMetaData} by metadata loader.
      *
      * @param dataSourceMetaData {@link WormholeDataSourceMetaData}
      * @throws SQLException SQL Exception
      */
-    public void init(final WormholeDataSourceMetaData dataSourceMetaData) throws SQLException {
+    public void buildLoadedDataSourceMetadata(final WormholeDataSourceMetaData dataSourceMetaData) throws SQLException {
         initDataSource(dataSourceMetaData, MetaDataLoaderBuilder.build(dataSourceMetaData));
     }
     

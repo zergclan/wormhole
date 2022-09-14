@@ -47,8 +47,8 @@ public final class LoginControllerTest {
     @Test
     public void assertLoginSuccess() throws Exception {
         LoginVO loginVO = new LoginVO();
-        loginVO.setLoginName("root_test");
-        loginVO.setPassword("123456");
+        loginVO.setLoginName("root");
+        loginVO.setPassword("root");
         loginVO.setLoginType(0);
         String requestJson = JSON_CONVERTER.toJson(loginVO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/security/login").header("trace", "trace")

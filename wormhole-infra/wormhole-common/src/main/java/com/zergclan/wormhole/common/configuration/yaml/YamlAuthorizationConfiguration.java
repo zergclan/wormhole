@@ -15,20 +15,20 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.security;
+package com.zergclan.wormhole.common.configuration.yaml;
 
-import org.junit.jupiter.api.Test;
+import lombok.Getter;
+import lombok.Setter;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Collection;
+import java.util.LinkedList;
 
-public final class UserSessionTest {
+/**
+ * YAML authorization configuration.
+ */
+@Getter
+@Setter
+public final class YamlAuthorizationConfiguration implements YamlConfiguration {
     
-    @Test
-    public void assertUserSession() {
-        UserSession userSession = new UserSession("root", "root");
-        assertTrue(userSession.isAccountNonExpired());
-        assertTrue(userSession.isAccountNonLocked());
-        assertTrue(userSession.isCredentialsNonExpired());
-        assertTrue(userSession.isEnabled());
-    }
+    private Collection<YamlUserConfiguration> users = new LinkedList<>();
 }

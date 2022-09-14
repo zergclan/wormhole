@@ -31,6 +31,8 @@ public final class WormholeConfiguration implements Configuration {
     
     private static final long serialVersionUID = -8160534204609183661L;
     
+    private final AuthorizationConfiguration authorization;
+    
     private final Map<String, DataSourceConfiguration> dataSources;
     
     private final Map<String, PlanConfiguration> plans;

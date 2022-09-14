@@ -53,7 +53,6 @@ public class DatasourceInfoController extends AbstractRestController {
      */
     @PostMapping
     public HttpResult<Void> add(@RequestBody final DatasourceInfo datasourceInfo) {
-        datasourceInfo.setOperator(getUserSession().getId());
         datasourceInfoService.add(datasourceInfo);
         return success();
     }

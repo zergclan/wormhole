@@ -15,20 +15,29 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.security;
+package com.zergclan.wormhole.common.metadata.authorization;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.WormholeResult;
+import com.zergclan.wormhole.common.metadata.authorization.user.WormholeUser;
+import lombok.RequiredArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public final class UserSessionTest {
+/**
+ * Authentication result.
+ */
+@RequiredArgsConstructor
+public final class AuthenticationResult implements WormholeResult<WormholeUser> {
     
-    @Test
-    public void assertUserSession() {
-        UserSession userSession = new UserSession("root", "root");
-        assertTrue(userSession.isAccountNonExpired());
-        assertTrue(userSession.isAccountNonLocked());
-        assertTrue(userSession.isCredentialsNonExpired());
-        assertTrue(userSession.isEnabled());
+    private final boolean success;
+    
+    private final WormholeUser user;
+    
+    @Override
+    public boolean isSuccess() {
+        return success;
+    }
+    
+    @Override
+    public WormholeUser getResultData() {
+        return user;
     }
 }
