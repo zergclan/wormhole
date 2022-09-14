@@ -25,7 +25,8 @@ import com.zergclan.wormhole.common.WormholeMetaData;
 import com.zergclan.wormhole.common.data.node.PatternedDataTime;
 import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.common.metadata.WormholeMetaDataContext;
-import com.zergclan.wormhole.common.metadata.initializer.WormholeMetaDataContextInitializer;
+import com.zergclan.wormhole.common.metadata.authorization.AuthenticationResult;
+import com.zergclan.wormhole.common.metadata.builder.WormholeMetaDataContextBuilder;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TaskMetaData;
 import com.zergclan.wormhole.tool.util.DateUtil;
@@ -51,11 +52,13 @@ public final class WormholeExecutionEngine {
     
     private static final AtomicReference<EngineState> STATE = new AtomicReference<>(EngineState.UNINITIALIZED);
     
-    private static final WormholeMetaDataContextInitializer INITIALIZER = new WormholeMetaDataContextInitializer();
+    private static final WormholeMetaDataContextBuilder INITIALIZER = new WormholeMetaDataContextBuilder();
     
     private static final PlanTriggerManager PLAN_TRIGGER_MANAGER = new PlanTriggerManager();
     
-    private volatile PlanExecutionEngine planExecutionEngine;
+    private AuthorizationExecutionEngine authorizationExecutionEngine;
+    
+    private PlanExecutionEngine planExecutionEngine;
     
     /**
      * Get instance.
@@ -77,7 +80,8 @@ public final class WormholeExecutionEngine {
     }
     
     private void init(final WormholeConfiguration configuration) throws SQLException {
-        WormholeMetaDataContext wormholeMetadataContext = INITIALIZER.init(configuration);
+        WormholeMetaDataContext wormholeMetadataContext = INITIALIZER.build(configuration);
+        authorizationExecutionEngine = new AuthorizationExecutionEngine(wormholeMetadataContext.getAuthorization());
         planExecutionEngine = new PlanExecutionEngine(wormholeMetadataContext);
         WormholeEventBus.register(planExecutionEngine);
         initPlanTriggerManager(wormholeMetadataContext.getPlans());
@@ -161,6 +165,17 @@ public final class WormholeExecutionEngine {
         boolean atomic = planMetaData.isAtomic();
         Map<String, TaskMetaData> tasks = planMetaData.getTasks();
         return new PlanMetaData(identifier, mode, expression, atomic, tasks);
+    }
+    
+    /**
+     * Authenticate.
+     *
+     * @param username username
+     * @param password password
+     * @return {@link AuthenticationResult}
+     */
+    public AuthenticationResult authenticate(final String username, final String password) {
+        return authorizationExecutionEngine.authenticate(username, password);
     }
     
     private enum EngineState {

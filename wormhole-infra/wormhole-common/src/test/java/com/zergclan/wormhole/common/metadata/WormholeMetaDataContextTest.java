@@ -17,6 +17,8 @@
 
 package com.zergclan.wormhole.common.metadata;
 
+import com.zergclan.wormhole.common.metadata.authorization.AuthorizationMetaData;
+import com.zergclan.wormhole.common.metadata.authorization.user.WormholeUser;
 import com.zergclan.wormhole.common.metadata.datasource.DataSourcePoolMetadata;
 import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.PlanMetaData;
@@ -24,6 +26,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +37,9 @@ public final class WormholeMetaDataContextTest {
     
     @BeforeAll
     public static void init() {
-        metaData = new WormholeMetaDataContext(new LinkedHashMap<>(), new LinkedHashMap<>());
+        Map<String, WormholeUser> users = new LinkedHashMap<>();
+        users.put("root", new WormholeUser("root", "root"));
+        metaData = new WormholeMetaDataContext(new AuthorizationMetaData(users), new LinkedHashMap<>(), new LinkedHashMap<>());
     }
     
     @Test

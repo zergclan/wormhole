@@ -53,7 +53,6 @@ public class PlanInfoController extends AbstractRestController {
      */
     @PostMapping
     public HttpResult<Void> add(@RequestBody final PlanInfo planInfo) {
-        planInfo.setOperator(getUserSession().getId());
         planInfoService.add(planInfo);
         return success();
     }

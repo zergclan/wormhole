@@ -53,7 +53,6 @@ public class DatabaseInfoController extends AbstractRestController {
      */
     @PostMapping
     public HttpResult<Void> add(@RequestBody final DatabaseInfo databaseInfo) {
-        databaseInfo.setOperator(getUserSession().getId());
         databaseInfoService.add(databaseInfo);
         return success();
     }

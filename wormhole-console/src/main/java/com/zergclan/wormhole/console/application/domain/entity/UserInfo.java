@@ -19,11 +19,13 @@ package com.zergclan.wormhole.console.application.domain.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * {@link UserInfo}.
  */
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public final class UserInfo extends AbstractPO {
     
@@ -36,4 +38,9 @@ public final class UserInfo extends AbstractPO {
     private String email;
     
     private Integer enable;
+    
+    public UserInfo(final String username, final String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

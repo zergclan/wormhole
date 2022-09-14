@@ -17,13 +17,18 @@
 
 package com.zergclan.wormhole.console.api.vo;
 
+import com.zergclan.wormhole.common.metadata.authorization.user.WormholeUser;
+import com.zergclan.wormhole.console.api.security.UserSessionManager;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
  * Login result.
  */
+@NoArgsConstructor
 @Data
 public final class LoginResult implements Serializable {
     
@@ -32,4 +37,29 @@ public final class LoginResult implements Serializable {
     private boolean logined;
     
     private String token;
+    
+    @Builder(toBuilder = true)
+    public LoginResult(final boolean logined, final String token) {
+        this.logined = logined;
+        this.token = token;
+    }
+    
+    /**
+     * Success.
+     *
+     * @param user {@link WormholeUser}
+     * @return {@link LoginResult}
+     */
+    public static LoginResult success(final WormholeUser user) {
+        return new LoginResult().toBuilder().logined(true).token(UserSessionManager.createUserSession(user.getUsername(), user.getPassword())).build();
+    }
+    
+    /**
+     * Failed.
+     *
+     * @return {@link LoginResult}
+     */
+    public static LoginResult failed() {
+        return new LoginResult().toBuilder().logined(false).build();
+    }
 }

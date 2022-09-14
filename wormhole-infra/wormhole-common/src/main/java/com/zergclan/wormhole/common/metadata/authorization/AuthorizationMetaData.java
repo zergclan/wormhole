@@ -15,20 +15,34 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.security;
+package com.zergclan.wormhole.common.metadata.authorization;
 
-import org.junit.jupiter.api.Test;
+import com.zergclan.wormhole.common.WormholeMetaData;
+import com.zergclan.wormhole.common.metadata.authorization.user.WormholeUser;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Map;
+import java.util.Optional;
 
-public final class UserSessionTest {
+/**
+ * Authorization metadata.
+ */
+@RequiredArgsConstructor
+@Getter
+public final class AuthorizationMetaData implements WormholeMetaData {
     
-    @Test
-    public void assertUserSession() {
-        UserSession userSession = new UserSession("root", "root");
-        assertTrue(userSession.isAccountNonExpired());
-        assertTrue(userSession.isAccountNonLocked());
-        assertTrue(userSession.isCredentialsNonExpired());
-        assertTrue(userSession.isEnabled());
+    private final String identifier = "wormhole-authorization";
+    
+    private final Map<String, WormholeUser> users;
+    
+    /**
+     * Get user.
+     *
+     * @param username username
+     * @return {@link WormholeUser}
+     */
+    public Optional<WormholeUser> getUser(final String username) {
+        return Optional.ofNullable(users.get(username));
     }
 }

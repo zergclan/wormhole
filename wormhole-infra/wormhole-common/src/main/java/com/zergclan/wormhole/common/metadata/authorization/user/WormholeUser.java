@@ -15,57 +15,19 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.console.api.security;
+package com.zergclan.wormhole.common.metadata.authorization.user;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.LinkedList;
 
 /**
- * User session.
+ * User of Wormhole.
  */
 @RequiredArgsConstructor
-public final class UserSession implements UserDetails {
+@Getter
+public final class WormholeUser {
     
     private final String username;
     
     private final String password;
-    
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new LinkedList<>();
-    }
-    
-    @Override
-    public String getPassword() {
-        return password;
-    }
-    
-    @Override
-    public String getUsername() {
-        return username;
-    }
-    
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-    
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-    
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-    
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

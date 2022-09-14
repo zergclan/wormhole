@@ -20,8 +20,8 @@ package com.zergclan.wormhole.common.metadata.catched;
 import com.zergclan.wormhole.common.metadata.datasource.ColumnMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.TableMetaData;
 import com.zergclan.wormhole.common.metadata.datasource.WormholeDataSourceMetaData;
-import com.zergclan.wormhole.common.metadata.initializer.DataNodeMetadataInitializer;
-import com.zergclan.wormhole.common.metadata.initializer.DataSourceMetadataInitializer;
+import com.zergclan.wormhole.common.metadata.builder.DataNodeMetadataBuilder;
+import com.zergclan.wormhole.common.metadata.builder.DataSourceMetadataBuilder;
 import com.zergclan.wormhole.common.metadata.plan.SourceMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TargetMetaData;
 import com.zergclan.wormhole.common.metadata.plan.TaskMetaData;
@@ -85,9 +85,9 @@ public final class CachedTaskMetaData implements CachedMetaData {
     @RequiredArgsConstructor
     private static class CachedBuilder {
     
-        private final DataSourceMetadataInitializer dataSourceMetadataInitializer = new DataSourceMetadataInitializer();
+        private final DataSourceMetadataBuilder dataSourceMetadataBuilder = new DataSourceMetadataBuilder();
         
-        private final DataNodeMetadataInitializer dataNodeMetadataInitializer = new DataNodeMetadataInitializer();
+        private final DataNodeMetadataBuilder dataNodeMetadataBuilder = new DataNodeMetadataBuilder();
         
         private final TaskMetaData task;
         
@@ -129,7 +129,7 @@ public final class CachedTaskMetaData implements CachedMetaData {
                 if (!initializationTargetDataNodes.containsKey(targetColumnName) && !ignoreNodes.contains(targetColumnName)) {
                     ColumnMetaData sourceColumn = sourceTable.getColumn(targetColumnName);
                     Validator.notNull(sourceColumn, "error: create default source data node failed, columnName: [%s]", targetColumnName);
-                    result.put(targetColumnName, dataNodeMetadataInitializer.initDefaultTargetSourceDataNodes(entry.getValue(), sourceColumn));
+                    result.put(targetColumnName, dataNodeMetadataBuilder.buildDefaultTargetSourceDataNodes(entry.getValue(), sourceColumn));
                 }
             }
             return result;
@@ -137,7 +137,7 @@ public final class CachedTaskMetaData implements CachedMetaData {
         
         private TableMetaData initTableMetaData(final String dataSourceIdentifier, final String table) throws SQLException {
             WormholeDataSourceMetaData dataSourceMetaData = dataSources.get(dataSourceIdentifier);
-            dataSourceMetadataInitializer.init(dataSourceMetaData);
+            dataSourceMetadataBuilder.buildLoadedDataSourceMetadata(dataSourceMetaData);
             return dataSourceMetaData.getTable(table);
         }
         
