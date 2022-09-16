@@ -35,11 +35,11 @@ import java.util.Iterator;
  * Implemented {@link ProcessTask} to handle {@link BatchedDataGroup}.
  */
 @RequiredArgsConstructor
-public final class BatchedDataGroupHandler implements ProcessTask {
+public final class BatchedDataGroupHandleTask implements ProcessTask {
     
     private final BatchedDataGroup batchedDataGroup;
     
-    private final Collection<DataGroupFilterChain> filters;
+    private final Collection<DataGroupFilterChain> filterChains;
     
     private final Handler<BatchedDataGroup> loadedHandler;
     
@@ -56,7 +56,7 @@ public final class BatchedDataGroupHandler implements ProcessTask {
     }
     
     private boolean handleDataGroup(final DataGroup dataGroup) {
-        Iterator<DataGroupFilterChain> iterator = filters.iterator();
+        Iterator<DataGroupFilterChain> iterator = filterChains.iterator();
         while (iterator.hasNext()) {
             DataGroupFilterChain filter = iterator.next();
             boolean isFiltered;
