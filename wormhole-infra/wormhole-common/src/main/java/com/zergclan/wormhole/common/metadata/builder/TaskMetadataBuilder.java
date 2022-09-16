@@ -63,7 +63,7 @@ public final class TaskMetadataBuilder {
         Collection<String> compareNodes = targetConfiguration.getCompareNodes();
         Collection<String> ignoreNodes = targetConfiguration.getIgnoreNodes();
         String versionNode = targetConfiguration.getVersionNode();
-        return new TargetMetaData(targetDataSource.getIdentifier(), table, dataNodes, uniqueNodes, compareNodes, ignoreNodes, versionNode);
+        return new TargetMetaData(targetDataSource.getIdentifier(), table, compareNodes, uniqueNodes, ignoreNodes, versionNode, dataNodes);
     }
     
     private SourceMetaData buildSource(final SourceConfiguration sourceConfiguration, final WormholeDataSourceMetaData sourceDataSource) {

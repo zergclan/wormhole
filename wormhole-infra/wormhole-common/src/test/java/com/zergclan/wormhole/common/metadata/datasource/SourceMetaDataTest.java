@@ -34,11 +34,11 @@ public final class SourceMetaDataTest {
     @BeforeAll
     public static void init() {
         String dataSourceIdentifier = "dataSourceIdentifier";
-        String actualSql = "select * from table";
         String table = "table";
+        String actualSql = "select * from table";
         String conditionSql = "id = 1";
         Map<String, DataNodeMetaData> dataNodes = new LinkedHashMap<>();
-        metaData = new SourceMetaData(dataSourceIdentifier, actualSql, table, conditionSql, dataNodes);
+        metaData = new SourceMetaData(dataSourceIdentifier, table, actualSql, conditionSql, dataNodes);
     }
     
     @Test

@@ -36,9 +36,9 @@ public final class TargetConfiguration implements Configuration {
 
     private final String table;
     
-    private final Collection<String> uniqueNodes;
-
     private final Collection<String> compareNodes;
+    
+    private final Collection<String> uniqueNodes;
 
     private final Collection<String> ignoreNodes;
     

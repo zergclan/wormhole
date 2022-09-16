@@ -19,7 +19,7 @@ package com.zergclan.wormhole.pipeline.filter.precise.editor;
 
 import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.pipeline.filter.Filter;
+import com.zergclan.wormhole.pipeline.filter.DataGroupFilterChain;
 import com.zergclan.wormhole.pipeline.helper.NodeValueHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +28,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Fixed node editor implemented of {@link Filter}.
+ * Fixed node editor implemented of {@link DataGroupFilterChain}.
  */
 @RequiredArgsConstructor
 @Getter
-public final class FixedNodeEditor implements Filter<DataGroup> {
+public final class FixedNodeEditor implements DataGroupFilterChain {
     
     private final int order;
     

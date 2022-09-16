@@ -20,7 +20,7 @@ package com.zergclan.wormhole.pipeline.filter.exception;
 import com.zergclan.wormhole.common.exception.WormholeException;
 
 /**
- * Filter exception of Wormhole.
+ * Filter exception to Wormhole.
  */
 public final class WormholeFilterException extends WormholeException {
     

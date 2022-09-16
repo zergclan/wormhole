@@ -31,10 +31,10 @@ import com.zergclan.wormhole.common.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
 import com.zergclan.wormhole.tool.concurrent.ExecutorServiceManager;
 import com.zergclan.wormhole.tool.concurrent.PromiseTask;
-import com.zergclan.wormhole.pipeline.filter.Filter;
+import com.zergclan.wormhole.pipeline.filter.DataGroupFilterChain;
 import com.zergclan.wormhole.pipeline.handler.Handler;
 import com.zergclan.wormhole.pipeline.event.DataGroupExecutionEvent;
-import com.zergclan.wormhole.pipeline.filter.DataGroupFilterFactory;
+import com.zergclan.wormhole.pipeline.filter.DataGroupFilterChainFactory;
 import com.zergclan.wormhole.pipeline.handler.LoadedHandler;
 import com.zergclan.wormhole.extractor.WormholeExtractor;
 import com.zergclan.wormhole.loader.WormholeLoader;
@@ -90,7 +90,7 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         int totalRow = dataGroups.size();
         int batchSize = cachedTaskMetadata.getBatchSize();
         Handler<BatchedDataGroup> nextHandler = new LoadedHandler(loader);
-        Collection<Filter<DataGroup>> filters = createFilters(cachedTaskMetadata);
+        Collection<DataGroupFilterChain> filters = createFilters(cachedTaskMetadata);
         if (totalRow <= batchSize) {
             handleBatchedTask(dataGroups, nextHandler, filters, 0);
             return PromiseTaskResult.newSuccess(createTaskResult(totalRow));
@@ -111,21 +111,21 @@ public final class PromiseTaskExecutor implements PromiseTask<PromiseTaskResult>
         return PromiseTaskResult.newSuccess(createTaskResult(totalRow));
     }
     
-    private Collection<Filter<DataGroup>> createFilters(final CachedTaskMetaData cachedTaskMetadata) {
-        Collection<Filter<DataGroup>> result = new LinkedHashSet<>();
+    private Collection<DataGroupFilterChain> createFilters(final CachedTaskMetaData cachedTaskMetadata) {
+        Collection<DataGroupFilterChain> result = new LinkedHashSet<>();
         Map<Integer, Map<FilterType, Collection<FilterMetaData>>> filters = cachedTaskMetadata.getFilters();
         Iterator<Map.Entry<Integer, Map<FilterType, Collection<FilterMetaData>>>> iterator = filters.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Integer, Map<FilterType, Collection<FilterMetaData>>> entry = iterator.next();
             Integer order = entry.getKey();
             Map<FilterType, Collection<FilterMetaData>> typedFilters = entry.getValue();
-            Collection<Filter<DataGroup>> dataGroupFilters = DataGroupFilterFactory.createDataGroupFilters(order, typedFilters);
+            Collection<DataGroupFilterChain> dataGroupFilters = DataGroupFilterChainFactory.createDataGroupFilters(order, typedFilters);
             result.addAll(dataGroupFilters);
         }
         return result;
     }
     
-    private void handleBatchedTask(final Collection<DataGroup> dataGroups, final Handler<BatchedDataGroup> nextHandler, final Collection<Filter<DataGroup>> filters, final int batchIndex) {
+    private void handleBatchedTask(final Collection<DataGroup> dataGroups, final Handler<BatchedDataGroup> nextHandler, final Collection<DataGroupFilterChain> filters, final int batchIndex) {
         String taskIdentifier = cachedTaskMetadata.getIdentifier();
         long taskBatch = cachedTaskMetadata.getTaskBatch();
         int batchSize = dataGroups.size();

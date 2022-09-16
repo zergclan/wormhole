@@ -20,16 +20,16 @@ package com.zergclan.wormhole.pipeline.filter.precise.validator;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.pipeline.filter.Filter;
+import com.zergclan.wormhole.pipeline.filter.DataGroupFilterChain;
 import com.zergclan.wormhole.pipeline.filter.exception.WormholeFilterException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Not blank validator implemented of {@link Filter}.
+ * Not blank validator implemented of {@link DataGroupFilterChain}.
  */
 @RequiredArgsConstructor
-public final class NotBlankValidator implements Filter<DataGroup> {
+public final class NotBlankValidator implements DataGroupFilterChain {
     
     @Getter
     private final int order;

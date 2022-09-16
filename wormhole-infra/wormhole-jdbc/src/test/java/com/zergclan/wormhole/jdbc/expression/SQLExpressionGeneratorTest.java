@@ -31,7 +31,7 @@ public final class SQLExpressionGeneratorTest {
     private static SQLExpressionGenerator generator;
     
     @BeforeAll
-    private static void init() {
+    public static void init() {
         String table = "t_user";
         Set<String> nodeNames = Collections.newLinkedHashSet(new String[] {"id", "username", "password", "create_time"});
         Set<String> uniqueNodeNames = Collections.newLinkedHashSet(new String[] {"username", "password"});

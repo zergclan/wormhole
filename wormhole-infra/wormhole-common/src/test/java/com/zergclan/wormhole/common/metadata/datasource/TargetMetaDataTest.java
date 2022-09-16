@@ -42,7 +42,7 @@ public final class TargetMetaDataTest {
         Collection<String> compareNodes = new LinkedList<>();
         Collection<String> ignoreNodes = new LinkedList<>();
         String versionNode = "taskBatch";
-        metaData = new TargetMetaData(dataSourceIdentifier, table, dataNodes, uniqueNodes, compareNodes, ignoreNodes, versionNode);
+        metaData = new TargetMetaData(dataSourceIdentifier, table, compareNodes, uniqueNodes, ignoreNodes, versionNode, dataNodes);
     }
     
     @Test

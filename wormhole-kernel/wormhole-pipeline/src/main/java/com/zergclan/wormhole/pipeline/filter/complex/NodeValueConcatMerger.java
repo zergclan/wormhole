@@ -19,17 +19,17 @@ package com.zergclan.wormhole.pipeline.filter.complex;
 
 import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.pipeline.filter.Filter;
+import com.zergclan.wormhole.pipeline.filter.DataGroupFilterChain;
 import com.zergclan.wormhole.pipeline.helper.NodeValueConcatMergerHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Node value concat merger implemented of {@link Filter}.
+ * Node value concat merger implemented of {@link DataGroupFilterChain}.
  */
 @RequiredArgsConstructor
 @Getter
-public final class NodeValueConcatMerger implements Filter<DataGroup> {
+public final class NodeValueConcatMerger implements DataGroupFilterChain {
     
     private final int order;
     
