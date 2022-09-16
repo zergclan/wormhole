@@ -22,8 +22,8 @@ package com.zergclan.wormhole.pipeline.filter;
  *
  * @param <D> class type of data
  */
-public interface Filter<D> {
-
+public interface WormholeFilter<D> {
+    
     /**
      * Do filter.
      *

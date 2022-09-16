@@ -17,7 +17,6 @@
 
 package com.zergclan.wormhole.pipeline.filter;
 
-import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterMetaData;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
 import org.junit.jupiter.api.Test;
@@ -28,12 +27,12 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class DataGroupFilterFactoryTest {
+public final class DataGroupFilterChainFactoryTest {
     
     @Test
     public void assertCreateDataGroupFilters() {
         Map<FilterType, Collection<FilterMetaData>> typedFilterMetaData = createEmptyTypedFilterMetaData();
-        Collection<Filter<DataGroup>> dataGroupFilters = DataGroupFilterFactory.createDataGroupFilters(0, typedFilterMetaData);
+        Collection<DataGroupFilterChain> dataGroupFilters = DataGroupFilterChainFactory.createDataGroupFilters(0, typedFilterMetaData);
         assertEquals(0, dataGroupFilters.size());
     }
     

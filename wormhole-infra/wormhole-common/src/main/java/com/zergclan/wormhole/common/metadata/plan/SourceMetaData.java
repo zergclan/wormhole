@@ -33,10 +33,10 @@ import java.util.Map;
 public final class SourceMetaData implements WormholeMetaData {
     
     private final String dataSourceIdentifier;
+    
+    private final String table;
 
     private final String actualSql;
-
-    private final String table;
     
     private final String conditionSql;
 

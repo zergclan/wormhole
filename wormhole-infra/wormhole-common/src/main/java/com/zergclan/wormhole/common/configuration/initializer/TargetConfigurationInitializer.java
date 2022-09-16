@@ -23,6 +23,7 @@ import com.zergclan.wormhole.common.configuration.TargetConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlTargetConfiguration;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.tool.util.StringUtil;
+import com.zergclan.wormhole.tool.util.Validator;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -37,12 +38,15 @@ public final class TargetConfigurationInitializer implements WormholeInitializer
     public TargetConfiguration init(final YamlTargetConfiguration yamlConfiguration) {
         String dataSource = yamlConfiguration.getDataSource();
         String table = yamlConfiguration.getTable();
-        Collection<String> uniqueNodes = StringUtil.deduplicateSplit(yamlConfiguration.getUniqueNodes(), MarkConstant.COMMA);
         Collection<String> compareNodes = StringUtil.deduplicateSplit(yamlConfiguration.getCompareNodes(), MarkConstant.COMMA);
+        Validator.notBlank(dataSource, "error: target configuration initialization failed arg data source can not be blank");
+        Validator.notBlank(table, "error: target configuration initialization failed arg table can not be blank");
+        Validator.notEmpty(compareNodes, "error: target configuration initialization failed arg compare nodes can not be empty");
+        Collection<String> uniqueNodes = StringUtil.deduplicateSplit(yamlConfiguration.getUniqueNodes(), MarkConstant.COMMA);
         Collection<String> ignoreNodes = StringUtil.deduplicateSplit(yamlConfiguration.getIgnoreNodes(), MarkConstant.COMMA);
         String versionNode = yamlConfiguration.getVersionNode();
         Map<String, DataNodeConfiguration> dataNodes = new LinkedHashMap<>();
         yamlConfiguration.getDataNodes().forEach((key, value) -> dataNodes.put(key, new DataNodeConfiguration(key, value.getNodeType(), value.getDataType(), value.getDefaultValue())));
-        return new TargetConfiguration(dataSource, table, uniqueNodes, compareNodes, ignoreNodes, versionNode, dataNodes);
+        return new TargetConfiguration(dataSource, table, compareNodes, uniqueNodes, ignoreNodes, versionNode, dataNodes);
     }
 }

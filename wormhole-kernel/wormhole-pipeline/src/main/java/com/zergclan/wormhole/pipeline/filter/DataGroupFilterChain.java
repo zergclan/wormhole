@@ -15,32 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.common.configuration.yaml;
+package com.zergclan.wormhole.pipeline.filter;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.zergclan.wormhole.common.data.DataGroup;
 
 /**
- * YAML target configuration.
+ * The root interface from which all data group filter chain objects shall be derived in Wormhole.
  */
-@Getter
-@Setter
-public final class YamlTargetConfiguration implements YamlConfiguration {
-    
-    private String dataSource;
-    
-    private String table;
-    
-    private String compareNodes;
-    
-    private String uniqueNodes;
-    
-    private String ignoreNodes;
-    
-    private String versionNode;
-    
-    private Map<String, YamlDataNodeConfiguration> dataNodes = new LinkedHashMap<>();
+public interface DataGroupFilterChain extends WormholeFilter<DataGroup> {
 }

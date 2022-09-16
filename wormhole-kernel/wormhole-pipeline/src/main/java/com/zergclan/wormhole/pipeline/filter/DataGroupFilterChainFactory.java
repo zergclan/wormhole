@@ -65,20 +65,20 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * Simple factory for create {@link Filter}.
+ * Simple factory for create {@link DataGroupFilterChain}.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DataGroupFilterFactory {
+public final class DataGroupFilterChainFactory {
     
     /**
-     * Create {@link Filter} of {@link DataGroup}.
+     * Create {@link DataGroupFilterChain} of {@link DataGroup}.
      *
      * @param order order
      * @param typedFilterMetaData {@link FilterMetaData}
-     * @return {@link Filter}
+     * @return {@link DataGroupFilterChain}
      */
-    public static Collection<Filter<DataGroup>> createDataGroupFilters(final int order, final Map<FilterType, Collection<FilterMetaData>> typedFilterMetaData) {
-        Collection<Filter<DataGroup>> result = new LinkedList<>();
+    public static Collection<DataGroupFilterChain> createDataGroupFilters(final int order, final Map<FilterType, Collection<FilterMetaData>> typedFilterMetaData) {
+        Collection<DataGroupFilterChain> result = new LinkedList<>();
         Iterator<Map.Entry<FilterType, Collection<FilterMetaData>>> iterator = typedFilterMetaData.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<FilterType, Collection<FilterMetaData>> entry = iterator.next();
@@ -130,7 +130,7 @@ public final class DataGroupFilterFactory {
         return result;
     }
     
-    private static Filter<DataGroup> createNodeCopyFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createNodeCopyFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Map<String, String> sourceTargetNameMappings = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -140,7 +140,7 @@ public final class DataGroupFilterFactory {
         return new NodeCopyEditor(order, type, sourceTargetNameMappings);
     }
     
-    private static Filter<DataGroup> createDelimiterSplitterFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createDelimiterSplitterFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         NodeValueDelimiterSplitterHelper[] nodeValueDelimiterSplitterHelpers = new NodeValueDelimiterSplitterHelper[filters.size()];
         Iterator<FilterMetaData> iterator = filters.iterator();
         int index = 0;
@@ -152,7 +152,7 @@ public final class DataGroupFilterFactory {
         return new NodeValueDelimiterSplitter(order, type, nodeValueDelimiterSplitterHelpers);
     }
     
-    private static Filter<DataGroup> createConcatMergerFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createConcatMergerFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         NodeValueConcatMergerHelper[] nodeValueConcatMergerHelpers = new NodeValueConcatMergerHelper[filters.size()];
         Iterator<FilterMetaData> iterator = filters.iterator();
         int index = 0;
@@ -164,7 +164,7 @@ public final class DataGroupFilterFactory {
         return new NodeValueConcatMerger(order, type, nodeValueConcatMergerHelpers);
     }
     
-    private static Filter<DataGroup> createDataTypeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createDataTypeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Map<String, DataTypeConvertorHelper> helpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -174,7 +174,7 @@ public final class DataGroupFilterFactory {
         return new DataTypeConvertor(order, type, helpers);
     }
     
-    private static Filter<DataGroup> createPatternedDataTimeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createPatternedDataTimeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Map<String, PatternedDataTimeConvertorHelper> helpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -186,7 +186,7 @@ public final class DataGroupFilterFactory {
         return new PatternedDataTimeConvertor(order, type, helpers);
     }
     
-    private static Filter<DataGroup> createCodeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createCodeConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Map<String, CodeConvertorHelper> codeConvertorHelpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -196,7 +196,7 @@ public final class DataGroupFilterFactory {
         return new CodeConvertor(order, type, codeConvertorHelpers);
     }
     
-    private static Filter<DataGroup> createNodeNameConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createNodeNameConvertorFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Map<String, String> sourceTargetNameMappings = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -206,7 +206,7 @@ public final class DataGroupFilterFactory {
         return new NodeNameConvertor(order, type, sourceTargetNameMappings);
     }
     
-    private static Filter<DataGroup> createValueRangeFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createValueRangeFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Map<String, ValueSubHelper> valueRangeHelpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -216,7 +216,7 @@ public final class DataGroupFilterFactory {
         return new ValueSubEditor(order, type, valueRangeHelpers);
     }
     
-    private static Filter<DataGroup> createValueAppendFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createValueAppendFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Map<String, ValueAppendHelper> valueAppendHelpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -226,7 +226,7 @@ public final class DataGroupFilterFactory {
         return new ValueAppendEditor(order, type, valueAppendHelpers);
     }
     
-    private static Filter<DataGroup> createFixedNodeFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createFixedNodeFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Collection<NodeValueHelper> nodeValueHelpers = new LinkedList<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -236,7 +236,7 @@ public final class DataGroupFilterFactory {
         return new FixedNodeEditor(order, type, nodeValueHelpers);
     }
     
-    private static Filter<DataGroup> createNullToDefaultFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createNullToDefaultFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         Map<String, NodeValueHelper> nodeValueHelpers = new LinkedHashMap<>();
         Iterator<FilterMetaData> iterator = filters.iterator();
         while (iterator.hasNext()) {
@@ -246,7 +246,7 @@ public final class DataGroupFilterFactory {
         return new NullToDefaultEditor(order, type, nodeValueHelpers);
     }
     
-    private static Filter<DataGroup> createNotNullFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createNotNullFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         String[] names = new String[filters.size()];
         Iterator<FilterMetaData> iterator = filters.iterator();
         int index = 0;
@@ -258,7 +258,7 @@ public final class DataGroupFilterFactory {
         return new NotNullValidator(order, type, names);
     }
     
-    private static Filter<DataGroup> createNotBlankFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
+    private static DataGroupFilterChain createNotBlankFilters(final int order, final FilterType type, final Collection<FilterMetaData> filters) {
         String[] names = new String[filters.size()];
         Iterator<FilterMetaData> iterator = filters.iterator();
         int index = 0;

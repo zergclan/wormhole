@@ -21,6 +21,7 @@ import com.zergclan.wormhole.common.WormholeInitializer;
 import com.zergclan.wormhole.common.configuration.DataNodeConfiguration;
 import com.zergclan.wormhole.common.configuration.SourceConfiguration;
 import com.zergclan.wormhole.common.configuration.yaml.YamlSourceConfiguration;
+import com.zergclan.wormhole.tool.util.Validator;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,8 +34,10 @@ public final class SourceConfigurationInitializer implements WormholeInitializer
     @Override
     public SourceConfiguration init(final YamlSourceConfiguration yamlConfiguration) {
         String dataSource = yamlConfiguration.getDataSource();
-        String actualSql = yamlConfiguration.getActualSql();
         String table = yamlConfiguration.getTable();
+        Validator.notBlank(dataSource, "error: source configuration initialization failed arg data source can not be blank");
+        Validator.notBlank(table, "error: source configuration initialization failed arg table can not be blank");
+        String actualSql = yamlConfiguration.getActualSql();
         String conditionSql = yamlConfiguration.getConditionSql();
         Map<String, DataNodeConfiguration> dataNodes = new LinkedHashMap<>();
         yamlConfiguration.getDataNodes().forEach((key, value) -> dataNodes.put(key, new DataNodeConfiguration(key, value.getNodeType(), value.getDataType(), value.getDefaultValue())));

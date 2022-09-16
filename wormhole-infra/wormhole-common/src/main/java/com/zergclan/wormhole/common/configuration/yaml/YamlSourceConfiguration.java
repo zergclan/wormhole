@@ -32,9 +32,9 @@ public final class YamlSourceConfiguration implements YamlConfiguration {
     
     private String dataSource;
     
-    private String actualSql;
-    
     private String table;
+    
+    private String actualSql;
     
     private String conditionSql;
     

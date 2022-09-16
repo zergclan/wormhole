@@ -20,7 +20,7 @@ package com.zergclan.wormhole.pipeline.filter.precise.editor;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.pipeline.filter.Filter;
+import com.zergclan.wormhole.pipeline.filter.DataGroupFilterChain;
 import com.zergclan.wormhole.pipeline.filter.exception.WormholeFilterException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 @Getter
-public final class NodeCopyEditor implements Filter<DataGroup> {
+public final class NodeCopyEditor implements DataGroupFilterChain {
     
     private final int order;
     

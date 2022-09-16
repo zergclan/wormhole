@@ -20,7 +20,7 @@ package com.zergclan.wormhole.pipeline.filter.precise.convertor;
 import com.zergclan.wormhole.common.data.node.DataNode;
 import com.zergclan.wormhole.common.data.DataGroup;
 import com.zergclan.wormhole.common.metadata.plan.filter.FilterType;
-import com.zergclan.wormhole.pipeline.filter.Filter;
+import com.zergclan.wormhole.pipeline.filter.DataGroupFilterChain;
 import com.zergclan.wormhole.pipeline.helper.DataTypeConvertorHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +31,11 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 /**
- * Node data type convertor implemented of {@link Filter}.
+ * Node data type convertor implemented of {@link DataGroupFilterChain}.
  */
 @RequiredArgsConstructor
 @Getter
-public final class DataTypeConvertor implements Filter<DataGroup> {
+public final class DataTypeConvertor implements DataGroupFilterChain {
     
     private final int order;
     

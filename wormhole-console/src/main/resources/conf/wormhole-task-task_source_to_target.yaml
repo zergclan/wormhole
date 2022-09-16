@@ -24,7 +24,7 @@ source:
   dataSource: ds-source
   table: source_user
   dataNodes:
-    frist_name:
+    first_name:
       nodeType: STANDARD
       dataType: TEXT
     family_name:
@@ -52,9 +52,9 @@ source:
 target:
   dataSource: ds-target
   table: target_user
-  uniqueNodes: user_code,identity_number,identity_type
   compareNodes: full_name,gender,age,birthday,admission_date,admission_season,academic_system
-  ignoreNodes: task_batch, create_time
+  uniqueNodes: user_code,identity_number,identity_type
+  ignoreNodes: task_batch,create_time
   versionNode: task_batch
   dataNodes:
     full_name:
@@ -81,12 +81,12 @@ target:
 
 dataNodeMappings:
   - targetNames: full_name
-    sourceNames: frist_name,family_name
+    sourceNames: first_name,family_name
     filters:
       - type: CONCAT_MERGER
         prop:
           targetName: full_name
-          sourceNames: family_name,frist_name
+          sourceNames: family_name,first_name
       - type: NOT_BLANK
         prop:
           sourceName: full_name
@@ -101,9 +101,9 @@ dataNodeMappings:
       - type: CODE_CONVERTOR
         prop:
           sourceName: gender
+          defaultCode: 3
           N: 1
           W: 2
-          defaultCode: 3
 
   - targetNames: birthday
     sourceNames: birthday

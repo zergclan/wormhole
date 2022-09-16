@@ -23,7 +23,7 @@ import com.zergclan.wormhole.common.eventbus.WormholeEventBus;
 import com.zergclan.wormhole.pipeline.event.ErrorDataEvent;
 import com.zergclan.wormhole.tool.concurrent.ProcessTask;
 import com.zergclan.wormhole.tool.util.DateUtil;
-import com.zergclan.wormhole.pipeline.filter.Filter;
+import com.zergclan.wormhole.pipeline.filter.DataGroupFilterChain;
 import com.zergclan.wormhole.pipeline.handler.Handler;
 import com.zergclan.wormhole.pipeline.filter.exception.WormholeFilterException;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +35,11 @@ import java.util.Iterator;
  * Implemented {@link ProcessTask} to handle {@link BatchedDataGroup}.
  */
 @RequiredArgsConstructor
-public final class BatchedDataGroupHandler implements ProcessTask {
+public final class BatchedDataGroupHandleTask implements ProcessTask {
     
     private final BatchedDataGroup batchedDataGroup;
     
-    private final Collection<Filter<DataGroup>> filters;
+    private final Collection<DataGroupFilterChain> filterChains;
     
     private final Handler<BatchedDataGroup> loadedHandler;
     
@@ -56,9 +56,9 @@ public final class BatchedDataGroupHandler implements ProcessTask {
     }
     
     private boolean handleDataGroup(final DataGroup dataGroup) {
-        Iterator<Filter<DataGroup>> iterator = filters.iterator();
+        Iterator<DataGroupFilterChain> iterator = filterChains.iterator();
         while (iterator.hasNext()) {
-            Filter<DataGroup> filter = iterator.next();
+            DataGroupFilterChain filter = iterator.next();
             boolean isFiltered;
             try {
                 isFiltered = filter.doFilter(dataGroup);

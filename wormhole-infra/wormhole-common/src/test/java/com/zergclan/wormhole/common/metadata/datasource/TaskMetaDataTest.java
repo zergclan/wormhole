@@ -50,21 +50,21 @@ public final class TaskMetaDataTest {
     private static TargetMetaData createTarget() {
         String dataSourceIdentifier = "dataSourceIdentifier";
         String table = "table";
-        Map<String, DataNodeMetaData> dataNodes = new LinkedHashMap<>();
-        Collection<String> uniqueNodes = new LinkedList<>();
         Collection<String> compareNodes = new LinkedList<>();
+        Collection<String> uniqueNodes = new LinkedList<>();
         Collection<String> ignoreNodes = new LinkedList<>();
         String versionNode = "taskBatch";
-        return new TargetMetaData(dataSourceIdentifier, table, dataNodes, uniqueNodes, compareNodes, ignoreNodes, versionNode);
+        Map<String, DataNodeMetaData> dataNodes = new LinkedHashMap<>();
+        return new TargetMetaData(dataSourceIdentifier, table, compareNodes, uniqueNodes, ignoreNodes, versionNode, dataNodes);
     }
     
     private static SourceMetaData createSource() {
         String dataSourceIdentifier = "dataSourceIdentifier";
-        String actualSql = "select * from table";
         String table = "table";
+        String actualSql = "select * from table";
         String conditionSql = "id = 1";
         Map<String, DataNodeMetaData> dataNodes = new LinkedHashMap<>();
-        return new SourceMetaData(dataSourceIdentifier, actualSql, table, conditionSql, dataNodes);
+        return new SourceMetaData(dataSourceIdentifier, table, actualSql, conditionSql, dataNodes);
     }
     
     @Test
