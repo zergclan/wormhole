@@ -15,23 +15,7 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.fixture;
+package com.zergclan.wormhole.test.integration.engine.action;
 
-import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-/**
- * Wormhole engine executor.
- */
-@RequiredArgsConstructor
-@Getter
-public final class FixtureWormholeEngineExecutor implements Runnable {
-    
-    private final WormholeExecutionEngine wormholeExecutionEngine;
-    
-    @Override
-    public void run() {
-        wormholeExecutionEngine.execute();
-    }
+public final class WormholeActionAsserter {
 }
