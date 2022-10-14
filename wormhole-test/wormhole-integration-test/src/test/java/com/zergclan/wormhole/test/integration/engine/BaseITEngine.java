@@ -17,36 +17,14 @@
 
 package com.zergclan.wormhole.test.integration.engine;
 
-import com.zergclan.wormhole.common.metadata.database.DatabaseType;
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceTypeFactory;
-import com.zergclan.wormhole.jdbc.execute.SQLExecutor;
+import com.zergclan.wormhole.test.integration.engine.action.WormholeAssertAction;
 import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
-import com.zergclan.wormhole.test.integration.fixture.FixtureExpressionProvider;
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
 import com.zergclan.wormhole.test.integration.framework.container.DatabaseITContainerManager;
-import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
-import com.zergclan.wormhole.test.integration.framework.data.Dataset;
-import com.zergclan.wormhole.test.integration.framework.data.config.DatasetConfigurationLoader;
-import com.zergclan.wormhole.test.integration.framework.data.node.ColumnNode;
-import com.zergclan.wormhole.test.integration.framework.data.node.DataSourceNode;
-import com.zergclan.wormhole.test.integration.framework.data.node.RowsNode;
-import com.zergclan.wormhole.test.integration.framework.data.node.TableNode;
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
 import com.zergclan.wormhole.test.integration.framework.util.TimeSleeper;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.SneakyThrows;
-
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 /**
  * Base IT engine.
@@ -54,99 +32,23 @@ import java.util.stream.Collectors;
 @Getter(AccessLevel.PROTECTED)
 public abstract class BaseITEngine {
     
-    private final TimeSleeper sleeper;
-    
-    private final String scenario;
-    
-    private final Collection<DataSourceEnvironment> dataSources;
+    private final WormholeParameterized parameterized;
     
     private final DatabaseITContainerManager containerManager;
     
-    private volatile Dataset dataset;
-    
-    private volatile DataSource source;
-    
-    private volatile DataSource target;
+    private final WormholeAssertAction assertAction;
     
     public BaseITEngine(final WormholeParameterized parameterized) {
-        scenario = parameterized.getScenario();
-        dataSources = parameterized.getDataSources();
-        sleeper = new TimeSleeper(50L);
-        containerManager = new DatabaseITContainerManager(sleeper);
-    }
-    
-    protected void postProcess() {
-        containerManager.close();
-        sleeper.sleep();
-    }
-    
-    protected void preProcess() {
+        this.parameterized = parameterized;
+        assertAction = new WormholeAssertAction(parameterized);
+        containerManager = new DatabaseITContainerManager(new TimeSleeper(50L));
         initEnv();
-        initDataSource();
-        setData();
     }
     
     private void initEnv() {
-        for (DataSourceEnvironment each : dataSources) {
-            containerManager.register(new DockerContainerDefinition(scenario, each.getDatabaseType(), each.getPort()));
+        for (DataSourceEnvironment each : parameterized.getDataSources()) {
+            containerManager.register(new DockerContainerDefinition(parameterized.getScenario(), each.getDatabaseType(), each.getPort()));
         }
         containerManager.start();
-    }
-    
-    @SneakyThrows(IOException.class)
-    private void initDataSource() {
-        dataset = new Dataset(scenario, DatasetConfigurationLoader.load(scenario));
-        DatabaseITContainer container = containerManager.getContainer(dataset.getIdentifier());
-        source = container.getDataSource("ds_source");
-        target = container.getDataSource("ds_target");
-    }
-    
-    @SneakyThrows(SQLException.class)
-    private void setData() {
-        setSourceData(dataset.getDataSources().get("ds_source"));
-        setTargetData(dataset.getDataSources().get("ds_target"));
-    }
-    
-    private void setSourceData(final DataSourceNode sourceDataSourceNode) throws SQLException {
-        if (null == sourceDataSourceNode) {
-            return;
-        }
-        try (Connection connection = source.getConnection()) {
-            Map<String, TableNode> tables = sourceDataSourceNode.getTables();
-            for (Entry<String, TableNode> entry : tables.entrySet()) {
-                initData(connection, entry.getValue());
-            }
-        }
-    }
-    
-    private void setTargetData(final DataSourceNode targetDataSourceNode) throws SQLException {
-        if (null == targetDataSourceNode) {
-            return;
-        }
-        try (Connection connection = target.getConnection()) {
-            Map<String, TableNode> tables = targetDataSourceNode.getTables();
-            for (Entry<String, TableNode> entry : tables.entrySet()) {
-                initData(connection, entry.getValue());
-            }
-        }
-    }
-    
-    private void initData(final Connection connection, final TableNode tableNode) throws SQLException {
-        SQLExecutor.executeBatch(connection, initInsertSQL(tableNode), initValueIterators(tableNode));
-    }
-    
-    private String initInsertSQL(final TableNode tableNode) {
-        DatabaseType databaseType = DataSourceTypeFactory.getInstance(dataset.getDatabaseType());
-        Collection<String> nodeNames = tableNode.getColumns().stream().map(ColumnNode::getName).collect(Collectors.toCollection(LinkedList::new));
-        return new FixtureExpressionProvider(databaseType, tableNode.getName(), nodeNames).getInsertExpression();
-    }
-    
-    private Collection<Object[]> initValueIterators(final TableNode tableNode) {
-        Collection<RowsNode> rows = tableNode.getRows();
-        Collection<Object[]> result = new ArrayList<>(rows.size());
-        for (RowsNode each : rows) {
-            result.add(each.getValues());
-        }
-        return result;
     }
 }

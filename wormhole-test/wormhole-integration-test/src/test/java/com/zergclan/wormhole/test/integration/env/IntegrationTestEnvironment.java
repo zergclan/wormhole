@@ -45,7 +45,7 @@ public final class IntegrationTestEnvironment {
         Optional<Properties> properties = loadProperties();
         if (properties.isPresent()) {
             Properties props = properties.get();
-            scenarios.addAll(splitValues(props.getProperty("it.env.scenarios")));
+            scenarios.addAll(splitValues(props.getProperty(EnvironmentConstant.IT_ENV_SCENARIOS)));
             String source = props.getProperty("it.env.datasource.source");
             String target = props.getProperty("it.env.datasource.target");
             dataSources.add(new DataSourceEnvironment(source));
@@ -63,7 +63,7 @@ public final class IntegrationTestEnvironment {
     }
     
     private Optional<Properties> loadProperties() {
-        String type = System.getProperties().getProperty("it.run.type", "SKIP");
+        String type = System.getProperties().getProperty(EnvironmentConstant.IT_RUN_TYPE, "SKIP");
         if ("NATIVE".equalsIgnoreCase(type)) {
             return Optional.of(loadNativeProperties());
         } else if ("DOCKER".equalsIgnoreCase(type)) {
