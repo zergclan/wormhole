@@ -15,7 +15,24 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.engine.action;
+package com.zergclan.wormhole.test.integration.framework.assertion.definition;
 
-public final class WormholeActionAsserter {
+import lombok.Getter;
+import lombok.ToString;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Assert action definition.
+ */
+@Getter
+@ToString
+@XmlRootElement(name = "assert-action")
+public final class AssertActionDefinition {
+    
+    @XmlElement(name = "assert-step")
+    private final List<AssertStepDefinition> assertStep = new LinkedList<>();
 }

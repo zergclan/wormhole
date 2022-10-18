@@ -16,11 +16,10 @@
   ~ limitations under the License.
   -->
 
-<expected-data>
-    <meta-data id="test" source-node-name="" table-name="">
-        <column name="" type="" />
-        <column name="" type="" />
-        <index name="" column="" unique="" />
-    </meta-data>
-    <row meta-data-ref="test" values="" />
-</expected-data>
+<assert-action>
+    <assert-step name="test" plan-identifier="plan_test" expected-file="plan_test_expected.xml">
+        <expected-data task-identifier="task_test" data-source-name="test_expected_data_source" table-name="test_table"/>
+    </assert-step>
+</assert-action>
+
+

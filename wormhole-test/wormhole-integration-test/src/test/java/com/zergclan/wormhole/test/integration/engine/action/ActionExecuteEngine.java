@@ -19,23 +19,35 @@ package com.zergclan.wormhole.test.integration.engine.action;
 
 import com.zergclan.wormhole.bootstrap.engine.WormholeExecutionEngine;
 import com.zergclan.wormhole.common.configuration.WormholeConfigurationLoader;
+import com.zergclan.wormhole.test.integration.fixture.FixtureWormholeEngineExecutor;
+import com.zergclan.wormhole.test.integration.framework.assertion.AssertActionDefinitionLoader;
+import com.zergclan.wormhole.test.integration.framework.assertion.definition.AssertStepDefinition;
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
 import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collection;
 
-public final class WormholeAssertAction {
+/**
+ * Action execute engine.
+ */
+public final class ActionExecuteEngine {
     
     private final WormholeExecutionEngine executionEngine;
     
-    private final WormholeActionAsserter actionAsserter = new WormholeActionAsserter();
+    private final Collection<AssertStepDefinition> assertStep;
     
-    public WormholeAssertAction(final WormholeParameterized parameterized) {
+    private final ActionStepExecutor actionStepExecutor;
+    
+    private final ActionStepAsserter actionStepAsserter;
+    
+    public ActionExecuteEngine(final WormholeParameterized parameterized) {
+        assertStep = AssertActionDefinitionLoader.load(parameterized.getScenario()).getAssertStep();
         executionEngine = initWormholeExecutionEngine(parameterized);
-        new Thread(new FixtureWormholeEngineExecutor(executionEngine)).start();
+        actionStepExecutor = new ActionStepExecutor(executionEngine);
+        actionStepAsserter = new ActionStepAsserter(executionEngine);
     }
     
     @SneakyThrows({IOException.class, SQLException.class})
@@ -48,17 +60,10 @@ public final class WormholeAssertAction {
      * Do assert action.
      */
     public void doAssertAction() {
-        // TODO
-    }
-    
-    @RequiredArgsConstructor
-    private static final class FixtureWormholeEngineExecutor implements Runnable {
-        
-        private final WormholeExecutionEngine wormholeExecutionEngine;
-        
-        @Override
-        public void run() {
-            wormholeExecutionEngine.execute();
+        new Thread(new FixtureWormholeEngineExecutor(executionEngine)).start();
+        for (AssertStepDefinition each : assertStep) {
+            actionStepExecutor.executeStep(each);
+            actionStepAsserter.assertStep(each);
         }
     }
 }
