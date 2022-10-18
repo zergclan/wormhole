@@ -17,7 +17,7 @@
 
 package com.zergclan.wormhole.test.integration.engine;
 
-import com.zergclan.wormhole.test.integration.engine.action.WormholeAssertAction;
+import com.zergclan.wormhole.test.integration.engine.action.ActionExecuteEngine;
 import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
 import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
 import com.zergclan.wormhole.test.integration.framework.container.DatabaseITContainerManager;
@@ -36,11 +36,11 @@ public abstract class BaseITEngine {
     
     private final DatabaseITContainerManager containerManager;
     
-    private final WormholeAssertAction assertAction;
+    private final ActionExecuteEngine actionExecuteEngine;
     
     public BaseITEngine(final WormholeParameterized parameterized) {
         this.parameterized = parameterized;
-        assertAction = new WormholeAssertAction(parameterized);
+        actionExecuteEngine = new ActionExecuteEngine(parameterized);
         containerManager = new DatabaseITContainerManager(new TimeSleeper(50L));
         initEnv();
     }
