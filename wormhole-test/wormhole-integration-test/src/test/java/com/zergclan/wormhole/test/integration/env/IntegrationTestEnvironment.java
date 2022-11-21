@@ -19,14 +19,16 @@ package com.zergclan.wormhole.test.integration.env;
 
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -39,19 +41,15 @@ public final class IntegrationTestEnvironment {
     
     private final Collection<String> scenarios = new LinkedList<>();
     
-    private final Collection<DataSourceEnvironment> dataSources = new LinkedList<>();
+    private final Map<String, DataSourceEnvironment> dataSources = new LinkedHashMap<>();
     
     private IntegrationTestEnvironment() {
-        Optional<Properties> properties = loadProperties();
-        if (properties.isPresent()) {
-            Properties props = properties.get();
+        Properties props = loadProperties();
+        String runType = props.getProperty(EnvironmentConstant.IT_RUN_TYPE);
+        if ("DOCKER".equals(runType)) {
             scenarios.addAll(splitValues(props.getProperty(EnvironmentConstant.IT_ENV_SCENARIOS)));
-            String source = props.getProperty("it.env.datasource.source");
-            String target = props.getProperty("it.env.datasource.target");
-            dataSources.add(new DataSourceEnvironment(source));
-            if (!source.equals(target)) {
-                dataSources.add(new DataSourceEnvironment(target));
-            }
+            dataSources.put(EnvironmentConstant.IT_ENV_SOURCE_ACTUAL_NAME, DataSourceEnvironment.build(props.getProperty(EnvironmentConstant.IT_ENV_SOURCE_DATASOURCE), AssertPart.ACTUAL));
+            dataSources.put(EnvironmentConstant.IT_ENV_TARGET_ACTUAL_NAME, DataSourceEnvironment.build(props.getProperty(EnvironmentConstant.IT_ENV_TARGET_DATASOURCE), AssertPart.EXPECTED));
         }
     }
     
@@ -62,28 +60,12 @@ public final class IntegrationTestEnvironment {
         return result;
     }
     
-    private Optional<Properties> loadProperties() {
-        String type = System.getProperties().getProperty(EnvironmentConstant.IT_RUN_TYPE, "SKIP");
-        if ("NATIVE".equalsIgnoreCase(type)) {
-            return Optional.of(loadNativeProperties());
-        } else if ("DOCKER".equalsIgnoreCase(type)) {
-            return Optional.of(loadRuntimeProperties());
-        }
-        return Optional.empty();
-    }
-    
-    private Properties loadNativeProperties() {
+    @SneakyThrows(IOException.class)
+    private Properties loadProperties() {
         Properties result = new Properties();
         try (InputStream inputStream = IntegrationTestEnvironment.class.getClassLoader().getResourceAsStream("env/it-env.properties")) {
             result.load(inputStream);
-        } catch (final IOException ex) {
-            throw new RuntimeException(ex);
         }
-        return result;
-    }
-    
-    private Properties loadRuntimeProperties() {
-        Properties result = new Properties();
         for (String each : System.getProperties().stringPropertyNames()) {
             result.setProperty(each, System.getProperty(each));
         }

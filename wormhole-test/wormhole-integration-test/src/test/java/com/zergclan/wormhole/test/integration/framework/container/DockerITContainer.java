@@ -39,13 +39,10 @@ public abstract class DockerITContainer extends GenericContainer<DockerITContain
     
     private final String scenario;
     
-    private final int port;
-    
-    public DockerITContainer(final String identifier, final String scenario, final String dockerImageName, final int port) {
+    public DockerITContainer(final String identifier, final String scenario, final String dockerImageName) {
         super(new RemoteDockerImage(DockerImageName.parse(dockerImageName)));
         this.identifier = identifier;
         this.scenario = scenario;
-        this.port = port;
     }
     
     @Override

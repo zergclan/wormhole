@@ -17,20 +17,20 @@
 
 package com.zergclan.wormhole.test.integration.framework.container.storage.atomic;
 
-import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
-import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
+import com.zergclan.wormhole.test.integration.framework.container.storage.StorageContainerDefinition;
+import com.zergclan.wormhole.test.integration.framework.container.storage.StorageITContainer;
 import org.testcontainers.containers.BindMode;
+
+import java.util.Locale;
 
 /**
  * Database IT container of MySQL.
  */
-public final class MySQLITContainer extends DatabaseITContainer {
+public final class MySQLITContainer extends StorageITContainer {
     
     private static final String DEFAULT_USER = "root";
     
     private static final String DEFAULT_PASSWORD = "root";
-    
-    private static final String DEFAULT_IMAGE_NAME = "mysql:5.7";
     
     private static final String DEFAULT_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     
@@ -38,8 +38,9 @@ public final class MySQLITContainer extends DatabaseITContainer {
     
     private static final String DEFAULT_TRANSACTION_ISOLATION = "TRANSACTION_REPEATABLE_READ";
     
-    public MySQLITContainer(final DockerContainerDefinition dockerDefinition) {
-        super(dockerDefinition.getIdentifier(), dockerDefinition.getDatabaseType(), dockerDefinition.getScenario(), DEFAULT_IMAGE_NAME, dockerDefinition.getPort());
+    public MySQLITContainer(final StorageContainerDefinition dockerDefinition) {
+        super(dockerDefinition.getContainerIdentifier(), dockerDefinition.getDockerImageName(), dockerDefinition.getScenario(), dockerDefinition.getDatabaseType().getType(),
+                dockerDefinition.getAssertPart().name().toLowerCase(Locale.ROOT));
     }
     
     @Override
@@ -59,6 +60,11 @@ public final class MySQLITContainer extends DatabaseITContainer {
     @Override
     protected String getJdbcUrl(final String host, final int port, final String dataSourceName) {
         return "jdbc:mysql://" + host + ":" + port + "/" + dataSourceName + DEFAULT_JDBC_URL_SUFFIX;
+    }
+    
+    @Override
+    protected int getDefaultPort() {
+        return 3306;
     }
     
     @Override

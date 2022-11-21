@@ -17,7 +17,8 @@
 
 package com.zergclan.wormhole.test.integration.framework.container;
 
-import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
+import com.zergclan.wormhole.test.integration.framework.container.storage.StorageContainerDefinition;
+import com.zergclan.wormhole.test.integration.framework.container.storage.StorageITContainer;
 import com.zergclan.wormhole.test.integration.framework.util.TimeSleeper;
 import lombok.RequiredArgsConstructor;
 
@@ -29,24 +30,24 @@ public final class DatabaseITContainerManager {
     
     private final TimeSleeper sleeper;
     
-    private final Map<String, DatabaseITContainer> databasesContainers = new LinkedHashMap<>();
+    private final Map<String, StorageITContainer> databasesContainers = new LinkedHashMap<>();
     
     /**
      * Register.
      *
-     * @param containerDefinition {@link DatabaseITContainer}
+     * @param containerDefinition {@link StorageITContainer}
      */
-    public void register(final DockerContainerDefinition containerDefinition) {
-        databasesContainers.put(containerDefinition.getIdentifier(), DockerITContainerBuilder.newStorageContainer(containerDefinition));
+    public void register(final StorageContainerDefinition containerDefinition) {
+        databasesContainers.put(containerDefinition.getContainerIdentifier(), DockerITContainerBuilder.newStorageContainer(containerDefinition));
     }
     
     /**
      * Get container.
      *
      * @param identifier identifier
-     * @return {@link DatabaseITContainer}
+     * @return {@link StorageITContainer}
      */
-    public DatabaseITContainer getContainer(final String identifier) {
+    public StorageITContainer getContainer(final String identifier) {
         return databasesContainers.get(identifier);
     }
     
@@ -54,7 +55,7 @@ public final class DatabaseITContainerManager {
      * Start.
      */
     public void start() {
-        for (DatabaseITContainer each : databasesContainers.values()) {
+        for (StorageITContainer each : databasesContainers.values()) {
             each.start();
             sleeper.sleep();
         }
@@ -64,9 +65,8 @@ public final class DatabaseITContainerManager {
      * Close.
      */
     public void close() {
-        for (DatabaseITContainer each : databasesContainers.values()) {
+        for (StorageITContainer each : databasesContainers.values()) {
             each.close();
-            sleeper.sleep();
         }
     }
 }

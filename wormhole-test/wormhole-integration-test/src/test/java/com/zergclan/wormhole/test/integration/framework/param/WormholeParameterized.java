@@ -21,7 +21,7 @@ import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Getter
@@ -29,5 +29,5 @@ public final class WormholeParameterized {
     
     private final String scenario;
     
-    private final Collection<DataSourceEnvironment> dataSources;
+    private final Map<String, DataSourceEnvironment> dataSources;
 }
