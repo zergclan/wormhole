@@ -27,4 +27,3 @@ CREATE DATABASE expected_target;
 
 CREATE TABLE expected_source.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE expected_target.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));
-
