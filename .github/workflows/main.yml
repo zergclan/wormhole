@@ -81,4 +81,4 @@ jobs:
           cache: maven
 
       - name: Run Integration Test
-        run: ./mvnw -nsu -B install -f wormhole-test/wormhole-integration-test/pom.xml -Dcheckstyle.skip=true -Dit.env.scenarios=${{ matrix.scenarios }} -Dit.env.datasource.source=MySQL -Dit.env.datasource.target=MySQL -Dit.run.type=DOCKER
+        run: ./mvnw -nsu -B install -f wormhole-test/wormhole-integration-test/pom.xml -Dit.env.scenarios=${{ matrix.scenarios }} -Dit.env.source.datasource=MySQL@mysql:5.7 -Dit.env.source.datasource=MySQL@mysql:8.0 -Dit.run.type=DOCKER

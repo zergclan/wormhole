@@ -23,12 +23,14 @@ import com.zergclan.wormhole.test.integration.fixture.FixtureWormholeEngineExecu
 import com.zergclan.wormhole.test.integration.framework.assertion.AssertActionDefinitionLoader;
 import com.zergclan.wormhole.test.integration.framework.assertion.definition.AssertStepDefinition;
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
-import com.zergclan.wormhole.test.integration.framework.util.PathGenerator;
+import com.zergclan.wormhole.test.integration.framework.util.YamlFileLoader;
 import lombok.SneakyThrows;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Action execute engine.
@@ -52,8 +54,9 @@ public final class ActionExecuteEngine {
     
     @SneakyThrows({IOException.class, SQLException.class})
     private WormholeExecutionEngine initWormholeExecutionEngine(final WormholeParameterized parameterized) {
-        String classPath = PathGenerator.generateWormholeConfigPath(parameterized.getScenario());
-        return WormholeExecutionEngine.getInstance(WormholeConfigurationLoader.load(classPath));
+        File serverYaml = YamlFileLoader.loadServerYaml(parameterized.getScenario());
+        Map<String, File> taskYaml = YamlFileLoader.loadTaskYaml(parameterized.getScenario());
+        return WormholeExecutionEngine.getInstance(WormholeConfigurationLoader.load(serverYaml, taskYaml));
     }
     
     /**

@@ -17,31 +17,39 @@
 
 package com.zergclan.wormhole.test.integration.env;
 
-import com.zergclan.wormhole.common.metadata.datasource.DataSourceTypeFactory;
 import com.zergclan.wormhole.tool.constant.MarkConstant;
 import com.zergclan.wormhole.tool.util.StringUtil;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * Environment of data source.
  */
-@RequiredArgsConstructor
 @Getter
+@Setter
 public final class DataSourceEnvironment {
     
-    private final String databaseType;
+    private String databaseType;
     
-    private final int port;
+    private String dockerImageName;
     
-    public DataSourceEnvironment(final String datasource) {
-        if (datasource.contains(MarkConstant.COLON)) {
-            String[] typeAndPort = StringUtil.twoPartsSplit(datasource, MarkConstant.COLON);
-            databaseType = DataSourceTypeFactory.getInstance(typeAndPort[0]).getType();
-            port = Integer.parseInt(typeAndPort[1]);
-        } else {
-            databaseType = DataSourceTypeFactory.getInstance(datasource).getType();
-            port = DataSourceTypeFactory.getInstance(datasource).getDefaultPort();
+    private AssertPart assertPart;
+    
+    /**
+     * Build.
+     *
+     * @param dataSource data source
+     * @param assertPart assert part
+     * @return {@link DataSourceEnvironment}
+     */
+    public static DataSourceEnvironment build(final String dataSource, final AssertPart assertPart) {
+        DataSourceEnvironment result = new DataSourceEnvironment();
+        if (dataSource.contains(MarkConstant.AT)) {
+            String[] typeAndVersion = StringUtil.twoPartsSplit(dataSource, MarkConstant.AT);
+            result.setDatabaseType(typeAndVersion[0]);
+            result.setDockerImageName(typeAndVersion[1]);
         }
+        result.setAssertPart(assertPart);
+        return result;
     }
 }

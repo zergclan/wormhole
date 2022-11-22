@@ -33,17 +33,28 @@ import java.util.Map;
 /**
  * Abstract database IT container.
  */
-public abstract class DatabaseITContainer extends DockerITContainer {
+public abstract class StorageITContainer extends DockerITContainer {
     
     private static final String CONTAINER_PATH = "/docker-entrypoint-initdb.d/";
     
     private final String databaseType;
     
+    private final String assertPartType;
+    
     private final Map<String, DataSource> dataSources = new LinkedHashMap<>();
     
-    public DatabaseITContainer(final String identifier, final String databaseType, final String scenario, final String dockerImageName, final int port) {
-        super(identifier, scenario, dockerImageName, port);
+    public StorageITContainer(final String identifier, final String dockerImageName, final String scenario, final String databaseType, final String assertPartType) {
+        super(identifier, scenario, dockerImageName);
         this.databaseType = databaseType;
+        this.assertPartType = assertPartType;
+    }
+    
+    @Override
+    protected void configure() {
+        String initSqlPath = PathGenerator.generateInitSqlPath(getScenario(), assertPartType, databaseType);
+        withClasspathResourceMapping(initSqlPath, CONTAINER_PATH, BindMode.READ_ONLY);
+        withExposedPorts(getDefaultPort());
+        setWaitStrategy(new ConnectionWaitStrategy(() -> DriverManager.getConnection(URLGenerator.generateJDBCUrl(databaseType, getFirstMappedPort()), getUsername(), getPassword())));
     }
     
     /**
@@ -61,17 +72,10 @@ public abstract class DatabaseITContainer extends DockerITContainer {
         return result;
     }
     
-    @Override
-    protected void configure() {
-        withClasspathResourceMapping(PathGenerator.generateInitSqlPath(getScenario(), databaseType), CONTAINER_PATH, BindMode.READ_ONLY);
-        withExposedPorts(getPort());
-        setWaitStrategy(new ConnectionWaitStrategy(() -> DriverManager.getConnection(URLGenerator.generateJDBCUrl(databaseType, getFirstMappedPort()), getUsername(), getPassword())));
-    }
-    
     private DataSource createDataSource(final String dataSourceName) {
         HikariDataSource result = new HikariDataSource();
         result.setDriverClassName(getDriverClassName());
-        String jdbcUrl = getJdbcUrl(getHost(), getMappedPort(getPort()), dataSourceName);
+        String jdbcUrl = getJdbcUrl(getHost(), getMappedPort(getDefaultPort()), dataSourceName);
         result.setJdbcUrl(jdbcUrl);
         result.setUsername(getUsername());
         result.setPassword(getPassword());
@@ -81,12 +85,14 @@ public abstract class DatabaseITContainer extends DockerITContainer {
     }
     
     private String getPoolName(final String dataSourceName) {
-        return databaseType + MarkConstant.HYPHEN + getScenario() + MarkConstant.HYPHEN + dataSourceName;
+        return getScenario() + MarkConstant.HYPHEN + databaseType + MarkConstant.HYPHEN + dataSourceName;
     }
     
     protected abstract String getDriverClassName();
     
     protected abstract String getJdbcUrl(String host, int port, String dataSourceName);
+    
+    protected abstract int getDefaultPort();
     
     protected abstract String getUsername();
     

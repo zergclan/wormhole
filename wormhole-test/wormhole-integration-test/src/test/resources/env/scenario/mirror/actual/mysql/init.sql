@@ -16,15 +16,14 @@
 --
 
 -- create user for database
-
 CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY 'root';
 GRANT All privileges ON *.* TO 'root'@'%';
 
-DROP DATABASE IF EXISTS ds_source;
-DROP DATABASE IF EXISTS ds_target;
+DROP DATABASE IF EXISTS actual_source;
+DROP DATABASE IF EXISTS actual_target;
 
-CREATE DATABASE ds_source;
-CREATE DATABASE ds_target;
+CREATE DATABASE actual_source;
+CREATE DATABASE actual_target;
 
-CREATE TABLE ds_source.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));
-CREATE TABLE ds_target.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE actual_source.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE actual_target.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));

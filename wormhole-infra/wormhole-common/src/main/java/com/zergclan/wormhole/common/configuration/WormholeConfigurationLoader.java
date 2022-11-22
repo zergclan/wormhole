@@ -58,28 +58,39 @@ public final class WormholeConfigurationLoader {
      * @throws IOException IO exception
      */
     public static WormholeConfiguration load(final String classpath) throws IOException {
-        return INITIALIZER.init(loadYamlWormholeConfiguration(classpath));
-    }
-    
-    private static YamlWormholeConfiguration loadYamlWormholeConfiguration(final String classpath) throws IOException {
-        YamlWormholeConfiguration result = YamlUtil.unmarshal(getResourceYamlFile(classpath, WORMHOLE_SERVER_CONFIGURATION_FILE), YamlWormholeConfiguration.class);
+        YamlWormholeConfiguration yamlConfiguration = YamlUtil.unmarshal(getResourceYamlFile(classpath, WORMHOLE_SERVER_CONFIGURATION_FILE), YamlWormholeConfiguration.class);
         Map<String, YamlTaskConfiguration> tasks = new LinkedHashMap<>();
-        Set<String> taskNames = result.getPlans().entrySet().stream().flatMap(entry -> entry.getValue().getTasks().stream()).collect(Collectors.toCollection(LinkedHashSet::new));
+        Set<String> taskNames = yamlConfiguration.getPlans().entrySet().stream().flatMap(entry -> entry.getValue().getTasks().stream()).collect(Collectors.toCollection(LinkedHashSet::new));
         for (String each : taskNames) {
-            tasks.put(each, loadYamlTaskConfiguration(classpath, each));
+            tasks.put(each, YamlUtil.unmarshal(getResourceYamlFile(classpath, formatYAMLFileName(WORMHOLE_TASK_CONFIGURATION_FILE_PREFIX + each)), YamlTaskConfiguration.class));
         }
-        result.setTasks(tasks);
-        return result;
+        yamlConfiguration.setTasks(tasks);
+        return INITIALIZER.init(yamlConfiguration);
     }
     
-    private static YamlTaskConfiguration loadYamlTaskConfiguration(final String classpath, final String taskName) throws IOException {
-        return YamlUtil.unmarshal(getResourceYamlFile(classpath, formatYAMLFileName(WORMHOLE_TASK_CONFIGURATION_FILE_PREFIX + taskName)), YamlTaskConfiguration.class);
+    /**
+     * Load {@link WormholeConfiguration}.
+     *
+     * @param serverYamlFile server yaml file
+     * @param taskYamlFiles task yaml files
+     * @return {@link WormholeConfiguration}
+     * @throws IOException IO exception
+     */
+    public static WormholeConfiguration load(final File serverYamlFile, final Map<String, File> taskYamlFiles) throws IOException {
+        YamlWormholeConfiguration yamlConfiguration = YamlUtil.unmarshal(serverYamlFile, YamlWormholeConfiguration.class);
+        Map<String, YamlTaskConfiguration> tasks = new LinkedHashMap<>();
+        for (Map.Entry<String, File> entry : taskYamlFiles.entrySet()) {
+            tasks.put(entry.getKey(), YamlUtil.unmarshal(entry.getValue(), YamlTaskConfiguration.class));
+        }
+        yamlConfiguration.setTasks(tasks);
+        return INITIALIZER.init(yamlConfiguration);
     }
     
     @SneakyThrows(URISyntaxException.class)
     private static File getResourceYamlFile(final String classpath, final String fileName) {
-        URL url = WormholeConfigurationLoader.class.getResource(classpath + MarkConstant.FORWARD_SLASH + fileName);
-        return null == url ? new File(classpath) : new File(url.toURI().getPath());
+        String realFile = classpath + MarkConstant.FORWARD_SLASH + fileName;
+        URL url = WormholeConfigurationLoader.class.getResource(realFile);
+        return null == url ? new File(realFile) : new File(url.toURI().getPath());
     }
     
     private static String formatYAMLFileName(final String fileName) {

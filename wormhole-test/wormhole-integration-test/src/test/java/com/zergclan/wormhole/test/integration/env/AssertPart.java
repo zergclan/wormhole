@@ -15,31 +15,12 @@
  * limitations under the License.
  */
 
-package com.zergclan.wormhole.test.integration.framework.container;
-
-import com.zergclan.wormhole.tool.constant.MarkConstant;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+package com.zergclan.wormhole.test.integration.env;
 
 /**
- * Container definition.
+ * Part type.
  */
-@RequiredArgsConstructor
-@Getter
-public final class DockerContainerDefinition {
+public enum AssertPart {
     
-    private final String scenario;
-    
-    private final String databaseType;
-    
-    private final int port;
-    
-    /**
-     * Get identifier.
-     *
-     * @return identifier
-     */
-    public String getIdentifier() {
-        return scenario + MarkConstant.COLON + databaseType + MarkConstant.COLON + port;
-    }
+    ACTUAL, EXPECTED
 }

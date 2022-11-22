@@ -19,13 +19,11 @@
 CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY 'root';
 GRANT All privileges ON *.* TO 'root'@'%';
 
-DROP DATABASE IF EXISTS ds_source;
-DROP DATABASE IF EXISTS ds_target;
+DROP DATABASE IF EXISTS expected_source;
+DROP DATABASE IF EXISTS expected_target;
 
-CREATE DATABASE ds_source;
-CREATE DATABASE ds_target;
+CREATE DATABASE expected_source;
+CREATE DATABASE expected_target;
 
-CREATE TABLE ds_source.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));
-CREATE TABLE ds_target.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));
-
-
+CREATE TABLE expected_source.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE expected_target.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, PRIMARY KEY (id));

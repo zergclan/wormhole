@@ -27,12 +27,12 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Collection;
 
 /**
- * Action IT engine.
+ * Precise IT engine.
  */
 @RunWith(Parameterized.class)
-public final class ActionITEngine extends BaseITEngine {
+public final class PreciseITEngineTest extends BaseITEngine {
     
-    public ActionITEngine(final WormholeParameterized parameterized) {
+    public PreciseITEngineTest(final WormholeParameterized parameterized) {
         super(parameterized);
     }
     
@@ -42,7 +42,7 @@ public final class ActionITEngine extends BaseITEngine {
     }
     
     @Test
-    public void assertAction() {
+    public void assertExecute() {
         getActionExecuteEngine().doAssertAction();
     }
 }

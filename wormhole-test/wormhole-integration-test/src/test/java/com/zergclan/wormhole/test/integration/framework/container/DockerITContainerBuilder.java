@@ -17,7 +17,8 @@
 
 package com.zergclan.wormhole.test.integration.framework.container;
 
-import com.zergclan.wormhole.test.integration.framework.container.storage.DatabaseITContainer;
+import com.zergclan.wormhole.test.integration.framework.container.storage.StorageContainerDefinition;
+import com.zergclan.wormhole.test.integration.framework.container.storage.StorageITContainer;
 import com.zergclan.wormhole.test.integration.framework.container.storage.atomic.MySQLITContainer;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -29,12 +30,18 @@ import lombok.NoArgsConstructor;
 public final class DockerITContainerBuilder {
     
     /**
-     * New {@link DatabaseITContainer}.
+     * New {@link StorageITContainer}.
      *
-     * @param dockerContainerDefinition {@link DockerContainerDefinition}
-     * @return {@link DatabaseITContainer}
+     * @param definition {@link StorageContainerDefinition}
+     * @return {@link StorageITContainer}
      */
-    public static DatabaseITContainer newStorageContainer(final DockerContainerDefinition dockerContainerDefinition) {
-        return new MySQLITContainer(dockerContainerDefinition);
+    public static StorageITContainer newStorageContainer(final StorageContainerDefinition definition) {
+        String type = definition.getDatabaseType().getType();
+        switch (type) {
+            case "MySQL":
+                return new MySQLITContainer(definition);
+            default:
+                throw new UnsupportedOperationException("Unsupported database type: " + type);
+        }
     }
 }

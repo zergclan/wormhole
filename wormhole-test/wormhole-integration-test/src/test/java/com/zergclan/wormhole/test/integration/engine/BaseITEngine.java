@@ -18,8 +18,7 @@
 package com.zergclan.wormhole.test.integration.engine;
 
 import com.zergclan.wormhole.test.integration.engine.action.ActionExecuteEngine;
-import com.zergclan.wormhole.test.integration.env.DataSourceEnvironment;
-import com.zergclan.wormhole.test.integration.framework.container.DockerContainerDefinition;
+import com.zergclan.wormhole.test.integration.framework.container.storage.StorageContainerDefinition;
 import com.zergclan.wormhole.test.integration.framework.container.DatabaseITContainerManager;
 import com.zergclan.wormhole.test.integration.framework.param.WormholeParameterized;
 import com.zergclan.wormhole.test.integration.framework.util.TimeSleeper;
@@ -46,9 +45,7 @@ public abstract class BaseITEngine {
     }
     
     private void initEnv() {
-        for (DataSourceEnvironment each : parameterized.getDataSources()) {
-            containerManager.register(new DockerContainerDefinition(parameterized.getScenario(), each.getDatabaseType(), each.getPort()));
-        }
+        parameterized.getDataSources().forEach((key, value) -> containerManager.register(StorageContainerDefinition.build(parameterized.getScenario(), key, value)));
         containerManager.start();
     }
 }

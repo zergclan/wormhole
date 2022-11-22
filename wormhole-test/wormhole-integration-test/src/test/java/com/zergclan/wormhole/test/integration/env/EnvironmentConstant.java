@@ -30,7 +30,13 @@ public final class EnvironmentConstant {
     
     public static final String IT_ENV_SCENARIOS = "it.env.scenarios";
     
-    public static final String IT_ENV_SOURCE_NODES = "it.env.source.nodes";
+    public static final String IT_ENV_SOURCE_DATASOURCE = "it.env.source.datasource";
     
-    public static final String IT_ENV_TARGET_NODES = "it.env.target.nodes";
+    public static final String IT_ENV_TARGET_DATASOURCE = "it.env.target.datasource";
+    
+    public static final String IT_ENV_SOURCE_ACTUAL_NAME = "actual_source";
+    
+    public static final String IT_ENV_TARGET_ACTUAL_NAME = "actual_target";
+    
+    public static final String IT_ENV_TARGET_EXPECTED_NAME = "expected_target";
 }
