@@ -54,7 +54,7 @@ public final class AtomicPlanExecutor implements PlanExecutor {
             for (Map<String, CachedTaskMetaData> each : cachedPlanMetadata.getCachedOrderedTasks()) {
                 Optional<String> failedTask = transactionalExecute(planBatch, planIdentifier, each);
                 if (failedTask.isPresent()) {
-                    handleWormholeEvent(PlanExecutionEvent.buildCompleteEvent(planBatch, ExecutionState.FAILED));
+                    handleWormholeEvent(PlanExecutionEvent.buildExecutionEvent(planBatch, ExecutionState.FAILED));
                     return;
                 }
             }

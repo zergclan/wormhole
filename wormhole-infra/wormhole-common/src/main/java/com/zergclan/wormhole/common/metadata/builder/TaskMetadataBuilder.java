@@ -71,7 +71,7 @@ public final class TaskMetadataBuilder {
         String table = sourceConfiguration.getTable();
         String conditionSql = sourceConfiguration.getConditionSql();
         Map<String, DataNodeMetaData> dataNodes = buildConfiguredDataNodes(sourceConfiguration.getDataNodes());
-        return new SourceMetaData(sourceDataSource.getIdentifier(), actualSql, table, conditionSql, dataNodes);
+        return new SourceMetaData(sourceDataSource.getIdentifier(), table, actualSql, conditionSql, dataNodes);
     }
     
     private Map<String, DataNodeMetaData> buildConfiguredDataNodes(final Map<String, DataNodeConfiguration> dataNodeConfigurations) {

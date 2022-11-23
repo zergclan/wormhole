@@ -38,6 +38,11 @@ public final class DataSourceCreator {
      * @return {@link DataSource}
      */
     public static DataSource create(final Properties configProperties) {
-        return new HikariDataSource(new HikariConfig(configProperties));
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDriverClassName(String.valueOf(configProperties.get("driverClassName")));
+        hikariConfig.setJdbcUrl(String.valueOf(configProperties.get("jdbcUrl")));
+        hikariConfig.setUsername(String.valueOf(configProperties.get("username")));
+        hikariConfig.setPassword(String.valueOf(configProperties.get("password")));
+        return new HikariDataSource(hikariConfig);
     }
 }

@@ -19,11 +19,12 @@ order: 0
 batchSize: 2
 source:
   dataSource: ds-source
-  table: source_user
+  table: t_user
 
 target:
   dataSource: ds-target
-  table: target_user
+  table: t_user
   uniqueNodes: id,username,password
   compareNodes: id,username,password
+  ignoreNodes: task_batch,create_time
   versionNode: task_batch

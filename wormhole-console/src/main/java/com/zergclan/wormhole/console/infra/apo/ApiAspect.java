@@ -64,7 +64,7 @@ public final class ApiAspect {
         try {
             markTrace(getHttpServletRequest());
             Object[] requestArgs = proceedingJoinPoint.getArgs();
-            log.info("[{}] accept request start. args[{}]", LOG_PREFIX, requestArgs);
+            log.info("[{}] accept request start. args: {}", LOG_PREFIX, requestArgs);
             Object result = proceedingJoinPoint.proceed();
             log.info("[{}] execute request is successful. response:[{}]", LOG_PREFIX, result);
             return result;

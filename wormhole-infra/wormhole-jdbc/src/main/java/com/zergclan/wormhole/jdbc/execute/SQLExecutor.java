@@ -41,9 +41,7 @@ public final class SQLExecutor {
      * @throws SQLException exception {@link SQLException}
      */
     public static ResultSet executeQuery(final Connection connection, final String sql) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            return preparedStatement.executeQuery();
-        }
+        return connection.prepareStatement(sql).executeQuery();
     }
     
     /**
@@ -56,10 +54,9 @@ public final class SQLExecutor {
      * @throws SQLException exception {@link SQLException}
      */
     public static ResultSet executeQuery(final Connection connection, final String sql, final Object[] parameters) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            setParameters(preparedStatement, parameters);
-            return preparedStatement.executeQuery();
-        }
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        setParameters(preparedStatement, parameters);
+        return preparedStatement.executeQuery();
     }
     
     /**

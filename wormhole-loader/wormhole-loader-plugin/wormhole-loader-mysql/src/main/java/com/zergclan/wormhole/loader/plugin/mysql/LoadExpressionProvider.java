@@ -43,17 +43,21 @@ public final class LoadExpressionProvider implements ExpressionProvider {
     @Override
     public void init(final CachedMetaData cachedMetaData) {
         if (cachedMetaData instanceof CachedTargetMetaData) {
-            CachedTargetMetaData targetMetaData = (CachedTargetMetaData) cachedMetaData;
-            DatabaseType databaseType = targetMetaData.getDataSource().getDatabaseType();
-            String table = targetMetaData.getTable();
-            Collection<String> nodeNames = initNodeNames(targetMetaData);
-            Collection<String> uniqueNodeNames = targetMetaData.getUniqueNodes();
-            SQLExpressionGenerator generator = SQLExpressionGenerator.build(databaseType, table, nodeNames, uniqueNodeNames);
+            SQLExpressionGenerator generator = initSQLExpressionGenerator((CachedTargetMetaData) cachedMetaData);
             insertExpression = generator.generateInsertTable() + generator.generateInsertColumns() + generator.generateInsertValues();
             updateExpression = generator.generateUpdateTable() + generator.generateUpdateColumns() + generator.generateWhereByAllEquals();
             selectExpression = generator.generateSelectColumns() + generator.generateFromTable() + generator.generateWhereByAllEquals();
+            return;
         }
         throw new UnsupportedOperationException();
+    }
+    
+    private SQLExpressionGenerator initSQLExpressionGenerator(final CachedTargetMetaData targetMetaData) {
+        DatabaseType databaseType = targetMetaData.getDataSource().getDatabaseType();
+        String table = targetMetaData.getTable();
+        Collection<String> nodeNames = initNodeNames(targetMetaData);
+        Collection<String> uniqueNodeNames = targetMetaData.getUniqueNodes();
+        return SQLExpressionGenerator.build(databaseType, table, nodeNames, uniqueNodeNames);
     }
     
     private Collection<String> initNodeNames(final CachedTargetMetaData targetMetaData) {
@@ -63,5 +67,10 @@ public final class LoadExpressionProvider implements ExpressionProvider {
             result.add(versionNode);
         }
         return result;
+    }
+    
+    @Override
+    public String getType() {
+        return "load#MySQL";
     }
 }
