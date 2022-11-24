@@ -25,10 +25,10 @@ DROP DATABASE IF EXISTS actual_target;
 CREATE DATABASE actual_source;
 CREATE DATABASE actual_target;
 
-CREATE TABLE actual_source.t_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, create_time datetime NOT NULL, PRIMARY KEY (id));
-CREATE TABLE actual_target.t_user (id int NOT NULL AUTO_INCREMENT, task_batch bigint NOT NULL, username varchar(64) NOT NULL, password varchar(64) NOT NULL, `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id));
+CREATE TABLE actual_source.source_user (id int NOT NULL AUTO_INCREMENT, username varchar(64) NOT NULL, password varchar(64) NOT NULL, create_time datetime NOT NULL, PRIMARY KEY (id));
+CREATE TABLE actual_target.target_user (id int NOT NULL AUTO_INCREMENT, task_batch bigint NOT NULL, username varchar(64) NOT NULL, password varchar(64) NOT NULL, `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id));
 
-INSERT INTO actual_source.t_user (id, username, password, create_time)
+INSERT INTO actual_source.source_user (id, username, password, create_time)
 VALUES (1, 'jack1', '123456', '2022-01-01 08:10:10'), (2, 'jack2', '123456', '2022-01-01 08:10:10'),
        (3, 'jack3', '123456', '2022-01-01 08:10:10'), (4, 'jack4', '123456', '2022-01-01 08:10:10'),
        (5, 'jack5', '123456', '2022-01-01 08:10:10'), (6, 'jack6', '123456', '2022-01-01 08:10:10'),
