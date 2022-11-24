@@ -26,4 +26,5 @@ target:
   table: target_user
   uniqueNodes: id,username,password
   compareNodes: id,username,password
+  ignoreNodes: task_batch,create_time
   versionNode: task_batch

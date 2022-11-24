@@ -59,7 +59,7 @@ public final class DataSourceManager {
         result.put("password", dataSourceMetadata.getPassword());
         DataSourcePoolMetadata pool = dataSourceMetadata.getPool();
         result.put("poolName", pool.getPoolName());
-        result.put("minIdle", pool.getMinPoolSize());
+        result.put("minimumIdle", pool.getMinPoolSize());
         result.put("maxPoolSize", pool.getMaxPoolSize());
         result.put("connectionTimeout", pool.getConnectionTimeout());
         result.put("idleTimeout", pool.getIdleTimeout());

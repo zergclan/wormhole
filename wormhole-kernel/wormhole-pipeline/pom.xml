@@ -38,28 +38,13 @@
 
         <dependency>
             <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-extractor-core</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.zergclan</groupId>
             <artifactId>wormhole-extractor-mysql</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zergclan</groupId>
-            <artifactId>wormhole-loader-core</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.zergclan</groupId>
             <artifactId>wormhole-loader-mysql</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

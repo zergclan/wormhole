@@ -38,6 +38,7 @@ public final class ExtractExpressionProvider implements ExpressionProvider {
     public void init(final CachedMetaData cachedMetaData) {
         if (cachedMetaData instanceof CachedSourceMetaData) {
             selectExpression = initSelectExpression((CachedSourceMetaData) cachedMetaData);
+            return;
         }
         throw new UnsupportedOperationException();
     }
@@ -48,7 +49,7 @@ public final class ExtractExpressionProvider implements ExpressionProvider {
         Collection<String> nodeNames = sourceMetaData.getDataNodes().keySet();
         String conditionSql = sourceMetaData.getConditionSql();
         SQLExpressionGenerator generator = SQLExpressionGenerator.build(databaseType, table, nodeNames, conditionSql);
-        return generator.generateSelectColumns() + generator.generateWhereByConditionSql();
+        return generator.generateSelectColumns() + generator.generateFromTable() + generator.generateWhereByConditionSql();
     }
     
     @Override
