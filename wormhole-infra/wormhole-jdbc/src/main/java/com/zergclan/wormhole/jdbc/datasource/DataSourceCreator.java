@@ -43,6 +43,12 @@ public final class DataSourceCreator {
         hikariConfig.setJdbcUrl(String.valueOf(configProperties.get("jdbcUrl")));
         hikariConfig.setUsername(String.valueOf(configProperties.get("username")));
         hikariConfig.setPassword(String.valueOf(configProperties.get("password")));
+        hikariConfig.setPoolName(String.valueOf(configProperties.get("poolName")));
+        hikariConfig.setMinimumIdle(Integer.parseInt(String.valueOf(configProperties.get("minimumIdle"))));
+        hikariConfig.setMaximumPoolSize(Integer.parseInt(String.valueOf(configProperties.get("maxPoolSize"))));
+        hikariConfig.setConnectionTimeout(Long.parseLong(String.valueOf(configProperties.get("connectionTimeout"))));
+        hikariConfig.setIdleTimeout(Long.parseLong(String.valueOf(configProperties.get("idleTimeout"))));
+        hikariConfig.setMaxLifetime(Long.parseLong(String.valueOf(configProperties.get("maxLifetime"))));
         return new HikariDataSource(hikariConfig);
     }
 }

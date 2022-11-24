@@ -57,13 +57,13 @@ public final class DataSourceManager {
         result.put("jdbcUrl", dataSourceMetadata.getJdbcUrl());
         result.put("username", dataSourceMetadata.getUsername());
         result.put("password", dataSourceMetadata.getPassword());
-//        DataSourcePoolMetadata pool = dataSourceMetadata.getPool();
-//        result.put("poolName", pool.getPoolName());
-//        result.put("minimumIdle", pool.getMinPoolSize());
-//        result.put("maxPoolSize", pool.getMaxPoolSize());
-//        result.put("connectionTimeout", pool.getConnectionTimeout());
-//        result.put("idleTimeout", pool.getIdleTimeout());
-//        result.put("maxLifetime", pool.getMaxLifetime());
+        DataSourcePoolMetadata pool = dataSourceMetadata.getPool();
+        result.put("poolName", pool.getPoolName());
+        result.put("minimumIdle", pool.getMinPoolSize());
+        result.put("maxPoolSize", pool.getMaxPoolSize());
+        result.put("connectionTimeout", pool.getConnectionTimeout());
+        result.put("idleTimeout", pool.getIdleTimeout());
+        result.put("maxLifetime", pool.getMaxLifetime());
         return result;
     }
 }
